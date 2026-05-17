@@ -237,6 +237,95 @@
           Next →
         </button>
       </div>
+
+      <!-- ═════════════════════════════════════════════════════════ -->
+      <!-- ═════════ 🎙️ Speech Practice (NEW!) ════════════════════ -->
+      <!-- ═════════════════════════════════════════════════════════ -->
+      @if (speechRec.isSupported) {
+        <div class="mt-6 bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-200 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-2xl">🎙️</span>
+            <h4 class="font-semibold text-purple-900">Speak it out loud</h4>
+          </div>
+          <p class="text-sm text-purple-700 mb-3">
+            Tap the mic and pronounce the German sentence to practice your speaking.
+          </p>
+
+          <!-- Mic toggle button -->
+          <div class="flex items-center gap-3 mb-3 flex-wrap">
+            @if (!speechRec.isListening()) {
+              <button
+                type="button"
+                (click)="startListening()"
+                class="px-5 py-2.5 bg-purple-600 text-white rounded-full font-medium hover:bg-purple-700 transition-colors flex items-center gap-2"
+              >
+                🎤 Start speaking
+              </button>
+            } @else {
+              <!-- pulse animation while listening -->
+              <button
+                type="button"
+                (click)="stopListening()"
+                class="px-5 py-2.5 bg-red-500 text-white rounded-full font-medium hover:bg-red-600 transition-colors flex items-center gap-2 animate-pulse"
+              >
+                ⏺ Listening... (tap to stop)
+              </button>
+            }
+          </div>
+
+          <!-- 🚨 Error display -->
+          @if (speechRec.error()) {
+            <div class="mb-3 p-2 bg-yellow-100 border border-yellow-300 rounded text-sm text-yellow-800">
+              ⚠️ {{ speechRec.error() }}
+            </div>
+          }
+
+          <!-- 📝 What we heard you say -->
+          @if (speechRec.lastTranscript()) {
+            <div class="mb-2 text-sm">
+              <span class="text-slate-500">You said:</span>
+              <span class="font-medium text-slate-800 ml-1" dir="ltr">
+                "{{ speechRec.lastTranscript() }}"
+              </span>
+            </div>
+          }
+
+          <!-- ✅⚠️❌ Comparison result -->
+          @if (speechMatchResult(); as result) {
+            @if (result.level === 'exact') {
+              <div class="p-3 bg-green-100 border border-green-400 rounded-lg text-center">
+                <p class="text-lg font-bold text-green-800">✅ Perfect pronunciation!</p>
+                <p class="text-xs text-green-700 mt-1">
+                  Similarity: {{ (result.similarity * 100).toFixed(0) }}%
+                </p>
+              </div>
+            } @else if (result.level === 'close') {
+              <div class="p-3 bg-amber-100 border border-amber-400 rounded-lg text-center">
+                <p class="text-lg font-semibold text-amber-800">
+                  ⚠️ Very close — try once more!
+                </p>
+                <p class="text-xs text-amber-700 mt-1">
+                  Similarity: {{ (result.similarity * 100).toFixed(0) }}%
+                </p>
+              </div>
+            } @else {
+              <div class="p-3 bg-red-100 border border-red-400 rounded-lg text-center">
+                <p class="text-lg font-semibold text-red-800">
+                  ❌ Not quite — listen and try again
+                </p>
+                <p class="text-xs text-red-700 mt-1">
+                  Similarity: {{ (result.similarity * 100).toFixed(0) }}%
+                </p>
+              </div>
+            }
+          }
+        </div>
+      } @else {
+        <!-- 🚫 المتصفح لا يدعم Speech Recognition -->
+        <div class="mt-6 bg-slate-100 border border-slate-300 rounded-lg p-3 text-sm text-slate-600">
+          🎙️ Speech recognition isn't supported in this browser. Try Chrome or Edge to practice pronunciation.
+        </div>
+      }
     }
   }
 

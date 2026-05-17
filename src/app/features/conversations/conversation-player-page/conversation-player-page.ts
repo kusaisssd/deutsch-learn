@@ -1,9 +1,11 @@
-import { Component, computed, inject, input, linkedSignal, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, linkedSignal, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ConversationsService } from '../../../core/services/conversations';
 import { SpeechService } from '../../../core/services/speech';
+import { SpeechRecognitionService } from '../../../core/services/speech-recognition';
 import { shuffle } from '../../../shared/utils/shuffle';
+import { compareGerman, ComparisonResult } from '../../../shared/utils/similarity';
 import { WordTile as WordTileComponent } from '../../../shared/components/word-tile/word-tile';
 
 /**
@@ -54,6 +56,8 @@ export class ConversationPlayerPage {
   private conversationsService = inject(ConversationsService);
   /** نعرّض SpeechService كـ public كي نستطيع استخدامه في الـ template */
   readonly speech = inject(SpeechService);
+  /** Speech-to-text للنطق و التحقق منه */
+  readonly speechRec = inject(SpeechRecognitionService);
 
   // ───────── بيانات مشتقّة ─────────
 
@@ -134,6 +138,37 @@ export class ConversationPlayerPage {
     this.availableWords().length === 0
   );
 
+  // ───────── 🎙️ Speech recognition state ─────────
+
+  /**
+   * نتيجة المقارنة بين ما نطقه المستخدم و الجملة المتوقعة.
+   * null = لم يحاول بعد، أو الدور يتغيّر.
+   *
+   * linkedSignal: يُعاد لـ null كلما تغيّر الدور (currentTurn).
+   */
+  readonly speechMatchResult = linkedSignal({
+    source: this.currentTurn,
+    computation: (): ComparisonResult | null => null,
+  });
+
+  /**
+   * 🎯 Effect: مراقبة آخر transcript و عمل مقارنة تلقائية.
+   *
+   * كلما تغيّر lastTranscript (وصل نص جديد من الـ Speech API)،
+   * نُقارنه بالنطق المتوقع للدور الحالي و نُحدّث speechMatchResult.
+   *
+   * هذا نمط شائع: ربط signals من services مختلفة عبر effect.
+   */
+  constructor() {
+    effect(() => {
+      const transcript = this.speechRec.lastTranscript();
+      const turn = this.currentTurn();
+      if (!transcript || !turn || turn.speaker !== 'user') return;
+      const expected = turn.germanWords.join(' ');
+      this.speechMatchResult.set(compareGerman(transcript, expected));
+    });
+  }
+
   // ───────── الأفعال (Actions) ─────────
 
   /** اضغط كلمة من المتاحة → تذهب للإجابة */
@@ -199,5 +234,24 @@ export class ConversationPlayerPage {
   /** إعادة المحادثة من البداية */
   restartConversation() {
     this.currentTurnIndex.set(0);
+  }
+
+  // ───────── 🎙️ Speech actions ─────────
+
+  /**
+   * يبدأ الاستماع للمستخدم (بالألمانية).
+   * المتصفح سيطلب صلاحية ميكروفون أول مرة.
+   *
+   * نمسح النتيجة السابقة قبل البدء كي لا تختلط.
+   */
+  startListening() {
+    this.speechMatchResult.set(null);
+    this.speechRec.clearResult();
+    this.speechRec.start('de-DE');
+  }
+
+  /** إيقاف الاستماع يدوياً */
+  stopListening() {
+    this.speechRec.stop();
   }
 }
