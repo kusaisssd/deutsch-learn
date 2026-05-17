@@ -1,0 +1,14 @@
+<!--
+  WordTile template.
+  - [class]="cssClasses()" → الكلاسات محسوبة من variant/disabled
+  - (click)="onClick()"    → نطلق الحدث للأب عبر output
+  - [disabled]="disabled()" → يعطّل الزر برمجياً
+-->
+<button
+  type="button"
+  [class]="cssClasses()"
+  [disabled]="disabled()"
+  (click)="onClick()"
+>
+  {{ word() }}
+</button>

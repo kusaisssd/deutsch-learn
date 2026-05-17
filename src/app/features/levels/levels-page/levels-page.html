@@ -1,0 +1,88 @@
+<!-- Level selection page -->
+<section class="max-w-5xl mx-auto">
+
+  <!-- Heading -->
+  <header class="text-center mb-8">
+    <h2 class="text-3xl font-bold text-slate-800 mb-2">
+      Choose Your Level
+    </h2>
+    <p class="text-slate-600">
+      Start at your current level and progress gradually
+    </p>
+  </header>
+
+  <!--
+    Cards grid:
+    - mobile: single column
+    - tablets: two columns
+    - large screens: four columns
+  -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+    <!--
+      @for = loop over array items.
+      track level.code = tells Angular .code is the unique key
+                         (for performance on list updates).
+      | note levels() with parentheses → because it is a signal.
+    -->
+    @for (level of levels(); track level.code) {
+
+      <!--
+        [routerLink]="['/levels', level.code, 'sentences']"
+        = navigates to /levels/A1/sentences (for example)
+        Array elements join into the URL.
+
+        [class] dynamically applies the background color from level data.
+      -->
+      <a
+        [routerLink]="['/levels', level.code, 'sentences']"
+        class="block rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-200 overflow-hidden cursor-pointer"
+      >
+        <!-- Colored top section -->
+        <div [class]="level.color + ' text-white p-6 text-center'">
+          <div class="text-4xl font-bold mb-1">{{ level.code }}</div>
+          <div class="text-sm opacity-90">{{ level.title }}</div>
+        </div>
+
+        <!-- Description + progress bar -->
+        <div class="bg-white p-4">
+          <p class="text-slate-600 text-sm text-center min-h-[3rem]">
+            {{ level.description }}
+          </p>
+
+          <!--
+            Stats for this level.
+            @let saves us from repeating statsByLevel()[level.code] each time.
+          -->
+          @let stats = statsByLevel()[level.code];
+          @if (stats.total > 0) {
+            <div class="mt-3 pt-3 border-t border-slate-100">
+              <div class="flex items-center justify-between text-xs text-slate-600 mb-1">
+                <span>Progress</span>
+                <span class="font-semibold">{{ stats.done }} / {{ stats.total }}</span>
+              </div>
+              <!-- Progress bar -->
+              <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
+                <div
+                  class="h-full transition-all duration-500"
+                  [class]="level.color"
+                  [style.width.%]="(stats.done / stats.total) * 100"
+                ></div>
+              </div>
+            </div>
+          }
+        </div>
+      </a>
+
+    } @empty {
+      <!--
+        @empty = what to show when the array is empty.
+        Like @if (!Levels.Any()) in Razor.
+      -->
+      <p class="col-span-full text-center text-slate-500 py-12">
+        No levels available
+      </p>
+    }
+  </div>
+
+</section>

@@ -1,0 +1,157 @@
+<section class="max-w-3xl mx-auto">
+
+  @if (!loaded()) {
+    <!-- Loading -->
+    <div class="text-center py-12">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent"></div>
+      <p class="text-slate-500 mt-3">Loading...</p>
+    </div>
+
+  } @else if (!sentence()) {
+    <!-- Sentence not found -->
+    <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+      <p class="text-red-800 mb-3">Sentence not found!</p>
+      <a [routerLink]="'/levels'" class="text-indigo-600 hover:underline">
+        Back to levels
+      </a>
+    </div>
+
+  } @else {
+    <!--
+      Sentence is loaded (narrow with @let).
+      @let = local template variable (Angular 18+).
+      Saves us from writing sentence()! on every line.
+    -->
+    @let s = sentence()!;
+
+    <!-- ───────── Header ───────── -->
+    <header class="mb-6 flex items-center justify-between">
+      <a
+        [routerLink]="['/levels', s.level, 'sentences']"
+        class="text-indigo-600 hover:underline text-sm"
+      >
+        ← Back to sentences
+      </a>
+      <span class="text-xs px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 font-semibold">
+        Level {{ s.level }}
+      </span>
+    </header>
+
+    <!-- ───────── English sentence ───────── -->
+    <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-slate-200">
+      <p class="text-xs text-slate-500 uppercase tracking-wide mb-2">
+        Translate to German:
+      </p>
+      <p class="text-2xl font-medium text-slate-800">
+        "{{ s.english }}"
+      </p>
+      @if (s.hint) {
+        <p class="text-sm text-slate-500 mt-3">
+          💡 {{ s.hint }}
+        </p>
+      }
+    </div>
+
+    <!-- ───────── Answer area (selectedWords) ───────── -->
+    <div class="mb-4">
+      <p class="text-sm font-semibold text-slate-700 mb-2">Your answer:</p>
+
+      <!--
+        Dynamic [class] changes border color based on status:
+        - building → gray
+        - correct  → green
+        - wrong    → red
+      -->
+      <div
+        class="min-h-[80px] rounded-lg p-3 border-2 border-dashed flex flex-wrap gap-2 items-start transition-colors"
+        [class.border-slate-300]="status() === 'building'"
+        [class.bg-slate-50]="status() === 'building'"
+        [class.border-green-500]="status() === 'correct'"
+        [class.bg-green-50]="status() === 'correct'"
+        [class.border-red-400]="status() === 'wrong'"
+        [class.bg-red-50]="status() === 'wrong'"
+      >
+        @for (tile of selectedWords(); track tile.originalIndex) {
+          <!--
+            Using the shared component:
+            - [word]    : input ← pass the word
+            - [variant] : input ← pass the variant
+            - [disabled]: input ← disable after correct answer
+            - (clicked) : output → listen for click event
+          -->
+          <app-word-tile
+            [word]="tile.word"
+            [variant]="'selected'"
+            [disabled]="status() === 'correct'"
+            (clicked)="unpickWord(tile)"
+          />
+        } @empty {
+          <span class="text-slate-400 text-sm self-center">
+            Tap words below to arrange them...
+          </span>
+        }
+      </div>
+    </div>
+
+    <!-- ───────── Available words ───────── -->
+    <div class="mb-6">
+      <p class="text-sm font-semibold text-slate-700 mb-2">Available words:</p>
+      <div class="min-h-[60px] flex flex-wrap gap-2">
+        @for (tile of availableWords(); track tile.originalIndex) {
+          <app-word-tile
+            [word]="tile.word"
+            [variant]="'available'"
+            (clicked)="pickWord(tile)"
+          />
+        } @empty {
+          <span class="text-slate-400 text-sm self-center">
+            (all words used)
+          </span>
+        }
+      </div>
+    </div>
+
+    <!-- ───────── Result messages ───────── -->
+    @if (status() === 'correct') {
+      <div class="bg-green-100 border border-green-400 rounded-lg p-4 mb-4 text-center">
+        <p class="text-2xl mb-1">✅ Sehr gut!</p>
+        <p class="text-green-800">Correct! Click "Next" for the next sentence.</p>
+      </div>
+    } @else if (status() === 'wrong') {
+      <div class="bg-red-100 border border-red-400 rounded-lg p-4 mb-4 text-center">
+        <p class="text-xl mb-1">❌ Not quite!</p>
+        <p class="text-red-800">The order is incorrect. Try again.</p>
+      </div>
+    }
+
+    <!-- ───────── Buttons ───────── -->
+    <div class="flex gap-3 justify-center flex-wrap">
+      <button
+        type="button"
+        (click)="reset()"
+        class="px-5 py-2.5 bg-slate-200 text-slate-700 rounded-md font-medium hover:bg-slate-300 transition-colors"
+      >
+        🔄 Reset
+      </button>
+
+      <button
+        type="button"
+        (click)="check()"
+        [disabled]="!allWordsSelected() || status() === 'correct'"
+        class="px-5 py-2.5 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+      >
+        ✓ Check
+      </button>
+
+      <button
+        type="button"
+        (click)="goToNextSentence()"
+        class="px-5 py-2.5 bg-green-600 text-white rounded-md font-medium hover:bg-green-700 transition-colors"
+      >
+        Next →
+      </button>
+    </div>
+
+  }
+
+</section>

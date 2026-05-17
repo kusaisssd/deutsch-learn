@@ -1,0 +1,177 @@
+<section class="max-w-4xl mx-auto">
+
+  <header class="mb-6">
+    <h2 class="text-3xl font-bold text-slate-800">📖 German Text Reader</h2>
+    <p class="text-slate-600 mt-1">
+      Paste a German text, hear it read aloud, and click any word for its translation.
+    </p>
+  </header>
+
+  <!-- ───────── Warning if browser doesn't support TTS ───────── -->
+  @if (!speech.isSupported) {
+    <div class="bg-yellow-50 border border-yellow-300 rounded p-3 mb-4 text-sm text-yellow-800">
+      ⚠️ Your browser does not support Web Speech API. The reading feature will not work.
+    </div>
+  }
+
+  <!-- ───────── Input area ───────── -->
+  <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-4 mb-4">
+    <label class="block text-sm font-semibold text-slate-700 mb-2">
+      Paste German text:
+    </label>
+    <!--
+      [(ngModel)] = two-way binding.
+      Any edit in the textarea updates the inputText signal, and vice versa.
+      Requires FormsModule imported in the component.
+    -->
+    <textarea
+      [(ngModel)]="inputText"
+      rows="4"
+      placeholder="Schreiben Sie hier einen deutschen Text..."
+      class="w-full p-3 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y font-mono text-slate-800"
+      dir="ltr"
+    ></textarea>
+  </div>
+
+  <!-- ───────── Control bar ───────── -->
+  <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-4 mb-6 flex flex-wrap items-center gap-4">
+
+    <!-- Play / Stop button -->
+    @if (!speech.isSpeaking()) {
+      <button
+        type="button"
+        (click)="readAll()"
+        [disabled]="!inputText().trim()"
+        class="px-5 py-2 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+      >
+        ▶️ Read
+      </button>
+    } @else {
+      <button
+        type="button"
+        (click)="stopReading()"
+        class="px-5 py-2 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 transition-colors"
+      >
+        ⏹ Stop
+      </button>
+    }
+
+    <!-- Speed slider -->
+    <div class="flex items-center gap-3 flex-1 min-w-[200px]">
+      <span class="text-sm text-slate-600 whitespace-nowrap">Speed:</span>
+      <input
+        type="range"
+        min="0.5"
+        max="2"
+        step="0.1"
+        [value]="speechRate()"
+        (input)="onRateChange($event)"
+        class="flex-1 accent-indigo-600"
+      />
+      <span class="text-sm font-mono font-semibold text-indigo-600 w-12 text-center">
+        {{ speechRate().toFixed(1) }}x
+      </span>
+    </div>
+
+    <!-- Number of German voices available (informational) -->
+    @if (speech.germanVoices().length > 0) {
+      <span class="text-xs text-slate-500">
+        🎙️ {{ speech.germanVoices().length }} German voice(s) available
+      </span>
+    }
+  </div>
+
+  <!-- ───────── Reading area (clickable words) ───────── -->
+  <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6 mb-4 relative">
+    <p class="text-sm text-slate-500 mb-3">Click any word for translation and individual pronunciation:</p>
+
+    @if (tokens().length === 0) {
+      <p class="text-slate-400 italic">No text yet...</p>
+    } @else {
+      <!--
+        Render each token. dir="ltr" because the text is German.
+        leading-loose = generous line height for easier reading.
+      -->
+      <div dir="ltr" class="text-lg leading-loose text-slate-800">
+        @for (token of tokens(); track token.index) {
+          @if (token.isWord) {
+            <!--
+              Clickable word.
+              Dynamic [class] highlights the selected word with a yellow background.
+            -->
+            <span
+              (click)="selectWord(token)"
+              class="cursor-pointer rounded px-0.5 transition-colors hover:bg-indigo-100"
+              [class.bg-yellow-200]="selectedToken()?.index === token.index"
+            >{{ token.text }}</span>
+          } @else {
+            <!-- Punctuation/whitespace - not clickable -->
+            <span [innerText]="token.text"></span>
+          }
+        }
+      </div>
+    }
+  </div>
+
+  <!-- ───────── Translation popup (shows when a word is selected) ───────── -->
+  @if (selectedToken(); as token) {
+    <div class="bg-indigo-50 border-2 border-indigo-400 rounded-lg p-4 shadow-md">
+
+      <div class="flex items-center justify-between mb-3">
+        <div>
+          <span class="text-xs text-indigo-700 uppercase tracking-wide">Selected word</span>
+          <h3 class="text-2xl font-bold text-slate-800">{{ token.text }}</h3>
+        </div>
+        <button
+          type="button"
+          (click)="closePopup()"
+          class="text-slate-500 hover:text-slate-800 text-2xl px-2"
+          title="Close"
+        >×</button>
+      </div>
+
+      <!-- Pronounce single word button -->
+      <button
+        type="button"
+        (click)="speakSelected()"
+        class="mb-3 px-4 py-2 bg-white border border-indigo-300 rounded-md text-indigo-700 font-medium hover:bg-indigo-100 transition-colors"
+      >
+        🔊 Pronounce word
+      </button>
+
+      <!-- Translations -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+        <!-- English -->
+        <div class="bg-white rounded-md p-3 border border-slate-200">
+          <div class="text-xs text-slate-500 mb-1">🇬🇧 English</div>
+          @if (englishTranslation().loading) {
+            <div class="text-slate-400 text-sm">Translating...</div>
+          } @else {
+            <div class="text-slate-800 font-medium" dir="ltr">
+              {{ englishTranslation().text || '—' }}
+            </div>
+          }
+        </div>
+
+        <!-- Arabic -->
+        <div class="bg-white rounded-md p-3 border border-slate-200">
+          <div class="text-xs text-slate-500 mb-1">🇸🇦 Arabic</div>
+          @if (arabicTranslation().loading) {
+            <div class="text-slate-400 text-sm">Translating...</div>
+          } @else {
+            <div class="text-slate-800 font-medium" dir="rtl">
+              {{ arabicTranslation().text || '—' }}
+            </div>
+          }
+        </div>
+
+      </div>
+
+      <p class="text-xs text-slate-500 mt-3 text-center">
+        Translation via MyMemory API
+      </p>
+    </div>
+  }
+
+</section>

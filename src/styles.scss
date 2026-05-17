@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+/* Tailwind CSS v4 - استيراد كل أدوات Tailwind */
+@import "tailwindcss";
+
+/* تنسيقات عامة */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}

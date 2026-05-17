@@ -1,3 +1,56 @@
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+/**
+ * تعريف صفحات التطبيق.
+ *
+ * نستخدم `loadComponent` (lazy loading) بدل `component:` المباشر:
+ * - الفائدة: كل صفحة تُحمَّل من السيرفر فقط عند زيارتها أول مرة.
+ * - النتيجة: التطبيق يبدأ أسرع (bundle أصغر).
+ */
+export const routes: Routes = [
+  // الصفحة الجذرية: نحوّل تلقائياً إلى /levels
+  {
+    path: '',
+    redirectTo: 'levels',
+    pathMatch: 'full',
+  },
+
+  // صفحة اختيار المستوى: /levels
+  {
+    path: 'levels',
+    loadComponent: () =>
+      import('./features/levels/levels-page/levels-page').then(m => m.LevelsPage),
+    title: 'Levels - Deutsch Learn',
+  },
+
+  // صفحة قائمة الجمل لمستوى معين: /levels/A1/sentences
+  // الجزء :level متغير، سنقرأه داخل الـ component
+  {
+    path: 'levels/:level/sentences',
+    loadComponent: () =>
+      import('./features/sentences/sentences-page/sentences-page').then(m => m.SentencesPage),
+    title: 'Sentences - Deutsch Learn',
+  },
+
+  // صفحة التمرين: /practice/5
+  {
+    path: 'practice/:sentenceId',
+    loadComponent: () =>
+      import('./features/practice/practice-page/practice-page').then(m => m.PracticePage),
+    title: 'Practice - Deutsch Learn',
+  },
+
+  // صفحة قارئ النصوص: /reader
+  {
+    path: 'reader',
+    loadComponent: () =>
+      import('./features/reader/reader-page/reader-page').then(m => m.ReaderPage),
+    title: 'Reader - Deutsch Learn',
+  },
+
+  // أي URL غير معروف → نرجع إلى /levels
+  {
+    path: '**',
+    redirectTo: 'levels',
+  },
+];
