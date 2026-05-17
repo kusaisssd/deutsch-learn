@@ -130,8 +130,13 @@
         <div dir="ltr" class="text-lg leading-loose text-slate-800">
           @for (token of tokens(); track token.index) {
             @if (token.isWord) {
+              <!--
+                Pass $event to selectWord: we use event.currentTarget
+                to capture the clicked element's screen position for the
+                mobile floating popup.
+              -->
               <span
-                (click)="selectWord(token)"
+                (click)="selectWord(token, $event)"
                 class="cursor-pointer rounded px-0.5 transition-colors hover:bg-emerald-100"
                 [class.bg-yellow-200]="selectedToken()?.index === token.index"
               >{{ token.text }}</span>
@@ -221,9 +226,13 @@
 
   </div>
 
-  <!-- ───────── Translation popup (shows when a word is selected) ───────── -->
+  <!--
+    ───────── Desktop word popup (shown when a word is selected) ─────────
+    On mobile (< lg) we use a separate floating popup near the word — see below.
+    `hidden lg:block` = only visible on lg+ screens.
+  -->
   @if (selectedToken(); as token) {
-    <div class="bg-emerald-50 border-2 border-emerald-400 rounded-lg p-4 shadow-md">
+    <div class="hidden lg:block bg-emerald-50 border-2 border-emerald-400 rounded-lg p-4 shadow-md">
 
       <div class="flex items-center justify-between mb-3">
         <div>
@@ -321,6 +330,113 @@
         Translation via MyMemory API
       </p>
     </div>
+  }
+
+  <!--
+    ═══════════════════════════════════════════════════════════════
+    📱 MOBILE FLOATING POPUP (lg:hidden)
+    ═══════════════════════════════════════════════════════════════
+    Shows when a word is selected on mobile. Positioned near the
+    clicked word using the popupPosition() computed signal.
+
+    Layered as backdrop + floating popup:
+      - backdrop: full-screen transparent, click closes popup
+      - popup: positioned with [style.top.px] / [style.left.px]
+  -->
+  @if (selectedToken(); as token) {
+    @if (popupPosition(); as pos) {
+      <!-- Backdrop: full-screen, tap to close -->
+      <div
+        class="lg:hidden fixed inset-0 z-40"
+        (click)="closePopup()"
+      ></div>
+
+      <!-- Floating popup -->
+      <div
+        class="lg:hidden fixed z-50 w-[300px] max-w-[calc(100vw-16px)] bg-emerald-50 border-2 border-emerald-400 rounded-lg shadow-xl p-3"
+        [style.top.px]="pos.top"
+        [style.left.px]="pos.left"
+      >
+        <!-- Header: word + close button -->
+        <div class="flex items-start justify-between mb-2 gap-2">
+          <div class="flex-1 min-w-0">
+            <div class="text-[10px] text-emerald-700 uppercase tracking-wide">Selected</div>
+            <h3 class="text-lg font-bold text-slate-800 truncate" dir="ltr">{{ token.text }}</h3>
+          </div>
+          <!--
+            Tap target: 44x44px minimum (Apple HIG for mobile UX).
+            We use p-2 + larger text + min-w/h-11 to ensure it.
+          -->
+          <button
+            type="button"
+            (click)="closePopup()"
+            class="text-slate-500 hover:text-slate-800 text-2xl leading-none min-w-11 min-h-11 flex items-center justify-center"
+            aria-label="Close"
+          >×</button>
+        </div>
+
+        <!-- Pronounce button (compact but tappable) -->
+        <button
+          type="button"
+          (click)="speakSelected()"
+          class="w-full mb-2 px-3 py-2 bg-white border border-emerald-300 rounded-md text-emerald-700 text-sm font-medium hover:bg-emerald-100 transition-colors"
+        >
+          🔊 Pronounce
+        </button>
+
+        <!-- English translation (primary + count) -->
+        <div class="bg-white rounded-md p-2 border border-slate-200 mb-2">
+          <div class="text-[10px] text-slate-500 uppercase mb-0.5">
+            🇬🇧 English
+            @if (englishTranslation().meanings.length > 1) {
+              <span class="text-slate-400 normal-case">
+                (+{{ englishTranslation().meanings.length - 1 }} more)
+              </span>
+            }
+          </div>
+          @if (englishTranslation().loading) {
+            <div class="text-slate-400 text-xs">Translating...</div>
+          } @else if (englishTranslation().meanings.length === 0) {
+            <div class="text-slate-400 text-xs">—</div>
+          } @else {
+            <div class="text-slate-800 text-sm font-semibold" dir="ltr">
+              {{ englishTranslation().meanings[0] }}
+            </div>
+            @if (englishTranslation().meanings.length > 1) {
+              <div class="text-xs text-slate-500 mt-0.5" dir="ltr">
+                also: {{ englishTranslation().meanings.slice(1).join(', ') }}
+              </div>
+            }
+          }
+        </div>
+
+        <!-- Arabic translation -->
+        <div class="bg-white rounded-md p-2 border border-slate-200">
+          <div class="text-[10px] text-slate-500 uppercase mb-0.5">
+            🇸🇦 Arabic
+            @if (arabicTranslation().meanings.length > 1) {
+              <span class="text-slate-400 normal-case">
+                (+{{ arabicTranslation().meanings.length - 1 }})
+              </span>
+            }
+          </div>
+          @if (arabicTranslation().loading) {
+            <div class="text-slate-400 text-xs">Translating...</div>
+          } @else if (arabicTranslation().meanings.length === 0) {
+            <div class="text-slate-400 text-xs">—</div>
+          } @else {
+            <div class="text-slate-800 text-sm font-semibold" dir="rtl">
+              {{ arabicTranslation().meanings[0] }}
+            </div>
+            @if (arabicTranslation().meanings.length > 1) {
+              <div class="text-xs text-slate-500 mt-0.5" dir="rtl">
+                {{ arabicTranslation().meanings.slice(1).join('، ') }}
+              </div>
+            }
+          }
+        </div>
+      </div>
+    }
   }
 
 </section>

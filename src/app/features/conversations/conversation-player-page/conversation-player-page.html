@@ -18,30 +18,49 @@
     <!-- @let لتسهيل الوصول للمحادثة (نضمنها بعد التحقق أنها موجودة) -->
     @let conv = conversation()!;
 
-    <!-- ───────── Header ───────── -->
-    <header class="mb-6">
-      <a [routerLink]="'/conversations'" class="text-emerald-600 hover:underline text-sm mb-2 inline-block">
-        ← Back to conversations
+    <!--
+      📱 Compact header on mobile (smaller emoji/text/margins).
+      On lg+ we restore generous spacing.
+    -->
+    <header class="mb-3 lg:mb-6">
+      <a [routerLink]="'/conversations'" class="text-emerald-600 hover:underline text-xs lg:text-sm mb-1 inline-block">
+        ← Back
       </a>
-      <div class="flex items-center gap-3">
-        <span class="text-4xl">{{ conv.contextEmoji }}</span>
-        <div>
-          <h2 class="text-2xl font-bold text-slate-800">{{ conv.title }}</h2>
-          <p class="text-sm text-slate-500">{{ conv.contextTitle }} · Level {{ conv.level }}</p>
+      <div class="flex items-center gap-2 lg:gap-3">
+        <span class="text-2xl lg:text-4xl">{{ conv.contextEmoji }}</span>
+        <div class="flex-1 min-w-0">
+          <h2 class="text-base lg:text-2xl font-bold text-slate-800 truncate">{{ conv.title }}</h2>
+          <p class="text-[11px] lg:text-sm text-slate-500">{{ conv.contextTitle }} · Level {{ conv.level }}</p>
         </div>
       </div>
     </header>
 
-    <!-- ───────── Description (يظهر دائماً) ───────── -->
-    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
-      <p class="text-sm text-amber-900">
-        <span class="font-semibold">Scenario:</span> {{ conv.description }}
-      </p>
+    <!--
+      📱 Collapsible scenario description.
+      On mobile we let the user collapse it to free vertical space.
+      Default: open. Resets to open on each new conversation.
+    -->
+    <div class="bg-amber-50 border border-amber-200 rounded-lg mb-3 lg:mb-6 overflow-hidden">
+      <button
+        type="button"
+        (click)="toggleDescription()"
+        class="w-full flex items-center justify-between p-2 lg:p-3 text-left hover:bg-amber-100 transition-colors"
+      >
+        <span class="text-xs lg:text-sm font-semibold text-amber-900">
+          📝 Scenario
+        </span>
+        <span class="text-amber-700 text-xs transition-transform" [class.rotate-180]="descriptionOpen()">▼</span>
+      </button>
+      @if (descriptionOpen()) {
+        <p class="text-xs lg:text-sm text-amber-900 px-2 pb-2 lg:px-3 lg:pb-3 leading-relaxed">
+          {{ conv.description }}
+        </p>
+      }
     </div>
 
-    <!-- ───────── Progress bar ───────── -->
-    <div class="mb-6">
-      <div class="flex justify-between text-xs text-slate-600 mb-1">
+    <!-- Slim progress bar (less vertical space) -->
+    <div class="mb-3 lg:mb-6">
+      <div class="flex justify-between text-[11px] lg:text-xs text-slate-600 mb-1">
         <span>Progress</span>
         <span class="font-semibold">
           @if (allDone()) {
@@ -51,7 +70,7 @@
           }
         </span>
       </div>
-      <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
+      <div class="h-1.5 lg:h-2 bg-slate-200 rounded-full overflow-hidden">
         <div
           class="h-full bg-emerald-500 transition-all duration-500"
           [style.width.%]="(currentTurnIndex() / totalTurns()) * 100"
@@ -89,30 +108,35 @@
     <!-- ═════════════════════════════════════════ -->
     } @else if (isSystemTurn()) {
       @let t = currentTurn()!;
-      <div class="bg-white border-2 border-slate-200 rounded-xl p-6 mb-4 shadow-sm">
-        <!-- Speaker badge -->
-        <div class="flex items-center gap-2 mb-3 text-sm text-slate-500">
-          <span class="text-2xl">🗣️</span>
+      <!--
+        📱 Compact system turn card:
+        Mobile: small padding (p-3), smaller text, tight margins
+        → guarantees German sentence + Play button fit in one viewport.
+      -->
+      <div class="bg-white border-2 border-slate-200 rounded-xl p-3 lg:p-6 mb-3 lg:mb-4 shadow-sm">
+        <!-- Speaker badge (compact) -->
+        <div class="flex items-center gap-1.5 lg:gap-2 mb-1.5 lg:mb-3 text-[11px] lg:text-sm text-slate-500">
+          <span class="text-lg lg:text-2xl">🗣️</span>
           <span class="font-semibold">The other person says:</span>
         </div>
 
-        <!-- German sentence (clickable area) -->
-        <p class="text-xl font-medium text-slate-800 mb-2" dir="ltr">
+        <!-- German sentence -->
+        <p class="text-base lg:text-xl font-medium text-slate-800 mb-1 lg:mb-2" dir="ltr">
           {{ t.germanWords.join(' ') }}
         </p>
 
         <!-- English translation -->
-        <p class="text-sm text-slate-500 italic mb-4">
+        <p class="text-xs lg:text-sm text-slate-500 italic mb-2 lg:mb-4">
           {{ t.english }}
         </p>
 
-        <!-- Play + Next buttons -->
-        <div class="flex gap-3">
+        <!-- Play + Next buttons (compact but tappable on mobile) -->
+        <div class="flex gap-2 lg:gap-3">
           <button
             type="button"
             (click)="playCurrentTurn()"
             [disabled]="speech.isSpeaking()"
-            class="px-4 py-2 bg-amber-500 text-white rounded-md font-medium hover:bg-amber-600 disabled:opacity-60 transition-colors"
+            class="px-3 lg:px-4 py-1.5 lg:py-2 bg-amber-500 text-white rounded-md text-sm lg:text-base font-medium hover:bg-amber-600 disabled:opacity-60 transition-colors"
           >
             @if (speech.isSpeaking()) {
               🔊 Reading...
@@ -123,7 +147,7 @@
           <button
             type="button"
             (click)="nextTurn()"
-            class="px-4 py-2 bg-emerald-600 text-white rounded-md font-medium hover:bg-emerald-700 transition-colors"
+            class="px-3 lg:px-4 py-1.5 lg:py-2 bg-emerald-600 text-white rounded-md text-sm lg:text-base font-medium hover:bg-emerald-700 transition-colors"
           >
             Next →
           </button>

@@ -74,6 +74,59 @@ export class ReaderPage {
   /** الكلمة المختارة حالياً (للـ popup). null = لا شيء مختار */
   readonly selectedToken = signal<TextToken | null>(null);
 
+  /**
+   * 🆕 موقع الكلمة المضغوطة على الشاشة (نستخدمه لوضع الـ popup قربها على الموبايل).
+   * null = لم تُضغط كلمة، أو نحن في وضع desktop (لا نحتاج).
+   *
+   * DOMRect فيه: top, left, right, bottom, width, height
+   * بالنسبة للـ viewport (لذلك يعمل مع position: fixed).
+   */
+  readonly clickedWordRect = signal<DOMRect | null>(null);
+
+  /**
+   * 🎯 موقع و مكان الـ floating popup على الموبايل.
+   *
+   * الخوارزمية:
+   *   - عمودياً: نضعه أسفل الكلمة لو فيه مساحة، فوقها لو لا
+   *   - أفقياً: مركَّز على الكلمة، مقيَّد بحواف الشاشة
+   *
+   * computed يُعاد حسابه تلقائياً عند تغيّر clickedWordRect.
+   *
+   * يُرجع null لو لا يوجد rect (لا popup يُعرض).
+   */
+  readonly popupPosition = computed<{ top: number; left: number; placement: 'above' | 'below' } | null>(() => {
+    const rect = this.clickedWordRect();
+    if (!rect) return null;
+
+    // ثوابت التصميم
+    const POPUP_W = 300;          // العرض المقدَّر للـ popup
+    const POPUP_EST_H = 220;      // الارتفاع المقدَّر (قبل render)
+    const GAP = 8;                // مسافة بين الكلمة و الـ popup
+    const MARGIN = 8;             // هامش من حواف الشاشة
+
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // قرار عمودي: فوق أم تحت؟
+    const spaceBelow = vh - rect.bottom;
+    const spaceAbove = rect.top;
+    const placeBelow = spaceBelow >= POPUP_EST_H || spaceBelow >= spaceAbove;
+    const top = placeBelow
+      ? rect.bottom + GAP
+      : Math.max(MARGIN, rect.top - POPUP_EST_H - GAP);
+
+    // قرار أفقي: مركَّز على الكلمة، مقيَّد بالشاشة
+    const centerX = rect.left + rect.width / 2;
+    let left = centerX - POPUP_W / 2;
+    left = Math.max(MARGIN, Math.min(left, vw - POPUP_W - MARGIN));
+
+    return {
+      top: Math.round(top),
+      left: Math.round(left),
+      placement: placeBelow ? 'below' : 'above',
+    };
+  });
+
   /** ترجمات الكلمة المختارة (مع كل معانيها البديلة) */
   readonly arabicTranslation = signal<TranslationState>({ loading: false, meanings: [] });
   readonly englishTranslation = signal<TranslationState>({ loading: false, meanings: [] });
@@ -144,7 +197,14 @@ export class ReaderPage {
    * - نطلب الترجمات للعربي و الإنجليزي بالتوازي
    * - الـ popup يظهر تلقائياً (يعتمد على selectedToken في القالب)
    */
-  selectWord(token: TextToken): void {
+  /**
+   * المستخدم نقر كلمة.
+   *
+   * @param token الكلمة (نص + index)
+   * @param event حدث الضغط — نستخدمه لمعرفة موقع العنصر على الشاشة
+   *              (لوضع الـ popup قربها على الموبايل).
+   */
+  selectWord(token: TextToken, event?: MouseEvent): void {
     // لو نقر على نفس الكلمة → نُغلق الـ popup
     if (this.selectedToken()?.index === token.index) {
       this.closePopup();
@@ -153,11 +213,16 @@ export class ReaderPage {
 
     this.selectedToken.set(token);
 
+    // 🆕 احفظ موقع العنصر المضغوط (للـ floating popup على الموبايل)
+    if (event && event.currentTarget instanceof HTMLElement) {
+      this.clickedWordRect.set(event.currentTarget.getBoundingClientRect());
+    }
+
     // نعيد ضبط الحالة و نضع loading
     this.arabicTranslation.set({ loading: true, meanings: [] });
     this.englishTranslation.set({ loading: true, meanings: [] });
 
-    // 🆕 translateMany بدل translate لجلب كل المعاني
+    // translateMany لجلب كل المعاني
     this.translation.translateMany(token.text, 'ar').subscribe(meanings => {
       this.arabicTranslation.set({ loading: false, meanings });
     });
@@ -174,9 +239,10 @@ export class ReaderPage {
     this.speech.speak(t.text, this.speechRate());
   }
 
-  /** إغلاق الـ popup */
+  /** إغلاق الـ popup (يمسح أيضاً موقع الكلمة) */
   closePopup(): void {
     this.selectedToken.set(null);
+    this.clickedWordRect.set(null);
   }
 
   /** تحديث السرعة من الـ slider — نأخذ الحدث و نُخرج الرقم */

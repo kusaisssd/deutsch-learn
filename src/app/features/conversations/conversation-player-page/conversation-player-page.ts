@@ -135,6 +135,21 @@ export class ConversationPlayerPage {
     computation: (): TurnStatus => 'building',
   });
 
+  /**
+   * 🆕 هل قسم "Scenario" مفتوح؟
+   * يبدأ مفتوحاً لكل محادثة جديدة (المستخدم يحتاج رؤية السياق).
+   * يستطيع طيّه يدوياً للحصول على مساحة أكثر (مهم على الموبايل).
+   */
+  readonly descriptionOpen = linkedSignal({
+    source: this.conversation,
+    computation: () => true,
+  });
+
+  /** يُبدّل حالة فتح/إغلاق الـ scenario description */
+  toggleDescription() {
+    this.descriptionOpen.update(open => !open);
+  }
+
   /** هل اختار كل الكلمات؟ */
   readonly allWordsSelected = computed(() =>
     this.availableWords().length === 0
