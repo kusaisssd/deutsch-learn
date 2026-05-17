@@ -1,0 +1,80 @@
+<section class="max-w-4xl mx-auto">
+
+  <!-- Heading -->
+  <header class="text-center mb-8">
+    <h2 class="text-3xl font-bold text-slate-800 mb-2">
+      💬 Conversations
+    </h2>
+    <p class="text-slate-600">
+      Practice real-life dialogues. You play one role — the other is read aloud for you.
+    </p>
+  </header>
+
+  <!-- Loading -->
+  @if (!loaded()) {
+    <div class="text-center py-12">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent"></div>
+      <p class="text-slate-500 mt-3">Loading...</p>
+    </div>
+  } @else {
+
+    <!--
+      @for على المجموعات (مُحسوبة من ConversationsService).
+      كل group فيه سياق + عدة محادثات.
+    -->
+    @for (group of groups(); track group.context) {
+
+      <!-- بطاقة لكل سياق -->
+      <div class="mb-8">
+        <!-- رأس السياق -->
+        <header class="flex items-center gap-3 mb-3">
+          <span class="text-3xl">{{ group.contextEmoji }}</span>
+          <div>
+            <h3 class="text-xl font-bold text-slate-800">{{ group.contextTitle }}</h3>
+            <p class="text-sm text-slate-500">
+              {{ group.conversations.length }} conversation{{ group.conversations.length === 1 ? '' : 's' }}
+            </p>
+          </div>
+        </header>
+
+        <!-- المحادثات داخل هذا السياق -->
+        <ul class="space-y-3">
+          @for (conv of group.conversations; track conv.id) {
+            <li>
+              <!--
+                [routerLink]="['/conversations', conv.id]"
+                → ينتقل لصفحة اللعب /conversations/doctor-headache
+              -->
+              <a
+                [routerLink]="['/conversations', conv.id]"
+                class="block bg-white rounded-lg shadow-sm hover:shadow-md p-4 border border-slate-200 hover:border-indigo-300 transition-all"
+              >
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 font-semibold">
+                        {{ conv.level }}
+                      </span>
+                      <h4 class="font-semibold text-slate-800">{{ conv.title }}</h4>
+                    </div>
+                    <p class="text-sm text-slate-600">{{ conv.description }}</p>
+                    <p class="text-xs text-slate-400 mt-2">
+                      {{ conv.turns.length }} turns
+                    </p>
+                  </div>
+                  <span class="text-indigo-500 text-2xl">→</span>
+                </div>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+
+    } @empty {
+      <p class="text-center text-slate-500 py-12">
+        No conversations available yet.
+      </p>
+    }
+  }
+
+</section>

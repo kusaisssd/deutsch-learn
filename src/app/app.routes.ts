@@ -48,6 +48,24 @@ export const routes: Routes = [
     title: 'Reader - Deutsch Learn',
   },
 
+  // 🆕 Conversations: قائمة المحادثات (مُجمَّعة حسب السياق)
+  {
+    path: 'conversations',
+    loadComponent: () =>
+      import('./features/conversations/conversations-list-page/conversations-list-page')
+        .then(m => m.ConversationsListPage),
+    title: 'Conversations - Deutsch Learn',
+  },
+
+  // 🆕 محادثة واحدة (شغّال متعدد الأدوار). :id متغير string.
+  {
+    path: 'conversations/:id',
+    loadComponent: () =>
+      import('./features/conversations/conversation-player-page/conversation-player-page')
+        .then(m => m.ConversationPlayerPage),
+    title: 'Conversation - Deutsch Learn',
+  },
+
   // أي URL غير معروف → نرجع إلى /levels
   {
     path: '**',

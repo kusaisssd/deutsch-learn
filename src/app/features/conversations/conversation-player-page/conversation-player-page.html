@@ -1,0 +1,243 @@
+<section class="max-w-3xl mx-auto">
+
+  @if (!loaded()) {
+    <div class="text-center py-12">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent"></div>
+      <p class="text-slate-500 mt-3">Loading...</p>
+    </div>
+
+  } @else if (!conversation()) {
+    <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+      <p class="text-red-800 mb-3">Conversation not found!</p>
+      <a [routerLink]="'/conversations'" class="text-indigo-600 hover:underline">
+        Back to conversations
+      </a>
+    </div>
+
+  } @else {
+    <!-- @let لتسهيل الوصول للمحادثة (نضمنها بعد التحقق أنها موجودة) -->
+    @let conv = conversation()!;
+
+    <!-- ───────── Header ───────── -->
+    <header class="mb-6">
+      <a [routerLink]="'/conversations'" class="text-indigo-600 hover:underline text-sm mb-2 inline-block">
+        ← Back to conversations
+      </a>
+      <div class="flex items-center gap-3">
+        <span class="text-4xl">{{ conv.contextEmoji }}</span>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">{{ conv.title }}</h2>
+          <p class="text-sm text-slate-500">{{ conv.contextTitle }} · Level {{ conv.level }}</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- ───────── Description (يظهر دائماً) ───────── -->
+    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+      <p class="text-sm text-amber-900">
+        <span class="font-semibold">Scenario:</span> {{ conv.description }}
+      </p>
+    </div>
+
+    <!-- ───────── Progress bar ───────── -->
+    <div class="mb-6">
+      <div class="flex justify-between text-xs text-slate-600 mb-1">
+        <span>Progress</span>
+        <span class="font-semibold">
+          @if (allDone()) {
+            Completed ✓
+          } @else {
+            Turn {{ currentTurnIndex() + 1 }} of {{ totalTurns() }}
+          }
+        </span>
+      </div>
+      <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
+        <div
+          class="h-full bg-indigo-500 transition-all duration-500"
+          [style.width.%]="(currentTurnIndex() / totalTurns()) * 100"
+        ></div>
+      </div>
+    </div>
+
+    <!-- ═════════════════════════════════════════ -->
+    <!-- ═════════ END OF CONVERSATION ═════════ -->
+    <!-- ═════════════════════════════════════════ -->
+    @if (allDone()) {
+      <div class="bg-green-50 border-2 border-green-400 rounded-xl p-8 text-center">
+        <p class="text-5xl mb-3">🎉</p>
+        <h3 class="text-2xl font-bold text-green-800 mb-2">Conversation complete!</h3>
+        <p class="text-green-700 mb-6">Great work practicing this scenario.</p>
+        <div class="flex gap-3 justify-center flex-wrap">
+          <button
+            type="button"
+            (click)="restartConversation()"
+            class="px-5 py-2.5 bg-slate-200 text-slate-700 rounded-md font-medium hover:bg-slate-300 transition-colors"
+          >
+            🔄 Try again
+          </button>
+          <a
+            [routerLink]="'/conversations'"
+            class="px-5 py-2.5 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 transition-colors"
+          >
+            Back to list →
+          </a>
+        </div>
+      </div>
+
+    <!-- ═════════════════════════════════════════ -->
+    <!-- ═════════ SYSTEM TURN ═══════════════════ -->
+    <!-- ═════════════════════════════════════════ -->
+    } @else if (isSystemTurn()) {
+      @let t = currentTurn()!;
+      <div class="bg-white border-2 border-slate-200 rounded-xl p-6 mb-4 shadow-sm">
+        <!-- Speaker badge -->
+        <div class="flex items-center gap-2 mb-3 text-sm text-slate-500">
+          <span class="text-2xl">🗣️</span>
+          <span class="font-semibold">The other person says:</span>
+        </div>
+
+        <!-- German sentence (clickable area) -->
+        <p class="text-xl font-medium text-slate-800 mb-2" dir="ltr">
+          {{ t.germanWords.join(' ') }}
+        </p>
+
+        <!-- English translation -->
+        <p class="text-sm text-slate-500 italic mb-4">
+          {{ t.english }}
+        </p>
+
+        <!-- Play + Next buttons -->
+        <div class="flex gap-3">
+          <button
+            type="button"
+            (click)="playCurrentTurn()"
+            [disabled]="speech.isSpeaking()"
+            class="px-4 py-2 bg-amber-500 text-white rounded-md font-medium hover:bg-amber-600 disabled:opacity-60 transition-colors"
+          >
+            @if (speech.isSpeaking()) {
+              🔊 Reading...
+            } @else {
+              ▶ Play
+            }
+          </button>
+          <button
+            type="button"
+            (click)="nextTurn()"
+            class="px-4 py-2 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 transition-colors"
+          >
+            Next →
+          </button>
+        </div>
+      </div>
+
+    <!-- ═════════════════════════════════════════ -->
+    <!-- ═════════ USER TURN ═════════════════════ -->
+    <!-- ═════════════════════════════════════════ -->
+    } @else if (isUserTurn()) {
+      @let t = currentTurn()!;
+
+      <!-- Speaker prompt -->
+      <div class="flex items-center gap-2 mb-3 text-sm text-slate-500">
+        <span class="text-2xl">💬</span>
+        <span class="font-semibold">Your turn — translate to German:</span>
+      </div>
+
+      <!-- English hint -->
+      <div class="bg-white border border-slate-200 rounded-xl p-4 mb-4 shadow-sm">
+        <p class="text-lg font-medium text-slate-800">"{{ t.english }}"</p>
+        @if (t.hint) {
+          <p class="text-sm text-slate-500 mt-2">💡 {{ t.hint }}</p>
+        }
+      </div>
+
+      <!-- Answer area (cdkDropList for reordering) -->
+      <div class="mb-4">
+        <p class="text-sm font-semibold text-slate-700 mb-2">Your answer:</p>
+        <div
+          cdkDropList
+          cdkDropListOrientation="horizontal"
+          (cdkDropListDropped)="drop($event)"
+          class="min-h-[80px] rounded-lg p-3 border-2 border-dashed flex flex-wrap gap-2 items-start transition-colors"
+          [class.border-slate-300]="status() === 'building'"
+          [class.bg-slate-50]="status() === 'building'"
+          [class.border-green-500]="status() === 'correct'"
+          [class.bg-green-50]="status() === 'correct'"
+          [class.border-red-400]="status() === 'wrong'"
+          [class.bg-red-50]="status() === 'wrong'"
+        >
+          @for (tile of selectedWords(); track tile.originalIndex) {
+            <app-word-tile
+              cdkDrag
+              [cdkDragDisabled]="status() === 'correct'"
+              [word]="tile.word"
+              [variant]="'selected'"
+              [disabled]="status() === 'correct'"
+              (clicked)="unpickWord(tile)"
+            />
+          } @empty {
+            <span class="text-slate-400 text-sm self-center">
+              Tap or drag words below to arrange them...
+            </span>
+          }
+        </div>
+      </div>
+
+      <!-- Available words -->
+      <div class="mb-6">
+        <p class="text-sm font-semibold text-slate-700 mb-2">Available words:</p>
+        <div class="min-h-[60px] flex flex-wrap gap-2">
+          @for (tile of availableWords(); track tile.originalIndex) {
+            <app-word-tile
+              [word]="tile.word"
+              [variant]="'available'"
+              (clicked)="pickWord(tile)"
+            />
+          } @empty {
+            <span class="text-slate-400 text-sm self-center">(all words used)</span>
+          }
+        </div>
+      </div>
+
+      <!-- Result messages -->
+      @if (status() === 'correct') {
+        <div class="bg-green-100 border border-green-400 rounded-lg p-4 mb-4 text-center">
+          <p class="text-xl mb-1">✅ Sehr gut!</p>
+          <p class="text-green-800">Click "Next" to continue the conversation.</p>
+        </div>
+      } @else if (status() === 'wrong') {
+        <div class="bg-red-100 border border-red-400 rounded-lg p-4 mb-4 text-center">
+          <p class="text-xl mb-1">❌ Not quite!</p>
+          <p class="text-red-800">Try a different order.</p>
+        </div>
+      }
+
+      <!-- Buttons -->
+      <div class="flex gap-3 justify-center flex-wrap">
+        <button
+          type="button"
+          (click)="reset()"
+          class="px-5 py-2.5 bg-slate-200 text-slate-700 rounded-md font-medium hover:bg-slate-300 transition-colors"
+        >
+          🔄 Reset
+        </button>
+        <button
+          type="button"
+          (click)="check()"
+          [disabled]="!allWordsSelected() || status() === 'correct'"
+          class="px-5 py-2.5 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+        >
+          ✓ Check
+        </button>
+        <button
+          type="button"
+          (click)="nextTurn()"
+          [disabled]="status() !== 'correct'"
+          class="px-5 py-2.5 bg-green-600 text-white rounded-md font-medium hover:bg-green-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+        >
+          Next →
+        </button>
+      </div>
+    }
+  }
+
+</section>

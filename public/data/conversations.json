@@ -1,0 +1,121 @@
+[
+  {
+    "id": "doctor-headache",
+    "context": "doctor",
+    "contextEmoji": "🏥",
+    "contextTitle": "At the Doctor",
+    "title": "Headache for three days",
+    "description": "You wake up with a strong headache. You go to the doctor to describe your symptoms and get advice.",
+    "level": "A2",
+    "turns": [
+      { "speaker": "system", "germanWords": ["Guten", "Tag.", "Wie", "kann", "ich", "Ihnen", "helfen?"], "english": "Hello. How can I help you?" },
+      { "speaker": "user",   "germanWords": ["Ich", "habe", "seit", "drei", "Tagen", "Kopfschmerzen."], "english": "I have had a headache for three days.", "hint": "seit + Dativ (time)" },
+      { "speaker": "system", "germanWords": ["Haben", "Sie", "auch", "Fieber?"], "english": "Do you have a fever too?" },
+      { "speaker": "user",   "germanWords": ["Nein,", "ich", "habe", "kein", "Fieber."], "english": "No, I have no fever." },
+      { "speaker": "system", "germanWords": ["Schlafen", "Sie", "gut?"], "english": "Are you sleeping well?" },
+      { "speaker": "user",   "germanWords": ["Nein,", "ich", "kann", "nachts", "nicht", "schlafen."], "english": "No, I can't sleep at night." },
+      { "speaker": "system", "germanWords": ["Nehmen", "Sie", "diese", "Tabletten", "zweimal", "täglich."], "english": "Take these pills twice a day." },
+      { "speaker": "user",   "germanWords": ["Vielen", "Dank,", "Herr", "Doktor."], "english": "Thank you very much, Doctor." }
+    ]
+  },
+
+  {
+    "id": "cafe-order",
+    "context": "restaurant",
+    "contextEmoji": "🍽️",
+    "contextTitle": "Café & Restaurant",
+    "title": "Ordering in a café",
+    "description": "You sit at a Berlin café and want to order breakfast and coffee.",
+    "level": "A1",
+    "turns": [
+      { "speaker": "system", "germanWords": ["Guten", "Morgen!", "Was", "möchten", "Sie?"], "english": "Good morning! What would you like?" },
+      { "speaker": "user",   "germanWords": ["Ich", "möchte", "einen", "Kaffee,", "bitte."], "english": "I would like a coffee, please." },
+      { "speaker": "system", "germanWords": ["Mit", "Milch", "und", "Zucker?"], "english": "With milk and sugar?" },
+      { "speaker": "user",   "germanWords": ["Nur", "mit", "Milch,", "bitte."], "english": "Only with milk, please." },
+      { "speaker": "system", "germanWords": ["Möchten", "Sie", "auch", "etwas", "essen?"], "english": "Would you like something to eat too?" },
+      { "speaker": "user",   "germanWords": ["Ja,", "ich", "nehme", "ein", "Croissant."], "english": "Yes, I'll take a croissant." },
+      { "speaker": "system", "germanWords": ["Das", "macht", "fünf", "Euro,", "bitte."], "english": "That's five euros, please." },
+      { "speaker": "user",   "germanWords": ["Hier,", "bitte.", "Stimmt", "so."], "english": "Here you go. Keep the change." }
+    ]
+  },
+
+  {
+    "id": "shopping-clothes",
+    "context": "shopping",
+    "contextEmoji": "🛒",
+    "contextTitle": "Shopping",
+    "title": "Buying a jacket",
+    "description": "You are in a clothing store and want to try on a jacket.",
+    "level": "A2",
+    "turns": [
+      { "speaker": "system", "germanWords": ["Kann", "ich", "Ihnen", "helfen?"], "english": "Can I help you?" },
+      { "speaker": "user",   "germanWords": ["Ja,", "ich", "suche", "eine", "Jacke."], "english": "Yes, I'm looking for a jacket." },
+      { "speaker": "system", "germanWords": ["Welche", "Größe", "haben", "Sie?"], "english": "What size are you?" },
+      { "speaker": "user",   "germanWords": ["Ich", "trage", "Größe", "vierzig."], "english": "I wear size forty." },
+      { "speaker": "system", "germanWords": ["Probieren", "Sie", "diese", "hier", "an."], "english": "Try this one on.", "hint": "Separable verb: anprobieren" },
+      { "speaker": "user",   "germanWords": ["Sie", "passt", "mir", "sehr", "gut."], "english": "It fits me very well." },
+      { "speaker": "system", "germanWords": ["Sie", "kostet", "neunzig", "Euro."], "english": "It costs ninety euros." },
+      { "speaker": "user",   "germanWords": ["Ich", "nehme", "sie.", "Kann", "ich", "mit", "Karte", "zahlen?"], "english": "I'll take it. Can I pay by card?" }
+    ]
+  },
+
+  {
+    "id": "work-meeting",
+    "context": "work",
+    "contextEmoji": "👔",
+    "contextTitle": "At Work",
+    "title": "Meeting a new colleague",
+    "description": "It's your first day at a new job. You introduce yourself to a colleague.",
+    "level": "A2",
+    "turns": [
+      { "speaker": "system", "germanWords": ["Hallo,", "ich", "bin", "Maria.", "Du", "bist", "der", "Neue,", "oder?"], "english": "Hi, I'm Maria. You're the new one, right?" },
+      { "speaker": "user",   "germanWords": ["Ja,", "ich", "heiße", "Ahmad.", "Freut", "mich!"], "english": "Yes, my name is Ahmad. Nice to meet you!" },
+      { "speaker": "system", "germanWords": ["Woher", "kommst", "du?"], "english": "Where are you from?" },
+      { "speaker": "user",   "germanWords": ["Ich", "komme", "aus", "Syrien,", "aber", "wohne", "seit", "zwei", "Jahren", "hier."], "english": "I come from Syria, but I've been living here for two years." },
+      { "speaker": "system", "germanWords": ["Cool!", "Was", "machst", "du", "hier?"], "english": "Cool! What do you do here?" },
+      { "speaker": "user",   "germanWords": ["Ich", "arbeite", "als", "Softwareentwickler."], "english": "I work as a software developer." },
+      { "speaker": "system", "germanWords": ["Lass", "uns", "zusammen", "Mittagessen!"], "english": "Let's have lunch together!" },
+      { "speaker": "user",   "germanWords": ["Gerne!", "Wann", "passt", "es", "dir?"], "english": "Gladly! When works for you?" }
+    ]
+  },
+
+  {
+    "id": "transport-ticket",
+    "context": "transport",
+    "contextEmoji": "🚌",
+    "contextTitle": "Transport & Travel",
+    "title": "Buying a train ticket",
+    "description": "You are at the Berlin train station and want to buy a ticket to Hamburg.",
+    "level": "A2",
+    "turns": [
+      { "speaker": "system", "germanWords": ["Wie", "kann", "ich", "Ihnen", "helfen?"], "english": "How can I help you?" },
+      { "speaker": "user",   "germanWords": ["Ich", "brauche", "eine", "Fahrkarte", "nach", "Hamburg."], "english": "I need a ticket to Hamburg." },
+      { "speaker": "system", "germanWords": ["Einfach", "oder", "Hin", "und", "zurück?"], "english": "One-way or round-trip?" },
+      { "speaker": "user",   "germanWords": ["Hin", "und", "zurück,", "bitte."], "english": "Round-trip, please." },
+      { "speaker": "system", "germanWords": ["Wann", "möchten", "Sie", "fahren?"], "english": "When would you like to travel?" },
+      { "speaker": "user",   "germanWords": ["Morgen", "früh,", "wenn", "möglich."], "english": "Tomorrow morning, if possible." },
+      { "speaker": "system", "germanWords": ["Der", "nächste", "Zug", "fährt", "um", "acht", "Uhr."], "english": "The next train leaves at eight o'clock." },
+      { "speaker": "user",   "germanWords": ["Perfekt.", "Von", "welchem", "Gleis?"], "english": "Perfect. From which platform?" }
+    ]
+  },
+
+  {
+    "id": "friend-weekend",
+    "context": "smalltalk",
+    "contextEmoji": "🎉",
+    "contextTitle": "With Friends",
+    "title": "Weekend plans with a friend",
+    "description": "Your friend calls to discuss what to do this weekend.",
+    "level": "B1",
+    "turns": [
+      { "speaker": "system", "germanWords": ["Hey!", "Was", "machst", "du", "am", "Wochenende?"], "english": "Hey! What are you doing this weekend?" },
+      { "speaker": "user",   "germanWords": ["Noch", "nichts", "geplant.", "Hast", "du", "eine", "Idee?"], "english": "Nothing planned yet. Do you have an idea?" },
+      { "speaker": "system", "germanWords": ["Wir", "könnten", "ins", "Kino", "gehen."], "english": "We could go to the movies." },
+      { "speaker": "user",   "germanWords": ["Gute", "Idee!", "Welcher", "Film", "läuft", "denn?"], "english": "Good idea! Which film is playing?" },
+      { "speaker": "system", "germanWords": ["Der", "neue", "Marvel-Film", "ist", "rausgekommen."], "english": "The new Marvel film just came out." },
+      { "speaker": "user",   "germanWords": ["Den", "wollte", "ich", "schon", "lange", "sehen!"], "english": "I've been wanting to see that for a long time!" },
+      { "speaker": "system", "germanWords": ["Treffen", "wir", "uns", "am", "Samstag", "um", "sieben?"], "english": "Shall we meet on Saturday at seven?" },
+      { "speaker": "user",   "germanWords": ["Klingt", "super.", "Bis", "dann!"], "english": "Sounds great. See you then!" }
+    ]
+  }
+]
