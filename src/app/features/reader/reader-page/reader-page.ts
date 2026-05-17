@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SpeechService } from '../../../core/services/speech';
-import { TranslationService } from '../../../core/services/translation';
+import { TranslationService, TargetLang } from '../../../core/services/translation';
 import { NewsService } from '../../../core/services/news';
 
 /**
@@ -15,12 +15,16 @@ interface TextToken {
 }
 
 /**
- * نتيجة الترجمة لكلمة مختارة.
- * نخزّن حالة كل ترجمة على حدة (loading / value / error).
+ * نتيجة ترجمة كلمة مع كل معانيها البديلة.
+ *   - loading: هل جلب جارٍ؟
+ *   - meanings: مصفوفة الترجمات (قد تكون [] إذا فشل أو خالية)
+ *
+ * 🆕 غيّرنا من text:string إلى meanings:string[] لدعم
+ *   عدة معاني لكل كلمة (Bank = bank/bench/shore).
  */
 interface TranslationState {
   loading: boolean;
-  text: string;
+  meanings: string[];
 }
 
 /**
@@ -70,13 +74,27 @@ export class ReaderPage {
   /** الكلمة المختارة حالياً (للـ popup). null = لا شيء مختار */
   readonly selectedToken = signal<TextToken | null>(null);
 
-  /** ترجمات الكلمة المختارة */
-  readonly arabicTranslation = signal<TranslationState>({ loading: false, text: '' });
-  readonly englishTranslation = signal<TranslationState>({ loading: false, text: '' });
+  /** ترجمات الكلمة المختارة (مع كل معانيها البديلة) */
+  readonly arabicTranslation = signal<TranslationState>({ loading: false, meanings: [] });
+  readonly englishTranslation = signal<TranslationState>({ loading: false, meanings: [] });
 
   /** حالة جلب الأخبار من heise.de */
   readonly newsLoading = signal<boolean>(false);
   readonly newsError = signal<string | null>(null);
+
+  // ───────── 🆕 Full-text translation state ─────────
+
+  /** اللغة الهدف للترجمة الكاملة (en افتراضياً، يُمكن تغييرها) */
+  readonly fullTranslationLang = signal<TargetLang>('en');
+
+  /** النص المترجم الكامل */
+  readonly fullTranslation = signal<string>('');
+
+  /** هل الترجمة جارية؟ */
+  readonly fullTranslationLoading = signal<boolean>(false);
+
+  /** رسالة خطأ إن فشل الطلب */
+  readonly fullTranslationError = signal<string | null>(null);
 
   // ───────── Computed ─────────
 
@@ -136,16 +154,16 @@ export class ReaderPage {
     this.selectedToken.set(token);
 
     // نعيد ضبط الحالة و نضع loading
-    this.arabicTranslation.set({ loading: true, text: '' });
-    this.englishTranslation.set({ loading: true, text: '' });
+    this.arabicTranslation.set({ loading: true, meanings: [] });
+    this.englishTranslation.set({ loading: true, meanings: [] });
 
-    // طلب الترجمتين بالتوازي
-    this.translation.translate(token.text, 'ar').subscribe(text => {
-      this.arabicTranslation.set({ loading: false, text });
+    // 🆕 translateMany بدل translate لجلب كل المعاني
+    this.translation.translateMany(token.text, 'ar').subscribe(meanings => {
+      this.arabicTranslation.set({ loading: false, meanings });
     });
 
-    this.translation.translate(token.text, 'en').subscribe(text => {
-      this.englishTranslation.set({ loading: false, text });
+    this.translation.translateMany(token.text, 'en').subscribe(meanings => {
+      this.englishTranslation.set({ loading: false, meanings });
     });
   }
 
@@ -203,5 +221,50 @@ export class ReaderPage {
         this.newsLoading.set(false);
       },
     });
+  }
+
+  // ───────── 🆕 Full-text translation actions ─────────
+
+  /**
+   * 🌐 يترجم كل النص الموجود في الـ textarea للغة المختارة.
+   *
+   * يستخدم translate() (الترجمة الواحدة) لأن النصوص الطويلة
+   * نحتاج لها ترجمة سياقية، ليس قائمة معاني.
+   */
+  translateFullText(): void {
+    const text = this.inputText().trim();
+    if (!text) {
+      this.fullTranslationError.set('Nothing to translate — paste some German text first.');
+      return;
+    }
+
+    this.fullTranslationLoading.set(true);
+    this.fullTranslationError.set(null);
+
+    this.translation.translate(text, this.fullTranslationLang()).subscribe({
+      next: (translated) => {
+        this.fullTranslation.set(translated);
+        this.fullTranslationLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Full translation failed:', err);
+        this.fullTranslationError.set('Translation failed. Please try again.');
+        this.fullTranslationLoading.set(false);
+      },
+    });
+  }
+
+  /** يُغيّر اللغة الهدف و يمسح الترجمة القديمة. */
+  setTranslationLang(lang: TargetLang): void {
+    if (this.fullTranslationLang() === lang) return;
+    this.fullTranslationLang.set(lang);
+    this.fullTranslation.set('');
+    this.fullTranslationError.set(null);
+  }
+
+  /** يمسح الترجمة الكاملة (لزر الإغلاق على الـ panel). */
+  clearFullTranslation(): void {
+    this.fullTranslation.set('');
+    this.fullTranslationError.set(null);
   }
 }

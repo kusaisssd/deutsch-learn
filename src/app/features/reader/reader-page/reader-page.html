@@ -110,36 +110,115 @@
     }
   </div>
 
-  <!-- ───────── Reading area (clickable words) ───────── -->
-  <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6 mb-4 relative">
-    <p class="text-sm text-slate-500 mb-3">Click any word for translation and individual pronunciation:</p>
+  <!--
+    🆕 Two-column layout:
+      - Left: German reading area (clickable words)
+      - Right: Full translation panel
+    On mobile (< lg): stacks vertically.
+  -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
 
-    @if (tokens().length === 0) {
-      <p class="text-slate-400 italic">No text yet...</p>
-    } @else {
-      <!--
-        Render each token. dir="ltr" because the text is German.
-        leading-loose = generous line height for easier reading.
-      -->
-      <div dir="ltr" class="text-lg leading-loose text-slate-800">
-        @for (token of tokens(); track token.index) {
-          @if (token.isWord) {
-            <!--
-              Clickable word.
-              Dynamic [class] highlights the selected word with a yellow background.
-            -->
-            <span
-              (click)="selectWord(token)"
-              class="cursor-pointer rounded px-0.5 transition-colors hover:bg-emerald-100"
-              [class.bg-yellow-200]="selectedToken()?.index === token.index"
-            >{{ token.text }}</span>
-          } @else {
-            <!-- Punctuation/whitespace - not clickable -->
-            <span [innerText]="token.text"></span>
+    <!-- ───────── Reading area (clickable words) ───────── -->
+    <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6 relative">
+      <p class="text-sm text-slate-500 mb-3">
+        🇩🇪 German — click any word for word-level translation:
+      </p>
+
+      @if (tokens().length === 0) {
+        <p class="text-slate-400 italic">No text yet...</p>
+      } @else {
+        <div dir="ltr" class="text-lg leading-loose text-slate-800">
+          @for (token of tokens(); track token.index) {
+            @if (token.isWord) {
+              <span
+                (click)="selectWord(token)"
+                class="cursor-pointer rounded px-0.5 transition-colors hover:bg-emerald-100"
+                [class.bg-yellow-200]="selectedToken()?.index === token.index"
+              >{{ token.text }}</span>
+            } @else {
+              <span [innerText]="token.text"></span>
+            }
           }
-        }
+        </div>
+      }
+    </div>
+
+    <!-- ───────── 🆕 Full translation panel ───────── -->
+    <div class="bg-emerald-50 rounded-lg shadow-sm border border-emerald-200 p-6 relative">
+
+      <!-- Header: language selector + translate button -->
+      <div class="flex items-center justify-between mb-3 gap-2 flex-wrap">
+        <p class="text-sm text-slate-600">
+          🌐 Full translation
+        </p>
+
+        <!-- Language toggle -->
+        <div class="flex gap-1 bg-white rounded-md border border-emerald-200 p-0.5">
+          <button
+            type="button"
+            (click)="setTranslationLang('en')"
+            class="text-xs px-2 py-1 rounded transition-colors"
+            [class.bg-emerald-600]="fullTranslationLang() === 'en'"
+            [class.text-white]="fullTranslationLang() === 'en'"
+            [class.text-slate-600]="fullTranslationLang() !== 'en'"
+            [class.hover:bg-emerald-100]="fullTranslationLang() !== 'en'"
+          >
+            🇬🇧 EN
+          </button>
+          <button
+            type="button"
+            (click)="setTranslationLang('ar')"
+            class="text-xs px-2 py-1 rounded transition-colors"
+            [class.bg-emerald-600]="fullTranslationLang() === 'ar'"
+            [class.text-white]="fullTranslationLang() === 'ar'"
+            [class.text-slate-600]="fullTranslationLang() !== 'ar'"
+            [class.hover:bg-emerald-100]="fullTranslationLang() !== 'ar'"
+          >
+            🇸🇦 AR
+          </button>
+        </div>
       </div>
-    }
+
+      <!-- Translate button -->
+      <button
+        type="button"
+        (click)="translateFullText()"
+        [disabled]="fullTranslationLoading() || !inputText().trim()"
+        class="w-full mb-3 px-4 py-2 bg-emerald-600 text-white rounded-md font-medium hover:bg-emerald-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+      >
+        @if (fullTranslationLoading()) {
+          <span class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+          Translating...
+        } @else {
+          🌐 Translate full text
+        }
+      </button>
+
+      <!-- Error -->
+      @if (fullTranslationError()) {
+        <div class="p-2 bg-red-50 border border-red-200 rounded text-sm text-red-800 mb-3">
+          ⚠️ {{ fullTranslationError() }}
+        </div>
+      }
+
+      <!-- Translation result -->
+      @if (fullTranslation()) {
+        <div
+          class="bg-white border border-emerald-200 rounded-md p-4 text-slate-800 leading-relaxed text-sm whitespace-pre-line"
+          [dir]="fullTranslationLang() === 'ar' ? 'rtl' : 'ltr'"
+        >
+          {{ fullTranslation() }}
+        </div>
+      } @else if (!fullTranslationLoading() && !fullTranslationError()) {
+        <!-- Placeholder when no translation yet -->
+        <div class="bg-white/50 border border-dashed border-emerald-200 rounded-md p-4 text-slate-400 italic text-sm text-center">
+          Translation will appear here.
+          <br>
+          Click "🌐 Translate full text" to begin.
+        </div>
+      }
+    </div>
+
   </div>
 
   <!-- ───────── Translation popup (shows when a word is selected) ───────── -->
@@ -168,30 +247,71 @@
         🔊 Pronounce word
       </button>
 
-      <!-- Translations -->
+      <!--
+        🆕 Translations — now showing multiple meanings.
+        Each meaning is a badge; first one (primary) is highlighted.
+      -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
         <!-- English -->
         <div class="bg-white rounded-md p-3 border border-slate-200">
-          <div class="text-xs text-slate-500 mb-1">🇬🇧 English</div>
+          <div class="text-xs text-slate-500 mb-2">
+            🇬🇧 English
+            @if (englishTranslation().meanings.length > 1) {
+              <span class="text-slate-400">
+                ({{ englishTranslation().meanings.length }} meanings)
+              </span>
+            }
+          </div>
           @if (englishTranslation().loading) {
             <div class="text-slate-400 text-sm">Translating...</div>
+          } @else if (englishTranslation().meanings.length === 0) {
+            <div class="text-slate-400 text-sm">—</div>
           } @else {
-            <div class="text-slate-800 font-medium" dir="ltr">
-              {{ englishTranslation().text || '—' }}
+            <!-- Primary meaning (highlighted) -->
+            <div class="text-slate-800 font-semibold mb-2" dir="ltr">
+              {{ englishTranslation().meanings[0] }}
             </div>
+            <!-- Alternative meanings as small badges -->
+            @if (englishTranslation().meanings.length > 1) {
+              <div class="flex flex-wrap gap-1.5">
+                @for (m of englishTranslation().meanings.slice(1); track m) {
+                  <span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200" dir="ltr">
+                    {{ m }}
+                  </span>
+                }
+              </div>
+            }
           }
         </div>
 
         <!-- Arabic -->
         <div class="bg-white rounded-md p-3 border border-slate-200">
-          <div class="text-xs text-slate-500 mb-1">🇸🇦 Arabic</div>
+          <div class="text-xs text-slate-500 mb-2">
+            🇸🇦 Arabic
+            @if (arabicTranslation().meanings.length > 1) {
+              <span class="text-slate-400">
+                ({{ arabicTranslation().meanings.length }} معاني)
+              </span>
+            }
+          </div>
           @if (arabicTranslation().loading) {
             <div class="text-slate-400 text-sm">Translating...</div>
+          } @else if (arabicTranslation().meanings.length === 0) {
+            <div class="text-slate-400 text-sm">—</div>
           } @else {
-            <div class="text-slate-800 font-medium" dir="rtl">
-              {{ arabicTranslation().text || '—' }}
+            <div class="text-slate-800 font-semibold mb-2" dir="rtl">
+              {{ arabicTranslation().meanings[0] }}
             </div>
+            @if (arabicTranslation().meanings.length > 1) {
+              <div class="flex flex-wrap gap-1.5">
+                @for (m of arabicTranslation().meanings.slice(1); track m) {
+                  <span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200" dir="rtl">
+                    {{ m }}
+                  </span>
+                }
+              </div>
+            }
           }
         </div>
 
