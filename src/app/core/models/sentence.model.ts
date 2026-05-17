@@ -18,5 +18,6 @@ export interface Sentence {
   level: LevelCode;            // أي مستوى ينتمي إليه
   english: string;             // الجملة بالإنجليزية (مرجع للمستخدم)
   germanWords: string[];       // الكلمات الألمانية بالترتيب الصحيح
-  hint?: string;               // تلميح اختياري (مثل قاعدة نحوية)
+  hint?: string;               // تلميح قصير (سطر واحد)
+  grammar?: string;            // شرح أطول للقاعدة النحوية (متعدد الأسطر، اختياري)
 }

@@ -1,5 +1,6 @@
 import { Component, computed, inject, input, linkedSignal, numberAttribute } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SentencesService } from '../../../core/services/sentences';
 import { ProgressService } from '../../../core/services/progress';
 import { shuffle } from '../../../shared/utils/shuffle';
@@ -30,7 +31,8 @@ type GameStatus = 'building' | 'correct' | 'wrong';
  */
 @Component({
   selector: 'app-practice-page',
-  imports: [RouterLink, WordTileComponent],
+  // DragDropModule يجلب كل directives: cdkDrag, cdkDropList, (cdkDropListDropped)
+  imports: [RouterLink, WordTileComponent, DragDropModule],
   templateUrl: './practice-page.html',
   styleUrl: './practice-page.scss',
 })
@@ -115,6 +117,30 @@ export class PracticePage {
     computation: (): GameStatus => 'building',
   });
 
+  /**
+   * هل استخدم المستخدم زر Help لهذه الجملة؟
+   *
+   * 🎯 لماذا linkedSignal و ليس signal عادي؟
+   *   لو signal عادي = true، يبقى true إلى الأبد.
+   *   linkedSignal مع source = sentence → يُعاد للـ false عند كل جملة جديدة.
+   *
+   * فائدة: لو ضغط Help على الجملة 1، ثم انتقل للجملة 2 — يبدأ نظيفاً.
+   */
+  readonly helpUsed = linkedSignal({
+    source: this.sentence,
+    computation: () => false,
+  });
+
+  /**
+   * هل قسم شرح القاعدة (grammar) مفتوح؟
+   * يبدأ مغلقاً، يفتحه المستخدم بالضغط.
+   * عند تغيّر الجملة → يرجع مغلقاً (مفتاحه يجب على المستخدم فتحه إذا أراد).
+   */
+  readonly grammarOpen = linkedSignal({
+    source: this.sentence,
+    computation: () => false,
+  });
+
   // ───────── computed مساعدة ─────────
 
   /** هل المستخدم اختار كل الكلمات؟ (لتفعيل زر "تحقق") */
@@ -156,7 +182,8 @@ export class PracticePage {
     this.status.set(isCorrect ? 'correct' : 'wrong');
 
     // عند النجاح: نسجّل الجملة كمنجزة (يحفظ تلقائياً في localStorage)
-    if (isCorrect) {
+    // ⚠️ شرط مهم: لا نسجّلها كمنجزة لو استخدم Help (يجب أن يحاول بنفسه)
+    if (isCorrect && !this.helpUsed()) {
       this.progressService.markCompleted(sentence.id);
     }
   }
@@ -170,6 +197,68 @@ export class PracticePage {
     );
     this.selectedWords.set([]);
     this.status.set('building');
+    this.helpUsed.set(false);   // ← reset يلغي أثر Help أيضاً
+  }
+
+  /**
+   * 🆘 يكشف الإجابة الصحيحة للمستخدم.
+   *
+   * المنطق:
+   *   1. نأخذ الترتيب الصحيح من الجملة (germanWords).
+   *   2. نملأ selectedWords بهذا الترتيب.
+   *   3. نُفرغ availableWords.
+   *   4. نُسجّل helpUsed = true (لمنع markCompleted).
+   *   5. نُغيّر status لـ 'correct' (يُظهر الإطار الأخضر).
+   */
+  showHelp() {
+    const s = this.sentence();
+    if (!s) return;
+
+    // ننشئ tiles بالترتيب الصحيح بنفس الـ originalIndex
+    const correctOrder = s.germanWords.map((word, originalIndex) => ({
+      word,
+      originalIndex,
+    }));
+
+    this.selectedWords.set(correctOrder);
+    this.availableWords.set([]);
+    this.helpUsed.set(true);
+    this.status.set('correct');   // الإطار أخضر، لكن markCompleted لن يُستدعى
+  }
+
+  /** يُبدّل حالة فتح/إغلاق قسم Grammar */
+  toggleGrammar() {
+    this.grammarOpen.update(open => !open);
+  }
+
+  /**
+   * 🎯 معالج Drag & Drop: يُستدعى عند إفلات كلمة بعد سحبها.
+   *
+   * @param event يحوي:
+   *   - previousIndex: الموقع قبل السحب
+   *   - currentIndex: الموقع بعد الإفلات
+   *   - item: العنصر نفسه
+   *   - container: الـ cdkDropList الذي أُفلت فيه
+   *
+   * مثال: السحب من الموقع 1 إلى الموقع 3
+   *   قبل: [A, B, C, D]
+   *   بعد: [A, C, D, B]
+   */
+  drop(event: CdkDragDrop<WordTile[]>) {
+    // لا نسمح بإعادة الترتيب بعد النجاح (تجربة UX أفضل)
+    if (this.status() === 'correct') return;
+
+    // نُحدّث الـ signal بـ نسخة جديدة من المصفوفة
+    this.selectedWords.update(arr => {
+      const copy = [...arr];                                    // نسخة (immutable)
+      moveItemInArray(copy, event.previousIndex, event.currentIndex);  // نُحرّك العنصر
+      return copy;
+    });
+
+    // أي تغيير يُلغي حالة "wrong" السابقة
+    if (this.status() === 'wrong') {
+      this.status.set('building');
+    }
   }
 
   /** الانتقال للجملة التالية في نفس المستوى */
