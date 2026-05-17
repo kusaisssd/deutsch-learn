@@ -1,84 +1,56 @@
 import { Injectable, computed, effect, signal } from '@angular/core';
-import { LevelCode } from '../models/level.model';
 
 /**
- * مفتاح التخزين في localStorage.
- * نستخدم prefix كي لا نتعارض مع تطبيقات أخرى على نفس النطاق.
+ * مفاتيح التخزين في localStorage (prefix يمنع التعارض مع تطبيقات أخرى).
+ *
+ * مفتاحان منفصلان:
+ *   - الجمل (number ids)
+ *   - المحادثات (string ids مثل 'doctor-headache')
+ *
+ * فصلهما يحمي من الكسر لو تغيّر شكل أحدهما.
  */
-const STORAGE_KEY = 'deutsch-learn:completed-sentences';
+const SENTENCES_KEY = 'deutsch-learn:completed-sentences';
+const CONVERSATIONS_KEY = 'deutsch-learn:completed-conversations';
 
 /**
- * ProgressService — حفظ تقدم المستخدم محلياً.
+ * ProgressService — تتبّع تقدم المستخدم محلياً (sentences + conversations).
  *
- * المسؤوليات:
- *   - تذكّر معرّفات الجمل التي أنجزها المستخدم.
- *   - حفظ التغييرات تلقائياً في localStorage.
- *   - عرض signals للقراءة (هل الجملة منجزة؟ كم جملة منجزة في مستوى؟).
- *
- * 🎯 ميزة effect():
- *   نراقب الـ signal، و كلما تغيّر → نكتب في localStorage تلقائياً.
- *   مثل INotifyPropertyChanged في WPF، أو change tracker في EF.
- *
- * مقابل في ASP.NET:
- *   public interface IProgressStore {
- *     ISet<int> CompletedIds { get; }
- *     void MarkCompleted(int id);
- *     bool IsCompleted(int id);
- *   }
- *   لكن هنا التخزين في localStorage بدل DB.
+ * نمط Repository موحّد لكل أنواع التقدم.
+ * كل نوع له:
+ *   - signal خاص (private)
+ *   - signal للقراءة فقط (public)
+ *   - methods: mark, unmark, is, count
+ *   - حفظ تلقائي في localStorage عبر effect
  */
 @Injectable({ providedIn: 'root' })
 export class ProgressService {
-  /**
-   * مجموعة (Set) معرّفات الجمل المنجزة.
-   * Set أسرع من Array لـ .has() (O(1) بدل O(n)).
-   *
-   * private لأننا نريد التحكم بالكتابة (عبر markCompleted/reset فقط).
-   */
-  private readonly _completedIds = signal<Set<number>>(this.loadFromStorage());
 
-  // ───────── public readonly API ─────────
+  // ═══════════════════════════════════════════
+  // 📝 SENTENCES (number ids)
+  // ═══════════════════════════════════════════
 
-  /** نسخة للقراءة للخارج (signal من Set) */
+  private readonly _completedIds = signal<Set<number>>(
+    this.loadFromStorage<number>(SENTENCES_KEY)
+  );
+
+  /** نسخة للقراءة (Set من معرّفات الجمل المنجزة) */
   readonly completedIds = this._completedIds.asReadonly();
 
-  /** عدد كل الجمل المنجزة (computed عام مفيد للإحصائيات) */
+  /** عدد الجمل المنجزة الإجمالي */
   readonly totalCompleted = computed(() => this._completedIds().size);
-
-  // ───────── constructor: حفظ تلقائي ─────────
-
-  constructor() {
-    /**
-     * effect() = "كلما تغيّر signal داخلي، نفّذ هذا الكود".
-     *
-     * هنا: كلما تغيّر _completedIds → نحفظ في localStorage.
-     * النتيجة: لا نحتاج استدعاء saveToStorage يدوياً في كل مكان.
-     */
-    effect(() => {
-      const ids = this._completedIds();
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
-      } catch (e) {
-        console.warn('فشل الحفظ في localStorage:', e);
-      }
-    });
-  }
-
-  // ───────── Actions ─────────
 
   /** هل الجملة منجزة؟ */
   isCompleted(sentenceId: number): boolean {
     return this._completedIds().has(sentenceId);
   }
 
-  /** تأشير جملة كمنجزة. لا يكرّر لو كانت موجودة. */
+  /** تأشير جملة كمنجزة */
   markCompleted(sentenceId: number): void {
     if (this._completedIds().has(sentenceId)) return;
-    // مهم: ننشئ Set جديد (immutability) كي يكتشف signal التغيير
     this._completedIds.update(s => new Set(s).add(sentenceId));
   }
 
-  /** إزالة جملة من المنجزة (مفيد لو أردنا زر "reset") */
+  /** إزالة جملة من المنجزة */
   unmarkCompleted(sentenceId: number): void {
     if (!this._completedIds().has(sentenceId)) return;
     this._completedIds.update(s => {
@@ -88,37 +60,97 @@ export class ProgressService {
     });
   }
 
-  /** مسح كل التقدم */
-  resetAll(): void {
-    this._completedIds.set(new Set());
-  }
-
-  /**
-   * كم جملة منجزة من قائمة (لمستوى معين مثلاً).
-   * نمرّر قائمة معرّفات و نُرجع كم منها منجز.
-   *
-   * مثال:
-   *   countCompletedAmong([1, 2, 3, 4, 5]) → 3 (لو 1, 2, 4 منجزة)
-   */
+  /** كم جملة منجزة من قائمة معطاة (لإحصائيات مستوى مثلاً) */
   countCompletedAmong(sentenceIds: readonly number[]): number {
     const completed = this._completedIds();
     return sentenceIds.filter(id => completed.has(id)).length;
   }
 
-  // ───────── خاص: تحميل من التخزين عند البدء ─────────
+  // ═══════════════════════════════════════════
+  // 💬 CONVERSATIONS (string ids مثل 'doctor-headache')
+  // ═══════════════════════════════════════════
+
+  private readonly _completedConversationIds = signal<Set<string>>(
+    this.loadFromStorage<string>(CONVERSATIONS_KEY)
+  );
+
+  /** نسخة للقراءة (Set من معرّفات المحادثات المنجزة) */
+  readonly completedConversationIds = this._completedConversationIds.asReadonly();
+
+  /** عدد المحادثات المنجزة */
+  readonly totalCompletedConversations = computed(
+    () => this._completedConversationIds().size
+  );
+
+  /** هل المحادثة منجزة؟ */
+  isConversationCompleted(id: string): boolean {
+    return this._completedConversationIds().has(id);
+  }
+
+  /** تأشير محادثة كمنجزة */
+  markConversationCompleted(id: string): void {
+    if (this._completedConversationIds().has(id)) return;
+    this._completedConversationIds.update(s => new Set(s).add(id));
+  }
+
+  /** إزالة محادثة من المنجزة (لزر "Try again" مستقبلاً) */
+  unmarkConversationCompleted(id: string): void {
+    if (!this._completedConversationIds().has(id)) return;
+    this._completedConversationIds.update(s => {
+      const next = new Set(s);
+      next.delete(id);
+      return next;
+    });
+  }
+
+  // ═══════════════════════════════════════════
+  // 🧹 Reset (يمسح كل شيء)
+  // ═══════════════════════════════════════════
+
+  resetAll(): void {
+    this._completedIds.set(new Set());
+    this._completedConversationIds.set(new Set());
+  }
+
+  // ═══════════════════════════════════════════
+  // 💾 الحفظ التلقائي (effects)
+  // ═══════════════════════════════════════════
+
+  constructor() {
+    // كلما تغيّرت أي مجموعة، نحفظها تلقائياً في مفتاحها الخاص
+    effect(() => this.saveToStorage(SENTENCES_KEY, this._completedIds()));
+    effect(() => this.saveToStorage(CONVERSATIONS_KEY, this._completedConversationIds()));
+  }
+
+  // ═══════════════════════════════════════════
+  // الـ helpers الخاصة (load/save)
+  // ═══════════════════════════════════════════
 
   /**
-   * يقرأ المعرّفات المحفوظة عند بناء الـ service.
-   * لو لم يوجد شيء أو فيه خطأ → نُرجع Set فارغة.
+   * 🎯 Generic loader — يعمل لـ number و string بنفس الشكل.
+   *
+   * <T extends number | string> = "T يجب أن يكون رقم أو نص".
+   * هذا يجعل الـ method قابلة لإعادة الاستخدام لـ المجموعتين.
+   *
+   * مقابل في C#:
+   *   private HashSet<T> LoadFromStorage<T>(string key) where T : ...
    */
-  private loadFromStorage(): Set<number> {
+  private loadFromStorage<T extends number | string>(key: string): Set<T> {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(key);
       if (!raw) return new Set();
-      const arr = JSON.parse(raw) as number[];
+      const arr = JSON.parse(raw) as T[];
       return new Set(arr);
     } catch {
       return new Set();
+    }
+  }
+
+  private saveToStorage<T>(key: string, set: Set<T>): void {
+    try {
+      localStorage.setItem(key, JSON.stringify([...set]));
+    } catch (e) {
+      console.warn(`Failed to save to localStorage (${key}):`, e);
     }
   }
 }

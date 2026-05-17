@@ -62,15 +62,15 @@ export class WordTile {
     const base = 'px-4 py-2 rounded-md font-medium transition-colors';
 
     if (this.disabled()) {
-      return `${base} opacity-70 cursor-not-allowed bg-indigo-600 text-white`;
+      return `${base} opacity-70 cursor-not-allowed bg-emerald-600 text-white`;
     }
 
     if (this.variant() === 'selected') {
-      return `${base} bg-indigo-600 text-white shadow-sm hover:bg-indigo-700`;
+      return `${base} bg-emerald-600 text-white shadow-sm hover:bg-emerald-700`;
     }
 
     // available
-    return `${base} bg-white border-2 border-slate-300 text-slate-800 hover:border-indigo-500 hover:bg-indigo-50`;
+    return `${base} bg-white border-2 border-slate-300 text-slate-800 hover:border-emerald-500 hover:bg-emerald-50`;
   });
 
   /** يُستدعى عند الضغط — يطلق الحدث للأب */

@@ -8,11 +8,12 @@ import { Routes } from '@angular/router';
  * - النتيجة: التطبيق يبدأ أسرع (bundle أصغر).
  */
 export const routes: Routes = [
-  // الصفحة الجذرية: نحوّل تلقائياً إلى /levels
+  // 🆕 الصفحة الرئيسية: روادمب التعلم + إحصائيات + 3 بطاقات
   {
     path: '',
-    redirectTo: 'levels',
-    pathMatch: 'full',
+    loadComponent: () =>
+      import('./features/home/home-page/home-page').then(m => m.HomePage),
+    title: 'Deutsch Learn — Your German learning journey',
   },
 
   // صفحة اختيار المستوى: /levels
@@ -66,9 +67,9 @@ export const routes: Routes = [
     title: 'Conversation - Deutsch Learn',
   },
 
-  // أي URL غير معروف → نرجع إلى /levels
+  // أي URL غير معروف → نرجع للصفحة الرئيسية (أكثر طبيعية من /levels الآن)
   {
     path: '**',
-    redirectTo: 'levels',
+    redirectTo: '',
   },
 ];

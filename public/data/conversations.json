@@ -117,5 +117,117 @@
       { "speaker": "system", "germanWords": ["Treffen", "wir", "uns", "am", "Samstag", "um", "sieben?"], "english": "Shall we meet on Saturday at seven?" },
       { "speaker": "user",   "germanWords": ["Klingt", "super.", "Bis", "dann!"], "english": "Sounds great. See you then!" }
     ]
+  },
+
+  {
+    "id": "doctor-checkup",
+    "context": "doctor",
+    "contextEmoji": "🏥",
+    "contextTitle": "At the Doctor",
+    "title": "Annual checkup at the GP",
+    "description": "It's time for your yearly health checkup. The doctor asks about your lifestyle and runs through standard questions.",
+    "level": "B1",
+    "turns": [
+      { "speaker": "system", "germanWords": ["Guten", "Tag,", "kommen", "Sie", "bitte", "herein."], "english": "Good day, please come in." },
+      { "speaker": "user",   "germanWords": ["Hallo,", "Frau", "Doktor.", "Danke."], "english": "Hello, Doctor. Thank you." },
+      { "speaker": "system", "germanWords": ["Heute", "machen", "wir", "Ihre", "jährliche", "Untersuchung."], "english": "Today we'll do your annual checkup." },
+      { "speaker": "user",   "germanWords": ["Ja,", "ich", "fühle", "mich", "ziemlich", "gut."], "english": "Yes, I feel pretty good." },
+      { "speaker": "system", "germanWords": ["Haben", "Sie", "in", "letzter", "Zeit", "irgendwelche", "Beschwerden?"], "english": "Have you had any complaints recently?" },
+      { "speaker": "user",   "germanWords": ["Manchmal", "habe", "ich", "Rückenschmerzen", "nach", "der", "Arbeit."], "english": "Sometimes I have back pain after work." },
+      { "speaker": "system", "germanWords": ["Wie", "viele", "Stunden", "sitzen", "Sie", "täglich", "am", "Schreibtisch?"], "english": "How many hours do you sit at a desk daily?" },
+      { "speaker": "user",   "germanWords": ["Etwa", "acht", "Stunden,", "manchmal", "mehr."], "english": "About eight hours, sometimes more." },
+      { "speaker": "system", "germanWords": ["Treiben", "Sie", "regelmäßig", "Sport?"], "english": "Do you exercise regularly?" },
+      { "speaker": "user",   "germanWords": ["Ich", "gehe", "zweimal", "pro", "Woche", "joggen."], "english": "I go jogging twice a week." },
+      { "speaker": "system", "germanWords": ["Sehr", "gut.", "Rauchen", "Sie", "oder", "trinken", "Sie", "Alkohol?"], "english": "Very good. Do you smoke or drink alcohol?" },
+      { "speaker": "user",   "germanWords": ["Nein,", "ich", "rauche", "nicht", "und", "trinke", "nur", "selten."], "english": "No, I don't smoke and I rarely drink." },
+      { "speaker": "system", "germanWords": ["Ich", "messe", "jetzt", "Ihren", "Blutdruck."], "english": "I'll measure your blood pressure now." },
+      { "speaker": "user",   "germanWords": ["In", "Ordnung,", "wie", "sind", "die", "Werte?"], "english": "Okay, what are the values?" },
+      { "speaker": "system", "germanWords": ["Ihr", "Blutdruck", "ist", "völlig", "normal."], "english": "Your blood pressure is completely normal." },
+      { "speaker": "user",   "germanWords": ["Das", "freut", "mich", "zu", "hören."], "english": "I'm glad to hear that." }
+    ]
+  },
+
+  {
+    "id": "work-interview",
+    "context": "work",
+    "contextEmoji": "👔",
+    "contextTitle": "At Work",
+    "title": "Job interview at a startup",
+    "description": "You're interviewing for a software developer position at a Berlin startup. The interviewer asks about your background and motivation.",
+    "level": "B1",
+    "turns": [
+      { "speaker": "system", "germanWords": ["Willkommen!", "Schön,", "dass", "Sie", "Zeit", "haben."], "english": "Welcome! Glad you have the time." },
+      { "speaker": "user",   "germanWords": ["Danke", "für", "die", "Einladung."], "english": "Thank you for the invitation." },
+      { "speaker": "system", "germanWords": ["Erzählen", "Sie", "ein", "wenig", "über", "sich."], "english": "Tell me a bit about yourself." },
+      { "speaker": "user",   "germanWords": ["Ich", "bin", "Softwareentwickler", "mit", "fünf", "Jahren", "Erfahrung."], "english": "I'm a software developer with five years of experience." },
+      { "speaker": "system", "germanWords": ["In", "welchen", "Technologien", "sind", "Sie", "spezialisiert?"], "english": "Which technologies are you specialized in?" },
+      { "speaker": "user",   "germanWords": ["Hauptsächlich", "in", "Angular", "und", "TypeScript."], "english": "Mainly in Angular and TypeScript." },
+      { "speaker": "system", "germanWords": ["Haben", "Sie", "Erfahrung", "mit", "Teamarbeit?"], "english": "Do you have experience with teamwork?" },
+      { "speaker": "user",   "germanWords": ["Ja,", "ich", "arbeite", "gerne", "in", "agilen", "Teams."], "english": "Yes, I enjoy working in agile teams." },
+      { "speaker": "system", "germanWords": ["Warum", "möchten", "Sie", "bei", "uns", "arbeiten?"], "english": "Why do you want to work with us?" },
+      { "speaker": "user",   "germanWords": ["Ihre", "Produkte", "haben", "einen", "großen", "Einfluss", "auf", "die", "Branche."], "english": "Your products have a big impact on the industry." },
+      { "speaker": "system", "germanWords": ["Was", "sind", "Ihre", "größten", "Stärken?"], "english": "What are your greatest strengths?" },
+      { "speaker": "user",   "germanWords": ["Ich", "lerne", "schnell", "und", "löse", "gerne", "schwierige", "Probleme."], "english": "I learn quickly and enjoy solving difficult problems." },
+      { "speaker": "system", "germanWords": ["Und", "Ihre", "Schwächen?"], "english": "And your weaknesses?" },
+      { "speaker": "user",   "germanWords": ["Manchmal", "verbringe", "ich", "zu", "viel", "Zeit", "mit", "Details."], "english": "Sometimes I spend too much time on details." },
+      { "speaker": "system", "germanWords": ["Welches", "Gehalt", "stellen", "Sie", "sich", "vor?"], "english": "What salary are you expecting?" },
+      { "speaker": "user",   "germanWords": ["Ich", "dachte", "an", "siebzigtausend", "Euro", "im", "Jahr."], "english": "I was thinking around seventy thousand euros per year." },
+      { "speaker": "system", "germanWords": ["Wann", "könnten", "Sie", "frühestens", "anfangen?"], "english": "When could you earliest start?" },
+      { "speaker": "user",   "germanWords": ["In", "einem", "Monat,", "nach", "der", "Kündigungsfrist."], "english": "In one month, after the notice period." }
+    ]
+  },
+
+  {
+    "id": "bank-account",
+    "context": "bureaucracy",
+    "contextEmoji": "🏛️",
+    "contextTitle": "Bureaucracy & Admin",
+    "title": "Opening a bank account",
+    "description": "You're at a German bank to open your first checking account (Girokonto). The clerk walks you through the process.",
+    "level": "B1",
+    "turns": [
+      { "speaker": "system", "germanWords": ["Guten", "Morgen,", "wie", "kann", "ich", "Ihnen", "helfen?"], "english": "Good morning, how can I help you?" },
+      { "speaker": "user",   "germanWords": ["Ich", "möchte", "ein", "Girokonto", "eröffnen."], "english": "I'd like to open a checking account." },
+      { "speaker": "system", "germanWords": ["Sehr", "gerne.", "Haben", "Sie", "Ihren", "Ausweis", "dabei?"], "english": "Of course. Do you have your ID with you?" },
+      { "speaker": "user",   "germanWords": ["Ja,", "hier", "ist", "mein", "Reisepass."], "english": "Yes, here is my passport." },
+      { "speaker": "system", "germanWords": ["Danke.", "Haben", "Sie", "auch", "eine", "Meldebescheinigung?"], "english": "Thank you. Do you also have a registration certificate?" },
+      { "speaker": "user",   "germanWords": ["Ja,", "die", "habe", "ich", "letzte", "Woche", "bekommen."], "english": "Yes, I got it last week." },
+      { "speaker": "system", "germanWords": ["Perfekt.", "Was", "ist", "Ihre", "aktuelle", "Adresse?"], "english": "Perfect. What is your current address?" },
+      { "speaker": "user",   "germanWords": ["Müllerstraße", "fünfzehn,", "zehnzwölf", "Berlin."], "english": "Müller street fifteen, ten-twelve Berlin." },
+      { "speaker": "system", "germanWords": ["Sind", "Sie", "berufstätig", "oder", "Student?"], "english": "Are you employed or a student?" },
+      { "speaker": "user",   "germanWords": ["Ich", "arbeite", "seit", "drei", "Monaten", "in", "Berlin."], "english": "I've been working in Berlin for three months." },
+      { "speaker": "system", "germanWords": ["Möchten", "Sie", "auch", "eine", "Kreditkarte", "dazu?"], "english": "Would you also like a credit card with it?" },
+      { "speaker": "user",   "germanWords": ["Nein,", "die", "EC-Karte", "reicht", "mir."], "english": "No, the debit card is enough for me." },
+      { "speaker": "system", "germanWords": ["Es", "fällt", "eine", "monatliche", "Gebühr", "von", "fünf", "Euro", "an."], "english": "There is a monthly fee of five euros." },
+      { "speaker": "user",   "germanWords": ["Das", "ist", "in", "Ordnung", "für", "mich."], "english": "That's okay with me." },
+      { "speaker": "system", "germanWords": ["Bitte", "unterschreiben", "Sie", "hier", "unten."], "english": "Please sign here at the bottom." },
+      { "speaker": "user",   "germanWords": ["Wann", "bekomme", "ich", "meine", "Karte?"], "english": "When will I get my card?" }
+    ]
+  },
+
+  {
+    "id": "shopping-return",
+    "context": "shopping",
+    "contextEmoji": "🛒",
+    "contextTitle": "Shopping",
+    "title": "Returning a defective phone",
+    "description": "Your new smartphone has a problem. You return to the electronics store to get a replacement or refund.",
+    "level": "B1",
+    "turns": [
+      { "speaker": "system", "germanWords": ["Guten", "Tag,", "kann", "ich", "Ihnen", "helfen?"], "english": "Good day, can I help you?" },
+      { "speaker": "user",   "germanWords": ["Ja,", "ich", "habe", "ein", "Problem", "mit", "meinem", "Handy."], "english": "Yes, I have a problem with my phone." },
+      { "speaker": "system", "germanWords": ["Was", "genau", "ist", "das", "Problem?"], "english": "What exactly is the problem?" },
+      { "speaker": "user",   "germanWords": ["Der", "Akku", "lädt", "nicht", "mehr", "richtig."], "english": "The battery doesn't charge properly anymore." },
+      { "speaker": "system", "germanWords": ["Wann", "haben", "Sie", "das", "Handy", "gekauft?"], "english": "When did you buy the phone?" },
+      { "speaker": "user",   "germanWords": ["Vor", "zwei", "Wochen,", "hier", "ist", "der", "Kassenbon."], "english": "Two weeks ago, here is the receipt." },
+      { "speaker": "system", "germanWords": ["Haben", "Sie", "die", "Originalverpackung", "noch?"], "english": "Do you still have the original packaging?" },
+      { "speaker": "user",   "germanWords": ["Ja,", "alles", "ist", "vollständig."], "english": "Yes, everything is complete." },
+      { "speaker": "system", "germanWords": ["Möchten", "Sie", "lieber", "Geld", "zurück", "oder", "ein", "neues", "Gerät?"], "english": "Would you prefer money back or a new device?" },
+      { "speaker": "user",   "germanWords": ["Lieber", "ein", "neues", "Gerät,", "wenn", "möglich."], "english": "Rather a new device, if possible." },
+      { "speaker": "system", "germanWords": ["Ich", "muss", "kurz", "ins", "Lager", "schauen."], "english": "I need to check the warehouse briefly." },
+      { "speaker": "user",   "germanWords": ["Kein", "Problem,", "ich", "warte", "gerne."], "english": "No problem, I'll gladly wait." },
+      { "speaker": "system", "germanWords": ["Wir", "haben", "das", "gleiche", "Modell", "auf", "Lager."], "english": "We have the same model in stock." },
+      { "speaker": "user",   "germanWords": ["Wunderbar,", "vielen", "Dank", "für", "Ihre", "Hilfe!"], "english": "Wonderful, thank you very much for your help!" }
+    ]
   }
 ]

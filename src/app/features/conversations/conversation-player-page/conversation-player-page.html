@@ -2,14 +2,14 @@
 
   @if (!loaded()) {
     <div class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-500 border-t-transparent"></div>
       <p class="text-slate-500 mt-3">Loading...</p>
     </div>
 
   } @else if (!conversation()) {
     <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
       <p class="text-red-800 mb-3">Conversation not found!</p>
-      <a [routerLink]="'/conversations'" class="text-indigo-600 hover:underline">
+      <a [routerLink]="'/conversations'" class="text-emerald-600 hover:underline">
         Back to conversations
       </a>
     </div>
@@ -20,7 +20,7 @@
 
     <!-- ───────── Header ───────── -->
     <header class="mb-6">
-      <a [routerLink]="'/conversations'" class="text-indigo-600 hover:underline text-sm mb-2 inline-block">
+      <a [routerLink]="'/conversations'" class="text-emerald-600 hover:underline text-sm mb-2 inline-block">
         ← Back to conversations
       </a>
       <div class="flex items-center gap-3">
@@ -53,7 +53,7 @@
       </div>
       <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
         <div
-          class="h-full bg-indigo-500 transition-all duration-500"
+          class="h-full bg-emerald-500 transition-all duration-500"
           [style.width.%]="(currentTurnIndex() / totalTurns()) * 100"
         ></div>
       </div>
@@ -77,7 +77,7 @@
           </button>
           <a
             [routerLink]="'/conversations'"
-            class="px-5 py-2.5 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 transition-colors"
+            class="px-5 py-2.5 bg-emerald-600 text-white rounded-md font-medium hover:bg-emerald-700 transition-colors"
           >
             Back to list →
           </a>
@@ -123,7 +123,7 @@
           <button
             type="button"
             (click)="nextTurn()"
-            class="px-4 py-2 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 transition-colors"
+            class="px-4 py-2 bg-emerald-600 text-white rounded-md font-medium hover:bg-emerald-700 transition-colors"
           >
             Next →
           </button>
@@ -224,7 +224,7 @@
           type="button"
           (click)="check()"
           [disabled]="!allWordsSelected() || status() === 'correct'"
-          class="px-5 py-2.5 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+          class="px-5 py-2.5 bg-emerald-600 text-white rounded-md font-medium hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
         >
           ✓ Check
         </button>
@@ -242,7 +242,7 @@
       <!-- ═════════ 🎙️ Speech Practice (NEW!) ════════════════════ -->
       <!-- ═════════════════════════════════════════════════════════ -->
       @if (speechRec.isSupported) {
-        <div class="mt-6 bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-200 rounded-xl p-4">
+        <div class="mt-6 bg-gradient-to-br from-purple-50 to-emerald-50 border-2 border-purple-200 rounded-xl p-4">
           <div class="flex items-center gap-2 mb-3">
             <span class="text-2xl">🎙️</span>
             <h4 class="font-semibold text-purple-900">Speak it out loud</h4>
@@ -277,6 +277,26 @@
           @if (speechRec.error()) {
             <div class="mb-3 p-2 bg-yellow-100 border border-yellow-300 rounded text-sm text-yellow-800">
               ⚠️ {{ speechRec.error() }}
+            </div>
+
+            <!-- 🔬 Diagnostic helper: try English to isolate the problem -->
+            <div class="mb-3 p-3 bg-blue-50 border border-blue-200 rounded text-xs text-blue-900">
+              <p class="font-semibold mb-2">🔬 Troubleshooting:</p>
+              <button
+                type="button"
+                (click)="testMicEnglish()"
+                class="text-xs px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+              >
+                Test mic with English
+              </button>
+              <p class="mt-2 text-blue-800">
+                If English works but German doesn't → install German language pack in
+                Windows Settings → Time &amp; Language → Speech.
+                If neither works → try the deployed HTTPS site:
+                <a href="https://deutsch-learn-omega.vercel.app/conversations"
+                   target="_blank"
+                   class="underline font-semibold">vercel.app/conversations</a>
+              </p>
             </div>
           }
 

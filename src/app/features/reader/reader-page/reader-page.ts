@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SpeechService } from '../../../core/services/speech';
 import { TranslationService } from '../../../core/services/translation';
+import { NewsService } from '../../../core/services/news';
 
 /**
  * تمثيل token (كلمة أو علامة ترقيم) داخل النص.
@@ -49,6 +50,7 @@ export class ReaderPage {
   // ───────── Services ─────────
   protected speech = inject(SpeechService);
   private translation = inject(TranslationService);
+  private news = inject(NewsService);
 
   // ───────── State ─────────
 
@@ -71,6 +73,10 @@ export class ReaderPage {
   /** ترجمات الكلمة المختارة */
   readonly arabicTranslation = signal<TranslationState>({ loading: false, text: '' });
   readonly englishTranslation = signal<TranslationState>({ loading: false, text: '' });
+
+  /** حالة جلب الأخبار من heise.de */
+  readonly newsLoading = signal<boolean>(false);
+  readonly newsError = signal<string | null>(null);
 
   // ───────── Computed ─────────
 
@@ -159,5 +165,43 @@ export class ReaderPage {
   onRateChange(event: Event): void {
     const value = parseFloat((event.target as HTMLInputElement).value);
     this.speechRate.set(value);
+  }
+
+  /**
+   * 📰 يجلب مقالاً تقنياً عشوائياً من heise.de و يضعه في الـ textarea.
+   *
+   * 🎯 Flow:
+   *   1. نضع loading = true (يظهر spinner على الزر)
+   *   2. نطلب آخر 10 مقالات
+   *   3. نختار واحداً عشوائياً
+   *   4. نُكوّن نصاً من العنوان + الوصف
+   *   5. نضعه في inputText (الـ textarea يتحدّث تلقائياً عبر [(ngModel)])
+   *   6. نُغلق الـ popup إن كان مفتوحاً
+   */
+  loadRandomNews(): void {
+    this.newsLoading.set(true);
+    this.newsError.set(null);
+    this.closePopup();
+
+    this.news.fetchLatest().subscribe({
+      next: (articles) => {
+        if (articles.length === 0) {
+          this.newsError.set('No news available right now.');
+          this.newsLoading.set(false);
+          return;
+        }
+        // اختيار عشوائي
+        const random = articles[Math.floor(Math.random() * articles.length)];
+        // تركيب نص للعرض: العنوان + سطر فارغ + الوصف
+        const text = `${random.title}\n\n${random.description}`;
+        this.inputText.set(text);
+        this.newsLoading.set(false);
+      },
+      error: (err) => {
+        console.error('News fetch failed:', err);
+        this.newsError.set('Failed to load news. Check your internet connection.');
+        this.newsLoading.set(false);
+      },
+    });
   }
 }

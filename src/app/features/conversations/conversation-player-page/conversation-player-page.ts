@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, input, linkedSignal, signal } from
 import { RouterLink } from '@angular/router';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ConversationsService } from '../../../core/services/conversations';
+import { ProgressService } from '../../../core/services/progress';
 import { SpeechService } from '../../../core/services/speech';
 import { SpeechRecognitionService } from '../../../core/services/speech-recognition';
 import { shuffle } from '../../../shared/utils/shuffle';
@@ -54,6 +55,7 @@ export class ConversationPlayerPage {
 
   // ───────── حقن ─────────
   private conversationsService = inject(ConversationsService);
+  private progressService = inject(ProgressService);
   /** نعرّض SpeechService كـ public كي نستطيع استخدامه في الـ template */
   readonly speech = inject(SpeechService);
   /** Speech-to-text للنطق و التحقق منه */
@@ -160,12 +162,21 @@ export class ConversationPlayerPage {
    * هذا نمط شائع: ربط signals من services مختلفة عبر effect.
    */
   constructor() {
+    // Effect 1: compare user speech against expected German
     effect(() => {
       const transcript = this.speechRec.lastTranscript();
       const turn = this.currentTurn();
       if (!transcript || !turn || turn.speaker !== 'user') return;
       const expected = turn.germanWords.join(' ');
       this.speechMatchResult.set(compareGerman(transcript, expected));
+    });
+
+    // Effect 2: mark conversation as completed when all turns are done
+    effect(() => {
+      if (!this.allDone()) return;
+      const conv = this.conversation();
+      if (!conv) return;
+      this.progressService.markConversationCompleted(conv.id);
     });
   }
 
@@ -253,5 +264,16 @@ export class ConversationPlayerPage {
   /** إيقاف الاستماع يدوياً */
   stopListening() {
     this.speechRec.stop();
+  }
+
+  /**
+   * 🔬 وضع تشخيص: نُجرّب الإنجليزية (en-US) للتحقق من أن الـ API
+   * يعمل أصلاً. إذا الإنجليزية تعمل و الألمانية لا، فالمشكلة في
+   * حزمة لغة Windows.
+   */
+  testMicEnglish() {
+    this.speechMatchResult.set(null);
+    this.speechRec.clearResult();
+    this.speechRec.start('en-US');
   }
 }

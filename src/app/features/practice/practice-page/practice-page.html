@@ -3,7 +3,7 @@
   @if (!loaded()) {
     <!-- Loading -->
     <div class="text-center py-12">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent"></div>
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-500 border-t-transparent"></div>
       <p class="text-slate-500 mt-3">Loading...</p>
     </div>
 
@@ -11,7 +11,7 @@
     <!-- Sentence not found -->
     <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
       <p class="text-red-800 mb-3">Sentence not found!</p>
-      <a [routerLink]="'/levels'" class="text-indigo-600 hover:underline">
+      <a [routerLink]="'/levels'" class="text-emerald-600 hover:underline">
         Back to levels
       </a>
     </div>
@@ -28,11 +28,11 @@
     <header class="mb-6 flex items-center justify-between">
       <a
         [routerLink]="['/levels', s.level, 'sentences']"
-        class="text-indigo-600 hover:underline text-sm"
+        class="text-emerald-600 hover:underline text-sm"
       >
         ← Back to sentences
       </a>
-      <span class="text-xs px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 font-semibold">
+      <span class="text-xs px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-semibold">
         Level {{ s.level }}
       </span>
     </header>
@@ -213,7 +213,7 @@
         type="button"
         (click)="check()"
         [disabled]="!allWordsSelected() || status() === 'correct'"
-        class="px-5 py-2.5 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+        class="px-5 py-2.5 bg-emerald-600 text-white rounded-md font-medium hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
       >
         ✓ Check
       </button>

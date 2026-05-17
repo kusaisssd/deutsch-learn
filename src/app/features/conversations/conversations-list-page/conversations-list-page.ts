@@ -1,16 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ConversationsService } from '../../../core/services/conversations';
+import { ProgressService } from '../../../core/services/progress';
+import { Conversation } from '../../../core/models/conversation.model';
 
 /**
- * صفحة قائمة المحادثات.
+ * صفحة قائمة المحادثات — تجميع حسب السياق + فصل بين منجزة/غير منجزة.
  *
- * تستخدم computed signal `grouped` من الـ service مباشرة —
- * نمط نظيف لأن المنطق في مكان واحد (الـ service).
- *
- * مقابل في .NET MVC:
- *   Controller يستدعي Repository.GetGroupedConversations()
- *   و يمرّر النتيجة لـ View.
+ * نُعيد تنظيم البيانات في computed signal بحيث يستخدم الـ template
+ * بنية جاهزة (incomplete vs completed) بدون منطق تجميع في الـ HTML.
  */
 @Component({
   selector: 'app-conversations-list-page',
@@ -20,8 +18,40 @@ import { ConversationsService } from '../../../core/services/conversations';
 })
 export class ConversationsListPage {
   private conversationsService = inject(ConversationsService);
+  private progressService = inject(ProgressService);
 
-  /** تعريض الـ signals للـ template */
   readonly loaded = this.conversationsService.loaded;
-  readonly groups = this.conversationsService.grouped;
+
+  /**
+   * نسخة مُحسَّنة من groups: كل group فيه قائمتان منفصلتان:
+   *   - incomplete: غير منجزة (تظهر أولاً)
+   *   - completed:  منجزة (تظهر بعد فاصل)
+   *
+   * computed يُعاد حسابه تلقائياً عند:
+   *   - تحميل المحادثات
+   *   - تغيّر التقدم (نجح في محادثة جديدة)
+   */
+  readonly sortedGroups = computed(() => {
+    const completed = this.progressService.completedConversationIds();
+    return this.conversationsService.grouped().map(group => {
+      const incomplete: Conversation[] = [];
+      const done: Conversation[] = [];
+      for (const conv of group.conversations) {
+        if (completed.has(conv.id)) {
+          done.push(conv);
+        } else {
+          incomplete.push(conv);
+        }
+      }
+      return {
+        context: group.context,
+        contextEmoji: group.contextEmoji,
+        contextTitle: group.contextTitle,
+        total: group.conversations.length,
+        completedCount: done.length,
+        incomplete,
+        completed: done,
+      };
+    });
+  });
 }

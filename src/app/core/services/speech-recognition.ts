@@ -164,14 +164,33 @@ export class SpeechRecognitionService {
 
   /** يحوّل رسائل الخطأ التقنية إلى رسائل مفهومة للمستخدم */
   private friendlyError(code: string): string {
+    const isLocalhost =
+      typeof window !== 'undefined' &&
+      (window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1');
+    const isHttps =
+      typeof window !== 'undefined' && window.location.protocol === 'https:';
+
     switch (code) {
       case 'no-speech':
-        return "Didn't catch that — please try again.";
+        return "Didn't catch that — please try again and speak clearly.";
       case 'not-allowed':
       case 'service-not-allowed':
-        return 'Microphone permission denied. Please enable it in browser settings.';
+        return 'Microphone permission denied. Click the 🔒 icon in the address bar to enable it.';
       case 'network':
-        return 'Network error — speech recognition needs internet.';
+        // رسالة أطول و أوضح حسب البيئة
+        if (!isHttps && !isLocalhost) {
+          return 'Network error — speech recognition requires HTTPS.';
+        }
+        return (
+          'Network error connecting to speech service. ' +
+          'Possible causes: (1) browser language pack not installed, ' +
+          '(2) VPN/firewall blocking, (3) try the deployed HTTPS site instead of localhost.'
+        );
+      case 'language-not-supported':
+        return 'This language is not installed on your system. Install the German language pack in Windows Settings → Time & Language → Speech.';
+      case 'audio-capture':
+        return 'No microphone detected. Check that your mic is connected.';
       case 'aborted':
         return ''; // المستخدم أوقف، لا رسالة
       default:
