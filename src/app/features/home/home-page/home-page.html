@@ -2,7 +2,7 @@
   HomePage skeleton.
   Step 2: Structural layout only — content (cards, stats) comes in Steps 3 & 4.
 -->
-<section class="max-w-3xl mx-auto py-4 space-y-8">
+<section class="max-w-3xl mx-auto py-2 sm:py-4 space-y-6 sm:space-y-8">
 
   <!--
     🎉 Welcome header.
@@ -10,13 +10,13 @@
     to draw the eye as the visual entry point.
   -->
   <header class="text-center">
-    <h1 class="text-4xl md:text-5xl font-bold mb-2">
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">
       <span class="inline-block">🇩🇪</span>
       <span class="bg-gradient-to-r from-emerald-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
         Willkommen!
       </span>
     </h1>
-    <p class="text-lg text-slate-600">
+    <p class="text-base sm:text-lg text-slate-600">
       Your path to speaking German confidently.
     </p>
   </header>
@@ -29,7 +29,7 @@
   <section>
     @if (hasStarted()) {
       <!-- ─── Returning user: show stats ─── -->
-      <div class="bg-gradient-to-r from-slate-50 to-slate-100 border border-slate-200 rounded-xl p-5">
+      <div class="bg-gradient-to-r from-slate-50 to-slate-100 border border-slate-200 rounded-xl p-4 sm:p-5">
         <h2 class="text-sm font-semibold text-slate-700 mb-3 text-center">
           📊 Your journey so far
         </h2>
@@ -82,7 +82,7 @@
 
     } @else {
       <!-- ─── New user: warm welcome, no scary zeros ─── -->
-      <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-5 text-center">
+      <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 sm:p-5 text-center">
         <p class="text-emerald-900">
           👋 <strong>New here?</strong> Pick a step below to start your journey.
         </p>
@@ -99,7 +99,7 @@
       How to learn German with this app
     </h2>
     <p class="text-center text-slate-600 mb-6">
-      Four complementary skills — combine them daily for the fastest progress.
+      Five complementary skills — combine them daily for the fastest progress.
     </p>
 
     <!--
@@ -111,7 +111,7 @@
 
       <!-- ─────── Step 1: Sentences (indigo) ─────── -->
       <a [routerLink]="'/levels'"
-         class="block bg-white rounded-xl border-2 border-emerald-200 hover:border-emerald-500 hover:shadow-lg hover:-translate-y-1 transition-all p-6 group">
+         class="block bg-white rounded-xl border-2 border-emerald-200 hover:border-emerald-500 hover:shadow-lg hover:-translate-y-1 transition-all p-4 sm:p-6 group">
         <div class="flex items-start gap-4">
           <!-- Number badge (scales up on card hover) -->
           <div class="flex-shrink-0 w-12 h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center text-xl font-bold transition-transform group-hover:scale-110">
@@ -138,7 +138,7 @@
 
       <!-- ─────── Step 2: Topics (teal) ─────── -->
       <a [routerLink]="'/topics'"
-         class="block bg-white rounded-xl border-2 border-teal-200 hover:border-teal-500 hover:shadow-lg hover:-translate-y-1 transition-all p-6 group">
+         class="block bg-white rounded-xl border-2 border-teal-200 hover:border-teal-500 hover:shadow-lg hover:-translate-y-1 transition-all p-4 sm:p-6 group">
         <div class="flex items-start gap-4">
           <div class="flex-shrink-0 w-12 h-12 bg-teal-600 text-white rounded-full flex items-center justify-center text-xl font-bold transition-transform group-hover:scale-110">
             2
@@ -162,12 +162,39 @@
         </div>
       </a>
 
-      <!-- ─────── Step 3: Conversations (purple) ─────── -->
+      <!-- ─────── Step 3: Cards Café (rose) ─────── -->
+      <a [routerLink]="'/cafe'"
+         class="block bg-white rounded-xl border-2 border-rose-200 hover:border-rose-500 hover:shadow-lg hover:-translate-y-1 transition-all p-4 sm:p-6 group">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-rose-500 text-white rounded-full flex items-center justify-center text-xl font-bold transition-transform group-hover:scale-110">
+            3
+          </div>
+          <div class="flex-1">
+            <h3 class="text-xl font-bold text-slate-800 mb-1">
+              ☕ Cards Café
+            </h3>
+            <p class="text-slate-600 mb-3">
+              Draw a question card and talk to yourself in German — the fastest way
+              to find words you didn't know you needed.
+            </p>
+            <ul class="text-sm text-slate-700 space-y-1 mb-4">
+              <li>✓ 10 themed decks (heart, lifestyle, sport, big questions…)</li>
+              <li>✓ 150 open-ended German questions in total</li>
+              <li>✓ Listen 🔊 + translate 🌐 each card on demand</li>
+            </ul>
+            <span class="inline-block text-rose-600 font-semibold group-hover:underline">
+              Draw a card →
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ─────── Step 4: Conversations (purple) ─────── -->
       <a [routerLink]="'/conversations'"
-         class="block bg-white rounded-xl border-2 border-purple-200 hover:border-purple-500 hover:shadow-lg hover:-translate-y-1 transition-all p-6 group">
+         class="block bg-white rounded-xl border-2 border-purple-200 hover:border-purple-500 hover:shadow-lg hover:-translate-y-1 transition-all p-4 sm:p-6 group">
         <div class="flex items-start gap-4">
           <div class="flex-shrink-0 w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center text-xl font-bold transition-transform group-hover:scale-110">
-            3
+            4
           </div>
           <div class="flex-1">
             <h3 class="text-xl font-bold text-slate-800 mb-1">
@@ -188,12 +215,12 @@
         </div>
       </a>
 
-      <!-- ─────── Step 4: Reader (amber) ─────── -->
+      <!-- ─────── Step 5: Reader (amber) ─────── -->
       <a [routerLink]="'/reader'"
-         class="block bg-white rounded-xl border-2 border-amber-200 hover:border-amber-500 hover:shadow-lg hover:-translate-y-1 transition-all p-6 group">
+         class="block bg-white rounded-xl border-2 border-amber-200 hover:border-amber-500 hover:shadow-lg hover:-translate-y-1 transition-all p-4 sm:p-6 group">
         <div class="flex items-start gap-4">
           <div class="flex-shrink-0 w-12 h-12 bg-amber-600 text-white rounded-full flex items-center justify-center text-xl font-bold transition-transform group-hover:scale-110">
-            4
+            5
           </div>
           <div class="flex-1">
             <h3 class="text-xl font-bold text-slate-800 mb-1">

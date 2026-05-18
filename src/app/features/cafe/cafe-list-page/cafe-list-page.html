@@ -1,0 +1,114 @@
+<section class="max-w-5xl mx-auto">
+
+  <!-- Heading -->
+  <header class="text-center mb-8">
+    <!--
+      🏷️ Project label — small chip identifying this section as a digital recreation
+      of the Café Hope FEG conversation cards. Subtle but always visible.
+    -->
+    <span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-[0.2em] mb-3">
+      Café Hope FEG
+    </span>
+
+    <h2 class="text-3xl font-bold text-slate-800 mb-2">
+      ☕ Cards Café
+    </h2>
+    <p class="text-slate-600 max-w-2xl mx-auto">
+      Pick a category, draw a card, and talk to yourself in German about the question.
+      No right or wrong answers — just speak. This is the fastest way to find the
+      words you don't know yet.
+    </p>
+  </header>
+
+  @if (!loaded()) {
+    <div class="text-center py-12 text-slate-500">
+      <div class="inline-block animate-pulse">Loading cards…</div>
+    </div>
+  } @else {
+
+    <!--
+      Card grid — slight rotation to mimic real cards thrown on a table.
+      Mobile: 2 cols, tablet: 3 cols, desktop: 4 cols.
+
+      Tailwind JIT limitation: we cannot interpolate color names dynamically,
+      so we list all 10 color options as conditional classes.
+    -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+
+      @for (cat of categories(); track cat.id; let i = $index) {
+        <a
+          [routerLink]="['/cafe', cat.id]"
+          class="block rounded-xl shadow-md hover:shadow-2xl hover:-translate-y-2 hover:rotate-0 transition-all duration-300 p-5 text-white text-center min-h-[160px] flex flex-col justify-between cursor-pointer"
+          [class.rotate-1]="i % 3 === 0"
+          [class.-rotate-1]="i % 3 === 1"
+          [class.rotate-0]="i % 3 === 2"
+          [class.bg-amber-500]="cat.color === 'amber'"
+          [class.bg-orange-500]="cat.color === 'orange'"
+          [class.bg-teal-500]="cat.color === 'teal'"
+          [class.bg-sky-500]="cat.color === 'sky'"
+          [class.bg-rose-500]="cat.color === 'rose'"
+          [class.bg-yellow-600]="cat.color === 'yellow'"
+          [class.bg-lime-500]="cat.color === 'lime'"
+          [class.bg-cyan-700]="cat.color === 'cyan'"
+          [class.bg-purple-600]="cat.color === 'purple'"
+          [class.bg-pink-500]="cat.color === 'pink'"
+        >
+          <div class="text-sm sm:text-base font-bold uppercase tracking-wide leading-tight">
+            {{ cat.title }}
+          </div>
+          <div class="text-5xl my-3">{{ cat.emoji }}</div>
+          <div class="text-xs opacity-90 italic">
+            {{ cat.titleHelper }}
+          </div>
+        </a>
+      } @empty {
+        <p class="col-span-full text-center text-slate-500 py-12">
+          No categories available
+        </p>
+      }
+    </div>
+
+    <!-- How to play hint -->
+    <div class="mt-8 bg-amber-50 border border-amber-200 rounded-lg p-4 text-center">
+      <p class="text-sm text-amber-900">
+        💡 <strong>How to play:</strong> Pick a category → draw a random card →
+        speak your answer out loud (yes, alone — that's the point!). Tap 🌐 if
+        you don't understand the question.
+      </p>
+    </div>
+
+    <!--
+      📜 Project attribution — this section is a digital companion to a real
+      conversation-cards activity used at FEG Gießen's Café Hope.
+    -->
+    <footer class="mt-10 pt-6 border-t border-slate-200 text-center max-w-2xl mx-auto">
+      <h3 class="text-base font-bold text-slate-800 mb-2">
+        Café Hope FEG — Conversation Karten
+      </h3>
+      <p class="text-sm text-slate-600 leading-relaxed">
+        This section is a digital recreation of the conversation cards used in the
+        <strong>Café Hope</strong> activity at the
+        <a
+          href="https://www.feg-giessen.de/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-emerald-700 hover:underline font-semibold"
+        >
+          FEG church in Gießen, Germany
+        </a>.
+        Built to help language learners practice speaking — alone or with friends.
+      </p>
+      <p class="text-xs text-slate-500 italic mt-3">
+        Eine digitale Umsetzung der Konversationskarten aus dem Café Hope der FEG Gießen.
+      </p>
+    </footer>
+  }
+
+</section>
+
+<!--
+  🎴 Child route outlet — CafeDrawPage يُرسم هنا كـ modal lightbox
+     فوق الصفحة الحالية (position:fixed داخل CafeDrawPage's :host).
+-->
+<router-outlet />
+

@@ -1,0 +1,148 @@
+// ──────────────────────────────────────────────────────────────
+// 🎬 Lightbox Modal
+//
+// :host = العنصر الجذر للمكون (<app-cafe-draw-page>)
+// نضبطه كـ position:fixed ليُغطي الـ viewport كاملاً
+// و يطفو فوق CafeListPage الذي يحوي <router-outlet />.
+// ──────────────────────────────────────────────────────────────
+
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // ندع clicks تمر للأطفال (backdrop يلتقطها)
+  pointer-events: auto;
+}
+
+// ──────────────────────────────────────────────────────────────
+// 🌫️ Backdrop — طبقة معتمة مع blur خفيف خلف الـ modal
+//
+// rgba(15, 23, 42, 0.65) = slate-900 بشفافية 65% (قاتم لكن يكشف الخلفية)
+// backdrop-filter: blur(4px) = ضباب خفيف يجعل الفئات وراءها "soft focus"
+// ──────────────────────────────────────────────────────────────
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px); // دعم Safari
+  cursor: pointer;
+  animation: backdrop-fade-in 0.25s ease-out;
+}
+
+// ──────────────────────────────────────────────────────────────
+// 🎴 Modal card — الكرت الأبيض الطافي بالسؤال
+//
+// max-height + overflow-y = لو المحتوى أطول من الشاشة، يصبح scrollable داخلياً
+// margin = هامش من حواف الشاشة على الموبايل
+// box-shadow عميق = إيحاء "يطفو فوق الصفحة"
+// animation = ينطلق من scale 0.85 → 1 مع overshoot خفيف
+// ──────────────────────────────────────────────────────────────
+.lightbox-card {
+  position: relative;
+  z-index: 1;
+  background: white;
+  border-radius: 1.25rem;
+  padding: 1.5rem 1rem 1rem;
+  width: calc(100% - 2rem);
+  max-width: 640px;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  // overscroll-behavior = يمنع scroll الصفحة الخلفية لو وصلنا حافة scroll الـ modal
+  overscroll-behavior: contain;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  animation: modal-pop-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  @media (min-width: 640px) {
+    padding: 2rem 1.5rem 1.5rem;
+  }
+}
+
+// ──────────────────────────────────────────────────────────────
+// Keyframes
+// ──────────────────────────────────────────────────────────────
+
+@keyframes backdrop-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+// 🎯 modal-pop-in: scale من 0.85 → 1.0 مع overshoot (1.56 في cubic-bezier)
+//    + translateY بسيط لإيحاء "يقفز من البطاقة المضغوطة"
+//    + opacity تحقق الـ fade-in
+@keyframes modal-pop-in {
+  0% {
+    transform: scale(0.85) translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+// ──────────────────────────────────────────────────────────────
+// 🎴 3D Flip card — نفس الإعدادات السابقة (لم تتغير، فقط مكانها انتقل للمودال)
+// ──────────────────────────────────────────────────────────────
+
+.card-3d-wrap {
+  perspective: 1500px;
+  position: relative;
+  width: 100%;
+  height: 280px;
+
+  @media (min-width: 640px) {
+    height: 320px;
+  }
+}
+
+.card-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform: rotateY(0deg);
+
+  &.shown {
+    transform: rotateY(180deg);
+  }
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card-back {
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 10px 0 -4px rgba(0, 0, 0, 0.05),
+    0 14px 0 -8px rgba(0, 0, 0, 0.05);
+}
+
+.card-front {
+  transform: rotateY(180deg);
+}
+
+// ──────────────────────────────────────────────────────────────
+// 🤏 احترام prefers-reduced-motion
+// ──────────────────────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-backdrop,
+  .lightbox-card {
+    animation: none;
+  }
+  .card-3d {
+    transition: opacity 0.2s ease;
+  }
+}

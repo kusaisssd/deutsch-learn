@@ -1,0 +1,232 @@
+<!--
+  💡 Modal Lightbox Structure
+  ───────────────────────────
+  1. .lightbox-backdrop = dimmed blur layer over the whole viewport
+                          (click anywhere on it to close the modal)
+  2. .lightbox-card     = the visible white "floating" card containing the question
+                          (clicks inside don't bubble to the backdrop)
+  3. The component's :host is position:fixed inset:0 z-50 (see .scss)
+-->
+
+<!-- 1️⃣ Backdrop — click to close -->
+<div class="lightbox-backdrop" (click)="closeModal()"></div>
+
+<!--
+  2️⃣ Modal card — stopPropagation prevents backdrop click handler firing
+  when the user clicks inside the question card (only outside should close).
+-->
+<div class="lightbox-card" (click)="$event.stopPropagation()">
+
+  <!-- ✕ Close button (top-right corner) -->
+  <button
+    type="button"
+    (click)="closeModal()"
+    aria-label="Close"
+    class="absolute top-3 right-3 w-9 h-9 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 flex items-center justify-center text-lg font-bold transition-colors z-10"
+  >
+    ✕
+  </button>
+
+  <section class="max-w-2xl mx-auto">
+
+  @if (!loaded()) {
+    <div class="text-center py-12">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-500 border-t-transparent"></div>
+      <p class="text-slate-500 mt-3">Loading…</p>
+    </div>
+  } @else if (!category()) {
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+      <p class="text-yellow-800">Category not found.</p>
+    </div>
+  } @else {
+
+    @let cat = category()!;
+
+    <!-- ───────── Category header ───────── -->
+    <header
+      class="rounded-xl p-5 mb-6 shadow-md text-white text-center"
+      [class.bg-amber-500]="cat.color === 'amber'"
+      [class.bg-orange-500]="cat.color === 'orange'"
+      [class.bg-teal-500]="cat.color === 'teal'"
+      [class.bg-sky-500]="cat.color === 'sky'"
+      [class.bg-rose-500]="cat.color === 'rose'"
+      [class.bg-yellow-600]="cat.color === 'yellow'"
+      [class.bg-lime-500]="cat.color === 'lime'"
+      [class.bg-cyan-700]="cat.color === 'cyan'"
+      [class.bg-purple-600]="cat.color === 'purple'"
+      [class.bg-pink-500]="cat.color === 'pink'"
+    >
+      <div class="text-4xl mb-1">{{ cat.emoji }}</div>
+      <h2 class="text-2xl font-bold uppercase tracking-wide">{{ cat.title }}</h2>
+      <p class="text-sm opacity-90 italic mt-1">{{ cat.titleHelper }}</p>
+    </header>
+
+    <!-- ───────── Counter ───────── -->
+    <p class="text-center text-sm text-slate-600 mb-4">
+      Card <strong>{{ drawnSet().size }}</strong> of {{ totalQuestions() }}
+      · {{ remainingCount() }} remaining
+    </p>
+
+    <!-- ───────── 3D flip card ───────── -->
+    <!--
+      .card-3d-wrap = perspective container
+      .card-3d      = the flipping element
+        - .shown    = currently showing the question (rotateY 180)
+      .card-face    = each face uses backface-visibility: hidden
+    -->
+    <div class="card-3d-wrap mb-6">
+      <div class="card-3d" [class.shown]="isShowing()">
+
+        <!-- ─── BACK of card (closed deck visual) ─── -->
+        <div
+          class="card-face card-back rounded-2xl shadow-lg flex flex-col items-center justify-center text-white p-6 select-none"
+          [class.bg-amber-500]="cat.color === 'amber'"
+          [class.bg-orange-500]="cat.color === 'orange'"
+          [class.bg-teal-500]="cat.color === 'teal'"
+          [class.bg-sky-500]="cat.color === 'sky'"
+          [class.bg-rose-500]="cat.color === 'rose'"
+          [class.bg-yellow-600]="cat.color === 'yellow'"
+          [class.bg-lime-500]="cat.color === 'lime'"
+          [class.bg-cyan-700]="cat.color === 'cyan'"
+          [class.bg-purple-600]="cat.color === 'purple'"
+          [class.bg-pink-500]="cat.color === 'pink'"
+        >
+          <!-- Small branding chip on top of the card back -->
+          <div class="text-[10px] uppercase tracking-[0.3em] opacity-75 mb-2 font-semibold">
+            Café Hope FEG
+          </div>
+          <div class="text-6xl mb-3 opacity-90">{{ cat.emoji }}</div>
+          <div class="text-xl font-bold uppercase tracking-widest opacity-90">
+            {{ cat.title }}
+          </div>
+        </div>
+
+        <!-- ─── FRONT of card (question revealed) ─── -->
+        <div class="card-face card-front bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-between border-4"
+          [class.border-amber-500]="cat.color === 'amber'"
+          [class.border-orange-500]="cat.color === 'orange'"
+          [class.border-teal-500]="cat.color === 'teal'"
+          [class.border-sky-500]="cat.color === 'sky'"
+          [class.border-rose-500]="cat.color === 'rose'"
+          [class.border-yellow-600]="cat.color === 'yellow'"
+          [class.border-lime-500]="cat.color === 'lime'"
+          [class.border-cyan-700]="cat.color === 'cyan'"
+          [class.border-purple-600]="cat.color === 'purple'"
+          [class.border-pink-500]="cat.color === 'pink'"
+        >
+          <!-- Question -->
+          <div class="flex-1 flex items-center justify-center text-center">
+            <p class="text-xl sm:text-2xl font-medium text-slate-800 leading-relaxed">
+              @if (currentQuestion()) {
+                "{{ currentQuestion() }}"
+              }
+            </p>
+          </div>
+
+          <!-- Translation (shown only when requested) -->
+          @if (translation()) {
+            <div class="mt-4 pt-4 border-t border-slate-200 text-center"
+                 [dir]="translationLang() === 'ar' ? 'rtl' : 'ltr'">
+              <p class="text-sm text-slate-600 italic">
+                {{ translation() }}
+              </p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── Buttons row ───────── -->
+    <div class="flex gap-2 sm:gap-3 justify-center flex-wrap">
+
+      <!-- 🔊 Listen -->
+      <button
+        type="button"
+        (click)="playQuestion()"
+        [disabled]="speech.isSpeaking()"
+        class="px-4 py-2 bg-sky-500 text-white rounded-md text-sm font-medium hover:bg-sky-600 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+      >
+        🔊 Listen
+      </button>
+
+      <!-- 🌐 Translate -->
+      <button
+        type="button"
+        (click)="translateQuestion()"
+        [disabled]="translating()"
+        class="px-4 py-2 bg-amber-500 text-white rounded-md text-sm font-medium hover:bg-amber-600 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+        [title]="'Translate to ' + (translationLang() === 'en' ? 'English' : 'Arabic')"
+      >
+        @if (translating()) {
+          ⏳ Translating…
+        } @else {
+          🌐 Translate
+        }
+      </button>
+
+      <!-- Lang toggle -->
+      <button
+        type="button"
+        (click)="toggleLang()"
+        class="px-3 py-2 bg-slate-200 text-slate-700 rounded-md text-sm font-medium hover:bg-slate-300 transition-colors"
+        [title]="'Switch translation language'"
+      >
+        {{ translationLang() === 'en' ? '🇬🇧 EN' : '🇸🇦 AR' }}
+      </button>
+
+      @if (!allDrawn()) {
+        <!-- 🎴 Draw -->
+        <button
+          type="button"
+          (click)="draw()"
+          [disabled]="isAnimating()"
+          class="px-5 py-2 text-white rounded-md text-sm font-semibold transition-colors shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-wait"
+          [class.bg-amber-600]="cat.color === 'amber'"
+          [class.bg-orange-600]="cat.color === 'orange'"
+          [class.bg-teal-600]="cat.color === 'teal'"
+          [class.bg-sky-600]="cat.color === 'sky'"
+          [class.bg-rose-600]="cat.color === 'rose'"
+          [class.bg-yellow-700]="cat.color === 'yellow'"
+          [class.bg-lime-600]="cat.color === 'lime'"
+          [class.bg-cyan-800]="cat.color === 'cyan'"
+          [class.bg-purple-700]="cat.color === 'purple'"
+          [class.bg-pink-600]="cat.color === 'pink'"
+        >
+          🎴 Next card
+        </button>
+      } @else {
+        <!-- 🔁 Start over -->
+        <button
+          type="button"
+          (click)="startOver()"
+          [disabled]="isAnimating()"
+          class="px-5 py-2 bg-emerald-600 text-white rounded-md text-sm font-semibold hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-wait transition-colors shadow-md"
+        >
+          🔁 Start over (15 fresh cards)
+        </button>
+      }
+    </div>
+
+    <!-- ───────── Tip ───────── -->
+    <p class="text-center text-xs text-slate-500 mt-6 italic">
+      💡 Read the question aloud, then answer out loud — even if no one is listening.
+    </p>
+
+    <!--
+      ⬇️ Back to Cards Table — secondary close button at the bottom
+      complements the ✕ button at the top-right corner.
+    -->
+    <div class="mt-10 pt-6 border-t border-slate-200 text-center">
+      <button
+        type="button"
+        (click)="closeModal()"
+        class="inline-block px-5 py-2 bg-slate-200 text-slate-700 rounded-md text-sm font-semibold hover:bg-slate-300 transition-colors"
+      >
+        ⬅ Back to Cards Table
+      </button>
+    </div>
+  }
+
+  </section>
+</div>
+

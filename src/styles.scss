@@ -7,3 +7,26 @@ html, body {
   margin: 0;
   font-family: system-ui, -apple-system, sans-serif;
 }
+
+/* ──────────────────────────────────────────────────────────────
+   Utility classes — مكمّلة لـ Tailwind
+   ────────────────────────────────────────────────────────────── */
+
+/**
+ * .no-scrollbar — يُخفي شريط التمرير بصرياً مع الإبقاء على القدرة على التمرير
+ *
+ * نمط شائع لـ pill-bars الأفقية على الموبايل: التمرير يعمل بسحب الإصبع
+ * لكن لا scrollbar مزعج يظهر فوق المحتوى.
+ *
+ * يدعم:
+ *   - Webkit (Chrome, Safari, Edge): -webkit-scrollbar { display: none }
+ *   - Firefox: scrollbar-width: none
+ *   - IE/Legacy Edge: -ms-overflow-style: none
+ */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

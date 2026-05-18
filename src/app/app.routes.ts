@@ -77,6 +77,28 @@ export const routes: Routes = [
     title: 'Practice — Deutsch Learn',
   },
 
+  // 🆕 Cards Café: قائمة فئات بطاقات الحوار الذاتي (مستوحاة من Talk-Box)
+  //
+  // 🎯 nested routing: /cafe/:categoryId يُرسم كـ modal فوق CafeListPage
+  //    عبر <router-outlet /> داخل قائمة الفئات.
+  //    هذا يُبقي الشبكة مرئية خلف الـ modal (lightbox effect).
+  {
+    path: 'cafe',
+    loadComponent: () =>
+      import('./features/cafe/cafe-list-page/cafe-list-page')
+        .then(m => m.CafeListPage),
+    title: 'Cards Café - Deutsch Learn',
+    children: [
+      {
+        path: ':categoryId',
+        loadComponent: () =>
+          import('./features/cafe/cafe-draw-page/cafe-draw-page')
+            .then(m => m.CafeDrawPage),
+        title: 'Café — Deutsch Learn',
+      },
+    ],
+  },
+
   // 🆕 Conversations: قائمة المحادثات (مُجمَّعة حسب السياق)
   {
     path: 'conversations',
