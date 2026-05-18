@@ -49,6 +49,34 @@ export const routes: Routes = [
     title: 'Reader - Deutsch Learn',
   },
 
+  // 🆕 Topics: قائمة المواضيع التعليمية (Pronouns, Tech, Shopping, …)
+  {
+    path: 'topics',
+    loadComponent: () =>
+      import('./features/topics/topics-list-page/topics-list-page')
+        .then(m => m.TopicsListPage),
+    title: 'Topics - Deutsch Learn',
+  },
+
+  // 🆕 صفحة موضوع واحد: قائمة جمله مُجمَّعة حسب المستوى + شرح نحوي
+  {
+    path: 'topics/:topicId',
+    loadComponent: () =>
+      import('./features/topics/topic-detail-page/topic-detail-page')
+        .then(m => m.TopicDetailPage),
+    title: 'Topic - Deutsch Learn',
+  },
+
+  // 🆕 صفحة تمرين جملة من موضوع. يختلف عن /practice/:id لأنه يعرف الموضوع
+  // و يدير التنقّل ضمن جمل نفس الموضوع (لا ضمن المستوى).
+  {
+    path: 'topics/:topicId/practice/:sentenceId',
+    loadComponent: () =>
+      import('./features/topics/topic-practice-page/topic-practice-page')
+        .then(m => m.TopicPracticePage),
+    title: 'Practice — Deutsch Learn',
+  },
+
   // 🆕 Conversations: قائمة المحادثات (مُجمَّعة حسب السياق)
   {
     path: 'conversations',

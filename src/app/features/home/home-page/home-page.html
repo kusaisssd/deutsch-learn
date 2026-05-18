@@ -99,7 +99,7 @@
       How to learn German with this app
     </h2>
     <p class="text-center text-slate-600 mb-6">
-      Three complementary skills — combine them daily for the fastest progress.
+      Four complementary skills — combine them daily for the fastest progress.
     </p>
 
     <!--
@@ -136,12 +136,38 @@
         </div>
       </a>
 
-      <!-- ─────── Step 2: Conversations (purple) ─────── -->
+      <!-- ─────── Step 2: Topics (teal) ─────── -->
+      <a [routerLink]="'/topics'"
+         class="block bg-white rounded-xl border-2 border-teal-200 hover:border-teal-500 hover:shadow-lg hover:-translate-y-1 transition-all p-6 group">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-teal-600 text-white rounded-full flex items-center justify-center text-xl font-bold transition-transform group-hover:scale-110">
+            2
+          </div>
+          <div class="flex-1">
+            <h3 class="text-xl font-bold text-slate-800 mb-1">
+              🧩 Master a topic
+            </h3>
+            <p class="text-slate-600 mb-3">
+              Focus on one theme — pronouns, shopping, tech, time, health.
+            </p>
+            <ul class="text-sm text-slate-700 space-y-1 mb-4">
+              <li>✓ Sentences sorted A1 → B2 within each topic</li>
+              <li>✓ Grammar overview per topic (cases, verb patterns)</li>
+              <li>✓ Pronounce the final answer aloud 🔊</li>
+            </ul>
+            <span class="inline-block text-teal-700 font-semibold group-hover:underline">
+              Pick a topic →
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ─────── Step 3: Conversations (purple) ─────── -->
       <a [routerLink]="'/conversations'"
          class="block bg-white rounded-xl border-2 border-purple-200 hover:border-purple-500 hover:shadow-lg hover:-translate-y-1 transition-all p-6 group">
         <div class="flex items-start gap-4">
           <div class="flex-shrink-0 w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center text-xl font-bold transition-transform group-hover:scale-110">
-            2
+            3
           </div>
           <div class="flex-1">
             <h3 class="text-xl font-bold text-slate-800 mb-1">
@@ -162,12 +188,12 @@
         </div>
       </a>
 
-      <!-- ─────── Step 3: Reader (amber) ─────── -->
+      <!-- ─────── Step 4: Reader (amber) ─────── -->
       <a [routerLink]="'/reader'"
          class="block bg-white rounded-xl border-2 border-amber-200 hover:border-amber-500 hover:shadow-lg hover:-translate-y-1 transition-all p-6 group">
         <div class="flex items-start gap-4">
           <div class="flex-shrink-0 w-12 h-12 bg-amber-600 text-white rounded-full flex items-center justify-center text-xl font-bold transition-transform group-hover:scale-110">
-            3
+            4
           </div>
           <div class="flex-1">
             <h3 class="text-xl font-bold text-slate-800 mb-1">

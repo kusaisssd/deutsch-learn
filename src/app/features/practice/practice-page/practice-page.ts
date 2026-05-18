@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SentencesService } from '../../../core/services/sentences';
 import { ProgressService } from '../../../core/services/progress';
+import { SpeechService } from '../../../core/services/speech';
 import { shuffle } from '../../../shared/utils/shuffle';
 import { WordTile as WordTileComponent } from '../../../shared/components/word-tile/word-tile';
 
@@ -50,6 +51,11 @@ export class PracticePage {
   private sentencesService = inject(SentencesService);
   private progressService = inject(ProgressService);
   private router = inject(Router);
+  /**
+   * 🆕 SpeechService نُعرّضه public كي نستطيع قراءة isSpeaking() مباشرة في الـ template.
+   * نُريد تعطيل زر Listen أثناء التحدث الجاري (UX أفضل).
+   */
+  readonly speech = inject(SpeechService);
 
   // ───────── البيانات المشتقّة ─────────
 
@@ -259,6 +265,19 @@ export class PracticePage {
     if (this.status() === 'wrong') {
       this.status.set('building');
     }
+  }
+
+  /**
+   * 🔊 يقرأ الجملة الألمانية الصحيحة بصوت عالٍ (TTS).
+   * مفيد للمستخدم كي يسمع النطق الصحيح للجملة بأكملها.
+   *
+   * نقرأ من germanWords (المصدر الموثوق) و ليس من selectedWords،
+   * كي ينطق دائماً الجملة الصحيحة حتى لو رتّبها المستخدم خطأً.
+   */
+  playSentence() {
+    const s = this.sentence();
+    if (!s) return;
+    this.speech.speak(s.germanWords.join(' '));
   }
 
   /** الانتقال للجملة التالية في نفس المستوى */

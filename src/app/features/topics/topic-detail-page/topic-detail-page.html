@@ -1,0 +1,142 @@
+<section class="max-w-3xl mx-auto">
+
+  <!-- Back link -->
+  <a [routerLink]="'/topics'"
+     class="text-emerald-600 hover:underline text-sm mb-3 inline-block">
+    ← Back to topics
+  </a>
+
+  <!-- Loading -->
+  @if (!loaded()) {
+    <div class="text-center py-12">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-500 border-t-transparent"></div>
+      <p class="text-slate-500 mt-3">Loading topic…</p>
+    </div>
+  } @else if (!topic()) {
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+      <p class="text-yellow-800">Topic not found.</p>
+    </div>
+  } @else {
+
+    @let t = topic()!;
+    @let byLevel = sentencesByLevel();
+
+    <!--
+      Header band — same color-mapping trick used in TopicsListPage.
+      Tailwind JIT requires literal class names; we cannot interpolate.
+    -->
+    <header
+      class="rounded-xl p-5 text-white mb-6 shadow-md"
+      [class.bg-emerald-500]="t.color === 'emerald'"
+      [class.bg-sky-500]="t.color === 'sky'"
+      [class.bg-amber-500]="t.color === 'amber'"
+      [class.bg-violet-500]="t.color === 'violet'"
+      [class.bg-rose-500]="t.color === 'rose'"
+    >
+      <div class="flex items-start gap-4">
+        <div class="text-5xl shrink-0">{{ t.emoji }}</div>
+        <div class="flex-1">
+          <h2 class="text-2xl sm:text-3xl font-bold mb-1">{{ t.title }}</h2>
+          <p class="text-sm opacity-90">{{ t.description }}</p>
+        </div>
+      </div>
+
+      <!-- Progress stats -->
+      @if (totalCount() > 0) {
+        <div class="mt-4 pt-4 border-t border-white/30">
+          <div class="flex items-center justify-between text-sm mb-1">
+            <span class="opacity-90">{{ totalCount() }} sentences (A1 → B2)</span>
+            <span class="font-semibold">{{ doneCount() }} / {{ totalCount() }} done</span>
+          </div>
+          <div class="h-2 bg-white/30 rounded-full overflow-hidden">
+            <div
+              class="h-full bg-white transition-all duration-500"
+              [style.width.%]="totalCount() > 0 ? (doneCount() / totalCount()) * 100 : 0"
+            ></div>
+          </div>
+        </div>
+      }
+    </header>
+
+    <!--
+      Grammar Overview — collapsible (like the scenario description in conversations).
+      Open by default; user can collapse for more space.
+    -->
+    @if (t.grammarOverview) {
+      <div class="bg-amber-50 border border-amber-200 rounded-lg mb-6 overflow-hidden">
+        <button
+          type="button"
+          (click)="toggleGrammar()"
+          class="w-full px-4 py-3 flex items-center justify-between hover:bg-amber-100 transition-colors"
+        >
+          <span class="font-semibold text-amber-900 flex items-center gap-2">
+            📘 Grammar Overview
+          </span>
+          <span class="text-amber-700 text-sm">
+            {{ grammarOpen() ? '▲ Hide' : '▼ Show' }}
+          </span>
+        </button>
+        @if (grammarOpen()) {
+          <div class="px-4 pb-4 pt-1">
+            <pre class="whitespace-pre-wrap font-sans text-sm text-amber-900 leading-relaxed">{{ t.grammarOverview }}</pre>
+          </div>
+        }
+      </div>
+    }
+
+    <!--
+      Sentences grouped by level: A1 → A2 → B1 → B2.
+      Only show sections that have at least one sentence.
+    -->
+    @for (level of levels; track level) {
+      @let sentences = byLevel[level];
+      @if (sentences.length > 0) {
+        <section class="mb-6">
+          <h3 class="text-lg font-bold text-slate-700 mb-2 flex items-center gap-2">
+            <span class="inline-flex items-center justify-center w-9 h-7 rounded-full bg-slate-200 text-slate-700 text-xs font-bold">
+              {{ level }}
+            </span>
+            <span class="text-sm font-normal text-slate-500">
+              ({{ sentences.length }} sentences)
+            </span>
+          </h3>
+
+          <ul class="space-y-2">
+            @for (sentence of sentences; track sentence.id) {
+              @let isDone = completedIds().has(sentence.id);
+              <li>
+                <a
+                  [routerLink]="['/topics', t.id, 'practice', sentence.id]"
+                  class="block rounded-lg shadow-sm hover:shadow-md p-3 border transition-all"
+                  [class.bg-green-50]="isDone"
+                  [class.border-green-300]="isDone"
+                  [class.bg-white]="!isDone"
+                  [class.border-slate-200]="!isDone"
+                  [class.hover:border-emerald-300]="!isDone"
+                >
+                  <div class="flex items-center justify-between gap-3">
+                    <div class="flex-1 min-w-0">
+                      <p class="text-slate-800 font-medium flex items-center gap-2">
+                        @if (isDone) {
+                          <span class="text-green-600 shrink-0" title="Done">✓</span>
+                        }
+                        <span class="truncate">{{ sentence.english }}</span>
+                      </p>
+                      @if (sentence.hint) {
+                        <p class="text-xs text-slate-500 mt-1">
+                          💡 {{ sentence.hint }}
+                        </p>
+                      }
+                    </div>
+                    <span class="text-emerald-500 text-xl shrink-0">→</span>
+                  </div>
+                </a>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+    }
+  }
+
+</section>
