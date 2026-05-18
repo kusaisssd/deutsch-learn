@@ -144,15 +144,36 @@ export class CafeDrawPage {
   readonly translating = signal(false);
   readonly translationLang = signal<TargetLang>('en');
 
+  /**
+   * 🆕 هل تُعرض الإجابة النموذجية الآن؟
+   *
+   * linkedSignal: يُعاد لـ false مع كل سؤال جديد (currentIndex يتغير)
+   * → يضمن أن كل سؤال يبدأ بإجابة مخفية، يقررها المستخدم لو احتاج.
+   */
+  readonly showAnswer = linkedSignal({
+    source: this.currentIndex,
+    computation: () => false,
+  });
+
   // ───────── computed مساعدة ─────────
 
-  /** السؤال الحالي (string) — للعرض و للـ TTS و الترجمة */
+  /**
+   * السؤال الحالي ككائن CafeQuestion (يحوي text + sampleAnswer).
+   * نحتاج accessors منفصلة (currentQuestionText, currentSampleAnswer)
+   * للاستخدام البسيط في الـ template.
+   */
   readonly currentQuestion = computed(() => {
     const cat = this.category();
     const idx = this.currentIndex();
     if (!cat || idx === null) return null;
     return cat.questions[idx] ?? null;
   });
+
+  /** نص السؤال الألماني (للعرض و TTS و الترجمة) */
+  readonly currentQuestionText = computed(() => this.currentQuestion()?.text ?? null);
+
+  /** الإجابة النموذجية المقترحة (تُعرض بزر Show answer) */
+  readonly currentSampleAnswer = computed(() => this.currentQuestion()?.sampleAnswer ?? null);
 
   /** كم سؤال تبقى لم يُسحب */
   readonly remainingCount = computed(() =>
@@ -245,8 +266,19 @@ export class CafeDrawPage {
 
   /** نطق السؤال الحالي بصوت ألماني */
   playQuestion() {
-    const q = this.currentQuestion();
-    if (q) this.speech.speak(q);
+    const text = this.currentQuestionText();
+    if (text) this.speech.speak(text);
+  }
+
+  /** 🆕 نطق الإجابة النموذجية بصوت ألماني */
+  playSampleAnswer() {
+    const answer = this.currentSampleAnswer();
+    if (answer) this.speech.speak(answer);
+  }
+
+  /** 🆕 يُبدّل ظهور/إخفاء الإجابة النموذجية */
+  toggleAnswer() {
+    this.showAnswer.update(s => !s);
   }
 
   /**
@@ -254,12 +286,12 @@ export class CafeDrawPage {
    * يستدعى من زر 🌐 — يطلب فقط عند الحاجة (لا ترجمة افتراضية).
    */
   translateQuestion() {
-    const q = this.currentQuestion();
-    if (!q) return;
+    const text = this.currentQuestionText();
+    if (!text) return;
     this.translating.set(true);
-    this.translationService.translate(q, this.translationLang()).subscribe({
-      next: (text) => {
-        this.translation.set(text);
+    this.translationService.translate(text, this.translationLang()).subscribe({
+      next: (translated) => {
+        this.translation.set(translated);
         this.translating.set(false);
       },
       error: () => {

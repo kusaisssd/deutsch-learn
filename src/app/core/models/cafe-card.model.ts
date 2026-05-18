@@ -6,6 +6,9 @@
  *
  * الفكرة التعليمية: Output Hypothesis — التحدث الذاتي (Self-Talk)
  * يجبر العقل على إنتاج اللغة و اكتشاف الفجوات.
+ *
+ * 🆕 كل سؤال الآن مقترن بـ sampleAnswer (إجابة نموذجية قصيرة)
+ *    يطلبها المستخدم بزر "Show answer" لو احتاج إلهاماً.
  */
 export interface CafeCategory {
   /** معرّف فريد يُستخدم في URL */
@@ -31,10 +34,31 @@ export interface CafeCategory {
   description: string;
 
   /**
-   * 15 سؤال ألماني مفتوح.
+   * 15 سؤال ألماني مفتوح، كل واحد مع إجابة نموذجية.
    * أسئلة مفتوحة (لا "نعم/لا") لتشجيع المحادثة الطويلة.
    */
-  questions: string[];
+  questions: CafeQuestion[];
+}
+
+/**
+ * سؤال مع إجابة نموذجية مقترحة.
+ *
+ * 🎓 لماذا interface منفصل بدل field آخر في CafeCategory؟
+ *   - تماسك (cohesion): السؤال و إجابته مقترنان داخلياً
+ *   - مرونة (extensibility): سهل إضافة حقول مستقبلية لكل سؤال
+ *     (مثلاً: difficulty, tags, expectedVocab…)
+ *   - وضوح نوعي (type safety): cannot mismatch arrays accidentally
+ */
+export interface CafeQuestion {
+  /** نص السؤال بالألمانية */
+  text: string;
+
+  /**
+   * إجابة نموذجية قصيرة (2-3 جمل) بالألمانية.
+   * تظهر بزر "💡 Show answer" لتعطي المتعلم نموذجاً للمحاكاة.
+   * مستوى المفردات: A2-B1 (مناسب لمعظم المتعلمين).
+   */
+  sampleAnswer: string;
 }
 
 /**

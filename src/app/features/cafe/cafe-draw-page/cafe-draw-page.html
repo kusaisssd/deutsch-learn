@@ -124,13 +124,46 @@
           [class.border-purple-600]="cat.color === 'purple'"
           [class.border-pink-500]="cat.color === 'pink'"
         >
-          <!-- Question -->
-          <div class="flex-1 flex items-center justify-center text-center">
-            <p class="text-sm sm:text-2xl font-medium text-slate-800 leading-relaxed">
-              @if (currentQuestion()) {
-                "{{ currentQuestion() }}"
+          <!--
+            Question + sample-answer area.
+            justify-start (not center) so the answer has room to grow below
+            without pushing the question off-screen.
+          -->
+          <div class="flex-1 overflow-y-auto flex flex-col justify-center">
+            <!-- Question text -->
+            <p class="text-sm sm:text-2xl font-medium text-slate-800 leading-relaxed text-center">
+              @if (currentQuestionText()) {
+                "{{ currentQuestionText() }}"
               }
             </p>
+
+            <!--
+              💡 Sample answer block — only visible when toggled on.
+              Soft amber background, left border accent, scaled down for mobile.
+              The collapsible nature keeps the modal compact by default.
+            -->
+            @if (showAnswer() && currentSampleAnswer()) {
+              <div class="mt-3 sm:mt-4 p-2.5 sm:p-3 bg-amber-50 border-l-4 border-amber-400 rounded-r text-left">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[9px] sm:text-[10px] uppercase tracking-wider text-amber-700 font-bold">
+                    💡 Sample answer
+                  </span>
+                  <!-- Listen to the sample answer (separate from question TTS) -->
+                  <button
+                    type="button"
+                    (click)="playSampleAnswer()"
+                    [disabled]="speech.isSpeaking()"
+                    class="text-amber-700 hover:text-amber-900 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                    title="Listen to the sample answer"
+                  >
+                    🔊
+                  </button>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-700 leading-snug sm:leading-relaxed">
+                  {{ currentSampleAnswer() }}
+                </p>
+              </div>
+            }
           </div>
 
           <!-- Translation (shown only when requested) -->
@@ -149,7 +182,7 @@
     <!-- ───────── Buttons row ───────── -->
     <div class="flex gap-2 sm:gap-3 justify-center flex-wrap">
 
-      <!-- 🔊 Listen -->
+      <!-- 🔊 Listen (to the question) -->
       <button
         type="button"
         (click)="playQuestion()"
@@ -157,6 +190,20 @@
         class="px-3 sm:px-4 py-1.5 sm:py-2 bg-sky-500 text-white rounded-md text-sm font-medium hover:bg-sky-600 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
       >
         🔊 Listen
+      </button>
+
+      <!-- 💡 Show / Hide sample answer -->
+      <button
+        type="button"
+        (click)="toggleAnswer()"
+        class="px-3 sm:px-4 py-1.5 sm:py-2 bg-amber-500 text-white rounded-md text-sm font-medium hover:bg-amber-600 transition-colors"
+        [title]="showAnswer() ? 'Hide the sample answer' : 'Show a suggested answer'"
+      >
+        @if (showAnswer()) {
+          🔼 Hide answer
+        } @else {
+          💡 Show answer
+        }
       </button>
 
       <!-- 🌐 Translate -->
