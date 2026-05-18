@@ -36,22 +36,30 @@
 // ──────────────────────────────────────────────────────────────
 // 🎴 Modal card — الكرت الأبيض الطافي بالسؤال
 //
-// max-height + overflow-y = لو المحتوى أطول من الشاشة، يصبح scrollable داخلياً
-// margin = هامش من حواف الشاشة على الموبايل
-// box-shadow عميق = إيحاء "يطفو فوق الصفحة"
-// animation = ينطلق من scale 0.85 → 1 مع overshoot خفيف
+// 🎯 Sizing strategy:
+//   Mobile: max-width: 340px, max-height: calc(100vh - 5rem)
+//           → modal صغير في الوسط مع ~17px backdrop visible كل جانب
+//           → ~40px backdrop visible أعلى و أسفل
+//           → نفس "floating" feel كالـ desktop تماماً
+//   Desktop: max-width: 640px (نفس السابق)
+//
+// 🧠 لماذا max-width على الموبايل و ليس فقط max-height؟
+//   لو width = 100% - 2rem فقط، البطاقة تبدو "panel" يملأ العرض.
+//   الـ max-width يجبرها أن تبقى مربعة-إيش حتى على الشاشات الأكبر.
+//
+// max-height + overflow-y = scroll داخلي لو المحتوى أطول
+// overscroll-behavior: contain = يمنع scroll الخلفية لما تصل حافة المودال
 // ──────────────────────────────────────────────────────────────
 .lightbox-card {
   position: relative;
   z-index: 1;
   background: white;
   border-radius: 1.25rem;
-  padding: 1.5rem 1rem 1rem;
+  padding: 1rem;
   width: calc(100% - 2rem);
-  max-width: 640px;
-  max-height: calc(100vh - 2rem);
+  max-width: 340px;
+  max-height: calc(100vh - 5rem);
   overflow-y: auto;
-  // overscroll-behavior = يمنع scroll الصفحة الخلفية لو وصلنا حافة scroll الـ modal
   overscroll-behavior: contain;
   box-shadow:
     0 25px 50px -12px rgba(0, 0, 0, 0.5),
@@ -60,6 +68,8 @@
 
   @media (min-width: 640px) {
     padding: 2rem 1.5rem 1.5rem;
+    max-width: 640px;
+    max-height: calc(100vh - 2rem);
   }
 }
 
@@ -94,7 +104,8 @@
   perspective: 1500px;
   position: relative;
   width: 100%;
-  height: 280px;
+  // أصغر على الموبايل (المودال نفسه أصغر، فالكرت يحتاج ارتفاع أقل)
+  height: 200px;
 
   @media (min-width: 640px) {
     height: 320px;

@@ -22,7 +22,7 @@
     type="button"
     (click)="closeModal()"
     aria-label="Close"
-    class="absolute top-3 right-3 w-9 h-9 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 flex items-center justify-center text-lg font-bold transition-colors z-10"
+    class="absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 flex items-center justify-center text-sm sm:text-lg font-bold transition-colors z-10"
   >
     ✕
   </button>
@@ -42,9 +42,13 @@
 
     @let cat = category()!;
 
-    <!-- ───────── Category header ───────── -->
+    <!--
+      Category header — compact على الموبايل لتوفير ارتفاع المودال.
+      على الموبايل: p-2 + flex-row (emoji يسار + نص يمين)
+      على الديسكتوب: p-5 + flex-col (emoji فوق + نص تحت، أبهى بصرياً)
+    -->
     <header
-      class="rounded-xl p-5 mb-6 shadow-md text-white text-center"
+      class="rounded-xl p-2 sm:p-5 mb-3 sm:mb-6 shadow-md text-white flex flex-row sm:flex-col items-center sm:text-center gap-2 sm:gap-0"
       [class.bg-amber-500]="cat.color === 'amber'"
       [class.bg-orange-500]="cat.color === 'orange'"
       [class.bg-teal-500]="cat.color === 'teal'"
@@ -56,13 +60,19 @@
       [class.bg-purple-600]="cat.color === 'purple'"
       [class.bg-pink-500]="cat.color === 'pink'"
     >
-      <div class="text-4xl mb-1">{{ cat.emoji }}</div>
-      <h2 class="text-2xl font-bold uppercase tracking-wide">{{ cat.title }}</h2>
-      <p class="text-sm opacity-90 italic mt-1">{{ cat.titleHelper }}</p>
+      <div class="text-2xl sm:text-4xl shrink-0 sm:mb-1">{{ cat.emoji }}</div>
+      <div class="flex-1 min-w-0">
+        <h2 class="text-sm sm:text-2xl font-bold uppercase tracking-wide leading-tight">
+          {{ cat.title }}
+        </h2>
+        <p class="text-[10px] sm:text-sm opacity-90 italic sm:mt-1 hidden sm:block">
+          {{ cat.titleHelper }}
+        </p>
+      </div>
     </header>
 
     <!-- ───────── Counter ───────── -->
-    <p class="text-center text-sm text-slate-600 mb-4">
+    <p class="text-center text-xs sm:text-sm text-slate-600 mb-2 sm:mb-4">
       Card <strong>{{ drawnSet().size }}</strong> of {{ totalQuestions() }}
       · {{ remainingCount() }} remaining
     </p>
@@ -74,12 +84,12 @@
         - .shown    = currently showing the question (rotateY 180)
       .card-face    = each face uses backface-visibility: hidden
     -->
-    <div class="card-3d-wrap mb-6">
+    <div class="card-3d-wrap mb-3 sm:mb-6">
       <div class="card-3d" [class.shown]="isShowing()">
 
         <!-- ─── BACK of card (closed deck visual) ─── -->
         <div
-          class="card-face card-back rounded-2xl shadow-lg flex flex-col items-center justify-center text-white p-6 select-none"
+          class="card-face card-back rounded-2xl shadow-lg flex flex-col items-center justify-center text-white p-3 sm:p-6 select-none"
           [class.bg-amber-500]="cat.color === 'amber'"
           [class.bg-orange-500]="cat.color === 'orange'"
           [class.bg-teal-500]="cat.color === 'teal'"
@@ -92,17 +102,17 @@
           [class.bg-pink-500]="cat.color === 'pink'"
         >
           <!-- Small branding chip on top of the card back -->
-          <div class="text-[10px] uppercase tracking-[0.3em] opacity-75 mb-2 font-semibold">
+          <div class="text-[9px] sm:text-[10px] uppercase tracking-[0.3em] opacity-75 mb-1 sm:mb-2 font-semibold">
             Café Hope FEG
           </div>
-          <div class="text-6xl mb-3 opacity-90">{{ cat.emoji }}</div>
-          <div class="text-xl font-bold uppercase tracking-widest opacity-90">
+          <div class="text-4xl sm:text-6xl mb-2 sm:mb-3 opacity-90">{{ cat.emoji }}</div>
+          <div class="text-base sm:text-xl font-bold uppercase tracking-widest opacity-90">
             {{ cat.title }}
           </div>
         </div>
 
         <!-- ─── FRONT of card (question revealed) ─── -->
-        <div class="card-face card-front bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-between border-4"
+        <div class="card-face card-front bg-white rounded-2xl shadow-lg p-3 sm:p-6 flex flex-col justify-between border-4"
           [class.border-amber-500]="cat.color === 'amber'"
           [class.border-orange-500]="cat.color === 'orange'"
           [class.border-teal-500]="cat.color === 'teal'"
@@ -116,7 +126,7 @@
         >
           <!-- Question -->
           <div class="flex-1 flex items-center justify-center text-center">
-            <p class="text-xl sm:text-2xl font-medium text-slate-800 leading-relaxed">
+            <p class="text-sm sm:text-2xl font-medium text-slate-800 leading-relaxed">
               @if (currentQuestion()) {
                 "{{ currentQuestion() }}"
               }
@@ -125,9 +135,9 @@
 
           <!-- Translation (shown only when requested) -->
           @if (translation()) {
-            <div class="mt-4 pt-4 border-t border-slate-200 text-center"
+            <div class="mt-2 sm:mt-4 pt-2 sm:pt-4 border-t border-slate-200 text-center"
                  [dir]="translationLang() === 'ar' ? 'rtl' : 'ltr'">
-              <p class="text-sm text-slate-600 italic">
+              <p class="text-xs sm:text-sm text-slate-600 italic">
                 {{ translation() }}
               </p>
             </div>
@@ -144,7 +154,7 @@
         type="button"
         (click)="playQuestion()"
         [disabled]="speech.isSpeaking()"
-        class="px-4 py-2 bg-sky-500 text-white rounded-md text-sm font-medium hover:bg-sky-600 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+        class="px-3 sm:px-4 py-1.5 sm:py-2 bg-sky-500 text-white rounded-md text-sm font-medium hover:bg-sky-600 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
       >
         🔊 Listen
       </button>
@@ -154,7 +164,7 @@
         type="button"
         (click)="translateQuestion()"
         [disabled]="translating()"
-        class="px-4 py-2 bg-amber-500 text-white rounded-md text-sm font-medium hover:bg-amber-600 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+        class="px-3 sm:px-4 py-1.5 sm:py-2 bg-amber-500 text-white rounded-md text-sm font-medium hover:bg-amber-600 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
         [title]="'Translate to ' + (translationLang() === 'en' ? 'English' : 'Arabic')"
       >
         @if (translating()) {
@@ -168,7 +178,7 @@
       <button
         type="button"
         (click)="toggleLang()"
-        class="px-3 py-2 bg-slate-200 text-slate-700 rounded-md text-sm font-medium hover:bg-slate-300 transition-colors"
+        class="px-2 sm:px-3 py-1.5 sm:py-2 bg-slate-200 text-slate-700 rounded-md text-sm font-medium hover:bg-slate-300 transition-colors"
         [title]="'Switch translation language'"
       >
         {{ translationLang() === 'en' ? '🇬🇧 EN' : '🇸🇦 AR' }}
@@ -180,7 +190,7 @@
           type="button"
           (click)="draw()"
           [disabled]="isAnimating()"
-          class="px-5 py-2 text-white rounded-md text-sm font-semibold transition-colors shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-wait"
+          class="px-3 sm:px-5 py-1.5 sm:py-2 text-white rounded-md text-sm font-semibold transition-colors shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-wait"
           [class.bg-amber-600]="cat.color === 'amber'"
           [class.bg-orange-600]="cat.color === 'orange'"
           [class.bg-teal-600]="cat.color === 'teal'"
@@ -200,27 +210,27 @@
           type="button"
           (click)="startOver()"
           [disabled]="isAnimating()"
-          class="px-5 py-2 bg-emerald-600 text-white rounded-md text-sm font-semibold hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-wait transition-colors shadow-md"
+          class="px-3 sm:px-5 py-1.5 sm:py-2 bg-emerald-600 text-white rounded-md text-sm font-semibold hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-wait transition-colors shadow-md"
         >
           🔁 Start over (15 fresh cards)
         </button>
       }
     </div>
 
-    <!-- ───────── Tip ───────── -->
-    <p class="text-center text-xs text-slate-500 mt-6 italic">
+    <!-- ───────── Tip — مخفي على الموبايل (مساحة محدودة في المودال) ───────── -->
+    <p class="text-center text-xs text-slate-500 mt-6 italic hidden sm:block">
       💡 Read the question aloud, then answer out loud — even if no one is listening.
     </p>
 
     <!--
       ⬇️ Back to Cards Table — secondary close button at the bottom
-      complements the ✕ button at the top-right corner.
+      compact على الموبايل (✕ في الأعلى يكفي للموبايل)
     -->
-    <div class="mt-10 pt-6 border-t border-slate-200 text-center">
+    <div class="mt-4 sm:mt-10 pt-3 sm:pt-6 border-t border-slate-200 text-center">
       <button
         type="button"
         (click)="closeModal()"
-        class="inline-block px-5 py-2 bg-slate-200 text-slate-700 rounded-md text-sm font-semibold hover:bg-slate-300 transition-colors"
+        class="inline-block px-3 sm:px-5 py-1.5 sm:py-2 bg-slate-200 text-slate-700 rounded-md text-xs sm:text-sm font-semibold hover:bg-slate-300 transition-colors"
       >
         ⬅ Back to Cards Table
       </button>
