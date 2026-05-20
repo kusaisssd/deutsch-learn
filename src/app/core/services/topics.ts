@@ -108,6 +108,31 @@ Common verbs:
   weh tun (to hurt)
   haben + Schmerzen: Ich habe Kopfschmerzen / Bauchschmerzen / Halsschmerzen`,
     },
+    {
+      id: 'separable-verbs',
+      title: 'Separable Verbs',
+      emoji: '✂️',
+      description:
+        'Trennbare Verben — and how one base verb changes meaning with each prefix.',
+      color: 'indigo',
+      grammarOverview: `Separable verbs SPLIT in the present tense — the prefix jumps to the END:
+  aufstehen → Ich stehe um 7 Uhr AUF.
+  anrufen   → Ich rufe dich morgen AN.
+  einkaufen → Wir kaufen am Samstag EIN.
+
+🔑 The SAME base verb + a different prefix = a totally different meaning:
+  • kommen:  ankommen (arrive) · mitkommen (come along) · zurückkommen (come back)
+  • machen:  aufmachen (open) · zumachen (close) · anmachen (turn on) · ausmachen (turn off)
+  • ziehen:  anziehen (put on) · ausziehen (take off) · umziehen (move house) · einziehen (move in)
+  • steigen: einsteigen (board) · aussteigen (get off) · umsteigen (change/transfer)
+  • stellen: vorstellen (introduce) · anstellen (hire) · einstellen (adjust) · ausstellen (exhibit)
+
+⏳ In the Perfekt, "ge" sits BETWEEN the prefix and the verb:
+  aufstehen → aufGEstanden ·  anrufen → anGErufen ·  einkaufen → einGEkauft
+
+⚠️ Some prefixes are INSEPARABLE (be-, er-, ver-, ent-, emp-, ge-, miss-, zer-):
+  verstehen, bekommen, erzählen — these never split.`,
+    },
   ]);
 
   /** قراءة فقط من الخارج */

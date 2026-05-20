@@ -377,5 +377,145 @@
     { "id": 1464, "level": "B2", "english": "Had I started exercising regularly earlier, my back muscles would be much stronger today", "germanWords": ["Hätte", "ich", "früher", "angefangen", "regelmäßig", "Sport", "zu", "treiben", "wäre", "meine", "Rückenmuskulatur", "heute", "viel", "stärker"], "grammar": "KONJUNKTIV II past (counterfactual): inverted 'Hätte ich' = if I had.\nMain clause Konj II 'wäre … stärker'.\n'Sport treiben' = to do sports (idiom)." },
     { "id": 1465, "level": "B2", "english": "It's important to consult a doctor at the first signs of illness, instead of waiting", "germanWords": ["Es", "ist", "wichtig", "bei", "den", "ersten", "Anzeichen", "einer", "Krankheit", "den", "Arzt", "zu", "konsultieren", "statt", "zu", "warten"], "grammar": "'Es ist wichtig, zu + Inf'.\n'statt + zu + Inf' = instead of doing.\n'bei + Dat' here = at/upon." },
     { "id": 1466, "level": "B2", "english": "During my hospital stay the nurses cared for me around the clock", "germanWords": ["Während", "meines", "Krankenhausaufenthalts", "haben", "die", "Pflegekräfte", "mich", "rund", "um", "die", "Uhr", "betreut"], "grammar": "'während + Gen': 'meines Krankenhausaufenthalts' (long compound noun!).\n'rund um die Uhr' = around the clock (idiom).\nPerfekt: 'haben … betreut'." }
+  ],
+
+  "separable-verbs": [
+    { "id": 1501, "level": "A2", "english": "I get up at seven o'clock", "germanWords": ["Ich", "stehe", "um", "sieben", "Uhr", "auf"], "grammar": "SEPARABLE VERB 'aufstehen' (to get up).\nIn present tense the prefix 'auf' jumps to the END:\n  aufstehen → Ich stehe … auf" },
+    { "id": 1502, "level": "A2", "english": "I wake up at six", "germanWords": ["Ich", "wache", "um", "sechs", "auf"], "hint": "aufwachen (to wake up) → wache … auf" },
+    { "id": 1503, "level": "A2", "english": "On Sunday I sleep in", "germanWords": ["Am", "Sonntag", "schlafe", "ich", "aus"], "hint": "ausschlafen (to sleep in / sleep late)" },
+    { "id": 1504, "level": "B1", "english": "I fall asleep quickly in the evening", "germanWords": ["Am", "Abend", "schlafe", "ich", "schnell", "ein"], "hint": "einschlafen (to fall asleep) — different from ausschlafen!" },
+
+    { "id": 1505, "level": "A2", "english": "The train arrives at eight", "germanWords": ["Der", "Zug", "kommt", "um", "acht", "Uhr", "an"], "grammar": "VERB FAMILY 'kommen' — each prefix changes the meaning:\n• ANkommen = to arrive\n• MITkommen = to come along\n• ZURÜCKkommen = to come back\n• VORBEIkommen = to drop by" },
+    { "id": 1506, "level": "A2", "english": "Are you coming along?", "germanWords": ["Kommst", "du", "mit"], "hint": "mitkommen (to come along)" },
+    { "id": 1507, "level": "A2", "english": "I come back tomorrow", "germanWords": ["Ich", "komme", "morgen", "zurück"], "hint": "zurückkommen (to come back)" },
+    { "id": 1508, "level": "B1", "english": "Come by tonight", "germanWords": ["Komm", "heute", "Abend", "vorbei"], "hint": "vorbeikommen (to drop by) — informal imperative" },
+    { "id": 1509, "level": "A2", "english": "Please come again", "germanWords": ["Bitte", "kommen", "Sie", "wieder"], "hint": "wiederkommen (to come again)" },
+
+    { "id": 1510, "level": "A2", "english": "I open the window", "germanWords": ["Ich", "mache", "das", "Fenster", "auf"], "grammar": "VERB FAMILY 'machen' — opposite meanings by prefix:\n• AUFmachen = to open\n• ZUmachen = to close\n• ANmachen = to turn on\n• AUSmachen = to turn off" },
+    { "id": 1511, "level": "A2", "english": "Please close the door", "germanWords": ["Mach", "bitte", "die", "Tür", "zu"], "hint": "zumachen (to close)" },
+    { "id": 1512, "level": "A2", "english": "I turn on the light", "germanWords": ["Ich", "mache", "das", "Licht", "an"], "hint": "anmachen (to turn on)" },
+    { "id": 1513, "level": "A2", "english": "Turn off the television", "germanWords": ["Mach", "den", "Fernseher", "aus"], "hint": "ausmachen (to turn off)" },
+    { "id": 1514, "level": "B1", "english": "I take part in the German course", "germanWords": ["Ich", "mache", "beim", "Deutschkurs", "mit"], "hint": "mitmachen (to take part / join in)" },
+    { "id": 1515, "level": "B1", "english": "We continue tomorrow", "germanWords": ["Wir", "machen", "morgen", "weiter"], "hint": "weitermachen (to continue / carry on)" },
+
+    { "id": 1516, "level": "A2", "english": "I put on a warm jacket", "germanWords": ["Ich", "ziehe", "eine", "warme", "Jacke", "an"], "grammar": "VERB FAMILY 'ziehen' — very different meanings:\n• ANziehen = to put on (clothes)\n• AUSziehen = to take off / to move out\n• UMziehen = to move house\n• EINziehen = to move in" },
+    { "id": 1517, "level": "A2", "english": "I take off my shoes", "germanWords": ["Ich", "ziehe", "meine", "Schuhe", "aus"], "hint": "ausziehen (to take off clothes / shoes)" },
+    { "id": 1518, "level": "B1", "english": "We are moving house next month", "germanWords": ["Wir", "ziehen", "nächsten", "Monat", "um"], "hint": "umziehen (to move house / relocate)" },
+    { "id": 1519, "level": "B1", "english": "She moves into the new apartment", "germanWords": ["Sie", "zieht", "in", "die", "neue", "Wohnung", "ein"], "hint": "einziehen (to move in)" },
+
+    { "id": 1520, "level": "A2", "english": "Please get in, the train is leaving", "germanWords": ["Bitte", "steigen", "Sie", "ein", "der", "Zug", "fährt"], "grammar": "VERB FAMILY 'steigen' — all about transport:\n• EINsteigen = to get in / board\n• AUSsteigen = to get off\n• UMsteigen = to change / transfer\n• AUFsteigen = to get on / rise" },
+    { "id": 1521, "level": "B1", "english": "I get off at the next stop", "germanWords": ["Ich", "steige", "an", "der", "nächsten", "Haltestelle", "aus"], "hint": "aussteigen (to get off / exit a vehicle)" },
+    { "id": 1522, "level": "B1", "english": "You change trains in Cologne", "germanWords": ["Sie", "steigen", "in", "Köln", "um"], "hint": "umsteigen (to change / transfer between trains)" },
+    { "id": 1523, "level": "B1", "english": "He gets on the bike and rides away", "germanWords": ["Er", "steigt", "aufs", "Fahrrad", "auf"], "hint": "aufsteigen (to get on / mount). 'aufs' = auf das" },
+
+    { "id": 1524, "level": "A2", "english": "I call you tomorrow", "germanWords": ["Ich", "rufe", "dich", "morgen", "an"], "grammar": "VERB FAMILY 'rufen':\n• ANrufen = to call / phone\n• ZURÜCKrufen = to call back\n• AUSrufen = to exclaim / call out" },
+    { "id": 1525, "level": "B1", "english": "I'll call back later", "germanWords": ["Ich", "rufe", "später", "zurück"], "hint": "zurückrufen (to call back)" },
+
+    { "id": 1526, "level": "A2", "english": "I switch on the radio", "germanWords": ["Ich", "schalte", "das", "Radio", "ein"], "grammar": "VERB FAMILY 'schalten':\n• EINschalten = to switch on\n• AUSschalten = to switch off\n• UMschalten = to switch over (channel)\n• ABschalten = to switch off / to relax" },
+    { "id": 1527, "level": "A2", "english": "Please switch off the computer", "germanWords": ["Schalte", "bitte", "den", "Computer", "aus"], "hint": "ausschalten (to switch off)" },
+    { "id": 1528, "level": "B1", "english": "Can you switch the channel?", "germanWords": ["Kannst", "du", "umschalten"], "hint": "umschalten (to switch over) — stays at end after modal verb" },
+    { "id": 1529, "level": "B1", "english": "In the evening I want to switch off completely", "germanWords": ["Am", "Abend", "möchte", "ich", "komplett", "abschalten"], "hint": "abschalten (to relax / 'switch off' mentally)" },
+
+    { "id": 1530, "level": "A2", "english": "The course begins in September", "germanWords": ["Der", "Kurs", "fängt", "im", "September", "an"], "grammar": "'anfangen' (to begin / start). Note the vowel change: ich fange an, du fängst an, er fängt an." },
+    { "id": 1531, "level": "B1", "english": "When do you start work?", "germanWords": ["Wann", "fängst", "du", "mit", "der", "Arbeit", "an"], "hint": "anfangen mit + Dativ (to start with something)" },
+    { "id": 1532, "level": "B1", "english": "I stop smoking", "germanWords": ["Ich", "höre", "mit", "dem", "Rauchen", "auf"], "hint": "aufhören mit + Dativ (to stop doing something)" },
+
+    { "id": 1533, "level": "A2", "english": "I invite you to my party", "germanWords": ["Ich", "lade", "dich", "zu", "meiner", "Party", "ein"], "grammar": "VERB FAMILY 'laden':\n• EINladen = to invite\n• HERUNTERladen = to download\n• HOCHladen = to upload\n• AUFladen = to charge / load up" },
+    { "id": 1534, "level": "B1", "english": "I download the file", "germanWords": ["Ich", "lade", "die", "Datei", "herunter"], "hint": "herunterladen (to download)" },
+    { "id": 1535, "level": "B1", "english": "She uploads the photos", "germanWords": ["Sie", "lädt", "die", "Fotos", "hoch"], "hint": "hochladen (to upload). Note: er/sie lädt (vowel change)" },
+    { "id": 1536, "level": "A2", "english": "I charge my phone every night", "germanWords": ["Ich", "lade", "mein", "Handy", "jeden", "Abend", "auf"], "hint": "aufladen (to charge / recharge)" },
+
+    { "id": 1537, "level": "A2", "english": "I pick you up from the station", "germanWords": ["Ich", "hole", "dich", "vom", "Bahnhof", "ab"], "grammar": "VERB FAMILY 'holen':\n• ABholen = to pick up / collect\n• NACHholen = to catch up on / make up\n• EINholen = to catch up / fetch" },
+    { "id": 1538, "level": "B1", "english": "I have to catch up on the lesson", "germanWords": ["Ich", "muss", "die", "Stunde", "nachholen"], "hint": "nachholen (to catch up on / make up). Stays at end after modal." },
+
+    { "id": 1539, "level": "A2", "english": "I introduce my friend", "germanWords": ["Ich", "stelle", "meinen", "Freund", "vor"], "grammar": "VERB FAMILY 'stellen' — many meanings:\n• VORstellen = to introduce\n• ANstellen = to turn on / to hire\n• EINstellen = to adjust / to hire\n• AUSstellen = to exhibit / to issue\n• ABstellen = to turn off / put down" },
+    { "id": 1540, "level": "B1", "english": "I can imagine that well", "germanWords": ["Das", "kann", "ich", "mir", "gut", "vorstellen"], "grammar": "'sich (Dat) etwas vorstellen' = to imagine something.\nReflexive Dativ: 'mir'. Same verb 'vorstellen' but reflexive = a new meaning!" },
+    { "id": 1541, "level": "B1", "english": "The company hires new employees", "germanWords": ["Die", "Firma", "stellt", "neue", "Mitarbeiter", "ein"], "hint": "einstellen (to hire / employ)" },
+    { "id": 1542, "level": "B1", "english": "I adjust the temperature", "germanWords": ["Ich", "stelle", "die", "Temperatur", "ein"], "hint": "einstellen (to adjust / set) — same verb, context decides meaning" },
+    { "id": 1543, "level": "B1", "english": "The museum exhibits old paintings", "germanWords": ["Das", "Museum", "stellt", "alte", "Bilder", "aus"], "hint": "ausstellen (to exhibit / display)" },
+
+    { "id": 1544, "level": "A2", "english": "I take an umbrella with me", "germanWords": ["Ich", "nehme", "einen", "Regenschirm", "mit"], "grammar": "VERB FAMILY 'nehmen':\n• MITnehmen = to take along\n• ABnehmen = to lose weight / take off\n• ZUnehmen = to gain weight\n• TEILnehmen = to take part\n• ANnehmen = to accept / assume" },
+    { "id": 1545, "level": "B1", "english": "I want to lose some weight", "germanWords": ["Ich", "möchte", "etwas", "abnehmen"], "hint": "abnehmen (to lose weight)" },
+    { "id": 1546, "level": "B1", "english": "He has gained weight over the winter", "germanWords": ["Er", "hat", "im", "Winter", "zugenommen"], "hint": "zunehmen (to gain weight). Perfekt: hat zugenommen" },
+    { "id": 1547, "level": "B1", "english": "I take part in the meeting", "germanWords": ["Ich", "nehme", "an", "der", "Sitzung", "teil"], "hint": "teilnehmen an + Dativ (to participate in)" },
+    { "id": 1548, "level": "B1", "english": "I accept the invitation gladly", "germanWords": ["Ich", "nehme", "die", "Einladung", "gern", "an"], "hint": "annehmen (to accept)" },
+
+    { "id": 1549, "level": "A2", "english": "I bring a cake along", "germanWords": ["Ich", "bringe", "einen", "Kuchen", "mit"], "grammar": "VERB FAMILY 'bringen':\n• MITbringen = to bring along\n• ZURÜCKbringen = to bring back\n• BEIbringen = to teach\n(VERbringen = to spend time — INSEPARABLE!)" },
+    { "id": 1550, "level": "A2", "english": "I bring the book back tomorrow", "germanWords": ["Ich", "bringe", "das", "Buch", "morgen", "zurück"], "hint": "zurückbringen (to bring back / return)" },
+    { "id": 1551, "level": "B1", "english": "She teaches me German", "germanWords": ["Sie", "bringt", "mir", "Deutsch", "bei"], "hint": "beibringen (to teach). 'mir' = Dativ (the learner)" },
+
+    { "id": 1552, "level": "A2", "english": "We go out tonight", "germanWords": ["Wir", "gehen", "heute", "Abend", "aus"], "grammar": "VERB FAMILY 'gehen':\n• AUSgehen = to go out\n• WEGgehen = to go away\n• LOSgehen = to start / set off\n• MITgehen = to go along" },
+    { "id": 1553, "level": "A2", "english": "Please don't go away", "germanWords": ["Geh", "bitte", "nicht", "weg"], "hint": "weggehen (to go away / leave)" },
+    { "id": 1554, "level": "B1", "english": "When does the film start?", "germanWords": ["Wann", "geht", "der", "Film", "los"], "hint": "losgehen (to start / begin — for events)" },
+
+    { "id": 1555, "level": "A2", "english": "The bus departs at nine", "germanWords": ["Der", "Bus", "fährt", "um", "neun", "ab"], "grammar": "VERB FAMILY 'fahren':\n• ABfahren = to depart\n• LOSfahren = to set off\n• MITfahren = to ride along\n• WEGfahren = to drive away / go away" },
+    { "id": 1556, "level": "B1", "english": "We set off early in the morning", "germanWords": ["Wir", "fahren", "früh", "am", "Morgen", "los"], "hint": "losfahren (to set off / drive off)" },
+    { "id": 1557, "level": "A2", "english": "Can I ride along with you?", "germanWords": ["Kann", "ich", "mit", "dir", "mitfahren"], "hint": "mitfahren (to ride along) — stays at end after modal" },
+    { "id": 1558, "level": "B1", "english": "They are going away on the weekend", "germanWords": ["Sie", "fahren", "am", "Wochenende", "weg"], "hint": "wegfahren (to go away / travel away)" },
+
+    { "id": 1559, "level": "A2", "english": "You look tired today", "germanWords": ["Du", "siehst", "heute", "müde", "aus"], "grammar": "VERB FAMILY 'sehen':\n• AUSsehen = to look / appear\n• FERNsehen = to watch TV\n• ANsehen = to look at / watch\n• ZUsehen = to watch (observe)" },
+    { "id": 1560, "level": "A2", "english": "In the evening I watch television", "germanWords": ["Am", "Abend", "sehe", "ich", "fern"], "hint": "fernsehen (to watch TV)" },
+    { "id": 1561, "level": "B1", "english": "I'd like to watch this film", "germanWords": ["Ich", "möchte", "mir", "diesen", "Film", "ansehen"], "hint": "sich (Dat) etwas ansehen (to watch / look at something)" },
+
+    { "id": 1562, "level": "A2", "english": "I go shopping on Saturday", "germanWords": ["Ich", "kaufe", "am", "Samstag", "ein"], "grammar": "'einkaufen' (to go shopping / buy groceries).\nDon't confuse with 'kaufen' (to buy a specific thing):\n  Ich kaufe Brot. vs. Ich kaufe ein. (I do the shopping.)" },
+    { "id": 1563, "level": "A2", "english": "I pack my suitcase", "germanWords": ["Ich", "packe", "meinen", "Koffer", "ein"], "grammar": "'einpacken' (to pack) vs 'auspacken' (to unpack) — opposite prefixes." },
+    { "id": 1564, "level": "A2", "english": "I unpack the gifts", "germanWords": ["Ich", "packe", "die", "Geschenke", "aus"], "hint": "auspacken (to unpack)" },
+
+    { "id": 1565, "level": "A2", "english": "I tidy up my room", "germanWords": ["Ich", "räume", "mein", "Zimmer", "auf"], "grammar": "VERB FAMILY 'räumen':\n• AUFräumen = to tidy up\n• WEGräumen = to put away / clear away\n• AUSräumen = to clear out / empty" },
+    { "id": 1566, "level": "B1", "english": "Please put the toys away", "germanWords": ["Räum", "bitte", "die", "Spielsachen", "weg"], "hint": "wegräumen (to put away)" },
+
+    { "id": 1567, "level": "B1", "english": "I prepare the meal for the guests", "germanWords": ["Ich", "bereite", "das", "Essen", "für", "die", "Gäste", "vor"], "grammar": "VERB FAMILY 'vor-' (often = before / in advance):\n• VORbereiten = to prepare\n• VORhaben = to plan / intend\n• VORschlagen = to suggest" },
+    { "id": 1568, "level": "B1", "english": "What do you have planned today?", "germanWords": ["Was", "hast", "du", "heute", "vor"], "hint": "vorhaben (to plan / have planned)" },
+    { "id": 1569, "level": "B1", "english": "I suggest a nice restaurant", "germanWords": ["Ich", "schlage", "ein", "schönes", "Restaurant", "vor"], "hint": "vorschlagen (to suggest / propose)" },
+
+    { "id": 1570, "level": "A2", "english": "I give the money back", "germanWords": ["Ich", "gebe", "das", "Geld", "zurück"], "grammar": "VERB FAMILY 'geben':\n• ZURÜCKgeben = to give back / return\n• AUSgeben = to spend (money)\n• ABgeben = to hand in / drop off" },
+    { "id": 1571, "level": "B1", "english": "I spend too much money on clothes", "germanWords": ["Ich", "gebe", "zu", "viel", "Geld", "für", "Kleidung", "aus"], "hint": "ausgeben (to spend money)" },
+    { "id": 1572, "level": "B1", "english": "I hand in the homework on Monday", "germanWords": ["Ich", "gebe", "die", "Hausaufgaben", "am", "Montag", "ab"], "hint": "abgeben (to hand in / submit)" },
+
+    { "id": 1573, "level": "A2", "english": "Watch out, a car is coming!", "germanWords": ["Pass", "auf", "ein", "Auto", "kommt"], "hint": "aufpassen (to watch out / pay attention)" },
+    { "id": 1574, "level": "B1", "english": "I offer you a cup of coffee", "germanWords": ["Ich", "biete", "dir", "eine", "Tasse", "Kaffee", "an"], "hint": "anbieten (to offer)" },
+    { "id": 1575, "level": "B1", "english": "I throw the old newspaper away", "germanWords": ["Ich", "werfe", "die", "alte", "Zeitung", "weg"], "hint": "wegwerfen (to throw away). er/sie wirft (vowel change)" },
+    { "id": 1576, "level": "B1", "english": "Please fill out this form", "germanWords": ["Füllen", "Sie", "bitte", "dieses", "Formular", "aus"], "grammar": "'ausfüllen' (to fill out a form).\nFormal imperative: Verb + Sie → 'Füllen Sie … aus'." },
+    { "id": 1577, "level": "B1", "english": "She hangs up the phone", "germanWords": ["Sie", "legt", "den", "Hörer", "auf"], "grammar": "VERB FAMILY 'legen':\n• AUFlegen = to hang up (phone)\n• HINlegen = to lay down\n• ANlegen = to invest / dock" },
+    { "id": 1578, "level": "B1", "english": "I invest my money safely", "germanWords": ["Ich", "lege", "mein", "Geld", "sicher", "an"], "hint": "anlegen (to invest money)" },
+
+    { "id": 1579, "level": "B1", "english": "We work together on the project", "germanWords": ["Wir", "arbeiten", "zusammen", "an", "dem", "Projekt"], "hint": "zusammenarbeiten (to work together / collaborate)" },
+    { "id": 1580, "level": "B1", "english": "The meeting takes place tomorrow", "germanWords": ["Die", "Besprechung", "findet", "morgen", "statt"], "hint": "stattfinden (to take place / happen)" },
+
+    { "id": 1581, "level": "A2", "english": "I come along to the cinema", "germanWords": ["Ich", "komme", "ins", "Kino", "mit"], "hint": "mitkommen (to come along). 'ins' = in das" },
+    { "id": 1582, "level": "A2", "english": "We arrive in Berlin in the evening", "germanWords": ["Wir", "kommen", "am", "Abend", "in", "Berlin", "an"], "hint": "ankommen (to arrive)" },
+    { "id": 1583, "level": "A2", "english": "I bring my sister along", "germanWords": ["Ich", "bringe", "meine", "Schwester", "mit"], "hint": "mitbringen (to bring along)" },
+    { "id": 1584, "level": "A2", "english": "Please turn on the heating", "germanWords": ["Mach", "bitte", "die", "Heizung", "an"], "hint": "anmachen (to turn on)" },
+    { "id": 1585, "level": "A2", "english": "I close the window because it's cold", "germanWords": ["Ich", "mache", "das", "Fenster", "zu", "weil", "es", "kalt", "ist"], "grammar": "'zumachen' (to close). 'weil' pushes the verb 'ist' to the END of its clause." },
+    { "id": 1586, "level": "A2", "english": "She puts on her coat", "germanWords": ["Sie", "zieht", "ihren", "Mantel", "an"], "hint": "anziehen (to put on)" },
+    { "id": 1587, "level": "A2", "english": "Get in, please, we are late", "germanWords": ["Steig", "bitte", "ein", "wir", "sind", "spät"], "hint": "einsteigen (to get in / board) — informal imperative 'steig … ein'" },
+    { "id": 1588, "level": "A2", "english": "I pick up my children from school", "germanWords": ["Ich", "hole", "meine", "Kinder", "von", "der", "Schule", "ab"], "hint": "abholen (to pick up)" },
+
+    { "id": 1589, "level": "B1", "english": "Unfortunately I have to cancel the appointment", "germanWords": ["Leider", "muss", "ich", "den", "Termin", "absagen"], "grammar": "VERB FAMILY 'sagen':\n• ABsagen = to cancel\n• ZUsagen = to accept / confirm\n• AUSsagen = to state / testify\nStays at the end after a modal verb ('muss … absagen')." },
+    { "id": 1590, "level": "B1", "english": "I confirm the appointment for Friday", "germanWords": ["Ich", "sage", "den", "Termin", "für", "Freitag", "zu"], "hint": "zusagen (to accept / confirm an invitation)" },
+    { "id": 1591, "level": "B1", "english": "The plane takes off at noon", "germanWords": ["Das", "Flugzeug", "hebt", "um", "Mittag", "ab"], "hint": "abheben (to take off — plane / to withdraw money)" },
+    { "id": 1592, "level": "B1", "english": "I withdraw money from the bank", "germanWords": ["Ich", "hebe", "Geld", "von", "der", "Bank", "ab"], "hint": "abheben (to withdraw money) — same verb, different context!" },
+    { "id": 1593, "level": "B1", "english": "Please write down your address", "germanWords": ["Schreiben", "Sie", "bitte", "Ihre", "Adresse", "auf"], "grammar": "VERB FAMILY 'schreiben':\n• AUFschreiben = to write down / note\n• ABschreiben = to copy\n• UNTERschreiben = to sign (INSEPARABLE)" },
+    { "id": 1594, "level": "B1", "english": "The student copies the answer", "germanWords": ["Der", "Schüler", "schreibt", "die", "Antwort", "ab"], "hint": "abschreiben (to copy / cheat)" },
+
+    { "id": 1595, "level": "A2", "english": "I look forward to the weekend", "germanWords": ["Ich", "freue", "mich", "auf", "das", "Wochenende"], "grammar": "'sich freuen auf + Akkusativ' (to look forward to).\nReflexive verb — not separable, but a very common pattern with a fixed preposition." },
+    { "id": 1596, "level": "B1", "english": "We are looking for an apartment and want to move soon", "germanWords": ["Wir", "suchen", "eine", "Wohnung", "und", "wollen", "bald", "umziehen"], "hint": "umziehen (to move house) stays at end after modal 'wollen'" },
+    { "id": 1597, "level": "B1", "english": "When the lesson starts, I switch off my phone", "germanWords": ["Wenn", "der", "Unterricht", "anfängt", "schalte", "ich", "mein", "Handy", "aus"], "grammar": "Two separable verbs!\n'anfangen' in a 'wenn'-clause → 'anfängt' joined at clause end.\nMain clause: 'schalte … aus' (ausschalten)." },
+    { "id": 1598, "level": "B1", "english": "I get up early although I am tired", "germanWords": ["Ich", "stehe", "früh", "auf", "obwohl", "ich", "müde", "bin"], "hint": "aufstehen + 'obwohl' clause (verb 'bin' at the end)" },
+
+    { "id": 1599, "level": "A2", "english": "We meet up at the train station", "germanWords": ["Wir", "treffen", "uns", "am", "Bahnhof"], "hint": "sich treffen (to meet up) — reflexive, common everyday verb" },
+    { "id": 1600, "level": "B1", "english": "First I turn on the oven, then I prepare the dough", "germanWords": ["Zuerst", "schalte", "ich", "den", "Ofen", "ein", "dann", "bereite", "ich", "den", "Teig", "vor"], "grammar": "Two separable verbs in sequence:\n'einschalten' → schalte … ein\n'vorbereiten' → bereite … vor\n'zuerst … dann' = first … then." },
+
+    { "id": 1601, "level": "A2", "english": "The shop closes at eight", "germanWords": ["Das", "Geschäft", "macht", "um", "acht", "zu"], "hint": "zumachen (to close — shops, doors)" },
+    { "id": 1602, "level": "A2", "english": "The bakery opens early", "germanWords": ["Die", "Bäckerei", "macht", "früh", "auf"], "hint": "aufmachen (to open)" },
+    { "id": 1603, "level": "B1", "english": "I have to fill up the car with petrol", "germanWords": ["Ich", "muss", "das", "Auto", "volltanken"], "hint": "volltanken (to fill up with fuel) — stays at end after modal" },
+    { "id": 1604, "level": "B1", "english": "Don't forget to turn off the lights", "germanWords": ["Vergiss", "nicht", "das", "Licht", "auszumachen"], "grammar": "INFINITIVE WITH 'zu' of a separable verb:\n'ausmachen' → 'aus·ZU·machen' (the 'zu' goes INSIDE, between prefix and verb)." },
+    { "id": 1605, "level": "B1", "english": "It's important to fill out the application correctly", "germanWords": ["Es", "ist", "wichtig", "den", "Antrag", "richtig", "auszufüllen"], "hint": "ausfüllen → 'aus·zu·füllen' (zu inside)" },
+
+    { "id": 1606, "level": "B1", "english": "Yesterday I got up late and missed the bus", "germanWords": ["Gestern", "bin", "ich", "spät", "aufgestanden", "und", "habe", "den", "Bus", "verpasst"], "grammar": "PERFEKT of separable verbs: 'ge' goes BETWEEN prefix and stem.\naufstehen → auf·GE·standen (with 'sein': bin aufgestanden)." },
+    { "id": 1607, "level": "B1", "english": "I called you yesterday but you didn't pick up", "germanWords": ["Ich", "habe", "dich", "gestern", "angerufen", "aber", "du", "bist", "nicht", "rangegangen"], "hint": "Perfekt: anrufen → an·GE·rufen (habe angerufen)" },
+    { "id": 1608, "level": "B1", "english": "We invited many friends and cooked together", "germanWords": ["Wir", "haben", "viele", "Freunde", "eingeladen", "und", "zusammen", "gekocht"], "hint": "Perfekt: einladen → ein·GE·laden (haben eingeladen)" },
+    { "id": 1609, "level": "B2", "english": "After I had unpacked my suitcase, I tidied up the whole apartment", "germanWords": ["Nachdem", "ich", "meinen", "Koffer", "ausgepackt", "hatte", "habe", "ich", "die", "ganze", "Wohnung", "aufgeräumt"], "grammar": "Two separable verbs in Perfekt/Plusquamperfekt:\nauspacken → ausgepackt; aufräumen → aufgeräumt.\n'nachdem' (after) takes Plusquamperfekt: 'hatte … ausgepackt'." },
+    { "id": 1610, "level": "B2", "english": "If you switch off your phone in the evening, you fall asleep more easily", "germanWords": ["Wenn", "du", "abends", "dein", "Handy", "ausschaltest", "schläfst", "du", "leichter", "ein"], "grammar": "Two separable verbs in a 'wenn'-clause + main clause:\nausschalten → 'ausschaltest' (joined at clause end)\neinschlafen → 'schläfst … ein' (split, V2 main clause)." }
   ]
 }
