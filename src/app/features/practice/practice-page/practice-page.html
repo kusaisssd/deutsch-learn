@@ -25,7 +25,7 @@
     @let s = sentence()!;
 
     <!-- ───────── Header ───────── -->
-    <header class="mb-6 flex items-center justify-between">
+    <header class="mb-3 flex items-center justify-between">
       <a
         [routerLink]="['/levels', s.level, 'sentences']"
         class="text-emerald-600 hover:underline text-sm"
@@ -38,15 +38,15 @@
     </header>
 
     <!-- ───────── English sentence ───────── -->
-    <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-slate-200">
-      <p class="text-xs text-slate-500 uppercase tracking-wide mb-2">
+    <div class="bg-white rounded-xl shadow-sm p-4 mb-3 border border-slate-200">
+      <p class="text-xs text-slate-500 uppercase tracking-wide mb-1">
         Translate to German:
       </p>
-      <p class="text-2xl font-medium text-slate-800">
+      <p class="text-xl sm:text-2xl font-medium text-slate-800">
         "{{ s.english }}"
       </p>
       @if (s.hint) {
-        <p class="text-sm text-slate-500 mt-3">
+        <p class="text-sm text-slate-500 mt-2">
           💡 {{ s.hint }}
         </p>
       }
@@ -58,7 +58,7 @@
         نعرض القسم فقط إذا كانت الجملة فيها حقل grammar.
         @if (s.grammar) = نفس النمط الذي اعتدنا عليه في @if في Razor.
       -->
-      <div class="mb-6 rounded-xl border border-blue-200 bg-blue-50 overflow-hidden">
+      <div class="mb-3 rounded-xl border border-blue-200 bg-blue-50 overflow-hidden">
         <!--
           الزر يبدّل grammarOpen.
           (click) = حدث Angular؛ يستدعي toggleGrammar في الـ component.
@@ -66,7 +66,7 @@
         <button
           type="button"
           (click)="toggleGrammar()"
-          class="w-full flex items-center justify-between p-3 text-left hover:bg-blue-100 transition-colors"
+          class="w-full flex items-center justify-between p-2.5 text-left hover:bg-blue-100 transition-colors"
         >
           <span class="text-sm font-semibold text-blue-900 flex items-center gap-2">
             📖 Grammar tip
@@ -93,8 +93,8 @@
     }
 
     <!-- ───────── Answer area (selectedWords) ───────── -->
-    <div class="mb-4">
-      <p class="text-sm font-semibold text-slate-700 mb-2">Your answer:</p>
+    <div class="mb-2">
+      <p class="text-sm font-semibold text-slate-700 mb-1">Your answer:</p>
 
       <!--
         Dynamic [class] changes border color based on status:
@@ -112,7 +112,7 @@
         cdkDropList
         cdkDropListOrientation="horizontal"
         (cdkDropListDropped)="drop($event)"
-        class="min-h-[80px] rounded-lg p-3 border-2 border-dashed flex flex-wrap gap-2 items-start transition-colors"
+        class="min-h-[60px] rounded-lg p-2 border-2 border-dashed flex flex-wrap gap-2 items-start transition-colors"
         [class.border-slate-300]="status() === 'building'"
         [class.bg-slate-50]="status() === 'building'"
         [class.border-green-500]="status() === 'correct'"
@@ -147,9 +147,9 @@
     </div>
 
     <!-- ───────── Available words ───────── -->
-    <div class="mb-6">
-      <p class="text-sm font-semibold text-slate-700 mb-2">Available words:</p>
-      <div class="min-h-[60px] flex flex-wrap gap-2">
+    <div class="mb-3">
+      <p class="text-sm font-semibold text-slate-700 mb-1">Available words:</p>
+      <div class="min-h-[48px] flex flex-wrap gap-2">
         @for (tile of availableWords(); track tile.originalIndex) {
           <app-word-tile
             [word]="tile.word"
@@ -164,32 +164,29 @@
       </div>
     </div>
 
-    <!-- ───────── Result messages ───────── -->
+    <!-- ───────── Result messages (compact, single line) ───────── -->
     @if (status() === 'correct' && !helpUsed()) {
       <!-- نجاح حقيقي - بدون استخدام Help -->
-      <div class="bg-green-100 border border-green-400 rounded-lg p-4 mb-4 text-center">
-        <p class="text-2xl mb-1">✅ Sehr gut!</p>
-        <p class="text-green-800">Correct! Click "Next" for the next sentence.</p>
+      <div class="bg-green-100 border border-green-400 rounded-lg p-2.5 mb-3 text-center">
+        <p class="text-green-800 font-medium">✅ Sehr gut! Correct — click "Next".</p>
       </div>
     } @else if (status() === 'correct' && helpUsed()) {
       <!-- الإجابة كُشفت عبر Help - رسالة مختلفة، لا تظهر "Sehr gut!" -->
-      <div class="bg-amber-100 border border-amber-400 rounded-lg p-4 mb-4 text-center">
-        <p class="text-xl mb-1">💡 Answer revealed</p>
-        <p class="text-amber-800">Study the correct order, then try this sentence again later to mark it as done.</p>
+      <div class="bg-amber-100 border border-amber-400 rounded-lg p-2.5 mb-3 text-center">
+        <p class="text-amber-800 text-sm">💡 Answer revealed — study it, then try again later to mark it done.</p>
       </div>
     } @else if (status() === 'wrong') {
-      <div class="bg-red-100 border border-red-400 rounded-lg p-4 mb-4 text-center">
-        <p class="text-xl mb-1">❌ Not quite!</p>
-        <p class="text-red-800">The order is incorrect. Try again.</p>
+      <div class="bg-red-100 border border-red-400 rounded-lg p-2.5 mb-3 text-center">
+        <p class="text-red-800 font-medium">❌ Not quite! The order is incorrect — try again.</p>
       </div>
     }
 
     <!-- ───────── Buttons ───────── -->
-    <div class="flex gap-3 justify-center flex-wrap">
+    <div class="flex gap-2 justify-center flex-wrap">
       <button
         type="button"
         (click)="reset()"
-        class="px-5 py-2.5 bg-slate-200 text-slate-700 rounded-md font-medium hover:bg-slate-300 transition-colors"
+        class="px-4 py-2 bg-slate-200 text-slate-700 rounded-md font-medium hover:bg-slate-300 transition-colors"
       >
         🔄 Reset
       </button>
@@ -203,7 +200,7 @@
         type="button"
         (click)="showHelp()"
         [disabled]="status() === 'correct'"
-        class="px-5 py-2.5 bg-amber-500 text-white rounded-md font-medium hover:bg-amber-600 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+        class="px-4 py-2 bg-amber-500 text-white rounded-md font-medium hover:bg-amber-600 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
         title="Reveals the answer but doesn't count as completed"
       >
         💡 Help
@@ -218,7 +215,7 @@
         type="button"
         (click)="playSentence()"
         [disabled]="speech.isSpeaking()"
-        class="px-5 py-2.5 bg-sky-500 text-white rounded-md font-medium hover:bg-sky-600 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+        class="px-4 py-2 bg-sky-500 text-white rounded-md font-medium hover:bg-sky-600 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
         title="Hear the correct German pronunciation"
       >
         🔊 Listen
@@ -228,7 +225,7 @@
         type="button"
         (click)="check()"
         [disabled]="!allWordsSelected() || status() === 'correct'"
-        class="px-5 py-2.5 bg-emerald-600 text-white rounded-md font-medium hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+        class="px-4 py-2 bg-emerald-600 text-white rounded-md font-medium hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
       >
         ✓ Check
       </button>
@@ -236,7 +233,7 @@
       <button
         type="button"
         (click)="goToNextSentence()"
-        class="px-5 py-2.5 bg-green-600 text-white rounded-md font-medium hover:bg-green-700 transition-colors"
+        class="px-4 py-2 bg-green-600 text-white rounded-md font-medium hover:bg-green-700 transition-colors"
       >
         Next →
       </button>
