@@ -1,19 +1,19 @@
-<section class="max-w-3xl mx-auto">
+<section class="max-w-3xl mx-auto" dir="rtl">
 
-  <!-- Heading -->
+  <!-- Heading (عربي) -->
   <header class="text-center mb-6 sm:mb-8">
     <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
-      🎓 Courses
+      🎓 المنهج الكامل
     </h2>
     <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
-      A structured, step-by-step path — like a real language course. Follow the
-      lessons in order; each one unlocks the next.
+      مسار تعليمي مُمنهج خطوة بخطوة — مثل الكتاب الحقيقي. اتبع الدروس بالترتيب؛
+      كل درس يفتح الذي يليه.
     </p>
   </header>
 
   @if (!loaded()) {
     <div class="text-center py-12 text-slate-500">
-      <div class="inline-block animate-pulse">Loading courses…</div>
+      <div class="inline-block animate-pulse">جارٍ التحميل…</div>
     </div>
   } @else {
 
@@ -24,9 +24,7 @@
 
         <a
           [routerLink]="['/courses', course.id]"
-          class="block rounded-xl border-2 bg-white hover:shadow-lg hover:-translate-y-1 transition-all p-5 group"
-          [class.border-indigo-200]="course.color === 'indigo'"
-          [class.hover:border-indigo-500]="course.color === 'indigo'"
+          class="block rounded-xl border-2 border-indigo-200 bg-white hover:border-indigo-500 hover:shadow-lg hover:-translate-y-1 transition-all p-5 group"
         >
           <div class="flex items-start gap-4">
             <div class="text-4xl shrink-0">{{ course.emoji }}</div>
@@ -41,10 +39,10 @@
 
               <!-- Progress -->
               <div class="flex items-center justify-between text-xs text-slate-600 mb-1">
-                <span>{{ course.lektionen.length }} lessons</span>
-                <span class="font-semibold">{{ stats.done }} / {{ stats.total }} done</span>
+                <span>{{ course.lektionen.length }} دروس</span>
+                <span class="font-semibold">{{ stats.done }} / {{ stats.total }} مُنجَز</span>
               </div>
-              <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
+              <div class="h-2 bg-slate-200 rounded-full overflow-hidden" dir="ltr">
                 <div
                   class="h-full bg-indigo-500 transition-all duration-500"
                   [style.width.%]="percent"
@@ -54,12 +52,12 @@
           </div>
         </a>
       } @empty {
-        <p class="text-center text-slate-500 py-12">No courses available yet.</p>
+        <p class="text-center text-slate-500 py-12">لا توجد مناهج متاحة بعد.</p>
       }
     </div>
 
-    <p class="text-center text-xs text-slate-400 mt-8 italic">
-      More levels (A1, A2, B2) coming soon.
+    <p class="text-center text-xs text-slate-400 mt-8">
+      مستويات أخرى (A1، B2) قريباً.
     </p>
   }
 
