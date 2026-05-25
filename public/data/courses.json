@@ -196,7 +196,7 @@
     "id": "b1",
     "level": "B1",
     "title": "B1 — Selbstständige Sprachverwendung",
-    "description": "A structured B1 course: 5 lessons that build real independence in German — relationships, work, living, health and travel.",
+    "description": "منهج B1 تفاعلي: 10 دروس تبني استقلالاً حقيقياً في الألمانية — العلاقات، العمل، السكن، الصحة، السفر، الإعلام، التعليم، المال و أكثر. مع قراءة، تحدّث و قواعد متقدّمة.",
     "emoji": "🎓",
     "color": "indigo",
     "lektionen": [
@@ -488,23 +488,44 @@
           { "kind": "reading", "section": "📰 القسم ٣: القراءة",
             "title": "Text: Der erste Arbeitstag",
             "lines": [
-              "Sara hat sich um eine Stelle als Designerin beworben und das Gespräch war erfolgreich.",
+              "Sara hat sich um eine Stelle als Designerin beworben und das Vorstellungsgespräch war erfolgreich.",
               "An ihrem ersten Tag war sie nervös. „Könnten Sie mir bitte mein Büro zeigen?\", fragte sie höflich.",
               "Ihre Kollegin lächelte: „Natürlich! An deiner Stelle würde ich zuerst einen Kaffee trinken.\"",
+              "Sara dachte: „Ich hätte gern solche netten Kollegen in meinem alten Job gehabt.\"",
               "Am Ende des Tages war sie sicher: Diese Entscheidung war richtig."
             ],
-            "translation": "تقدّمت سارة لوظيفة مصمّمة و نجحت المقابلة. في يومها الأول كانت متوتّرة، فسألت بأدب أن تُريها مكتبها. ابتسمت زميلتها و اقترحت أن تشرب قهوة أولاً. في نهاية اليوم كانت متأكّدة أن القرار صحيح.",
-            "question": "كيف طلبت سارة أن تُريها مكتبها؟",
-            "options": ["بصيغة مهذّبة: Könnten Sie …?", "بأمر مباشر: Zeig mir!", "لم تسأل"],
-            "correct": 0,
-            "explanation": "استخدمت Konjunktiv II للتأدّب: «Könnten Sie mir bitte mein Büro zeigen?»." },
+            "translation": "تقدّمت سارة لوظيفة مصمّمة و نجحت المقابلة. في يومها الأول كانت متوتّرة، فسألت بأدب أن تُريها مكتبها. ابتسمت زميلتها و اقترحت أن تشرب قهوة أولاً. فكّرت سارة: «كنت أتمنّى لو كان لديّ زملاء لطفاء كهؤلاء في عملي السابق». في نهاية اليوم كانت متأكّدة أن القرار صحيح.",
+            "questions": [
+              { "question": "لأي وظيفة تقدّمت سارة؟",
+                "options": ["مصمّمة", "طبّاخة", "معلّمة"],
+                "correct": 0,
+                "explanation": "«…um eine Stelle als Designerin beworben» — مصمّمة." },
+              { "question": "كيف طلبت سارة أن تُريها مكتبها؟",
+                "options": ["بصيغة مهذّبة: Könnten Sie …?", "بأمر مباشر: Zeig mir!", "لم تسأل"],
+                "correct": 0,
+                "explanation": "استخدمت Konjunktiv II للتأدّب: «Könnten Sie mir bitte mein Büro zeigen?»." },
+              { "question": "بماذا نصحتها زميلتها؟",
+                "options": ["أن تشرب قهوة أولاً", "أن تعود للبيت", "أن تستقيل"],
+                "correct": 0,
+                "explanation": "«An deiner Stelle würde ich zuerst einen Kaffee trinken» — نصيحة بـ Konjunktiv II." }
+            ] },
+
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "استمع ثم انطق هذا الطلب المهذّب بصوت عالٍ:",
+            "text": "Könnten Sie mir bitte helfen?",
+            "hint": "Könnten = أكثر تأدّباً من Können. اضغط 🔊 ثم 🎤 (اختياري)." },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "انطق هذه الأمنية المهذّبة:",
+            "text": "Ich hätte gern einen Termin.",
+            "hint": "Ich hätte gern … = أودّ أن أحصل على… (تعبير مهذّب شائع)." },
 
           { "kind": "recap", "section": "🎉 المراجعة",
             "title": "أحسنت! أكملت الدرس",
             "points": [
               "مفردات العمل: die Bewerbung، das Vorstellungsgespräch، sich bewerben um، kündigen.",
               "Konjunktiv II للتأدّب و الافتراض: würde + مصدر، hätte، wäre، könnte.",
-              "ثلاثة استخدامات: طلب مهذّب، أمنية، نصيحة (an deiner Stelle würde ich …)."
+              "ثلاثة استخدامات: طلب مهذّب، أمنية، نصيحة (an deiner Stelle würde ich …).",
+              "تدرّبت على النطق! كرّر الطلبات المهذّبة بصوت عالٍ."
             ] }
         ]
       },
@@ -613,20 +634,41 @@
               "Max: Guten Tag, ich rufe wegen des Zimmers an. Ist es noch frei?",
               "Vermieterin: Ja! Das Zimmer liegt neben der Küche.",
               "Max: Darf ich meine Möbel mitbringen?",
-              "Vermieterin: Natürlich. Sie können das Bett ans Fenster stellen."
+              "Vermieterin: Natürlich. Sie können das Bett ans Fenster stellen.",
+              "Max: Super! In der hellen Wohnung würde ich mich bestimmt wohlfühlen."
             ],
-            "translation": "إعلان عن غرفة في شقّة وسط المدينة بـ400 يورو + تكاليف إضافية. يتّصل ماكس و يسأل إن كانت متاحة. تخبره المالكة أن الغرفة بجانب المطبخ، و يمكنه إحضار أثاثه و وضع السرير عند النافذة.",
-            "question": "أين تقع الغرفة؟ (an + Dativ = مكان)",
-            "options": ["بجانب المطبخ (neben der Küche)", "في الحديقة", "تحت السلّم"],
-            "correct": 0,
-            "explanation": "«Das Zimmer liegt neben der Küche» — neben + Dativ (der Küche) لأنه مكان ثابت (Wo?)." },
+            "translation": "إعلان عن غرفة في شقّة وسط المدينة بـ400 يورو + تكاليف إضافية. يتّصل ماكس و يسأل إن كانت متاحة. تخبره المالكة أن الغرفة بجانب المطبخ، و يمكنه إحضار أثاثه و وضع السرير عند النافذة. يقول ماكس إنه سيشعر بالراحة في الشقّة المضيئة.",
+            "questions": [
+              { "question": "كم إيجار الغرفة؟",
+                "options": ["400 يورو + تكاليف إضافية", "100 يورو فقط", "مجاني"],
+                "correct": 0,
+                "explanation": "«Miete: 400 Euro plus Nebenkosten»." },
+              { "question": "أين تقع الغرفة؟ (an + Dativ = مكان)",
+                "options": ["بجانب المطبخ (neben der Küche)", "في الحديقة", "تحت السلّم"],
+                "correct": 0,
+                "explanation": "«Das Zimmer liegt neben der Küche» — neben + Dativ (مكان ثابت)." },
+              { "question": "أين يستطيع ماكس وضع السرير؟ (حركة → Akkusativ)",
+                "options": ["عند النافذة (ans Fenster)", "في المطبخ", "خارج الشقّة"],
+                "correct": 0,
+                "explanation": "«das Bett ans Fenster stellen» — an + Akkusativ (حركة، Wohin?)." }
+            ] },
+
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "استمع ثم انطق هذه الجملة (مكان ثابت → Dativ):",
+            "text": "Das Bild hängt an der Wand.",
+            "hint": "Wo? مكان ثابت → an DER Wand." },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "انطق هذه الجملة (حركة → Akkusativ):",
+            "text": "Ich hänge das Bild an die Wand.",
+            "hint": "Wohin? حركة باتجاه → an DIE Wand." },
 
           { "kind": "recap", "section": "🎉 المراجعة",
             "title": "أحسنت! أكملت الدرس",
             "points": [
               "Wechselpräpositionen: Wo? (مكان) → Dativ، Wohin? (حركة) → Akkusativ.",
               "التسعة: in, an, auf, über, unter, vor, hinter, neben, zwischen.",
-              "نهايات الصفات بعد der/die/das: «-e» في الفاعل المفرد، و «-en» في معظم الباقي."
+              "نهايات الصفات بعد der/die/das: «-e» في الفاعل المفرد، و «-en» في معظم الباقي.",
+              "تدرّبت على النطق! ميّز بصوتك بين «an der» و «an die»."
             ] }
         ]
       },
@@ -717,21 +759,42 @@
             "lines": [
               "Markus arbeitet viel und hat oft Stress. Obwohl er weiß, dass das ungesund ist, macht er selten Pausen.",
               "Letztes Jahr war er ständig müde. Deshalb hat er seinen Lebensstil geändert.",
-              "Jetzt macht er morgens Sport. Trotzdem schafft er seine ganze Arbeit.",
+              "Jetzt steht er früher auf und macht morgens Sport. Trotzdem schafft er seine ganze Arbeit.",
+              "„Ich achte jetzt mehr auf meine Ernährung und vermeide zu viel Kaffee\", sagt er.",
               "Sein Tipp: „Kleine Gewohnheiten verändern alles — man muss nur anfangen.\""
             ],
-            "translation": "يعمل ماركوس كثيراً و يتوتّر غالباً. رغم أنه يعرف أن ذلك غير صحّي، نادراً ما يأخذ استراحات. العام الماضي كان متعباً دائماً، لذلك غيّر نمط حياته. الآن يمارس الرياضة صباحاً، و مع ذلك يُنجز كل عمله. نصيحته: العادات الصغيرة تغيّر كل شيء — فقط ابدأ.",
-            "question": "لماذا غيّر ماركوس نمط حياته؟",
-            "options": ["لأنه كان متعباً دائماً (deshalb)", "لأنه يكره العمل", "لأن الطبيب أجبره"],
-            "correct": 0,
-            "explanation": "«Er war müde. DESHALB hat er seinen Lebensstil geändert» — deshalb تربط السبب بالنتيجة." },
+            "translation": "يعمل ماركوس كثيراً و يتوتّر غالباً. رغم أنه يعرف أن ذلك غير صحّي، نادراً ما يأخذ استراحات. العام الماضي كان متعباً دائماً، لذلك غيّر نمط حياته. الآن يستيقظ أبكر و يمارس الرياضة صباحاً، و مع ذلك يُنجز كل عمله. يقول: «أنتبه الآن أكثر لغذائي و أتجنّب كثرة القهوة». نصيحته: العادات الصغيرة تغيّر كل شيء — فقط ابدأ.",
+            "questions": [
+              { "question": "لماذا نادراً ما يأخذ ماركوس استراحات؟",
+                "options": ["رغم أنه يعرف أن ذلك غير صحّي (obwohl)", "لأنه كسول", "لأن المدير يمنعه"],
+                "correct": 0,
+                "explanation": "«Obwohl er weiß, dass das ungesund ist…» — obwohl + الفعل في الآخر." },
+              { "question": "لماذا غيّر ماركوس نمط حياته؟",
+                "options": ["لأنه كان متعباً دائماً (deshalb)", "لأنه يكره العمل", "لأن الطبيب أجبره"],
+                "correct": 0,
+                "explanation": "«…müde. DESHALB hat er seinen Lebensstil geändert» — deshalb تربط السبب بالنتيجة." },
+              { "question": "ما نصيحة ماركوس؟",
+                "options": ["العادات الصغيرة تغيّر كل شيء", "اشرب قهوة أكثر", "نَم أقل"],
+                "correct": 0,
+                "explanation": "«Kleine Gewohnheiten verändern alles — man muss nur anfangen»." }
+            ] },
+
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "استمع ثم انطق هذه الجملة (obwohl → الفعل للآخر):",
+            "text": "Obwohl ich müde bin, gehe ich joggen.",
+            "hint": "obwohl يدفع «bin» إلى آخر الجملة الفرعية." },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "انطق هذه الجملة (deshalb → الفعل ثانياً):",
+            "text": "Ich bin müde. Deshalb gehe ich früh ins Bett.",
+            "hint": "deshalb في المركز الأول → الفعل «gehe» ثانياً." },
 
           { "kind": "recap", "section": "🎉 المراجعة",
             "title": "أحسنت! أكملت الدرس",
             "points": [
               "obwohl (رغم أن) = أداة ثانوية → الفعل إلى آخر الجملة الفرعية.",
               "deshalb (لذلك) و trotzdem (مع ذلك) = ظرفان → الفعل ثانياً (V2).",
-              "مفردات الصحة: sich ernähren، sich entspannen، vermeiden، die Gewohnheit."
+              "مفردات الصحة: sich ernähren، sich entspannen، vermeiden، die Gewohnheit.",
+              "تدرّبت على النطق! لاحظ موقع الفعل بصوتك."
             ] }
         ]
       },
@@ -821,23 +884,43 @@
             "title": "Text: Nachhaltig reisen",
             "lines": [
               "Immer mehr Menschen wollen umweltfreundlich reisen. Aber wie wird das gemacht?",
-              "Zuerst werden öffentliche Verkehrsmittel statt des Autos benutzt.",
+              "Zuerst werden öffentliche Verkehrsmittel statt des Autos benutzt. Der Zug ist oft eine gute Wahl.",
               "Am Reiseziel wird der Müll getrennt und Wasser wird gespart.",
-              "Viele Unterkünfte werden heute nachhaltig gebaut.",
-              "„Die Umwelt kann nur geschützt werden, wenn jeder mithilft.\""
+              "Viele Unterkünfte werden heute nachhaltig gebaut und mit Solarenergie betrieben.",
+              "„Die Umwelt kann nur geschützt werden, wenn jeder ein bisschen mithilft.\""
             ],
-            "translation": "يريد المزيد من الناس السفر بطريقة صديقة للبيئة. لكن كيف يُفعَل ذلك؟ أولاً، تُستخدَم وسائل النقل العامة بدل السيارة. في الوجهة، تُفرَز القمامة و يُوفَّر الماء. و كثير من أماكن الإقامة تُبنى اليوم بشكل مستدام. لا يمكن حماية البيئة إلا إذا ساعد الجميع.",
-            "question": "في النص، كيف تُوصف العمليات (تُستخدم، تُفرَز، تُبنى)؟",
-            "options": ["بالمبني للمجهول (werden + Partizip II)", "بصيغة الأمر", "بصيغة المستقبل"],
-            "correct": 0,
-            "explanation": "كل الأفعال بصيغة Passiv: werden benutzt / wird getrennt / werden gebaut — لأن التركيز على الفعل لا الفاعل." },
+            "translation": "يريد المزيد من الناس السفر بطريقة صديقة للبيئة. لكن كيف يُفعَل ذلك؟ أولاً، تُستخدَم وسائل النقل العامة بدل السيارة، و القطار غالباً خيار جيد. في الوجهة، تُفرَز القمامة و يُوفَّر الماء. و كثير من أماكن الإقامة تُبنى اليوم بشكل مستدام و تُشغَّل بالطاقة الشمسية. لا يمكن حماية البيئة إلا إذا ساعد الجميع قليلاً.",
+            "questions": [
+              { "question": "ماذا يُستخدَم بدل السيارة؟",
+                "options": ["وسائل النقل العامة", "الطائرة", "الدرّاجة النارية"],
+                "correct": 0,
+                "explanation": "«werden öffentliche Verkehrsmittel … benutzt» — مبني للمجهول." },
+              { "question": "كيف تُوصف العمليات في النص (تُستخدم، تُفرَز، تُبنى)؟",
+                "options": ["بالمبني للمجهول (werden + Partizip II)", "بصيغة الأمر", "بصيغة المستقبل"],
+                "correct": 0,
+                "explanation": "كل الأفعال Passiv: werden benutzt / wird getrennt / werden gebaut." },
+              { "question": "متى يمكن حماية البيئة؟",
+                "options": ["إذا ساعد الجميع قليلاً", "إذا منعنا السفر", "لا يمكن أبداً"],
+                "correct": 0,
+                "explanation": "«…kann nur geschützt werden, wenn jeder mithilft» — مبني للمجهول + jeder." }
+            ] },
+
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "استمع ثم انطق هذه الجملة (مبني للمجهول):",
+            "text": "In Deutschland wird der Müll getrennt.",
+            "hint": "wird + getrennt (Partizip II) = تُفرَز." },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "انطق هذه الجملة (مجهول + فعل مساعد):",
+            "text": "Energie muss gespart werden.",
+            "hint": "muss + gespart + werden = يجب توفير الطاقة." },
 
           { "kind": "recap", "section": "🎉 المراجعة",
             "title": "أحسنت! أكملت الدرس",
             "points": [
               "المبني للمجهول: werden + Partizip II (المضارع: wird، الماضي: wurde).",
               "مع فعل مساعد: muss … gespart werden. الفاعل: von + Dativ.",
-              "مفردات البيئة: die Umwelt، der Klimawandel، nachhaltig، reduzieren."
+              "مفردات البيئة: die Umwelt، der Klimawandel، nachhaltig، reduzieren.",
+              "تدرّبت على النطق! انطق جمل المجهول بوضوح."
             ] }
         ]
       },
@@ -866,12 +949,23 @@
           { "kind": "quiz", "section": "📐 الجمل الزمنية", "prompt": "متكرّر/مضارع:", "question": "___ ich Zeit habe, rufe ich dich an.", "options": ["Wenn", "Als", "Nachdem"], "correct": 0, "explanation": "شرط متكرّر/مضارع → wenn." },
           { "kind": "quiz", "section": "📐 الجمل الزمنية", "prompt": "«قبل أن»:", "question": "___ ich schlafe, putze ich die Zähne.", "options": ["Bevor", "Nachdem", "Als"], "correct": 0, "explanation": "bevor = قبل أن." },
           { "kind": "reading", "section": "📰 القراءة", "title": "Text: Nachrichten heute",
-            "lines": ["Früher, als ich jung war, las ich die Zeitung jeden Morgen.", "Heute informiere ich mich online, wenn ich Zeit habe.", "Während ich frühstücke, lese ich die Nachrichten auf dem Handy.", "Aber ich poste selten etwas in den sozialen Medien."],
-            "translation": "في الماضي، عندما كنت صغيراً، كنت أقرأ الجريدة كل صباح. اليوم أطّلع على الأخبار عبر الإنترنت عندما يكون لديّ وقت. بينما أفطر، أقرأ الأخبار على الهاتف. لكنني نادراً ما أنشر شيئاً على وسائل التواصل.",
-            "question": "متى كان يقرأ الجريدة كل صباح؟", "options": ["عندما كان صغيراً (als)", "كل مساء", "عندما يعمل"], "correct": 0,
-            "explanation": "«als ich jung war» — als لحدث ماضٍ (فترة الشباب)." },
+            "lines": ["Früher, als ich jung war, las ich die Zeitung jeden Morgen.", "Heute informiere ich mich online, wenn ich Zeit habe.", "Während ich frühstücke, lese ich die Nachrichten auf dem Handy.", "Bevor ich schlafe, schalte ich das Handy aus.", "Aber ich poste selten etwas in den sozialen Medien."],
+            "translation": "في الماضي، عندما كنت صغيراً، كنت أقرأ الجريدة كل صباح. اليوم أطّلع على الأخبار عبر الإنترنت عندما يكون لديّ وقت. بينما أفطر، أقرأ الأخبار على الهاتف. قبل أن أنام، أُطفئ الهاتف. لكنني نادراً ما أنشر شيئاً على وسائل التواصل.",
+            "questions": [
+              { "question": "متى كان يقرأ الجريدة كل صباح؟", "options": ["عندما كان صغيراً (als)", "كل مساء", "عندما يعمل"], "correct": 0, "explanation": "«als ich jung war» — als لحدث ماضٍ (فترة الشباب)." },
+              { "question": "متى يطّلع على الأخبار اليوم؟", "options": ["عندما يكون لديه وقت (wenn)", "أبداً", "في العمل فقط"], "correct": 0, "explanation": "«…online, wenn ich Zeit habe» — wenn لشرط مضارع/متكرّر." },
+              { "question": "ماذا يفعل قبل النوم؟", "options": ["يُطفئ الهاتف (bevor)", "ينشر صورة", "يشاهد التلفاز"], "correct": 0, "explanation": "«Bevor ich schlafe, schalte ich das Handy aus» — bevor = قبل أن." }
+            ] },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "استمع ثم انطق هذه الجملة (als = ماضٍ مرّة واحدة):",
+            "text": "Als ich klein war, gab es kein Internet.",
+            "hint": "als لحدث ماضٍ منتهٍ. الفعل war في آخر الجملة الفرعية." },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "انطق هذه الجملة (wenn = شرط متكرّر):",
+            "text": "Wenn ich Zeit habe, lese ich Nachrichten.",
+            "hint": "wenn لشرط مضارع/متكرّر." },
           { "kind": "recap", "section": "🎉 المراجعة", "title": "أحسنت! أكملت الدرس",
-            "points": ["als = ماضٍ مرّة واحدة، wenn = مضارع أو ماضٍ متكرّر.", "nachdem (بعد أن)، bevor (قبل أن)، während (بينما) — كلها تدفع الفعل للآخر.", "مفردات الإعلام: die Nachricht، die Sendung، posten، sich informieren."] }
+            "points": ["als = ماضٍ مرّة واحدة، wenn = مضارع أو ماضٍ متكرّر.", "nachdem (بعد أن)، bevor (قبل أن)، während (بينما) — كلها تدفع الفعل للآخر.", "مفردات الإعلام: die Nachricht، die Sendung، posten، sich informieren.", "تدرّبت على النطق! ميّز als عن wenn بصوتك."] }
         ]
       },
       {
@@ -898,10 +992,21 @@
           { "kind": "reading", "section": "📰 القراءة", "title": "Text: Ein neuer Kurs",
             "lines": ["Sara hat sich für einen Deutschkurs angemeldet, um ihr Deutsch zu verbessern.", "Sie lernt jeden Tag, damit sie die Prüfung besteht.", "Ihr Lehrer spricht langsam, damit alle ihn verstehen.", "Am Ende bekommt sie ein Zertifikat."],
             "translation": "سجّلت سارة في دورة ألمانية لتحسّن لغتها. تدرس كل يوم لكي تنجح في الامتحان. معلّمها يتحدّث ببطء كي يفهمه الجميع. في النهاية تحصل على شهادة.",
-            "question": "لماذا يتحدّث المعلّم ببطء؟", "options": ["كي يفهمه الجميع (damit)", "لأنه متعب", "لأنه لا يعرف"], "correct": 0,
-            "explanation": "«damit alle ihn verstehen» — damit لأن الفاعل مختلف (المعلّم/الطلاب)." },
+            "questions": [
+              { "question": "لماذا سجّلت سارة في الدورة؟", "options": ["لتحسّن لغتها (um … zu)", "لتقابل أصدقاء", "لأنها مجبرة"], "correct": 0, "explanation": "«…um ihr Deutsch zu verbessern» — هدف بنفس الفاعل." },
+              { "question": "لماذا يتحدّث المعلّم ببطء؟", "options": ["كي يفهمه الجميع (damit)", "لأنه متعب", "لأنه لا يعرف"], "correct": 0, "explanation": "«damit alle ihn verstehen» — damit لأن الفاعل مختلف." },
+              { "question": "ماذا تحصل عليه في النهاية؟", "options": ["شهادة (Zertifikat)", "كتاباً", "وظيفة"], "correct": 0, "explanation": "«Am Ende bekommt sie ein Zertifikat»." }
+            ] },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "استمع ثم انطق هذه الجملة (um … zu — نفس الفاعل):",
+            "text": "Ich lerne Deutsch, um in Deutschland zu arbeiten.",
+            "hint": "نفس الفاعل (أنا) → um … zu + مصدر في الآخر." },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "انطق هذه الجملة (damit — فاعل مختلف):",
+            "text": "Ich spreche langsam, damit du mich verstehst.",
+            "hint": "فاعلان مختلفان (أنا/أنت) → damit + الفعل للآخر." },
           { "kind": "recap", "section": "🎉 المراجعة", "title": "أحسنت! أكملت الدرس",
-            "points": ["um … zu + مصدر = هدف بنفس الفاعل.", "damit + جملة (الفعل للآخر) = هدف بفاعل مختلف.", "مفردات التعليم: die Ausbildung، die Prüfung، bestehen، sich anmelden."] }
+            "points": ["um … zu + مصدر = هدف بنفس الفاعل.", "damit + جملة (الفعل للآخر) = هدف بفاعل مختلف.", "مفردات التعليم: die Ausbildung، die Prüfung، bestehen، sich anmelden.", "تدرّبت على النطق! فرّق بصوتك بين um…zu و damit."] }
         ]
       },
       {
@@ -929,12 +1034,23 @@
             "examples": ["WEGEN des Wetters bleiben wir zu Hause. (بسبب)", "TROTZ des Regens gehen wir. (رغم)", "WÄHREND der Woche arbeite ich. (خلال)"] },
           { "kind": "quiz", "section": "📐 حروف جرّ + Genitiv", "prompt": "«بسبب» + Genitiv:", "question": "___ des Wetters bleiben wir zu Hause.", "options": ["Wegen", "Mit", "Für"], "correct": 0, "explanation": "wegen + Genitiv = بسبب." },
           { "kind": "reading", "section": "📰 القراءة", "title": "Text: Sparen oder ausgeben?",
-            "lines": ["Das Gehalt des Vaters reicht für die Familie.", "Trotz der hohen Preise versuchen sie zu sparen.", "Wegen der Schulden geben sie weniger Geld aus.", "Sie können sich keinen teuren Urlaub leisten, aber sie sind zufrieden."],
-            "translation": "راتب الأب يكفي للعائلة. رغم الأسعار المرتفعة يحاولون الادّخار. بسبب الديون يُنفقون مالاً أقل. لا يستطيعون تحمّل عطلة باهظة، لكنهم راضون.",
-            "question": "لماذا يُنفقون مالاً أقل؟", "options": ["بسبب الديون (wegen der Schulden)", "لأنهم أغنياء", "بسبب الطقس"], "correct": 0,
-            "explanation": "«Wegen der Schulden» — wegen + Genitiv (der Schulden)." },
+            "lines": ["Das Gehalt des Vaters reicht für die Familie.", "Trotz der hohen Preise versuchen sie zu sparen.", "Wegen der Schulden geben sie weniger Geld aus.", "Während des Sommers machen sie keinen teuren Urlaub.", "Sie können sich viel nicht leisten, aber sie sind zufrieden."],
+            "translation": "راتب الأب يكفي للعائلة. رغم الأسعار المرتفعة يحاولون الادّخار. بسبب الديون يُنفقون مالاً أقل. خلال الصيف لا يقضون عطلة باهظة. لا يستطيعون تحمّل أشياء كثيرة، لكنهم راضون.",
+            "questions": [
+              { "question": "راتب مَن يكفي العائلة؟ (Genitiv)", "options": ["راتب الأب (des Vaters)", "راتب الأم", "راتب الابن"], "correct": 0, "explanation": "«Das Gehalt des Vaters» — Genitiv مذكّر (des Vaters)." },
+              { "question": "لماذا يُنفقون مالاً أقل؟", "options": ["بسبب الديون (wegen der Schulden)", "لأنهم أغنياء", "بسبب الطقس"], "correct": 0, "explanation": "«Wegen der Schulden» — wegen + Genitiv." },
+              { "question": "هل هم راضون رغم ذلك؟", "options": ["نعم، راضون", "لا، غاضبون", "النص لا يذكر"], "correct": 0, "explanation": "«…aber sie sind zufrieden»." }
+            ] },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "استمع ثم انطق هذه الجملة (Genitiv للملكية):",
+            "text": "Das ist das Auto des Mannes.",
+            "hint": "Genitiv مذكّر → des Mannes (+ -es)." },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "انطق هذه الجملة (wegen + Genitiv):",
+            "text": "Wegen des Wetters bleiben wir zu Hause.",
+            "hint": "wegen + Genitiv = بسبب." },
           { "kind": "recap", "section": "🎉 المراجعة", "title": "أحسنت! أكملت الدرس",
-            "points": ["Genitiv للملكية: des (مذكّر/محايد + -s)، der (مؤنّث/جمع).", "wegen / trotz / während + Genitiv.", "مفردات المال: das Konto، sparen، die Schulden، sich leisten."] }
+            "points": ["Genitiv للملكية: des (مذكّر/محايد + -s)، der (مؤنّث/جمع).", "wegen / trotz / während + Genitiv.", "مفردات المال: das Konto، sparen، die Schulden، sich leisten.", "تدرّبت على النطق! انطق جمل الـ Genitiv بوضوح."] }
         ]
       },
       {
@@ -961,10 +1077,21 @@
           { "kind": "reading", "section": "📰 القراءة", "title": "Text: Eine alte Entscheidung",
             "lines": ["Vor Jahren bekam Lukas ein Jobangebot im Ausland.", "Er sagte nein. Heute denkt er: „Ich hätte die Chance nutzen sollen.\"", "„Wenn ich mutiger gewesen wäre, wäre mein Leben anders.\"", "Aber er bereut nicht alles — er hat eine schöne Familie."],
             "translation": "قبل سنوات حصل لوكاس على عرض عمل في الخارج. قال لا. اليوم يفكّر: «كان يجب أن أستغلّ الفرصة». «لو كنت أكثر شجاعة، لكانت حياتي مختلفة». لكنه لا يندم على كل شيء — لديه عائلة جميلة.",
-            "question": "ماذا يتمنّى لوكاس لو فعله؟", "options": ["أن يستغلّ الفرصة (hätte … sollen)", "أن يبقى في بيته", "أن يرفض العائلة"], "correct": 0,
-            "explanation": "«Ich hätte die Chance nutzen sollen» — ندم بصيغة Konjunktiv II الماضي." },
+            "questions": [
+              { "question": "ماذا رفض لوكاس قبل سنوات؟", "options": ["عرض عمل في الخارج", "الزواج", "دراسة جامعية"], "correct": 0, "explanation": "«bekam Lukas ein Jobangebot im Ausland. Er sagte nein»." },
+              { "question": "ماذا يتمنّى لوكاس لو فعله؟", "options": ["أن يستغلّ الفرصة (hätte … sollen)", "أن يبقى في بيته", "أن يرفض العائلة"], "correct": 0, "explanation": "«Ich hätte die Chance nutzen sollen» — ندم بـ Konjunktiv II الماضي." },
+              { "question": "هل يندم على كل شيء؟", "options": ["لا — لديه عائلة جميلة", "نعم، على كل شيء", "النص لا يذكر"], "correct": 0, "explanation": "«Aber er bereut nicht alles — er hat eine schöne Familie»." }
+            ] },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "استمع ثم انطق هذا التعبير عن الندم:",
+            "text": "Ich hätte mehr lernen sollen.",
+            "hint": "hätte + مصدر + sollen = كان يجب أن… (ندم)." },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "انطق هذه الجملة الشرطية (فعل حركة → wäre):",
+            "text": "Wenn ich Zeit gehabt hätte, wäre ich gekommen.",
+            "hint": "kommen فعل حركة → wäre gekommen." },
           { "kind": "recap", "section": "🎉 المراجعة", "title": "أحسنت! أكملت الدرس",
-            "points": ["Konjunktiv II الماضي = hätte/wäre + Partizip II.", "أفعال الحركة → wäre، البقية → hätte.", "للتعبير عن الندم: Ich hätte … sollen / Wenn … gewesen wäre."] }
+            "points": ["Konjunktiv II الماضي = hätte/wäre + Partizip II.", "أفعال الحركة → wäre، البقية → hätte.", "للتعبير عن الندم: Ich hätte … sollen / Wenn … gewesen wäre.", "تدرّبت على النطق! عبّر عن الندم بصوتك."] }
         ]
       },
       {
@@ -991,10 +1118,21 @@
           { "kind": "reading", "section": "📰 القراءة", "title": "Text: Ein gelungenes Fest",
             "lines": ["Gestern feierten wir das Fest in einer schön geschmückten Wohnung.", "Das gekochte Essen roch fantastisch.", "Die lachenden Gäste tanzten bis spät in die Nacht.", "Es war ein wirklich gelungenes Fest — eine schöne Tradition in unserer Familie."],
             "translation": "احتفلنا أمس في شقّة مزيّنة بشكل جميل. الطعام المطبوخ كانت رائحته رائعة. الضيوف الضاحكون رقصوا حتى وقت متأخّر. كان احتفالاً ناجحاً حقاً — تقليد جميل في عائلتنا.",
-            "question": "كيف كانت الشقّة؟", "options": ["مزيّنة بشكل جميل (geschmückt)", "فارغة", "صغيرة"], "correct": 0,
-            "explanation": "«schön geschmückten Wohnung» — Partizip II (geschmückt) كصفة." },
+            "questions": [
+              { "question": "كيف كانت الشقّة؟", "options": ["مزيّنة بشكل جميل (geschmückt)", "فارغة", "صغيرة"], "correct": 0, "explanation": "«schön geschmückten Wohnung» — Partizip II (geschmückt) كصفة." },
+              { "question": "كيف كانت رائحة الطعام؟", "options": ["رائعة (das gekochte Essen)", "سيّئة", "بلا رائحة"], "correct": 0, "explanation": "«Das gekochte Essen roch fantastisch» — Partizip II كصفة." },
+              { "question": "كيف كان الضيوف؟", "options": ["ضاحكون (die lachenden Gäste)", "نائمون", "غاضبون"], "correct": 0, "explanation": "«die lachenden Gäste» — Partizip I (lachend) كصفة = فعل جارٍ." }
+            ] },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "استمع ثم انطق هذه الجملة (Partizip II كصفة):",
+            "text": "Das gekochte Essen schmeckt gut.",
+            "hint": "gekocht (تمّ طبخه) كصفة → das gekochtE Essen." },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "انطق هذه الجملة (Partizip I كصفة):",
+            "text": "Das weinende Kind braucht Hilfe.",
+            "hint": "weinend (يبكي الآن) كصفة → das weinendE Kind." },
           { "kind": "recap", "section": "🎉 المراجعة", "title": "أحسنت! أكملت منهج B1 الحالي! 🎓",
-            "points": ["Partizip II كصفة = معنى منتهٍ/مبني للمجهول: das gekochte Essen.", "Partizip I (+d) كصفة = فعل جارٍ: das weinende Kind.", "كلاهما يأخذ نهايات الصفة العادية حسب الحالة و الجنس."] }
+            "points": ["Partizip II كصفة = معنى منتهٍ/مبني للمجهول: das gekochte Essen.", "Partizip I (+d) كصفة = فعل جارٍ: das weinende Kind.", "كلاهما يأخذ نهايات الصفة العادية حسب الحالة و الجنس.", "تدرّبت على النطق! صِف الأشياء بصوتك."] }
         ]
       }
     ]
