@@ -92,7 +92,13 @@ export interface Lektion {
 export interface LektionStep {
   kind: 'intro' | 'flashcard' | 'quiz' | 'discovery' | 'reading' | 'recap';
 
-  // intro / recap
+  /**
+   * 🆕 عنوان القسم (مثل "🔤 المفردات" أو "📐 القاعدة ١") — يظهر كـ chip
+   * أعلى كل خطوة كي يعرف المتعلّم دائماً أين هو في بنية الدرس.
+   */
+  section?: string;
+
+  // intro / recap (intro يعرض أيضاً points كأهداف + examples إن وُجدت)
   title?: string;
   text?: string;
   points?: string[];

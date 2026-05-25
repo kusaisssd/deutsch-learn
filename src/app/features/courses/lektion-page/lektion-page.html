@@ -39,29 +39,63 @@
 
       @let step = currentStep()!;
 
+      <!-- Section label chip — always shows where you are -->
+      @if (step.section) {
+        <div class="mb-3 text-center">
+          <span class="inline-block px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold">
+            {{ step.section }}
+          </span>
+        </div>
+      }
+
       <div class="min-h-[320px] flex flex-col">
         @switch (step.kind) {
 
-          <!-- ───── INTRO ───── -->
+          <!-- ───── INTRO / EXPLANATION (مرن: عنوان + نص + أهداف + أمثلة) ───── -->
           @case ('intro') {
-            <div class="flex-1 flex flex-col items-center justify-center text-center px-2">
-              <div class="text-5xl mb-4">📘</div>
-              <h2 class="text-2xl font-bold text-slate-800 mb-3">{{ step.title }}</h2>
-              <p class="text-slate-600 leading-relaxed">{{ step.text }}</p>
+            <div class="flex-1 flex flex-col justify-center">
+              @if (step.title) {
+                <h2 class="text-2xl font-bold text-slate-800 mb-3 text-center">{{ step.title }}</h2>
+              }
+              @if (step.text) {
+                <p class="text-slate-700 leading-relaxed mb-4 text-right" dir="rtl">{{ step.text }}</p>
+              }
+              <!-- الأهداف (تظهر من البداية كي تعرف هدف الدرس) -->
+              @if (step.points) {
+                <ul class="space-y-2 mb-4" dir="rtl">
+                  @for (p of step.points; track $index) {
+                    <li class="flex gap-2 text-sm text-slate-700 bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-right">
+                      <span class="text-emerald-600 shrink-0">🎯</span><span>{{ p }}</span>
+                    </li>
+                  }
+                </ul>
+              }
+              <!-- أمثلة ألمانية (للشرح) مع نطق -->
+              @if (step.examples) {
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 space-y-2">
+                  @for (ex of step.examples; track $index) {
+                    <div class="flex items-start justify-between gap-2">
+                      <p class="text-sm text-slate-800">{{ ex }}</p>
+                      <button type="button" (click)="speak(ex)" [disabled]="speech.isSpeaking()"
+                              class="text-sky-500 hover:text-sky-700 text-xs shrink-0 disabled:opacity-40">🔊</button>
+                    </div>
+                  }
+                </div>
+              }
             </div>
           }
 
           <!-- ───── FLASHCARD ───── -->
           @case ('flashcard') {
             <div class="flex-1 flex flex-col items-center justify-center">
-              <p class="text-xs text-slate-400 uppercase tracking-wide mb-3">Tap the card to flip</p>
+              <p class="text-xs text-slate-400 mb-3" dir="rtl">اضغط البطاقة لرؤية المعنى</p>
               <button type="button" (click)="flip()"
                       class="flash w-full max-w-sm h-44" [class.flipped]="flipped()">
                 <div class="flash-inner">
                   <!-- front -->
                   <div class="flash-face flash-front bg-indigo-500 text-white">
                     <span class="text-2xl font-bold">{{ step.front }}</span>
-                    <span class="text-xs opacity-80 mt-2">tap to reveal</span>
+                    <span class="text-xs opacity-80 mt-2">👆</span>
                   </div>
                   <!-- back -->
                   <div class="flash-face flash-back bg-white border-2 border-indigo-300">
@@ -74,7 +108,7 @@
               </button>
               <button type="button" (click)="speak(step.front || '')" [disabled]="speech.isSpeaking()"
                       class="mt-4 px-4 py-1.5 bg-sky-500 text-white rounded-md text-sm font-medium hover:bg-sky-600 disabled:opacity-40">
-                🔊 Listen
+                🔊 استمع
               </button>
             </div>
           }
@@ -83,7 +117,7 @@
           @case ('quiz') {
             <div class="flex-1 flex flex-col">
               @if (step.prompt) {
-                <p class="text-xs text-indigo-600 font-semibold uppercase tracking-wide mb-2">{{ step.prompt }}</p>
+                <p class="text-sm text-indigo-600 font-semibold mb-2 text-right" dir="rtl">{{ step.prompt }}</p>
               }
               <p class="text-xl font-medium text-slate-800 mb-5">{{ step.question }}</p>
 
@@ -109,10 +143,10 @@
 
               <!-- Feedback -->
               @if (answered()) {
-                <div class="mt-4 rounded-lg p-3 text-sm"
+                <div class="mt-4 rounded-lg p-3 text-sm text-right" dir="rtl"
                      [class.bg-green-100]="isCorrect()" [class.text-green-800]="isCorrect()"
                      [class.bg-amber-100]="!isCorrect()" [class.text-amber-900]="!isCorrect()">
-                  <p class="font-semibold mb-1">{{ isCorrect() ? '✅ Richtig!' : '💡 Not quite' }}</p>
+                  <p class="font-semibold mb-1">{{ isCorrect() ? '✅ صحيح!' : '💡 ليس تماماً' }}</p>
                   @if (step.explanation) { <p>{{ step.explanation }}</p> }
                 </div>
               }
@@ -122,7 +156,7 @@
           <!-- ───── DISCOVERY (inductive) ───── -->
           @case ('discovery') {
             <div class="flex-1 flex flex-col">
-              <p class="text-slate-700 mb-3">{{ step.instruction }}</p>
+              <p class="text-slate-700 mb-3 text-right" dir="rtl">{{ step.instruction }}</p>
               <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 space-y-2 mb-4">
                 @for (ex of step.examples; track $index) {
                   <div class="flex items-start justify-between gap-2">
@@ -132,15 +166,15 @@
                   </div>
                 }
               </div>
-              <p class="text-base font-medium text-slate-800 mb-3">{{ step.question }}</p>
+              <p class="text-base font-medium text-slate-800 mb-3 text-right" dir="rtl">{{ step.question }}</p>
 
               @if (!revealed()) {
                 <button type="button" (click)="reveal()"
-                        class="self-start px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-semibold hover:bg-indigo-700">
-                  💡 Show me the pattern
+                        class="self-center px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-semibold hover:bg-indigo-700">
+                  💡 أظهر لي القاعدة
                 </button>
               } @else {
-                <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-sm text-slate-700 leading-relaxed">
+                <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-sm text-slate-700 leading-relaxed text-right" dir="rtl">
                   {{ step.reveal }}
                 </div>
               }
@@ -162,13 +196,13 @@
               </div>
               @if (step.translation) {
                 <details class="text-sm mb-4">
-                  <summary class="cursor-pointer text-amber-700 font-medium">🌐 English summary</summary>
-                  <p class="text-slate-600 italic mt-1 leading-relaxed">{{ step.translation }}</p>
+                  <summary class="cursor-pointer text-amber-700 font-medium text-right" dir="rtl">🌐 الترجمة العربية</summary>
+                  <p class="text-slate-600 mt-1 leading-relaxed text-right" dir="rtl">{{ step.translation }}</p>
                 </details>
               }
 
               <!-- comprehension question -->
-              <p class="text-base font-medium text-slate-800 mb-3">{{ step.question }}</p>
+              <p class="text-base font-medium text-slate-800 mb-3 text-right" dir="rtl">{{ step.question }}</p>
               <div class="space-y-2">
                 @for (opt of step.options; track $index) {
                   <button type="button" (click)="selectOption($index)" [disabled]="answered()"
@@ -186,7 +220,7 @@
                 }
               </div>
               @if (answered() && step.explanation) {
-                <div class="mt-3 rounded-lg p-3 text-sm"
+                <div class="mt-3 rounded-lg p-3 text-sm text-right" dir="rtl"
                      [class.bg-green-100]="isCorrect()" [class.text-green-800]="isCorrect()"
                      [class.bg-amber-100]="!isCorrect()" [class.text-amber-900]="!isCorrect()">
                   {{ step.explanation }}
@@ -200,10 +234,10 @@
             <div class="flex-1 flex flex-col items-center justify-center text-center px-2">
               <div class="text-5xl mb-4">🎉</div>
               <h2 class="text-2xl font-bold text-slate-800 mb-4">{{ step.title }}</h2>
-              <ul class="space-y-2 text-left max-w-md">
+              <ul class="space-y-2 max-w-md w-full" dir="rtl">
                 @for (p of step.points; track $index) {
-                  <li class="flex gap-2 text-sm text-slate-700 bg-emerald-50 border border-emerald-200 rounded-lg p-3">
-                    <span class="text-emerald-600">✓</span>{{ p }}
+                  <li class="flex gap-2 text-sm text-slate-700 bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-right">
+                    <span class="text-emerald-600 shrink-0">✓</span><span>{{ p }}</span>
                   </li>
                 }
               </ul>
@@ -222,7 +256,7 @@
                 class="flex-1 py-3 rounded-lg font-semibold text-white transition-colors shadow disabled:opacity-40 disabled:cursor-not-allowed"
                 [class.bg-emerald-600]="isLastStep()" [class.hover:bg-emerald-700]="isLastStep()"
                 [class.bg-indigo-600]="!isLastStep()" [class.hover:bg-indigo-700]="!isLastStep()">
-          @if (isLastStep()) { ✓ Finish &amp; complete } @else { Continue → }
+          @if (isLastStep()) { ✓ إنهاء و إكمال الدرس } @else { متابعة → }
         </button>
       </div>
 
