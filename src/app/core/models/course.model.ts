@@ -34,7 +34,14 @@ export interface Course {
 }
 
 /**
- * درس واحد (Lektion) — وحدة تعليمية كاملة بأسلوب الكتاب.
+ * درس واحد (Lektion) — وحدة تعليمية.
+ *
+ * 🆕 نمطان مدعومان:
+ *   1) تفاعلي (الجديد): يملأ `steps` بسلسلة خطوات صغيرة (Duolingo-style).
+ *   2) كتابي (القديم): يملأ goals/vocabulary/grammar/reading.
+ *
+ * صفحة الدرس تُفضّل `steps` لو موجودة، و إلا تعرض النمط الكتابي.
+ * هذا يسمح بترقية الدروس تدريجياً (backward compatible).
  */
 export interface Lektion {
   /** معرّف فريد عبر كل الكورسات (مثل 'b1-l1') — يُستخدم لتتبّع الإنجاز */
@@ -50,19 +57,66 @@ export interface Lektion {
   titleEn: string;
 
   /**
-   * أهداف التعلّم (Lernziele) — جُمل "can-do":
-   * "I can introduce myself", "I can use relative clauses"…
+   * 🆕 الخطوات التفاعلية (النمط الجديد). لو موجودة → المُشغّل التفاعلي.
    */
-  goals: string[];
+  steps?: LektionStep[];
 
-  /** المفردات الأساسية للدرس */
-  vocabulary: VocabItem[];
+  // ───────── النمط الكتابي القديم (اختياري الآن) ─────────
 
-  /** الأقسام النحوية (قد يكون فيها أكثر من قاعدة) */
-  grammar: GrammarSection[];
+  /** أهداف التعلّم (Lernziele) */
+  goals?: string[];
+  /** المفردات الأساسية */
+  vocabulary?: VocabItem[];
+  /** الأقسام النحوية */
+  grammar?: GrammarSection[];
+  /** نص القراءة */
+  reading?: ReadingText;
+}
 
-  /** نص القراءة أو الحوار */
-  reading: ReadingText;
+/**
+ * خطوة تفاعلية واحدة داخل درس.
+ *
+ * 🎓 لماذا interface واحد بحقول اختيارية بدل discriminated union صارم؟
+ *   لأن Angular templates تتعامل بسلاسة مع الحقول الاختيارية،
+ *   بينما narrowing الـ union داخل @switch قد يسبب أخطاء type في الـ template.
+ *   هذا اختيار براغماتي شائع للمحتوى المُدار بـ JSON.
+ *
+ * الأنواع (kind):
+ *   'intro'     → بطاقة تأطير (title + text)
+ *   'flashcard' → كلمة تُقلب (front → back + example)
+ *   'quiz'      → سؤال اختيار من متعدد (question + options + correct)
+ *   'discovery' → اكتشاف استقرائي (examples → question → reveal)
+ *   'reading'   → نص قصير + سؤال فهم
+ *   'recap'     → ملخّص نهائي (title + points)
+ */
+export interface LektionStep {
+  kind: 'intro' | 'flashcard' | 'quiz' | 'discovery' | 'reading' | 'recap';
+
+  // intro / recap
+  title?: string;
+  text?: string;
+  points?: string[];
+
+  // flashcard
+  front?: string;       // الكلمة الألمانية
+  back?: string;        // المعنى
+  example?: string;     // جملة مثال
+
+  // quiz / reading
+  prompt?: string;      // سطر سياق اختياري فوق السؤال
+  question?: string;
+  options?: string[];
+  correct?: number;     // index الإجابة الصحيحة
+  explanation?: string; // يظهر بعد الإجابة
+
+  // discovery
+  instruction?: string; // تعليمة ("لاحظ هذه الأمثلة…")
+  examples?: string[];
+  reveal?: string;      // القاعدة المكتشفة (تظهر بعد التفكير)
+
+  // reading
+  lines?: string[];     // أسطر النص
+  translation?: string; // ترجمة مختصرة
 }
 
 /** مفردة واحدة: ألماني → إنجليزي + مثال اختياري */

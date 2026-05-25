@@ -11,7 +11,6 @@
       <a [routerLink]="['/courses', courseId()]" class="text-emerald-600 hover:underline">Back to course</a>
     </div>
   } @else if (!isUnlocked()) {
-    <!-- 🔒 Locked: reached via direct URL — guide back -->
     <div class="bg-slate-50 border border-slate-200 rounded-lg p-6 text-center">
       <div class="text-4xl mb-2">🔒</div>
       <p class="text-slate-700 mb-3">This lesson is locked. Please complete the previous lesson first.</p>
@@ -24,119 +23,309 @@
 
     @let l = lektion()!;
 
-    <!-- Back link -->
-    <a [routerLink]="['/courses', courseId()]"
-       class="text-emerald-600 hover:underline text-sm mb-3 inline-block">
-      ← Back to course
-    </a>
+    <!-- ═══════════════════ INTERACTIVE PLAYER ═══════════════════ -->
+    @if (isInteractive()) {
 
-    <!-- Lesson header -->
-    <header class="mb-5">
-      <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">
-        Lektion {{ l.number }}
-      </span>
-      <h2 class="text-2xl font-bold text-slate-800 mt-2">{{ l.title }}</h2>
-      <p class="text-sm text-slate-500">{{ l.titleEn }}</p>
-    </header>
+      <!-- Top bar: close + progress -->
+      <div class="flex items-center gap-3 mb-5">
+        <a [routerLink]="['/courses', courseId()]"
+           class="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center text-sm shrink-0"
+           title="Exit lesson">✕</a>
+        <div class="flex-1 h-2.5 bg-slate-200 rounded-full overflow-hidden">
+          <div class="h-full bg-indigo-500 transition-all duration-300" [style.width.%]="progressPercent()"></div>
+        </div>
+        <span class="text-xs text-slate-500 shrink-0 tabular-nums">{{ stepIndex() + 1 }}/{{ totalSteps() }}</span>
+      </div>
 
-    <!-- 🎯 Lernziele -->
-    <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-5">
-      <h3 class="text-sm font-bold text-emerald-900 uppercase tracking-wide mb-2">🎯 Lernziele — Goals</h3>
-      <ul class="space-y-1">
-        @for (goal of l.goals; track goal) {
-          <li class="text-sm text-slate-700 flex gap-2">
-            <span class="text-emerald-600">✓</span>{{ goal }}
-          </li>
-        }
-      </ul>
-    </div>
+      @let step = currentStep()!;
 
-    <!-- 📕 Wortschatz -->
-    <div class="bg-white border border-slate-200 rounded-xl p-4 mb-5">
-      <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide mb-3">📕 Wortschatz — Vocabulary</h3>
-      <ul class="divide-y divide-slate-100">
-        @for (v of l.vocabulary; track v.de) {
-          <li class="py-2">
-            <div class="flex items-start justify-between gap-2">
-              <div class="min-w-0">
-                <span class="font-semibold text-slate-800">{{ v.de }}</span>
-                <span class="text-slate-500 text-sm"> — {{ v.en }}</span>
+      <div class="min-h-[320px] flex flex-col">
+        @switch (step.kind) {
+
+          <!-- ───── INTRO ───── -->
+          @case ('intro') {
+            <div class="flex-1 flex flex-col items-center justify-center text-center px-2">
+              <div class="text-5xl mb-4">📘</div>
+              <h2 class="text-2xl font-bold text-slate-800 mb-3">{{ step.title }}</h2>
+              <p class="text-slate-600 leading-relaxed">{{ step.text }}</p>
+            </div>
+          }
+
+          <!-- ───── FLASHCARD ───── -->
+          @case ('flashcard') {
+            <div class="flex-1 flex flex-col items-center justify-center">
+              <p class="text-xs text-slate-400 uppercase tracking-wide mb-3">Tap the card to flip</p>
+              <button type="button" (click)="flip()"
+                      class="flash w-full max-w-sm h-44" [class.flipped]="flipped()">
+                <div class="flash-inner">
+                  <!-- front -->
+                  <div class="flash-face flash-front bg-indigo-500 text-white">
+                    <span class="text-2xl font-bold">{{ step.front }}</span>
+                    <span class="text-xs opacity-80 mt-2">tap to reveal</span>
+                  </div>
+                  <!-- back -->
+                  <div class="flash-face flash-back bg-white border-2 border-indigo-300">
+                    <span class="text-xl font-semibold text-slate-800">{{ step.back }}</span>
+                    @if (step.example) {
+                      <span class="text-sm text-slate-500 italic mt-2 px-3 text-center">„{{ step.example }}"</span>
+                    }
+                  </div>
+                </div>
+              </button>
+              <button type="button" (click)="speak(step.front || '')" [disabled]="speech.isSpeaking()"
+                      class="mt-4 px-4 py-1.5 bg-sky-500 text-white rounded-md text-sm font-medium hover:bg-sky-600 disabled:opacity-40">
+                🔊 Listen
+              </button>
+            </div>
+          }
+
+          <!-- ───── QUIZ ───── -->
+          @case ('quiz') {
+            <div class="flex-1 flex flex-col">
+              @if (step.prompt) {
+                <p class="text-xs text-indigo-600 font-semibold uppercase tracking-wide mb-2">{{ step.prompt }}</p>
+              }
+              <p class="text-xl font-medium text-slate-800 mb-5">{{ step.question }}</p>
+
+              <div class="space-y-2">
+                @for (opt of step.options; track $index) {
+                  <button type="button" (click)="selectOption($index)"
+                          [disabled]="answered()"
+                          class="w-full text-left px-4 py-3 rounded-lg border-2 font-medium transition-colors"
+                          [class.border-slate-200]="!answered() && selectedOption() !== $index"
+                          [class.bg-white]="!answered()"
+                          [class.hover:border-indigo-300]="!answered()"
+                          [class.border-green-500]="answered() && $index === step.correct"
+                          [class.bg-green-50]="answered() && $index === step.correct"
+                          [class.border-red-400]="answered() && selectedOption() === $index && $index !== step.correct"
+                          [class.bg-red-50]="answered() && selectedOption() === $index && $index !== step.correct"
+                          [class.opacity-60]="answered() && selectedOption() !== $index && $index !== step.correct">
+                    {{ opt }}
+                    @if (answered() && $index === step.correct) { <span class="float-right">✓</span> }
+                    @if (answered() && selectedOption() === $index && $index !== step.correct) { <span class="float-right">✗</span> }
+                  </button>
+                }
               </div>
-              <button type="button" (click)="speak(v.de)" [disabled]="speech.isSpeaking()"
-                      class="text-sky-500 hover:text-sky-700 shrink-0 disabled:opacity-40"
-                      title="Listen">🔊</button>
-            </div>
-            @if (v.example) {
-              <p class="text-xs text-slate-500 italic mt-0.5">„{{ v.example }}"</p>
-            }
-          </li>
-        }
-      </ul>
-    </div>
 
-    <!-- 📖 Grammatik -->
-    @for (g of l.grammar; track g.title) {
-      <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-5">
-        <h3 class="text-sm font-bold text-blue-900 uppercase tracking-wide mb-2">📖 Grammatik — {{ g.title }}</h3>
-        <p class="text-sm text-slate-700 whitespace-pre-line leading-relaxed mb-3">{{ g.explanation }}</p>
-        <div class="bg-white/70 rounded-lg p-3 space-y-1.5">
-          @for (ex of g.examples; track ex) {
-            <div class="flex items-start justify-between gap-2">
-              <p class="text-sm text-slate-800">• {{ ex }}</p>
-              <button type="button" (click)="speak(ex)" [disabled]="speech.isSpeaking()"
-                      class="text-sky-500 hover:text-sky-700 shrink-0 text-xs disabled:opacity-40"
-                      title="Listen">🔊</button>
+              <!-- Feedback -->
+              @if (answered()) {
+                <div class="mt-4 rounded-lg p-3 text-sm"
+                     [class.bg-green-100]="isCorrect()" [class.text-green-800]="isCorrect()"
+                     [class.bg-amber-100]="!isCorrect()" [class.text-amber-900]="!isCorrect()">
+                  <p class="font-semibold mb-1">{{ isCorrect() ? '✅ Richtig!' : '💡 Not quite' }}</p>
+                  @if (step.explanation) { <p>{{ step.explanation }}</p> }
+                </div>
+              }
             </div>
+          }
+
+          <!-- ───── DISCOVERY (inductive) ───── -->
+          @case ('discovery') {
+            <div class="flex-1 flex flex-col">
+              <p class="text-slate-700 mb-3">{{ step.instruction }}</p>
+              <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 space-y-2 mb-4">
+                @for (ex of step.examples; track $index) {
+                  <div class="flex items-start justify-between gap-2">
+                    <p class="text-sm text-slate-800">{{ ex }}</p>
+                    <button type="button" (click)="speak(ex)" [disabled]="speech.isSpeaking()"
+                            class="text-sky-500 hover:text-sky-700 text-xs shrink-0 disabled:opacity-40">🔊</button>
+                  </div>
+                }
+              </div>
+              <p class="text-base font-medium text-slate-800 mb-3">{{ step.question }}</p>
+
+              @if (!revealed()) {
+                <button type="button" (click)="reveal()"
+                        class="self-start px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-semibold hover:bg-indigo-700">
+                  💡 Show me the pattern
+                </button>
+              } @else {
+                <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-sm text-slate-700 leading-relaxed">
+                  {{ step.reveal }}
+                </div>
+              }
+            </div>
+          }
+
+          <!-- ───── READING + comprehension ───── -->
+          @case ('reading') {
+            <div class="flex-1 flex flex-col">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-bold text-amber-900 uppercase tracking-wide">📰 {{ step.title }}</h3>
+                <button type="button" (click)="speak((step.lines || []).join('. '))" [disabled]="speech.isSpeaking()"
+                        class="text-sky-500 hover:text-sky-700 text-sm disabled:opacity-40">🔊 Listen</button>
+              </div>
+              <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 space-y-1.5 mb-3">
+                @for (line of step.lines; track $index) {
+                  <p class="text-sm text-slate-800 leading-relaxed">{{ line }}</p>
+                }
+              </div>
+              @if (step.translation) {
+                <details class="text-sm mb-4">
+                  <summary class="cursor-pointer text-amber-700 font-medium">🌐 English summary</summary>
+                  <p class="text-slate-600 italic mt-1 leading-relaxed">{{ step.translation }}</p>
+                </details>
+              }
+
+              <!-- comprehension question -->
+              <p class="text-base font-medium text-slate-800 mb-3">{{ step.question }}</p>
+              <div class="space-y-2">
+                @for (opt of step.options; track $index) {
+                  <button type="button" (click)="selectOption($index)" [disabled]="answered()"
+                          class="w-full text-left px-4 py-2.5 rounded-lg border-2 font-medium transition-colors text-sm"
+                          [class.border-slate-200]="!answered() && selectedOption() !== $index"
+                          [class.bg-white]="!answered()"
+                          [class.hover:border-indigo-300]="!answered()"
+                          [class.border-green-500]="answered() && $index === step.correct"
+                          [class.bg-green-50]="answered() && $index === step.correct"
+                          [class.border-red-400]="answered() && selectedOption() === $index && $index !== step.correct"
+                          [class.bg-red-50]="answered() && selectedOption() === $index && $index !== step.correct"
+                          [class.opacity-60]="answered() && selectedOption() !== $index && $index !== step.correct">
+                    {{ opt }}
+                  </button>
+                }
+              </div>
+              @if (answered() && step.explanation) {
+                <div class="mt-3 rounded-lg p-3 text-sm"
+                     [class.bg-green-100]="isCorrect()" [class.text-green-800]="isCorrect()"
+                     [class.bg-amber-100]="!isCorrect()" [class.text-amber-900]="!isCorrect()">
+                  {{ step.explanation }}
+                </div>
+              }
+            </div>
+          }
+
+          <!-- ───── RECAP ───── -->
+          @case ('recap') {
+            <div class="flex-1 flex flex-col items-center justify-center text-center px-2">
+              <div class="text-5xl mb-4">🎉</div>
+              <h2 class="text-2xl font-bold text-slate-800 mb-4">{{ step.title }}</h2>
+              <ul class="space-y-2 text-left max-w-md">
+                @for (p of step.points; track $index) {
+                  <li class="flex gap-2 text-sm text-slate-700 bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                    <span class="text-emerald-600">✓</span>{{ p }}
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        }
+      </div>
+
+      <!-- Bottom navigation -->
+      <div class="mt-5 flex items-center gap-3">
+        @if (stepIndex() > 0) {
+          <button type="button" (click)="back()"
+                  class="px-3 py-2.5 bg-slate-200 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-300">←</button>
+        }
+        <button type="button" (click)="advance()" [disabled]="!canAdvance()"
+                class="flex-1 py-3 rounded-lg font-semibold text-white transition-colors shadow disabled:opacity-40 disabled:cursor-not-allowed"
+                [class.bg-emerald-600]="isLastStep()" [class.hover:bg-emerald-700]="isLastStep()"
+                [class.bg-indigo-600]="!isLastStep()" [class.hover:bg-indigo-700]="!isLastStep()">
+          @if (isLastStep()) { ✓ Finish &amp; complete } @else { Continue → }
+        </button>
+      </div>
+
+    } @else {
+      <!-- ═══════════════════ DOCUMENT VIEW (lessons 2-5) ═══════════════════ -->
+
+      <a [routerLink]="['/courses', courseId()]"
+         class="text-emerald-600 hover:underline text-sm mb-3 inline-block">← Back to course</a>
+
+      <header class="mb-5">
+        <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">Lektion {{ l.number }}</span>
+        <h2 class="text-2xl font-bold text-slate-800 mt-2">{{ l.title }}</h2>
+        <p class="text-sm text-slate-500">{{ l.titleEn }}</p>
+      </header>
+
+      @if (l.goals) {
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-5">
+          <h3 class="text-sm font-bold text-emerald-900 uppercase tracking-wide mb-2">🎯 Lernziele — Goals</h3>
+          <ul class="space-y-1">
+            @for (goal of l.goals; track goal) {
+              <li class="text-sm text-slate-700 flex gap-2"><span class="text-emerald-600">✓</span>{{ goal }}</li>
+            }
+          </ul>
+        </div>
+      }
+
+      @if (l.vocabulary) {
+        <div class="bg-white border border-slate-200 rounded-xl p-4 mb-5">
+          <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide mb-3">📕 Wortschatz — Vocabulary</h3>
+          <ul class="divide-y divide-slate-100">
+            @for (v of l.vocabulary; track v.de) {
+              <li class="py-2">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="min-w-0">
+                    <span class="font-semibold text-slate-800">{{ v.de }}</span>
+                    <span class="text-slate-500 text-sm"> — {{ v.en }}</span>
+                  </div>
+                  <button type="button" (click)="speak(v.de)" [disabled]="speech.isSpeaking()"
+                          class="text-sky-500 hover:text-sky-700 shrink-0 disabled:opacity-40" title="Listen">🔊</button>
+                </div>
+                @if (v.example) { <p class="text-xs text-slate-500 italic mt-0.5">„{{ v.example }}"</p> }
+              </li>
+            }
+          </ul>
+        </div>
+      }
+
+      @if (l.grammar) {
+        @for (g of l.grammar; track g.title) {
+          <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-5">
+            <h3 class="text-sm font-bold text-blue-900 uppercase tracking-wide mb-2">📖 Grammatik — {{ g.title }}</h3>
+            <p class="text-sm text-slate-700 whitespace-pre-line leading-relaxed mb-3">{{ g.explanation }}</p>
+            <div class="bg-white/70 rounded-lg p-3 space-y-1.5">
+              @for (ex of g.examples; track ex) {
+                <div class="flex items-start justify-between gap-2">
+                  <p class="text-sm text-slate-800">• {{ ex }}</p>
+                  <button type="button" (click)="speak(ex)" [disabled]="speech.isSpeaking()"
+                          class="text-sky-500 hover:text-sky-700 shrink-0 text-xs disabled:opacity-40" title="Listen">🔊</button>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      }
+
+      @if (l.reading; as r) {
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-bold text-amber-900 uppercase tracking-wide">📰 {{ r.title }}</h3>
+            <button type="button" (click)="speak(r.lines.join('. '))" [disabled]="speech.isSpeaking()"
+                    class="text-sky-500 hover:text-sky-700 disabled:opacity-40 text-sm" title="Listen">🔊 Listen</button>
+          </div>
+          <div class="space-y-1.5 mb-3">
+            @for (line of r.lines; track line) { <p class="text-sm text-slate-800 leading-relaxed">{{ line }}</p> }
+          </div>
+          <details class="text-sm">
+            <summary class="cursor-pointer text-amber-700 font-medium">🌐 Show English summary</summary>
+            <p class="text-slate-600 italic mt-2 leading-relaxed">{{ r.translation }}</p>
+          </details>
+        </div>
+      }
+
+      <div class="border-t border-slate-200 pt-5">
+        @if (isDone()) {
+          <div class="bg-green-50 border border-green-300 rounded-lg p-3 mb-3 text-center text-green-800 font-medium">✓ Lesson completed</div>
+        } @else {
+          <button type="button" (click)="markComplete()"
+                  class="w-full bg-emerald-600 text-white rounded-lg py-3 font-semibold hover:bg-emerald-700 transition-colors shadow mb-3">
+            ✓ Mark as complete
+          </button>
+        }
+        <div class="flex justify-between gap-3">
+          <a [routerLink]="['/courses', courseId()]"
+             class="px-4 py-2 bg-slate-200 text-slate-700 rounded-md text-sm font-medium hover:bg-slate-300">← Course</a>
+          @if (isDone()) {
+            <button type="button" (click)="goToNext()"
+                    class="px-5 py-2 bg-green-600 text-white rounded-md text-sm font-semibold hover:bg-green-700">
+              @if (lookup()?.next) { Next lesson → } @else { Finish 🎉 }
+            </button>
           }
         </div>
       </div>
     }
-
-    <!-- 📰 Lesetext -->
-    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5">
-      <div class="flex items-center justify-between mb-2">
-        <h3 class="text-sm font-bold text-amber-900 uppercase tracking-wide">📰 {{ l.reading.title }}</h3>
-        <button type="button" (click)="speak(l.reading.lines.join('. '))" [disabled]="speech.isSpeaking()"
-                class="text-sky-500 hover:text-sky-700 disabled:opacity-40 text-sm"
-                title="Listen to the whole text">🔊 Listen</button>
-      </div>
-      <div class="space-y-1.5 mb-3">
-        @for (line of l.reading.lines; track line) {
-          <p class="text-sm text-slate-800 leading-relaxed">{{ line }}</p>
-        }
-      </div>
-      <details class="text-sm">
-        <summary class="cursor-pointer text-amber-700 font-medium">🌐 Show English summary</summary>
-        <p class="text-slate-600 italic mt-2 leading-relaxed">{{ l.reading.translation }}</p>
-      </details>
-    </div>
-
-    <!-- ✅ Complete + Next -->
-    <div class="border-t border-slate-200 pt-5">
-      @if (isDone()) {
-        <div class="bg-green-50 border border-green-300 rounded-lg p-3 mb-3 text-center text-green-800 font-medium">
-          ✓ Lesson completed
-        </div>
-      } @else {
-        <button type="button" (click)="markComplete()"
-                class="w-full bg-emerald-600 text-white rounded-lg py-3 font-semibold hover:bg-emerald-700 transition-colors shadow mb-3">
-          ✓ Mark as complete
-        </button>
-      }
-
-      <div class="flex justify-between gap-3">
-        <a [routerLink]="['/courses', courseId()]"
-           class="px-4 py-2 bg-slate-200 text-slate-700 rounded-md text-sm font-medium hover:bg-slate-300">
-          ← Course
-        </a>
-        @if (isDone()) {
-          <button type="button" (click)="goToNext()"
-                  class="px-5 py-2 bg-green-600 text-white rounded-md text-sm font-semibold hover:bg-green-700">
-            @if (lookup()?.next) { Next lesson → } @else { Finish 🎉 }
-          </button>
-        }
-      </div>
-    </div>
   }
 
 </section>

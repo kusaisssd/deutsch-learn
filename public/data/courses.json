@@ -12,55 +12,102 @@
         "number": 1,
         "title": "Freundschaft & Beziehungen",
         "titleEn": "Friendship & Relationships",
-        "goals": [
-          "I can describe people and relationships in detail",
-          "I can use relative clauses to give extra information",
-          "I can use verbs with fixed prepositions (sich freuen über, sich verlieben in …)"
-        ],
-        "vocabulary": [
-          { "de": "die Beziehung, -en", "en": "relationship", "example": "Wir haben eine enge Beziehung." },
-          { "de": "der Freundeskreis", "en": "circle of friends", "example": "Mein Freundeskreis ist klein, aber treu." },
-          { "de": "sich verlassen auf (+ Akk.)", "en": "to rely on", "example": "Ich kann mich immer auf sie verlassen." },
-          { "de": "vertrauen (+ Dat.)", "en": "to trust", "example": "Ich vertraue meinem besten Freund völlig." },
-          { "de": "der Streit, -e", "en": "argument / quarrel", "example": "Nach dem Streit haben wir uns versöhnt." },
-          { "de": "sich versöhnen", "en": "to make up / reconcile", "example": "Sie haben sich schnell wieder versöhnt." },
-          { "de": "eifersüchtig", "en": "jealous", "example": "Manchmal ist er ein bisschen eifersüchtig." },
-          { "de": "zuverlässig", "en": "reliable", "example": "Eine zuverlässige Freundin ist Gold wert." }
-        ],
-        "grammar": [
-          {
-            "title": "Relativsätze (Relative clauses)",
-            "explanation": "Relative clauses add extra information about a noun. They start with a relative pronoun (der/die/das…) that agrees with the noun's GENDER and takes the CASE its role needs inside the clause. The verb goes to the END.\n\nNominativ:  der/die/das/die\nAkkusativ:  den/die/das/die\nDativ:      dem/der/dem/denen\n\nThe relative pronoun matches the gender of the noun it describes, but its case comes from its job in the relative clause.",
+        "steps": [
+          { "kind": "intro",
+            "title": "Freundschaft & Beziehungen",
+            "text": "In this lesson you'll learn words about relationships, discover how RELATIVE CLAUSES work, and practice verbs that come with a fixed preposition. Tap, choose, and figure things out — no long reading!" },
+
+          { "kind": "flashcard",
+            "front": "die Beziehung",
+            "back": "the relationship",
+            "example": "Wir haben eine enge Beziehung." },
+          { "kind": "flashcard",
+            "front": "vertrauen (+ Dat.)",
+            "back": "to trust",
+            "example": "Ich vertraue meinem besten Freund." },
+
+          { "kind": "quiz",
+            "question": "Was bedeutet „zuverlässig\"?",
+            "options": ["reliable", "jealous", "lonely"],
+            "correct": 0,
+            "explanation": "zuverlässig = reliable. Eine zuverlässige Person hält immer ihre Versprechen." },
+
+          { "kind": "flashcard",
+            "front": "sich verlassen auf (+ Akk.)",
+            "back": "to rely on",
+            "example": "Ich kann mich immer auf sie verlassen." },
+
+          { "kind": "quiz",
+            "prompt": "Fill the gap:",
+            "question": "Ich kann mich auf dich ___.",
+            "options": ["verlassen", "vertrauen", "freuen"],
+            "correct": 0,
+            "explanation": "sich verlassen AUF + Akkusativ = to rely on. (vertrauen would need Dativ: Ich vertraue dir.)" },
+
+          { "kind": "discovery",
+            "instruction": "Look closely at the CAPITALISED words. Three sentences, same idea:",
             "examples": [
-              "Das ist der Freund, DER mir immer hilft. (Nominativ — he helps)",
-              "Das ist der Freund, DEN ich seit Jahren kenne. (Akkusativ — I know him)",
-              "Das ist der Freund, DEM ich vertraue. (Dativ — vertrauen + Dat.)",
-              "Die Frau, MIT DER ich arbeite, ist sehr nett. (preposition + Dativ)"
-            ]
-          },
-          {
-            "title": "Verben mit Präpositionen",
-            "explanation": "Many German verbs are followed by a FIXED preposition that you must memorize together with the verb. The preposition decides the case.\n\n• sich freuen ÜBER (+ Akk.) = to be happy about\n• sich freuen AUF (+ Akk.) = to look forward to\n• sich verlieben IN (+ Akk.) = to fall in love with\n• sich ärgern ÜBER (+ Akk.) = to be annoyed about\n• denken AN (+ Akk.) = to think of\n• vertrauen (+ Dat.) = to trust (no preposition, just Dativ)",
+              "Das ist der Freund, DER mir hilft.",
+              "Das ist die Frau, DIE dort wohnt.",
+              "Das ist das Kind, DAS Fußball spielt."
+            ],
+            "question": "🤔 What do der/die/das do here — and where does the verb go?",
+            "reveal": "These are RELATIVE CLAUSES. der/die/das refer back to the noun (matching its gender), and the VERB jumps to the END of the clause. They add extra info about a person or thing." },
+
+          { "kind": "quiz",
+            "prompt": "Relativpronomen — who is the subject?",
+            "question": "Das ist der Mann, ___ Deutsch spricht.",
+            "options": ["der", "den", "dem"],
+            "correct": 0,
+            "explanation": "He SPEAKS → he's the subject → Nominativ masculine → DER." },
+
+          { "kind": "quiz",
+            "prompt": "Now he's the object:",
+            "question": "Das ist der Film, ___ ich gestern gesehen habe.",
+            "options": ["den", "der", "dem"],
+            "correct": 0,
+            "explanation": "I saw the film → it's the direct object → Akkusativ masculine → DEN." },
+
+          { "kind": "discovery",
+            "instruction": "Some verbs ALWAYS travel with a fixed preposition. Watch how the preposition changes the meaning:",
             "examples": [
-              "Ich freue mich über deinen Besuch.",
-              "Sie hat sich in einen netten Mann verliebt.",
-              "Ärgere dich nicht über solche Kleinigkeiten!",
-              "Ich denke oft an meine alten Freunde."
-            ]
-          }
-        ],
-        "reading": {
-          "title": "Dialog: Ein altes Foto",
-          "lines": [
-            "Lena: Schau mal, das ist ein Foto von meiner besten Freundin, die jetzt in Berlin wohnt.",
-            "Tom: Wie lange kennt ihr euch schon?",
-            "Lena: Seit der Schule. Sie ist die Person, der ich am meisten vertraue.",
-            "Tom: Trefft ihr euch noch oft?",
-            "Lena: Leider nicht. Aber wir telefonieren jede Woche. Ich freue mich immer auf unsere Gespräche.",
-            "Tom: Das ist schön. Eine Freundschaft, die so lange hält, ist selten."
-          ],
-          "translation": "Lena shows Tom a photo of her best friend who now lives in Berlin. They have known each other since school, and Lena trusts her the most. They don't meet often but call every week, and Lena always looks forward to their conversations. Tom notes that a friendship lasting that long is rare."
-        }
+              "sich freuen ÜBER (+ Akk.) = to be happy ABOUT (something now/past)",
+              "sich freuen AUF (+ Akk.) = to look forward TO (something future)",
+              "sich verlieben IN (+ Akk.) = to fall in love WITH"
+            ],
+            "question": "🤔 Same verb 'freuen' — two prepositions, two meanings. Spot the difference?",
+            "reveal": "Always memorize the verb + its preposition as ONE package. The preposition is not optional — it carries the meaning." },
+
+          { "kind": "quiz",
+            "prompt": "Look forward to (future):",
+            "question": "Ich freue mich ___ das Wochenende.",
+            "options": ["auf", "über", "an"],
+            "correct": 0,
+            "explanation": "sich freuen AUF = to look forward to (something coming). 'über' would mean 'about' something already happened." },
+
+          { "kind": "reading",
+            "title": "Dialog: Ein altes Foto",
+            "lines": [
+              "Lena: Schau mal, das ist ein Foto von meiner besten Freundin, die jetzt in Berlin wohnt.",
+              "Tom: Wie lange kennt ihr euch schon?",
+              "Lena: Seit der Schule. Sie ist die Person, der ich am meisten vertraue.",
+              "Tom: Trefft ihr euch noch oft?",
+              "Lena: Leider nicht. Aber wir telefonieren jede Woche. Ich freue mich immer auf unsere Gespräche."
+            ],
+            "translation": "Lena shows Tom a photo of her best friend who now lives in Berlin. They've known each other since school; Lena trusts her the most. They rarely meet but call weekly, and Lena always looks forward to their talks.",
+            "question": "Wem vertraut Lena am meisten?",
+            "options": ["Ihrer besten Freundin", "Ihrem Bruder", "Tom"],
+            "correct": 0,
+            "explanation": "„Sie ist die Person, DER ich am meisten vertraue\" — note the relative clause + vertrauen + Dativ (der)!" },
+
+          { "kind": "recap",
+            "title": "Geschafft! 🎉",
+            "points": [
+              "Relativsätze: der/die/das refer back to a noun, and the verb goes to the END.",
+              "The relative pronoun's case = its job in the clause (Nom: der / Akk: den …).",
+              "Verbs with prepositions are a package: sich freuen AUF, sich verlassen AUF, vertrauen (+ Dat.)."
+            ] }
+        ]
       },
       {
         "id": "b1-l2",
