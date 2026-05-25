@@ -1,8 +1,11 @@
-import { Component, computed, inject, input, linkedSignal } from '@angular/core';
+import { Component, computed, effect, inject, input, linkedSignal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CoursesService } from '../../../core/services/courses';
 import { ProgressService } from '../../../core/services/progress';
 import { SpeechService } from '../../../core/services/speech';
+import { SpeechRecognitionService } from '../../../core/services/speech-recognition';
+import { compareGerman, ComparisonResult } from '../../../shared/utils/similarity';
+import { LektionStep } from '../../../core/models/course.model';
 
 /**
  * صفحة درس واحد (Lektion).
@@ -28,6 +31,17 @@ export class LektionPage {
   private progress = inject(ProgressService);
   private router = inject(Router);
   readonly speech = inject(SpeechService);
+  readonly speechRec = inject(SpeechRecognitionService);
+
+  constructor() {
+    // 🎤 عند وصول نص من التعرّف الصوتي في خطوة تحدّث، نقارنه بالجملة المتوقّعة
+    effect(() => {
+      const transcript = this.speechRec.lastTranscript();
+      const step = this.currentStep();
+      if (!transcript || step?.kind !== 'speak' || !step.text) return;
+      this.speechResult.set(compareGerman(transcript, step.text));
+    });
+  }
 
   readonly loaded = this.coursesService.loaded;
 
@@ -92,7 +106,7 @@ export class LektionPage {
     computation: () => false,
   });
 
-  /** هل أُجيب على السؤال؟ (quiz/reading) */
+  /** هل أُجيب على السؤال؟ (quiz/reading مفرد) */
   readonly answered = computed(() => this.selectedOption() !== null);
 
   /** هل الإجابة المختارة صحيحة؟ */
@@ -101,23 +115,77 @@ export class LektionPage {
     return step != null && this.selectedOption() === step.correct;
   });
 
+  // ───────── 🆕 حالة القراءة متعددة الأسئلة ─────────
+
+  /**
+   * إجابات أسئلة القراءة المتعددة: مصفوفة index لكل سؤال (null = لم يُجب).
+   * تُعاد التهيئة عند تغيّر الخطوة.
+   */
+  readonly readingAnswers = linkedSignal<LektionStep | null, (number | null)[]>({
+    source: this.currentStep,
+    computation: (step) =>
+      step?.kind === 'reading' && step.questions ? step.questions.map(() => null) : [],
+  });
+
+  /** اختيار خيار لسؤال قراءة معيّن (يُقفل بعد الاختيار) */
+  selectReadingOption(qi: number, oi: number) {
+    const arr = this.readingAnswers();
+    if (arr[qi] != null) return; // مُقفل
+    const copy = [...arr];
+    copy[qi] = oi;
+    this.readingAnswers.set(copy);
+  }
+
+  /** هل أُجيب على كل أسئلة القراءة المتعددة؟ */
+  readonly readingAllAnswered = computed(() => {
+    const step = this.currentStep();
+    if (step?.kind !== 'reading' || !step.questions) return true;
+    return this.readingAnswers().every(a => a != null);
+  });
+
+  // ───────── 🆕 حالة التحدّث (speak) ─────────
+
+  /** نتيجة مقارنة النطق (null = لم يُحاول بعد) — تُعاد عند تغيّر الخطوة */
+  readonly speechResult = linkedSignal<LektionStep | null, ComparisonResult | null>({
+    source: this.currentStep,
+    computation: () => null,
+  });
+
+  startListening() {
+    this.speechResult.set(null);
+    this.speechRec.clearResult();
+    this.speechRec.start('de-DE');
+  }
+  stopListening() {
+    this.speechRec.stop();
+  }
+
+  /** نسبة مئوية مدوّرة (للعرض في نتيجة النطق) */
+  pct(n: number): number {
+    return Math.round(n * 100);
+  }
+
   /**
    * هل يمكن الانتقال للخطوة التالية الآن؟
-   *   quiz/reading → بعد الإجابة
+   *   quiz        → بعد الإجابة
+   *   reading      → بعد الإجابة (مفرد) أو كل الأسئلة (متعدد)
    *   discovery    → بعد الكشف
-   *   البقية       → دائماً
+   *   speak/البقية → دائماً (التحدّث غير مُلزِم — الميكروفون قد لا يعمل)
    */
   readonly canAdvance = computed(() => {
     const step = this.currentStep();
     if (!step) return false;
-    if (step.kind === 'quiz' || step.kind === 'reading') return this.answered();
+    if (step.kind === 'quiz') return this.answered();
+    if (step.kind === 'reading') {
+      return step.questions ? this.readingAllAnswered() : this.answered();
+    }
     if (step.kind === 'discovery') return this.revealed();
     return true;
   });
 
   // ───────── أفعال التفاعل ─────────
 
-  /** اختيار خيار في quiz/reading (يُقفل بعد الاختيار) */
+  /** اختيار خيار في quiz/reading مفرد (يُقفل بعد الاختيار) */
   selectOption(i: number) {
     if (this.answered()) return; // لا تغيير بعد الإجابة
     this.selectedOption.set(i);

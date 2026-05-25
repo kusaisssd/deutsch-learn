@@ -90,7 +90,7 @@ export interface Lektion {
  *   'recap'     → ملخّص نهائي (title + points)
  */
 export interface LektionStep {
-  kind: 'intro' | 'flashcard' | 'quiz' | 'discovery' | 'reading' | 'recap';
+  kind: 'intro' | 'flashcard' | 'quiz' | 'discovery' | 'reading' | 'speak' | 'recap';
 
   /**
    * 🆕 عنوان القسم (مثل "🔤 المفردات" أو "📐 القاعدة ١") — يظهر كـ chip
@@ -108,7 +108,7 @@ export interface LektionStep {
   back?: string;        // المعنى
   example?: string;     // جملة مثال
 
-  // quiz / reading
+  // quiz / reading (single-question)
   prompt?: string;      // سطر سياق اختياري فوق السؤال
   question?: string;
   options?: string[];
@@ -123,6 +123,25 @@ export interface LektionStep {
   // reading
   lines?: string[];     // أسطر النص
   translation?: string; // ترجمة مختصرة
+  /**
+   * 🆕 أسئلة فهم متعددة لنص القراءة. لو وُجدت، تُعرض كلها أسفل النص
+   * (يجب الإجابة عليها كلها قبل المتابعة). إن لم تُوجد، يُستخدم
+   * السؤال المفرد (question/options/correct) للتوافق الخلفي.
+   */
+  questions?: ReadingQuestion[];
+
+  // speak (🆕 قسم التحدّث)
+  // يُعاد استخدام: prompt (تعليمة عربية)، text (الجملة الألمانية للنطق)
+  /** تلميح عربي اختياري تحت جملة التحدّث */
+  hint?: string;
+}
+
+/** سؤال فهم واحد ضمن نص قراءة متعدّد الأسئلة */
+export interface ReadingQuestion {
+  question: string;
+  options: string[];
+  correct: number;
+  explanation?: string;
 }
 
 /** مفردة واحدة: ألماني → إنجليزي + مثال اختياري */

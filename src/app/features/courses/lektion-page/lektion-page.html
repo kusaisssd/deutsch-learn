@@ -201,30 +201,122 @@
                 </details>
               }
 
-              <!-- comprehension question -->
-              <p class="text-base font-medium text-slate-800 mb-3 text-right" dir="rtl">{{ step.question }}</p>
-              <div class="space-y-2">
-                @for (opt of step.options; track $index) {
-                  <button type="button" (click)="selectOption($index)" [disabled]="answered()"
-                          class="w-full text-left px-4 py-2.5 rounded-lg border-2 font-medium transition-colors text-sm"
-                          [class.border-slate-200]="!answered() && selectedOption() !== $index"
-                          [class.bg-white]="!answered()"
-                          [class.hover:border-indigo-300]="!answered()"
-                          [class.border-green-500]="answered() && $index === step.correct"
-                          [class.bg-green-50]="answered() && $index === step.correct"
-                          [class.border-red-400]="answered() && selectedOption() === $index && $index !== step.correct"
-                          [class.bg-red-50]="answered() && selectedOption() === $index && $index !== step.correct"
-                          [class.opacity-60]="answered() && selectedOption() !== $index && $index !== step.correct">
-                    {{ opt }}
-                  </button>
+              @if (step.questions) {
+                <!-- 🆕 أسئلة فهم متعددة (تُعرض كلها) -->
+                <p class="text-sm font-semibold text-indigo-600 mb-3 text-right" dir="rtl">
+                  أجب عن الأسئلة التالية ({{ step.questions.length }}):
+                </p>
+                @for (q of step.questions; track qi; let qi = $index) {
+                  @let ans = readingAnswers()[qi];
+                  @let qAnswered = ans != null;
+                  <div class="mb-4 pb-4 border-b border-amber-100 last:border-0">
+                    <p class="text-sm font-medium text-slate-800 mb-2 text-right" dir="rtl">
+                      {{ qi + 1 }}. {{ q.question }}
+                    </p>
+                    <div class="space-y-2">
+                      @for (opt of q.options; track $index) {
+                        <button type="button" (click)="selectReadingOption(qi, $index)" [disabled]="qAnswered"
+                                class="w-full text-left px-3 py-2 rounded-lg border-2 font-medium transition-colors text-sm"
+                                [class.border-slate-200]="!qAnswered && ans !== $index"
+                                [class.bg-white]="!qAnswered"
+                                [class.hover:border-indigo-300]="!qAnswered"
+                                [class.border-green-500]="qAnswered && $index === q.correct"
+                                [class.bg-green-50]="qAnswered && $index === q.correct"
+                                [class.border-red-400]="qAnswered && ans === $index && $index !== q.correct"
+                                [class.bg-red-50]="qAnswered && ans === $index && $index !== q.correct"
+                                [class.opacity-60]="qAnswered && ans !== $index && $index !== q.correct">
+                          {{ opt }}
+                        </button>
+                      }
+                    </div>
+                    @if (qAnswered && q.explanation) {
+                      <div class="mt-2 rounded-lg p-2 text-xs text-right" dir="rtl"
+                           [class.bg-green-100]="ans === q.correct" [class.text-green-800]="ans === q.correct"
+                           [class.bg-amber-100]="ans !== q.correct" [class.text-amber-900]="ans !== q.correct">
+                        {{ q.explanation }}
+                      </div>
+                    }
+                  </div>
+                }
+              } @else {
+                <!-- comprehension question (single, legacy) -->
+                <p class="text-base font-medium text-slate-800 mb-3 text-right" dir="rtl">{{ step.question }}</p>
+                <div class="space-y-2">
+                  @for (opt of step.options; track $index) {
+                    <button type="button" (click)="selectOption($index)" [disabled]="answered()"
+                            class="w-full text-left px-4 py-2.5 rounded-lg border-2 font-medium transition-colors text-sm"
+                            [class.border-slate-200]="!answered() && selectedOption() !== $index"
+                            [class.bg-white]="!answered()"
+                            [class.hover:border-indigo-300]="!answered()"
+                            [class.border-green-500]="answered() && $index === step.correct"
+                            [class.bg-green-50]="answered() && $index === step.correct"
+                            [class.border-red-400]="answered() && selectedOption() === $index && $index !== step.correct"
+                            [class.bg-red-50]="answered() && selectedOption() === $index && $index !== step.correct"
+                            [class.opacity-60]="answered() && selectedOption() !== $index && $index !== step.correct">
+                      {{ opt }}
+                    </button>
+                  }
+                </div>
+                @if (answered() && step.explanation) {
+                  <div class="mt-3 rounded-lg p-3 text-sm text-right" dir="rtl"
+                       [class.bg-green-100]="isCorrect()" [class.text-green-800]="isCorrect()"
+                       [class.bg-amber-100]="!isCorrect()" [class.text-amber-900]="!isCorrect()">
+                    {{ step.explanation }}
+                  </div>
+                }
+              }
+            </div>
+          }
+
+          <!-- ───── SPEAK (قسم التحدّث) ───── -->
+          @case ('speak') {
+            <div class="flex-1 flex flex-col items-center justify-center text-center">
+              @if (step.prompt) {
+                <p class="text-slate-700 mb-3 font-medium" dir="rtl">{{ step.prompt }}</p>
+              }
+              <!-- الجملة الألمانية للنطق -->
+              <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-5 mb-4 w-full">
+                <p class="text-xl sm:text-2xl font-semibold text-slate-800 leading-relaxed">{{ step.text }}</p>
+              </div>
+              @if (step.hint) {
+                <p class="text-xs text-slate-500 mb-4" dir="rtl">{{ step.hint }}</p>
+              }
+
+              <div class="flex items-center justify-center gap-3 mb-4">
+                <!-- 🔊 استماع (TTS) -->
+                <button type="button" (click)="speak(step.text || '')" [disabled]="speech.isSpeaking()"
+                        class="px-4 py-2 bg-sky-500 text-white rounded-md text-sm font-medium hover:bg-sky-600 disabled:opacity-40">
+                  🔊 استمع
+                </button>
+                <!-- 🎤 نطق (اختياري) -->
+                @if (speechRec.isSupported) {
+                  @if (!speechRec.isListening()) {
+                    <button type="button" (click)="startListening()"
+                            class="px-4 py-2 bg-rose-500 text-white rounded-md text-sm font-medium hover:bg-rose-600">
+                      🎤 تحدّث
+                    </button>
+                  } @else {
+                    <button type="button" (click)="stopListening()"
+                            class="px-4 py-2 bg-rose-700 text-white rounded-md text-sm font-medium animate-pulse">
+                      ⏹ إيقاف
+                    </button>
+                  }
                 }
               </div>
-              @if (answered() && step.explanation) {
-                <div class="mt-3 rounded-lg p-3 text-sm text-right" dir="rtl"
-                     [class.bg-green-100]="isCorrect()" [class.text-green-800]="isCorrect()"
-                     [class.bg-amber-100]="!isCorrect()" [class.text-amber-900]="!isCorrect()">
-                  {{ step.explanation }}
+
+              <!-- نتيجة المطابقة -->
+              @if (speechResult(); as res) {
+                <div class="w-full rounded-lg p-3 text-sm" dir="rtl"
+                     [class.bg-green-100]="res.level !== 'different'" [class.text-green-800]="res.level !== 'different'"
+                     [class.bg-amber-100]="res.level === 'different'" [class.text-amber-900]="res.level === 'different'">
+                  @if (res.level === 'exact') { 🎉 ممتاز! نطق مطابق. }
+                  @else if (res.level === 'close') { 👍 قريب جداً! ({{ pct(res.similarity) }}%) }
+                  @else { 🔁 حاول مرة أخرى. سمعنا: «{{ res.spokenNormalized }}» }
                 </div>
+              } @else if (speechRec.error()) {
+                <p class="text-xs text-slate-500" dir="rtl">⚠️ الميكروفون غير متاح — لا بأس، استمع و كرّر بصوتك.</p>
+              } @else if (!speechRec.isSupported) {
+                <p class="text-xs text-slate-500" dir="rtl">💡 استمع للجملة ثم كرّرها بصوت عالٍ.</p>
               }
             </div>
           }
