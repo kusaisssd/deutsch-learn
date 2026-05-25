@@ -79,8 +79,8 @@
                 @if (state.done) { ✓ } @else { {{ l.number }} }
               </div>
               <div class="flex-1 min-w-0 text-right">
-                <p class="font-medium text-slate-800">{{ l.title }}</p>
-                <p class="text-xs text-slate-500">{{ l.titleEn }}</p>
+                <p class="font-medium text-slate-800">{{ l.titleEn }}</p>
+                <p class="text-xs text-slate-400" dir="ltr">{{ l.title }}</p>
               </div>
               @if (state.isNext) {
                 <span class="text-xs font-semibold text-indigo-600 shrink-0">التالي ←</span>
@@ -97,8 +97,8 @@
                 🔒
               </div>
               <div class="flex-1 min-w-0 text-right">
-                <p class="font-medium text-slate-500">{{ l.title }}</p>
-                <p class="text-xs text-slate-400">أكمل الدرس السابق لفتح هذا الدرس</p>
+                <p class="font-medium text-slate-500">{{ l.titleEn }}</p>
+                <p class="text-xs text-slate-400">🔒 أكمل الدرس السابق لفتحه</p>
               </div>
             </div>
           </li>

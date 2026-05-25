@@ -8,7 +8,7 @@
     "color": "indigo",
     "lektionen": [
       {
-        "id": "a2-l1", "number": 1, "title": "Mein Alltag", "titleEn": "My Daily Routine",
+        "id": "a2-l1", "number": 1, "title": "Mein Alltag", "titleEn": "يومي · الأفعال المنفصلة",
         "steps": [
           { "kind": "intro", "section": "🎯 أهداف الدرس",
             "title": "Mein Alltag",
@@ -39,14 +39,25 @@
             "title": "Text: Annas Tag",
             "lines": ["Anna steht jeden Tag um 6 Uhr auf.", "Sie frühstückt und fährt dann zur Arbeit.", "Nach dem Feierabend kauft sie ein.", "Abends ruft sie ihre Familie an und sieht ein bisschen fern."],
             "translation": "تستيقظ آنا كل يوم الساعة 6. تفطر ثم تذهب إلى العمل. بعد انتهاء الدوام تتسوّق. مساءً تتّصل بعائلتها و تشاهد التلفاز قليلاً.",
-            "question": "متى تستيقظ آنا؟", "options": ["الساعة 6", "الساعة 7", "الساعة 8"], "correct": 0,
-            "explanation": "«Anna steht jeden Tag um 6 Uhr auf» — لاحظ الفعل المنفصل aufstehen." },
+            "questions": [
+              { "question": "متى تستيقظ آنا؟", "options": ["الساعة 6", "الساعة 7", "الساعة 8"], "correct": 0, "explanation": "«Anna steht jeden Tag um 6 Uhr auf» — الفعل المنفصل aufstehen." },
+              { "question": "ماذا تفعل بعد انتهاء الدوام؟", "options": ["تتسوّق (kauft … ein)", "تنام", "تعمل أكثر"], "correct": 0, "explanation": "«Nach dem Feierabend kauft sie ein» — einkaufen منفصل." },
+              { "question": "ماذا تفعل مساءً؟", "options": ["تتّصل بعائلتها و تشاهد التلفاز", "تذهب للعمل", "تتسوّق"], "correct": 0, "explanation": "«ruft sie ihre Familie an und sieht … fern» — anrufen + fernsehen." }
+            ] },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "استمع ثم انطق هذه الجملة (فعل منفصل):",
+            "text": "Ich stehe um sieben Uhr auf.",
+            "hint": "aufstehen → stehe … auf (البادئة للآخر)." },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "انطق هذه الجملة:",
+            "text": "Abends sehe ich fern.",
+            "hint": "fernsehen → sehe … fern." },
           { "kind": "recap", "section": "🎉 المراجعة", "title": "أحسنت! أكملت الدرس",
-            "points": ["الأفعال المنفصلة: البادئة تذهب لآخر الجملة في المضارع.", "أمثلة: aufstehen، einkaufen، fernsehen، anrufen.", "مفردات الروتين اليومي للتحدّث عن يومك."] }
+            "points": ["الأفعال المنفصلة: البادئة تذهب لآخر الجملة في المضارع.", "أمثلة: aufstehen، einkaufen، fernsehen، anrufen.", "مفردات الروتين اليومي للتحدّث عن يومك.", "تدرّبت على النطق! انطق أفعالك اليومية بصوتك."] }
         ]
       },
       {
-        "id": "a2-l2", "number": 2, "title": "Einkaufen & Essen", "titleEn": "Shopping & Food",
+        "id": "a2-l2", "number": 2, "title": "Einkaufen & Essen", "titleEn": "التسوّق و الطعام · Akkusativ + الأفعال الناقصة",
         "steps": [
           { "kind": "intro", "section": "🎯 أهداف الدرس", "title": "Einkaufen & Essen",
             "text": "في هذا الدرس مفردات التسوّق و الطعام، ثم حالة المفعول به (Akkusativ) و الأفعال الناقصة. ستكون قادراً على:",
@@ -77,14 +88,25 @@
             "title": "Dialog: Im Supermarkt",
             "lines": ["Tom: Was brauchen wir noch?", "Lea: Ich möchte Gemüse und Obst kaufen.", "Tom: Ich nehme einen Apfel und eine Banane.", "Lea: Gut. Dann zahlen wir und holen die Rechnung."],
             "translation": "توم: ماذا نحتاج أيضاً؟ ليا: أودّ شراء خضار و فاكهة. توم: سآخذ تفاحة و موزة. ليا: جيد، ثم ندفع و نأخذ الفاتورة.",
-            "question": "ماذا تريد ليا أن تشتري؟", "options": ["خضار و فاكهة", "لحم و خبز", "حليب فقط"], "correct": 0,
-            "explanation": "«Ich möchte Gemüse und Obst kaufen» — möchten + المصدر kaufen في الآخر." },
+            "questions": [
+              { "question": "ماذا تريد ليا أن تشتري؟", "options": ["خضار و فاكهة", "لحم و خبز", "حليب فقط"], "correct": 0, "explanation": "«Ich möchte Gemüse und Obst kaufen» — möchten + المصدر في الآخر." },
+              { "question": "ماذا يأخذ توم؟ (Akkusativ)", "options": ["تفاحة و موزة (einen Apfel, eine Banane)", "خبزاً", "لا شيء"], "correct": 0, "explanation": "«einen Apfel» (مذكّر→einen) و «eine Banane» (مؤنّث→eine)." },
+              { "question": "ماذا يأخذان في النهاية؟", "options": ["الفاتورة (die Rechnung)", "هدية", "قائمة طعام"], "correct": 0, "explanation": "«…und holen die Rechnung»." }
+            ] },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "استمع ثم انطق هذه الجملة (Akkusativ مذكّر):",
+            "text": "Ich kaufe einen Apfel.",
+            "hint": "der Apfel → einen Apfel (Akkusativ مذكّر)." },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "انطق هذه الجملة (möchten + مصدر):",
+            "text": "Ich möchte einen Kaffee trinken.",
+            "hint": "المصدر trinken يذهب لآخر الجملة." },
           { "kind": "recap", "section": "🎉 المراجعة", "title": "أحسنت! أكملت الدرس",
-            "points": ["Akkusativ: المذكّر فقط يتغيّر (einen/den)، المؤنّث و المحايد يبقيان.", "möchten + مصدر → المصدر في آخر الجملة.", "مفردات التسوّق: der Supermarkt، das Gemüse، die Rechnung."] }
+            "points": ["Akkusativ: المذكّر فقط يتغيّر (einen/den)، المؤنّث و المحايد يبقيان.", "möchten + مصدر → المصدر في آخر الجملة.", "مفردات التسوّق: der Supermarkt، das Gemüse، die Rechnung.", "تدرّبت على النطق! اطلب أشياء بأدب بصوتك."] }
         ]
       },
       {
-        "id": "a2-l3", "number": 3, "title": "Familie & Freunde", "titleEn": "Family & Friends",
+        "id": "a2-l3", "number": 3, "title": "Familie & Freunde", "titleEn": "العائلة و الأصدقاء · أدوات الملكية + الضمائر",
         "steps": [
           { "kind": "intro", "section": "🎯 أهداف الدرس", "title": "Familie & Freunde",
             "text": "في هذا الدرس مفردات العائلة، ثم أدوات الملكية (mein/dein…) و الضمائر. ستكون قادراً على:",
@@ -114,14 +136,25 @@
             "title": "Text: Meine Familie",
             "lines": ["Das ist meine Familie. Meine Eltern wohnen in Hamburg.", "Mein Bruder ist verheiratet, meine Schwester ist noch ledig.", "Wir kennen uns gut und treffen uns oft.", "Ich liebe sie sehr."],
             "translation": "هذه عائلتي. والداي يعيشان في هامبورغ. أخي متزوّج، و أختي ما زالت عزباء. نعرف بعضنا جيداً و نلتقي كثيراً. أحبّهم كثيراً.",
-            "question": "هل أخت المتحدّث متزوّجة؟", "options": ["لا، هي عزباء (ledig)", "نعم، متزوّجة", "النص لا يذكر"], "correct": 0,
-            "explanation": "«meine Schwester ist noch ledig» — ledig = عزباء." },
+            "questions": [
+              { "question": "أين يعيش والدا المتحدّث؟", "options": ["في هامبورغ", "في برلين", "في ميونخ"], "correct": 0, "explanation": "«Meine Eltern wohnen in Hamburg»." },
+              { "question": "هل أخت المتحدّث متزوّجة؟", "options": ["لا، هي عزباء (ledig)", "نعم، متزوّجة", "النص لا يذكر"], "correct": 0, "explanation": "«meine Schwester ist noch ledig» — ledig = عزباء." },
+              { "question": "هل يلتقون كثيراً؟", "options": ["نعم، يلتقون كثيراً", "لا، أبداً", "مرّة في السنة"], "correct": 0, "explanation": "«…und treffen uns oft» — sich treffen (انعكاسي)." }
+            ] },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "استمع ثم انطق هذه الجملة (أداة ملكية):",
+            "text": "Meine Schwester wohnt in Berlin.",
+            "hint": "die Schwester مؤنّثة → meine." },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "انطق هذه الجملة (ضمير Dativ):",
+            "text": "Ich helfe dir gern.",
+            "hint": "helfen + Dativ → dir." },
           { "kind": "recap", "section": "🎉 المراجعة", "title": "أحسنت! أكملت الدرس",
-            "points": ["أدوات الملكية: mein (مذكّر/محايد)، meine (مؤنّث/جمع).", "الضمائر: Akkusativ (mich/dich) مقابل Dativ (mir/dir).", "مفردات العائلة: die Eltern، der Bruder، verheiratet، ledig."] }
+            "points": ["أدوات الملكية: mein (مذكّر/محايد)، meine (مؤنّث/جمع).", "الضمائر: Akkusativ (mich/dich) مقابل Dativ (mir/dir).", "مفردات العائلة: die Eltern، der Bruder، verheiratet، ledig.", "تدرّبت على النطق! صِف عائلتك بصوتك."] }
         ]
       },
       {
-        "id": "a2-l4", "number": 4, "title": "Freizeit & Vergleiche", "titleEn": "Free Time & Comparisons",
+        "id": "a2-l4", "number": 4, "title": "Freizeit & Vergleiche", "titleEn": "أوقات الفراغ · المقارنة و التفضيل",
         "steps": [
           { "kind": "intro", "section": "🎯 أهداف الدرس", "title": "Freizeit & Vergleiche",
             "text": "في هذا الدرس مفردات أوقات الفراغ، ثم المقارنة (Komparativ) و التفضيل (Superlativ). ستكون قادراً على:",
@@ -147,14 +180,25 @@
             "title": "Text: Meine Freizeit",
             "lines": ["In meiner Freizeit schwimme ich gern.", "Aber ich gehe lieber ins Kino als ins Theater.", "Sport ist gesünder als Fernsehen.", "Am liebsten lese ich ein gutes Buch."],
             "translation": "في وقت فراغي أحبّ السباحة. لكنني أفضّل الذهاب إلى السينما على المسرح. الرياضة أصحّ من مشاهدة التلفاز. و أكثر ما أحبّه قراءة كتاب جيد.",
-            "question": "ماذا يفضّل المتحدّث أكثر شيء؟", "options": ["قراءة كتاب جيد (am liebsten)", "المسرح", "التلفاز"], "correct": 0,
-            "explanation": "«Am liebsten lese ich ein gutes Buch» — am liebsten = الأكثر تفضيلاً (Superlativ)." },
+            "questions": [
+              { "question": "أين يفضّل الذهاب: السينما أم المسرح؟", "options": ["السينما (lieber … als)", "المسرح", "كلاهما"], "correct": 0, "explanation": "«ich gehe lieber ins Kino als ins Theater» — lieber … als (مقارنة)." },
+              { "question": "ما الأصحّ حسب النص؟", "options": ["الرياضة (gesünder als)", "التلفاز", "متساويان"], "correct": 0, "explanation": "«Sport ist gesünder als Fernsehen» — Komparativ." },
+              { "question": "ماذا يفضّل أكثر شيء؟", "options": ["قراءة كتاب جيد (am liebsten)", "المسرح", "التلفاز"], "correct": 0, "explanation": "«Am liebsten lese ich ein gutes Buch» — Superlativ." }
+            ] },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "استمع ثم انطق هذه الجملة (مقارنة):",
+            "text": "Das Auto ist schneller als das Fahrrad.",
+            "hint": "schneller … als = أسرع من." },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "انطق هذه الجملة (تفضيل):",
+            "text": "Am liebsten lese ich ein gutes Buch.",
+            "hint": "am liebsten = الأكثر تفضيلاً (Superlativ)." },
           { "kind": "recap", "section": "🎉 المراجعة", "title": "أحسنت! أكملت الدرس",
-            "points": ["المقارنة: Adjektiv + er + als (schneller als).", "التفضيل: am + Adjektiv + sten (am schnellsten).", "شاذّة: gut → besser → am besten، gern → lieber → am liebsten."] }
+            "points": ["المقارنة: Adjektiv + er + als (schneller als).", "التفضيل: am + Adjektiv + sten (am schnellsten).", "شاذّة: gut → besser → am besten، gern → lieber → am liebsten.", "تدرّبت على النطق! قارن الأشياء بصوتك."] }
         ]
       },
       {
-        "id": "a2-l5", "number": 5, "title": "Pläne & Gründe", "titleEn": "Plans & Reasons",
+        "id": "a2-l5", "number": 5, "title": "Pläne & Gründe", "titleEn": "الخطط و الأسباب · weil / dass",
         "steps": [
           { "kind": "intro", "section": "🎯 أهداف الدرس", "title": "Pläne & Gründe",
             "text": "في هذا الدرس سنتحدّث عن الخطط و الأسباب، ثم الجمل الفرعية بـ weil (لأن) و dass (أنّ). ستكون قادراً على:",
@@ -184,10 +228,21 @@
             "title": "Dialog: Wochenendpläne",
             "lines": ["Max: Was hast du am Wochenende vor?", "Lea: Vielleicht treffe ich Freunde, weil das Wetter schön ist.", "Max: Gute Idee! Ich denke, dass wir auch spazieren gehen sollten.", "Lea: Super, dann treffen wir uns um 10 Uhr."],
             "translation": "ماكس: ماذا تنوين فعله في عطلة الأسبوع؟ ليا: ربما ألتقي بأصدقاء، لأن الطقس جميل. ماكس: فكرة جيدة! أعتقد أنه يجب أن نتمشّى أيضاً. ليا: رائع، إذاً نلتقي الساعة 10.",
-            "question": "لماذا تريد ليا لقاء أصدقائها؟", "options": ["لأن الطقس جميل (weil)", "لأنها متعبة", "لأنها تعمل"], "correct": 0,
-            "explanation": "«…weil das Wetter schön ist» — weil يعطي السبب، و الفعل ist في الآخر." },
-          { "kind": "recap", "section": "🎉 المراجعة", "title": "أحسنت! أكملت منهج A2! 🎓",
-            "points": ["weil (لأن) و dass (أنّ): أداتا ربط ثانويتان → الفعل يذهب لآخر الجملة الفرعية.", "للتخطيط: vorhaben، sich treffen، vielleicht.", "أنت الآن جاهز للانتقال إلى منهج B1!"] }
+            "questions": [
+              { "question": "لماذا تريد ليا لقاء أصدقائها؟", "options": ["لأن الطقس جميل (weil)", "لأنها متعبة", "لأنها تعمل"], "correct": 0, "explanation": "«…weil das Wetter schön ist» — weil + الفعل ist في الآخر." },
+              { "question": "بماذا يفكّر ماكس؟", "options": ["أنه يجب أن يتمشّوا أيضاً (dass)", "أن يبقى في البيت", "أن يعمل"], "correct": 0, "explanation": "«Ich denke, dass wir … spazieren gehen sollten» — dass + الفعل للآخر." },
+              { "question": "متى سيلتقيان؟", "options": ["الساعة 10", "الساعة 8", "لن يلتقيا"], "correct": 0, "explanation": "«dann treffen wir uns um 10 Uhr»." }
+            ] },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "استمع ثم انطق هذه الجملة (weil → الفعل للآخر):",
+            "text": "Ich bleibe zu Hause, weil es regnet.",
+            "hint": "weil يدفع «regnet» إلى آخر الجملة." },
+          { "kind": "speak", "section": "🎤 قسم التحدّث",
+            "prompt": "انطق هذه الجملة (dass → الفعل للآخر):",
+            "text": "Ich denke, dass Deutsch wichtig ist.",
+            "hint": "dass يدفع «ist» إلى آخر الجملة." },
+          { "kind": "recap", "section": "🎉 المراجعة", "title": "أحسنت! أكملت منهج A2 الحالي! 🎓",
+            "points": ["weil (لأن) و dass (أنّ): أداتا ربط ثانويتان → الفعل يذهب لآخر الجملة الفرعية.", "للتخطيط: vorhaben، sich treffen، vielleicht.", "تدرّبت على النطق! اربط أفكارك بصوتك.", "أنت الآن جاهز للانتقال إلى منهج B1!"] }
         ]
       }
     ]
@@ -204,7 +259,7 @@
         "id": "b1-l1",
         "number": 1,
         "title": "Freundschaft & Beziehungen",
-        "titleEn": "Friendship & Relationships",
+        "titleEn": "الصداقة و العلاقات · الجمل الموصولة + أفعال بحروف جرّ",
         "steps": [
           { "kind": "intro",
             "section": "🎯 أهداف الدرس",
@@ -387,7 +442,7 @@
         "id": "b1-l2",
         "number": 2,
         "title": "Arbeit & Beruf",
-        "titleEn": "Work & Career",
+        "titleEn": "العمل و المهنة · Konjunktiv II (التأدّب)",
         "steps": [
           { "kind": "intro", "section": "🎯 أهداف الدرس",
             "title": "Arbeit & Beruf",
@@ -533,7 +588,7 @@
         "id": "b1-l3",
         "number": 3,
         "title": "Wohnen & Zusammenleben",
-        "titleEn": "Living & Cohabitation",
+        "titleEn": "السكن و المعيشة · Wechselpräpositionen + نهايات الصفات",
         "steps": [
           { "kind": "intro", "section": "🎯 أهداف الدرس",
             "title": "Wohnen & Zusammenleben",
@@ -676,7 +731,7 @@
         "id": "b1-l4",
         "number": 4,
         "title": "Gesundheit & Lebensstil",
-        "titleEn": "Health & Lifestyle",
+        "titleEn": "الصحة و نمط الحياة · أدوات الربط (obwohl/deshalb)",
         "steps": [
           { "kind": "intro", "section": "🎯 أهداف الدرس",
             "title": "Gesundheit & Lebensstil",
@@ -802,7 +857,7 @@
         "id": "b1-l5",
         "number": 5,
         "title": "Reisen & Umwelt",
-        "titleEn": "Travel & Environment",
+        "titleEn": "السفر و البيئة · المبني للمجهول (Passiv)",
         "steps": [
           { "kind": "intro", "section": "🎯 أهداف الدرس",
             "title": "Reisen & Umwelt",
@@ -925,7 +980,7 @@
         ]
       },
       {
-        "id": "b1-l6", "number": 6, "title": "Medien & Kommunikation", "titleEn": "Media & Communication",
+        "id": "b1-l6", "number": 6, "title": "Medien & Kommunikation", "titleEn": "الإعلام و التواصل · الجمل الزمنية (als/wenn)",
         "steps": [
           { "kind": "intro", "section": "🎯 أهداف الدرس", "title": "Medien & Kommunikation",
             "text": "في هذا الدرس مفردات الإعلام، ثم الجمل الزمنية (als / wenn / nachdem / bevor / während). ستكون قادراً على:",
@@ -969,7 +1024,7 @@
         ]
       },
       {
-        "id": "b1-l7", "number": 7, "title": "Bildung & Lernen", "titleEn": "Education & Learning",
+        "id": "b1-l7", "number": 7, "title": "Bildung & Lernen", "titleEn": "التعليم و التعلّم · جمل الغرض (damit/um…zu)",
         "steps": [
           { "kind": "intro", "section": "🎯 أهداف الدرس", "title": "Bildung & Lernen",
             "text": "في هذا الدرس مفردات التعليم، ثم جمل الغرض (damit / um … zu). ستكون قادراً على:",
@@ -1010,7 +1065,7 @@
         ]
       },
       {
-        "id": "b1-l8", "number": 8, "title": "Geld & Konsum", "titleEn": "Money & Consumption",
+        "id": "b1-l8", "number": 8, "title": "Geld & Konsum", "titleEn": "المال و الاستهلاك · حالة الإضافة (Genitiv)",
         "steps": [
           { "kind": "intro", "section": "🎯 أهداف الدرس", "title": "Geld & Konsum",
             "text": "في هذا الدرس مفردات المال، ثم حالة الإضافة (Genitiv) و حروف الجرّ التي تأخذها. ستكون قادراً على:",
@@ -1054,7 +1109,7 @@
         ]
       },
       {
-        "id": "b1-l9", "number": 9, "title": "Erinnerungen & Bedauern", "titleEn": "Memories & Regret",
+        "id": "b1-l9", "number": 9, "title": "Erinnerungen & Bedauern", "titleEn": "الذكريات و الندم · Konjunktiv II الماضي",
         "steps": [
           { "kind": "intro", "section": "🎯 أهداف الدرس", "title": "Erinnerungen & Bedauern",
             "text": "في هذا الدرس نتحدّث عن الماضي و الندم، عبر Konjunktiv II في الماضي (hätte/wäre + Partizip II). ستكون قادراً على:",
@@ -1095,7 +1150,7 @@
         ]
       },
       {
-        "id": "b1-l10", "number": 10, "title": "Feste & Beschreibungen", "titleEn": "Celebrations & Descriptions",
+        "id": "b1-l10", "number": 10, "title": "Feste & Beschreibungen", "titleEn": "الاحتفالات و الوصف · Partizip كصفة",
         "steps": [
           { "kind": "intro", "section": "🎯 أهداف الدرس", "title": "Feste & Beschreibungen",
             "text": "في هذا الدرس مفردات الاحتفالات، ثم استخدام الـ Partizip كصفة (وصف دقيق). ستكون قادراً على:",

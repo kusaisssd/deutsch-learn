@@ -160,6 +160,8 @@ export class ProgressService {
     // كلما تغيّرت أي مجموعة، نحفظها تلقائياً في مفتاحها الخاص
     effect(() => this.saveToStorage(SENTENCES_KEY, this._completedIds()));
     effect(() => this.saveToStorage(CONVERSATIONS_KEY, this._completedConversationIds()));
+    // 🐛 إصلاح: كان هذا السطر مفقوداً → تقدّم الكورسات لم يُحفظ و يضيع عند كل تحميل
+    effect(() => this.saveToStorage(LEKTIONEN_KEY, this._completedLektionIds()));
   }
 
   // ═══════════════════════════════════════════
