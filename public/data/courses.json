@@ -173,187 +173,458 @@
         "number": 2,
         "title": "Arbeit & Beruf",
         "titleEn": "Work & Career",
-        "goals": [
-          "I can talk about jobs, skills and the workplace",
-          "I can make polite requests and express wishes with Konjunktiv II",
-          "I can give hypothetical advice (an deiner Stelle würde ich …)"
-        ],
-        "vocabulary": [
-          { "de": "die Bewerbung, -en", "en": "job application", "example": "Ich schreibe gerade eine Bewerbung." },
-          { "de": "das Vorstellungsgespräch", "en": "job interview", "example": "Morgen habe ich ein Vorstellungsgespräch." },
-          { "de": "der Lebenslauf", "en": "CV / résumé", "example": "Mein Lebenslauf ist zwei Seiten lang." },
-          { "de": "die Erfahrung, -en", "en": "experience", "example": "Sie hat viel Erfahrung in diesem Bereich." },
-          { "de": "die Kollegin / der Kollege", "en": "colleague", "example": "Meine Kollegen sind sehr hilfsbereit." },
-          { "de": "der Gehalt / das Gehalt", "en": "salary", "example": "Das Gehalt ist nicht alles im Leben." },
-          { "de": "kündigen", "en": "to quit / give notice", "example": "Er hat letzte Woche gekündigt." },
-          { "de": "sich bewerben um (+ Akk.)", "en": "to apply for", "example": "Ich bewerbe mich um eine neue Stelle." }
-        ],
-        "grammar": [
-          {
-            "title": "Konjunktiv II (Hypothetical & polite)",
-            "explanation": "Konjunktiv II expresses things that are unreal, hypothetical, or polite. The most common everyday form is 'würde + Infinitiv'.\n\n• würde + Infinitiv → general hypothetical: Ich würde gern reisen.\n• hätte (from haben) → Ich hätte gern einen Kaffee.\n• wäre (from sein) → Das wäre toll.\n• könnte (from können) → Könnten Sie mir helfen?\n\nUse it for:\n1) Polite requests: Könnten Sie …? / Würden Sie …?\n2) Wishes: Ich hätte gern … / Ich würde gern …\n3) Advice: An deiner Stelle würde ich …",
+        "steps": [
+          { "kind": "intro", "section": "🎯 أهداف الدرس",
+            "title": "Arbeit & Beruf",
+            "text": "في هذا الدرس سنتعلّم مفردات العمل و الوظيفة، ثم قاعدة مهمة جداً للتأدّب: Konjunktiv II. في النهاية ستكون قادراً على:",
+            "points": [
+              "استخدام مفردات أساسية عن العمل و التوظيف",
+              "تقديم طلبات مهذّبة و التعبير عن الأمنيات بـ Konjunktiv II",
+              "إعطاء نصيحة افتراضية (an deiner Stelle würde ich …)"
+            ] },
+
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "die Bewerbung", "back": "طلب التوظيف",
+            "example": "Ich schreibe gerade eine Bewerbung." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "das Vorstellungsgespräch", "back": "مقابلة العمل",
+            "example": "Morgen habe ich ein Vorstellungsgespräch." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "der Lebenslauf", "back": "السيرة الذاتية",
+            "example": "Mein Lebenslauf ist zwei Seiten lang." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "die Erfahrung", "back": "الخبرة",
+            "example": "Sie hat viel Erfahrung in diesem Bereich." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "sich bewerben um (+ Akk.)", "back": "يتقدّم لـ (وظيفة)",
+            "example": "Ich bewerbe mich um eine neue Stelle." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "kündigen", "back": "يستقيل / يُنهي العقد",
+            "example": "Er hat letzte Woche gekündigt." },
+
+          { "kind": "quiz", "section": "🔤 القسم ١: المفردات — اختبار",
+            "prompt": "اختر المعنى الصحيح:",
+            "question": "das Vorstellungsgespräch",
+            "options": ["مقابلة العمل", "السيرة الذاتية", "الراتب"],
+            "correct": 0,
+            "explanation": "‏das Vorstellungsgespräch = مقابلة العمل (حرفياً: حديث التقديم)." },
+          { "kind": "quiz", "section": "🔤 القسم ١: المفردات — اختبار",
+            "prompt": "اختر المعنى الصحيح:",
+            "question": "kündigen",
+            "options": ["يستقيل", "يتقدّم", "ينجح"],
+            "correct": 0,
+            "explanation": "‏kündigen = يستقيل / يُنهي عقد العمل." },
+          { "kind": "quiz", "section": "🔤 القسم ١: المفردات — اختبار",
+            "prompt": "أكمل الفراغ:",
+            "question": "Ich ___ mich um eine neue Stelle.",
+            "options": ["bewerbe", "kündige", "schreibe"],
+            "correct": 0,
+            "explanation": "‏sich bewerben um = يتقدّم لـ وظيفة → Ich bewerbe mich um …" },
+
+          { "kind": "discovery", "section": "📐 القسم ٢: Konjunktiv II",
+            "instruction": "تأمّل هذه الجمل المهذّبة. ما الكلمة المشتركة التي تجعلها «ألطف»؟",
             "examples": [
-              "Könnten Sie mir bitte das Gehalt nennen?",
-              "Ich hätte gern mehr Verantwortung.",
-              "An deiner Stelle würde ich die Stelle annehmen.",
-              "Es wäre schön, wenn wir flexibler arbeiten könnten."
-            ]
-          }
-        ],
-        "reading": {
-          "title": "Text: Der erste Arbeitstag",
-          "lines": [
-            "Sara hat sich um eine Stelle als Designerin beworben und das Vorstellungsgespräch war erfolgreich.",
-            "An ihrem ersten Tag war sie nervös. „Könnten Sie mir bitte mein Büro zeigen?\", fragte sie höflich.",
-            "Ihre neue Kollegin lächelte: „Natürlich! An deiner Stelle würde ich zuerst einen Kaffee trinken.\"",
-            "Sara dachte: „Ich hätte gern solche netten Kollegen in meinem alten Job gehabt.\"",
-            "Am Ende des Tages war sie sicher: Diese Entscheidung war richtig."
-          ],
-          "translation": "Sara applied for a job as a designer and the interview went well. On her first day she was nervous and politely asked to be shown her office. Her new colleague kindly suggested she have a coffee first. Sara thought she would have liked such nice colleagues at her old job. By the end of the day, she was sure the decision was right."
-        }
+              "Könnten Sie mir bitte helfen?",
+              "Ich würde gern mehr Verantwortung haben.",
+              "Ich hätte gern einen Termin."
+            ],
+            "question": "🤔 لاحظ: könnten / würde / hätte — ما وظيفتها؟",
+            "reveal": "هذه صيغة Konjunktiv II — نستخدمها للتأدّب و للأمور الافتراضية. الأكثر شيوعاً: «würde + مصدر». و من haben → hätte، من sein → wäre، من können → könnte." },
+
+          { "kind": "intro", "section": "📐 القسم ٢: Konjunktiv II",
+            "title": "متى نستخدمها؟",
+            "text": "Konjunktiv II لها ثلاثة استخدامات أساسية في الحياة اليومية:",
+            "points": [
+              "طلب مهذّب: Könnten Sie …? / Würden Sie …?",
+              "أمنية: Ich hätte gern … / Ich würde gern …",
+              "نصيحة: An deiner Stelle würde ich …"
+            ],
+            "examples": [
+              "Könnten Sie mir das Gehalt nennen?",
+              "Ich hätte gern mehr Urlaub.",
+              "An deiner Stelle würde ich die Stelle annehmen."
+            ] },
+
+          { "kind": "quiz", "section": "📐 القسم ٢: Konjunktiv II",
+            "prompt": "طلب مهذّب — أكمل:",
+            "question": "___ Sie mir bitte helfen?",
+            "options": ["Könnten", "Können", "Konnten"],
+            "correct": 0,
+            "explanation": "‏Könnten (Konjunktiv II من können) = أكثر تأدّباً من «Können»." },
+          { "kind": "quiz", "section": "📐 القسم ٢: Konjunktiv II",
+            "prompt": "أمنية (أودّ أن…):",
+            "question": "Ich ___ gern einen Kaffee.",
+            "options": ["hätte", "habe", "hatte"],
+            "correct": 0,
+            "explanation": "‏Ich hätte gern … = أودّ أن أحصل على… (تعبير مهذّب شائع جداً)." },
+          { "kind": "quiz", "section": "📐 القسم ٢: Konjunktiv II",
+            "prompt": "نصيحة (لو كنت مكانك…):",
+            "question": "An deiner Stelle ___ ich mehr üben.",
+            "options": ["würde", "werde", "wurde"],
+            "correct": 0,
+            "explanation": "‏An deiner Stelle WÜRDE ich … = نمط تقديم النصيحة بأدب." },
+          { "kind": "quiz", "section": "📐 القسم ٢: Konjunktiv II",
+            "prompt": "«سيكون رائعاً»:",
+            "question": "Das ___ wirklich toll!",
+            "options": ["wäre", "war", "ist"],
+            "correct": 0,
+            "explanation": "‏wäre (Konjunktiv II من sein) = «سيكون» (افتراضي/مهذّب)." },
+
+          { "kind": "reading", "section": "📰 القسم ٣: القراءة",
+            "title": "Text: Der erste Arbeitstag",
+            "lines": [
+              "Sara hat sich um eine Stelle als Designerin beworben und das Gespräch war erfolgreich.",
+              "An ihrem ersten Tag war sie nervös. „Könnten Sie mir bitte mein Büro zeigen?\", fragte sie höflich.",
+              "Ihre Kollegin lächelte: „Natürlich! An deiner Stelle würde ich zuerst einen Kaffee trinken.\"",
+              "Am Ende des Tages war sie sicher: Diese Entscheidung war richtig."
+            ],
+            "translation": "تقدّمت سارة لوظيفة مصمّمة و نجحت المقابلة. في يومها الأول كانت متوتّرة، فسألت بأدب أن تُريها مكتبها. ابتسمت زميلتها و اقترحت أن تشرب قهوة أولاً. في نهاية اليوم كانت متأكّدة أن القرار صحيح.",
+            "question": "كيف طلبت سارة أن تُريها مكتبها؟",
+            "options": ["بصيغة مهذّبة: Könnten Sie …?", "بأمر مباشر: Zeig mir!", "لم تسأل"],
+            "correct": 0,
+            "explanation": "استخدمت Konjunktiv II للتأدّب: «Könnten Sie mir bitte mein Büro zeigen?»." },
+
+          { "kind": "recap", "section": "🎉 المراجعة",
+            "title": "أحسنت! أكملت الدرس",
+            "points": [
+              "مفردات العمل: die Bewerbung، das Vorstellungsgespräch، sich bewerben um، kündigen.",
+              "Konjunktiv II للتأدّب و الافتراض: würde + مصدر، hätte، wäre، könnte.",
+              "ثلاثة استخدامات: طلب مهذّب، أمنية، نصيحة (an deiner Stelle würde ich …)."
+            ] }
+        ]
       },
       {
         "id": "b1-l3",
         "number": 3,
         "title": "Wohnen & Zusammenleben",
         "titleEn": "Living & Cohabitation",
-        "goals": [
-          "I can describe a home, rooms and furniture",
-          "I can say WHERE something is and WHERE it's going (Wechselpräpositionen)",
-          "I can use correct adjective endings before nouns"
-        ],
-        "vocabulary": [
-          { "de": "die Wohnung, -en", "en": "apartment", "example": "Wir suchen eine größere Wohnung." },
-          { "de": "die Miete", "en": "rent", "example": "Die Miete ist leider sehr hoch." },
-          { "de": "der Mitbewohner / die Mitbewohnerin", "en": "flatmate", "example": "Mein Mitbewohner ist sehr ordentlich." },
-          { "de": "der Vermieter / die Vermieterin", "en": "landlord/landlady", "example": "Der Vermieter wohnt im selben Haus." },
-          { "de": "das Möbelstück, -e", "en": "piece of furniture", "example": "Das Sofa ist mein liebstes Möbelstück." },
-          { "de": "umziehen", "en": "to move house", "example": "Nächsten Monat ziehen wir um." },
-          { "de": "die Nebenkosten (Pl.)", "en": "additional/utility costs", "example": "Die Nebenkosten sind im Preis enthalten." },
-          { "de": "gemütlich", "en": "cozy", "example": "Das Wohnzimmer ist sehr gemütlich." }
-        ],
-        "grammar": [
-          {
-            "title": "Wechselpräpositionen (Wo? vs. Wohin?)",
-            "explanation": "Nine prepositions take EITHER Dativ OR Akkusativ depending on the question:\nin, an, auf, über, unter, vor, hinter, neben, zwischen.\n\n• WO? (location, no movement) → DATIV\n• WOHIN? (movement to a place) → AKKUSATIV\n\nThink: 'where is it sitting' (Dativ) vs. 'where is it going' (Akkusativ).",
+        "steps": [
+          { "kind": "intro", "section": "🎯 أهداف الدرس",
+            "title": "Wohnen & Zusammenleben",
+            "text": "في هذا الدرس سنتعلّم مفردات السكن، ثم قاعدتين: حروف الجرّ المتغيّرة (Wo? مقابل Wohin?) و نهايات الصفات. في النهاية ستكون قادراً على:",
+            "points": [
+              "وصف الشقّة و الأثاث بمفردات جديدة",
+              "التمييز بين المكان (Wo? → Dativ) و الاتجاه (Wohin? → Akkusativ)",
+              "استخدام النهاية الصحيحة للصفة بعد أداة التعريف"
+            ] },
+
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "die Wohnung", "back": "الشقّة",
+            "example": "Wir suchen eine größere Wohnung." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "die Miete", "back": "الإيجار",
+            "example": "Die Miete ist leider sehr hoch." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "der Mitbewohner", "back": "زميل السكن",
+            "example": "Mein Mitbewohner ist sehr ordentlich." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "umziehen", "back": "ينتقل (يغيّر السكن)",
+            "example": "Nächsten Monat ziehen wir um." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "die Nebenkosten", "back": "التكاليف الإضافية (ماء/كهرباء…)",
+            "example": "Die Nebenkosten sind im Preis enthalten." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "gemütlich", "back": "مريح / دافئ الأجواء",
+            "example": "Das Wohnzimmer ist sehr gemütlich." },
+
+          { "kind": "quiz", "section": "🔤 القسم ١: المفردات — اختبار",
+            "prompt": "اختر المعنى الصحيح:",
+            "question": "die Miete",
+            "options": ["الإيجار", "الشقّة", "الجار"],
+            "correct": 0,
+            "explanation": "‏die Miete = الإيجار (المبلغ الشهري)." },
+          { "kind": "quiz", "section": "🔤 القسم ١: المفردات — اختبار",
+            "prompt": "اختر المعنى الصحيح:",
+            "question": "umziehen",
+            "options": ["ينتقل (يغيّر السكن)", "ينظّف", "يدفع"],
+            "correct": 0,
+            "explanation": "‏umziehen = ينتقل من سكن لآخر (فعل منفصل: ich ziehe um)." },
+
+          { "kind": "discovery", "section": "📐 القسم ٢: Wechselpräpositionen",
+            "instruction": "قارن بين الجملتين. نفس الحرف «an» لكن النهاية مختلفة — لماذا؟",
             "examples": [
-              "Das Bild hängt AN DER Wand. (Wo? → Dativ)",
-              "Ich hänge das Bild AN DIE Wand. (Wohin? → Akkusativ)",
-              "Die Katze schläft AUF DEM Sofa. (Wo? → Dativ)",
-              "Die Katze springt AUF DAS Sofa. (Wohin? → Akkusativ)"
-            ]
-          },
-          {
-            "title": "Adjektivdeklination (nach bestimmtem Artikel)",
-            "explanation": "After the definite article (der/die/das), adjectives take these endings:\n\n• Nominativ: der gemütlichE / die schönE / das großE\n• Akkusativ: den gemütlichEN / die schönE / das großE\n• Dativ:     dem gemütlichEN / der schönEN / dem großEN\n\nRule of thumb after 'der'-words: '-e' in the easy spots, '-en' almost everywhere else (all Dativ, all plural, masculine Akkusativ).",
+              "Das Bild hängt AN DER Wand.  (أين هو؟)",
+              "Ich hänge das Bild AN DIE Wand.  (إلى أين؟)"
+            ],
+            "question": "🤔 متى نستخدم der و متى die بعد «an»؟",
+            "reveal": "تسعة حروف (in, an, auf, über, unter, vor, hinter, neben, zwischen) تأخذ حالتين:\n• Wo? (مكان ثابت، لا حركة) → Dativ (an DER Wand)\n• Wohin? (حركة باتجاه) → Akkusativ (an DIE Wand)" },
+
+          { "kind": "quiz", "section": "📐 القسم ٢: Wechselpräpositionen",
+            "prompt": "أين هي؟ (مكان ثابت → Dativ):",
+            "question": "Die Katze schläft auf ___ Sofa.",
+            "options": ["dem", "das", "der"],
+            "correct": 0,
+            "explanation": "«تنام» = مكان ثابت → Wo? → Dativ → auf DEM Sofa." },
+          { "kind": "quiz", "section": "📐 القسم ٢: Wechselpräpositionen",
+            "prompt": "إلى أين؟ (حركة → Akkusativ):",
+            "question": "Die Katze springt auf ___ Sofa.",
+            "options": ["das", "dem", "der"],
+            "correct": 0,
+            "explanation": "«تقفز» = حركة باتجاه → Wohin? → Akkusativ → auf DAS Sofa." },
+          { "kind": "quiz", "section": "📐 القسم ٢: Wechselpräpositionen",
+            "prompt": "أضع الكتاب (حركة):",
+            "question": "Ich lege das Buch auf ___ Tisch.",
+            "options": ["den", "dem", "das"],
+            "correct": 0,
+            "explanation": "«أضع» = حركة → Akkusativ، و der Tisch مذكّر → auf DEN Tisch." },
+
+          { "kind": "intro", "section": "📐 القسم ٣: نهايات الصفات",
+            "title": "Adjektivdeklination",
+            "text": "بعد أداة التعريف (der/die/das) تأخذ الصفة نهاية. القاعدة المبسّطة: «-e» في الحالات السهلة (فاعل مفرد)، و «-en» في معظم الباقي (كل Dativ، كل الجمع، و المذكّر في Akkusativ).",
             "examples": [
-              "Die gemütliche Wohnung gefällt mir.",
-              "Ich miete die gemütliche Wohnung.",
-              "In der gemütlichen Wohnung fühle ich mich wohl.",
-              "Der neue Mitbewohner ist sehr nett."
-            ]
-          }
-        ],
-        "reading": {
-          "title": "Anzeige & Dialog: Die neue WG",
-          "lines": [
-            "„Schönes Zimmer in zentraler Wohnung frei! Die Miete beträgt 400 Euro plus Nebenkosten.\"",
-            "Max: Guten Tag, ich rufe wegen des Zimmers an. Ist es noch frei?",
-            "Vermieterin: Ja! Möchten Sie es sich ansehen? Das Zimmer liegt neben der Küche.",
-            "Max: Gern. Darf ich meine eigenen Möbel mitbringen?",
-            "Vermieterin: Natürlich. Sie können das Bett ans Fenster und den Schreibtisch in die Ecke stellen.",
-            "Max: Perfekt. In der hellen Wohnung würde ich mich bestimmt wohlfühlen."
-          ],
-          "translation": "An ad offers a nice room in a central apartment for 400 euros plus utilities. Max calls about it; the landlady invites him to view it and explains the room is next to the kitchen. He asks if he can bring his own furniture. She says yes — he can put the bed by the window and the desk in the corner. Max feels he would be comfortable in the bright apartment."
-        }
+              "die gemütlichE Wohnung (Nominativ)",
+              "Ich miete die gemütlichE Wohnung. (Akkusativ مؤنّث)",
+              "in der gemütlichEN Wohnung (Dativ)",
+              "der neuE Mitbewohner / den neuEN Mitbewohner"
+            ] },
+
+          { "kind": "quiz", "section": "📐 القسم ٣: نهايات الصفات",
+            "prompt": "Nominativ مؤنّث:",
+            "question": "Die ___ Wohnung gefällt mir.",
+            "options": ["gemütliche", "gemütlichen", "gemütlich"],
+            "correct": 0,
+            "explanation": "فاعل مفرد بعد «die» → النهاية «-e» → gemütlichE." },
+          { "kind": "quiz", "section": "📐 القسم ٣: نهايات الصفات",
+            "prompt": "Dativ (بعد in):",
+            "question": "In der ___ Wohnung fühle ich mich wohl.",
+            "options": ["gemütlichen", "gemütliche", "gemütlichem"],
+            "correct": 0,
+            "explanation": "Dativ → النهاية دائماً «-en» → in der gemütlichEN Wohnung." },
+
+          { "kind": "reading", "section": "📰 القسم ٤: القراءة",
+            "title": "Dialog: Die neue WG",
+            "lines": [
+              "„Schönes Zimmer in zentraler Wohnung frei! Miete: 400 Euro plus Nebenkosten.\"",
+              "Max: Guten Tag, ich rufe wegen des Zimmers an. Ist es noch frei?",
+              "Vermieterin: Ja! Das Zimmer liegt neben der Küche.",
+              "Max: Darf ich meine Möbel mitbringen?",
+              "Vermieterin: Natürlich. Sie können das Bett ans Fenster stellen."
+            ],
+            "translation": "إعلان عن غرفة في شقّة وسط المدينة بـ400 يورو + تكاليف إضافية. يتّصل ماكس و يسأل إن كانت متاحة. تخبره المالكة أن الغرفة بجانب المطبخ، و يمكنه إحضار أثاثه و وضع السرير عند النافذة.",
+            "question": "أين تقع الغرفة؟ (an + Dativ = مكان)",
+            "options": ["بجانب المطبخ (neben der Küche)", "في الحديقة", "تحت السلّم"],
+            "correct": 0,
+            "explanation": "«Das Zimmer liegt neben der Küche» — neben + Dativ (der Küche) لأنه مكان ثابت (Wo?)." },
+
+          { "kind": "recap", "section": "🎉 المراجعة",
+            "title": "أحسنت! أكملت الدرس",
+            "points": [
+              "Wechselpräpositionen: Wo? (مكان) → Dativ، Wohin? (حركة) → Akkusativ.",
+              "التسعة: in, an, auf, über, unter, vor, hinter, neben, zwischen.",
+              "نهايات الصفات بعد der/die/das: «-e» في الفاعل المفرد، و «-en» في معظم الباقي."
+            ] }
+        ]
       },
       {
         "id": "b1-l4",
         "number": 4,
         "title": "Gesundheit & Lebensstil",
         "titleEn": "Health & Lifestyle",
-        "goals": [
-          "I can talk about health, habits and well-being",
-          "I can connect ideas with obwohl, deshalb and trotzdem",
-          "I can give and understand advice about a healthy life"
-        ],
-        "vocabulary": [
-          { "de": "sich ernähren", "en": "to eat / feed oneself", "example": "Ich versuche, mich gesund zu ernähren." },
-          { "de": "die Bewegung", "en": "exercise / movement", "example": "Bewegung ist wichtig für den Körper." },
-          { "de": "der Stress", "en": "stress", "example": "Zu viel Stress macht krank." },
-          { "de": "sich entspannen", "en": "to relax", "example": "Am Wochenende entspanne ich mich gern." },
-          { "de": "die Gewohnheit, -en", "en": "habit", "example": "Schlechte Gewohnheiten sind schwer zu ändern." },
-          { "de": "vermeiden", "en": "to avoid", "example": "Ich vermeide fettiges Essen." },
-          { "de": "der Schlafmangel", "en": "lack of sleep", "example": "Schlafmangel führt zu Konzentrationsproblemen." },
-          { "de": "auf etwas achten", "en": "to pay attention to sth.", "example": "Du solltest auf deine Gesundheit achten." }
-        ],
-        "grammar": [
-          {
-            "title": "Konnektoren: obwohl, deshalb, trotzdem",
-            "explanation": "These connectors link two ideas, but they behave differently in word order:\n\n• OBWOHL (although) = subordinating → verb goes to the END of its clause.\n  Obwohl ich müde bin, gehe ich joggen.\n\n• DESHALB (therefore) = adverb → it takes position 1, so the verb comes SECOND (V2).\n  Ich bin müde. Deshalb gehe ich früh ins Bett.\n\n• TROTZDEM (nevertheless) = adverb → also V2.\n  Es regnet. Trotzdem gehe ich spazieren.",
+        "steps": [
+          { "kind": "intro", "section": "🎯 أهداف الدرس",
+            "title": "Gesundheit & Lebensstil",
+            "text": "في هذا الدرس سنتعلّم مفردات الصحة، ثم أدوات ربط مهمة تربط الأفكار: obwohl, deshalb, trotzdem. في النهاية ستكون قادراً على:",
+            "points": [
+              "التحدّث عن الصحة و العادات و نمط الحياة",
+              "ربط الأفكار بـ obwohl (رغم أن) و deshalb (لذلك) و trotzdem (مع ذلك)",
+              "فهم و إعطاء نصائح صحية"
+            ] },
+
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "sich ernähren", "back": "يتغذّى",
+            "example": "Ich versuche, mich gesund zu ernähren." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "die Bewegung", "back": "الحركة / النشاط البدني",
+            "example": "Bewegung ist wichtig für den Körper." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "der Stress", "back": "التوتر / الضغط",
+            "example": "Zu viel Stress macht krank." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "sich entspannen", "back": "يسترخي",
+            "example": "Am Wochenende entspanne ich mich gern." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "vermeiden", "back": "يتجنّب",
+            "example": "Ich vermeide fettiges Essen." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "die Gewohnheit", "back": "العادة",
+            "example": "Schlechte Gewohnheiten sind schwer zu ändern." },
+
+          { "kind": "quiz", "section": "🔤 القسم ١: المفردات — اختبار",
+            "prompt": "اختر المعنى الصحيح:",
+            "question": "sich entspannen",
+            "options": ["يسترخي", "يتوتّر", "يتمرّن"],
+            "correct": 0,
+            "explanation": "‏sich entspannen = يسترخي (فعل انعكاسي)." },
+          { "kind": "quiz", "section": "🔤 القسم ١: المفردات — اختبار",
+            "prompt": "اختر المعنى الصحيح:",
+            "question": "vermeiden",
+            "options": ["يتجنّب", "يطبخ", "ينام"],
+            "correct": 0,
+            "explanation": "‏vermeiden = يتجنّب (شيئاً غير مرغوب)." },
+
+          { "kind": "discovery", "section": "📐 القسم ٢: أدوات الربط",
+            "instruction": "ثلاث أدوات تربط الأفكار، لكن ترتيب الفعل يختلف! لاحظ موقع الفعل في كل جملة:",
             "examples": [
-              "Obwohl er wenig Zeit hat, kocht er jeden Tag frisch.",
-              "Sie isst sehr gesund. Deshalb fühlt sie sich fit.",
-              "Ich hatte wenig Schlaf. Trotzdem war ich produktiv.",
-              "Obwohl das Fitnessstudio teuer ist, gehe ich gern hin."
-            ]
-          }
-        ],
-        "reading": {
-          "title": "Text: Ein gesünderer Alltag",
-          "lines": [
-            "Markus arbeitet viel und hat oft Stress. Obwohl er weiß, dass das ungesund ist, macht er selten Pausen.",
-            "Letztes Jahr war er ständig müde. Deshalb hat er seinen Lebensstil geändert.",
-            "Jetzt steht er früher auf und macht morgens Sport. Trotzdem schafft er seine ganze Arbeit.",
-            "„Ich achte jetzt mehr auf meine Ernährung und vermeide zu viel Kaffee\", sagt er.",
-            "Sein Tipp: „Kleine Gewohnheiten verändern alles — man muss nur anfangen.\""
-          ],
-          "translation": "Markus works a lot and is often stressed. Although he knows it's unhealthy, he rarely takes breaks. Last year he was constantly tired, so he changed his lifestyle. Now he gets up earlier and exercises in the morning, yet he still gets all his work done. He pays more attention to his diet and avoids too much coffee. His tip: small habits change everything — you just have to start."
-        }
+              "OBWOHL ich müde bin, gehe ich joggen.  (الفعل bin في الآخر)",
+              "Ich bin müde. DESHALB gehe ich früh ins Bett.  (الفعل gehe ثانياً)",
+              "Es regnet. TROTZDEM gehe ich spazieren.  (الفعل gehe ثانياً)"
+            ],
+            "question": "🤔 أين يقع الفعل بعد obwohl؟ و أين بعد deshalb / trotzdem؟",
+            "reveal": "• obwohl (رغم أن) = أداة ربط ثانوية → تدفع الفعل إلى آخر الجملة.\n• deshalb (لذلك) و trotzdem (مع ذلك) = ظرفان → يأخذان المركز الأول، فيأتي الفعل ثانياً (قاعدة V2)." },
+
+          { "kind": "quiz", "section": "📐 القسم ٢: أدوات الربط",
+            "prompt": "obwohl → الفعل إلى الآخر:",
+            "question": "Obwohl er wenig Zeit ___, kocht er frisch.",
+            "options": ["hat", "hat er", "er hat"],
+            "correct": 0,
+            "explanation": "بعد obwohl يذهب الفعل «hat» إلى نهاية الجملة الفرعية." },
+          { "kind": "quiz", "section": "📐 القسم ٢: أدوات الربط",
+            "prompt": "deshalb → الفعل ثانياً (V2):",
+            "question": "Ich bin müde. Deshalb ___ ich früh ins Bett.",
+            "options": ["gehe", "ich gehe", "zu gehen"],
+            "correct": 0,
+            "explanation": "deshalb في المركز الأول → الفعل «gehe» ثانياً → Deshalb GEHE ich …" },
+          { "kind": "quiz", "section": "📐 القسم ٢: أدوات الربط",
+            "prompt": "«مع ذلك»:",
+            "question": "Es regnet. ___ gehe ich spazieren.",
+            "options": ["Trotzdem", "Obwohl", "Weil"],
+            "correct": 0,
+            "explanation": "trotzdem = مع ذلك (تناقُض). و لأنها ظرف، يأتي الفعل ثانياً." },
+          { "kind": "quiz", "section": "📐 القسم ٢: أدوات الربط",
+            "prompt": "«رغم أن»:",
+            "question": "___ das Fitnessstudio teuer ist, gehe ich gern hin.",
+            "options": ["Obwohl", "Deshalb", "Trotzdem"],
+            "correct": 0,
+            "explanation": "obwohl = رغم أن، و لاحظ أن الفعل «ist» ذهب لآخر الجملة الفرعية." },
+
+          { "kind": "reading", "section": "📰 القسم ٣: القراءة",
+            "title": "Text: Ein gesünderer Alltag",
+            "lines": [
+              "Markus arbeitet viel und hat oft Stress. Obwohl er weiß, dass das ungesund ist, macht er selten Pausen.",
+              "Letztes Jahr war er ständig müde. Deshalb hat er seinen Lebensstil geändert.",
+              "Jetzt macht er morgens Sport. Trotzdem schafft er seine ganze Arbeit.",
+              "Sein Tipp: „Kleine Gewohnheiten verändern alles — man muss nur anfangen.\""
+            ],
+            "translation": "يعمل ماركوس كثيراً و يتوتّر غالباً. رغم أنه يعرف أن ذلك غير صحّي، نادراً ما يأخذ استراحات. العام الماضي كان متعباً دائماً، لذلك غيّر نمط حياته. الآن يمارس الرياضة صباحاً، و مع ذلك يُنجز كل عمله. نصيحته: العادات الصغيرة تغيّر كل شيء — فقط ابدأ.",
+            "question": "لماذا غيّر ماركوس نمط حياته؟",
+            "options": ["لأنه كان متعباً دائماً (deshalb)", "لأنه يكره العمل", "لأن الطبيب أجبره"],
+            "correct": 0,
+            "explanation": "«Er war müde. DESHALB hat er seinen Lebensstil geändert» — deshalb تربط السبب بالنتيجة." },
+
+          { "kind": "recap", "section": "🎉 المراجعة",
+            "title": "أحسنت! أكملت الدرس",
+            "points": [
+              "obwohl (رغم أن) = أداة ثانوية → الفعل إلى آخر الجملة الفرعية.",
+              "deshalb (لذلك) و trotzdem (مع ذلك) = ظرفان → الفعل ثانياً (V2).",
+              "مفردات الصحة: sich ernähren، sich entspannen، vermeiden، die Gewohnheit."
+            ] }
+        ]
       },
       {
         "id": "b1-l5",
         "number": 5,
         "title": "Reisen & Umwelt",
         "titleEn": "Travel & Environment",
-        "goals": [
-          "I can talk about travel plans and environmental issues",
-          "I can understand and form the passive voice (Passiv)",
-          "I can describe processes (how something is done)"
-        ],
-        "vocabulary": [
-          { "de": "die Umwelt", "en": "environment", "example": "Wir müssen die Umwelt schützen." },
-          { "de": "der Klimawandel", "en": "climate change", "example": "Der Klimawandel betrifft uns alle." },
-          { "de": "öffentliche Verkehrsmittel", "en": "public transport", "example": "Ich nutze oft öffentliche Verkehrsmittel." },
-          { "de": "vermeiden / reduzieren", "en": "to avoid / reduce", "example": "Plastik sollte reduziert werden." },
-          { "de": "die Unterkunft, -̈e", "en": "accommodation", "example": "Wir haben eine günstige Unterkunft gefunden." },
-          { "de": "nachhaltig", "en": "sustainable", "example": "Nachhaltiges Reisen wird immer beliebter." },
-          { "de": "der Müll", "en": "trash / waste", "example": "Der Müll wird getrennt gesammelt." },
-          { "de": "die Sehenswürdigkeit, -en", "en": "tourist attraction", "example": "Wir haben viele Sehenswürdigkeiten besucht." }
-        ],
-        "grammar": [
-          {
-            "title": "Passiv (Passive voice)",
-            "explanation": "The passive focuses on the ACTION, not on who does it. It's very common in instructions, processes and formal texts.\n\nFORM: werden + Partizip II\n\n• Präsens Passiv: Der Müll WIRD getrennt. (The trash is separated.)\n• Präteritum Passiv: Das Hotel WURDE gebaut. (The hotel was built.)\n• with modal: Plastik MUSS reduziert WERDEN. (Plastic must be reduced.)\n\nThe doer (if mentioned) uses 'von + Dativ':\n  Die Stadt wird VON Touristen besucht.",
+        "steps": [
+          { "kind": "intro", "section": "🎯 أهداف الدرس",
+            "title": "Reisen & Umwelt",
+            "text": "في هذا الدرس سنتعلّم مفردات السفر و البيئة، ثم قاعدة مهمة في النصوص الرسمية: المبني للمجهول (Passiv). في النهاية ستكون قادراً على:",
+            "points": [
+              "التحدّث عن السفر و قضايا البيئة",
+              "فهم و تكوين المبني للمجهول (Passiv)",
+              "وصف العمليات (كيف يُفعَل شيء ما)"
+            ] },
+
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "die Umwelt", "back": "البيئة",
+            "example": "Wir müssen die Umwelt schützen." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "der Klimawandel", "back": "تغيّر المناخ",
+            "example": "Der Klimawandel betrifft uns alle." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "nachhaltig", "back": "مستدام",
+            "example": "Nachhaltiges Reisen wird immer beliebter." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "reduzieren", "back": "يقلّل / يخفّض",
+            "example": "Plastik sollte reduziert werden." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "die Unterkunft", "back": "مكان الإقامة",
+            "example": "Wir haben eine günstige Unterkunft gefunden." },
+          { "kind": "flashcard", "section": "🔤 القسم ١: المفردات",
+            "front": "der Müll", "back": "القمامة / النفايات",
+            "example": "Der Müll wird getrennt gesammelt." },
+
+          { "kind": "quiz", "section": "🔤 القسم ١: المفردات — اختبار",
+            "prompt": "اختر المعنى الصحيح:",
+            "question": "nachhaltig",
+            "options": ["مستدام", "سريع", "رخيص"],
+            "correct": 0,
+            "explanation": "‏nachhaltig = مستدام (صديق للبيئة على المدى الطويل)." },
+          { "kind": "quiz", "section": "🔤 القسم ١: المفردات — اختبار",
+            "prompt": "اختر المعنى الصحيح:",
+            "question": "der Klimawandel",
+            "options": ["تغيّر المناخ", "الطقس اليوم", "البيئة"],
+            "correct": 0,
+            "explanation": "‏der Klimawandel = تغيّر المناخ (Klima + Wandel)." },
+
+          { "kind": "discovery", "section": "📐 القسم ٢: المبني للمجهول",
+            "instruction": "في الجمل التالية، التركيز على الفعل (ماذا يُفعَل) و ليس على الفاعل. لاحظ الكلمتين المميّزتين:",
             "examples": [
-              "In Deutschland wird der Müll getrennt.",
-              "Das Ticket wird online gekauft.",
-              "Die Altstadt wurde im Krieg zerstört.",
-              "Energie muss gespart werden."
-            ]
-          }
-        ],
-        "reading": {
-          "title": "Text: Nachhaltig reisen",
-          "lines": [
-            "Immer mehr Menschen wollen umweltfreundlich reisen. Aber wie wird das gemacht?",
-            "Zuerst werden öffentliche Verkehrsmittel statt des Autos benutzt. Der Zug ist oft eine gute Wahl.",
-            "Am Reiseziel wird der Müll getrennt und Wasser wird gespart.",
-            "Viele Unterkünfte werden heute nachhaltig gebaut und mit Solarenergie betrieben.",
-            "„Die Umwelt kann nur geschützt werden, wenn jeder ein bisschen mithilft\", sagt eine Reiseexpertin."
-          ],
-          "translation": "More and more people want to travel in an eco-friendly way. But how is it done? First, public transport is used instead of the car — the train is often a good choice. At the destination, trash is separated and water is saved. Many accommodations are now built sustainably and run on solar energy. A travel expert says the environment can only be protected if everyone helps a little."
-        }
+              "Der Müll WIRD GETRENNT.  (تُفرز القمامة)",
+              "Das Ticket WIRD online GEKAUFT.  (تُشترى التذكرة عبر الإنترنت)",
+              "Das Hotel WURDE GEBAUT.  (بُني الفندق — ماضٍ)"
+            ],
+            "question": "🤔 ما التركيب المشترك الذي يصنع المبني للمجهول؟",
+            "reveal": "المبني للمجهول (Passiv) = werden + Partizip II (التصريف الثالث).\n• المضارع: wird + Partizip II\n• الماضي: wurde + Partizip II\n• مع فعل مساعد: muss … reduziert WERDEN.\nالفاعل (إن ذُكر) يأتي مع von + Dativ." },
+
+          { "kind": "quiz", "section": "📐 القسم ٢: المبني للمجهول",
+            "prompt": "مضارع مجهول:",
+            "question": "In Deutschland ___ der Müll getrennt.",
+            "options": ["wird", "ist", "hat"],
+            "correct": 0,
+            "explanation": "Passiv المضارع = wird + Partizip II → wird … getrennt (تُفرز القمامة)." },
+          { "kind": "quiz", "section": "📐 القسم ٢: المبني للمجهول",
+            "prompt": "ماضٍ مجهول:",
+            "question": "Die Altstadt ___ im Krieg zerstört.",
+            "options": ["wurde", "wird", "war"],
+            "correct": 0,
+            "explanation": "Passiv الماضي = wurde + Partizip II → wurde … zerstört (دُمّرت)." },
+          { "kind": "quiz", "section": "📐 القسم ٢: المبني للمجهول",
+            "prompt": "مع فعل مساعد (يجب أن):",
+            "question": "Energie muss ___ werden.",
+            "options": ["gespart", "sparen", "spart"],
+            "correct": 0,
+            "explanation": "مع مودال: muss + Partizip II + werden → muss gespart werden (يجب توفير الطاقة)." },
+          { "kind": "quiz", "section": "📐 القسم ٢: المبني للمجهول",
+            "prompt": "مَن الفاعل؟ (von + Dativ):",
+            "question": "Die Stadt wird ___ Touristen besucht.",
+            "options": ["von", "mit", "für"],
+            "correct": 0,
+            "explanation": "الفاعل في المجهول يأتي مع von + Dativ → von Touristen (من قِبَل السيّاح)." },
+
+          { "kind": "reading", "section": "📰 القسم ٣: القراءة",
+            "title": "Text: Nachhaltig reisen",
+            "lines": [
+              "Immer mehr Menschen wollen umweltfreundlich reisen. Aber wie wird das gemacht?",
+              "Zuerst werden öffentliche Verkehrsmittel statt des Autos benutzt.",
+              "Am Reiseziel wird der Müll getrennt und Wasser wird gespart.",
+              "Viele Unterkünfte werden heute nachhaltig gebaut.",
+              "„Die Umwelt kann nur geschützt werden, wenn jeder mithilft.\""
+            ],
+            "translation": "يريد المزيد من الناس السفر بطريقة صديقة للبيئة. لكن كيف يُفعَل ذلك؟ أولاً، تُستخدَم وسائل النقل العامة بدل السيارة. في الوجهة، تُفرَز القمامة و يُوفَّر الماء. و كثير من أماكن الإقامة تُبنى اليوم بشكل مستدام. لا يمكن حماية البيئة إلا إذا ساعد الجميع.",
+            "question": "في النص، كيف تُوصف العمليات (تُستخدم، تُفرَز، تُبنى)؟",
+            "options": ["بالمبني للمجهول (werden + Partizip II)", "بصيغة الأمر", "بصيغة المستقبل"],
+            "correct": 0,
+            "explanation": "كل الأفعال بصيغة Passiv: werden benutzt / wird getrennt / werden gebaut — لأن التركيز على الفعل لا الفاعل." },
+
+          { "kind": "recap", "section": "🎉 المراجعة",
+            "title": "أحسنت! أكملت الكورس كله! 🎓",
+            "points": [
+              "المبني للمجهول: werden + Partizip II (المضارع: wird، الماضي: wurde).",
+              "مع فعل مساعد: muss … gespart werden. الفاعل: von + Dativ.",
+              "مفردات البيئة: die Umwelt، der Klimawandel، nachhaltig، reduzieren."
+            ] }
+        ]
       }
     ]
   }
