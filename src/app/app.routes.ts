@@ -77,6 +77,29 @@ export const routes: Routes = [
     title: 'Practice — Deutsch Learn',
   },
 
+  // 🆕 Courses: مسار تعليمي منهجي (Lektionen مرتّبة بتقدّم مقفل)
+  {
+    path: 'courses',
+    loadComponent: () =>
+      import('./features/courses/courses-list-page/courses-list-page')
+        .then(m => m.CoursesListPage),
+    title: 'Courses - Deutsch Learn',
+  },
+  {
+    path: 'courses/:courseId',
+    loadComponent: () =>
+      import('./features/courses/course-detail-page/course-detail-page')
+        .then(m => m.CourseDetailPage),
+    title: 'Course - Deutsch Learn',
+  },
+  {
+    path: 'courses/:courseId/lektion/:lektionId',
+    loadComponent: () =>
+      import('./features/courses/lektion-page/lektion-page')
+        .then(m => m.LektionPage),
+    title: 'Lektion - Deutsch Learn',
+  },
+
   // 🆕 Cards Café: قائمة فئات بطاقات الحوار الذاتي (مستوحاة من Talk-Box)
   //
   // 🎯 nested routing: /cafe/:categoryId يُرسم كـ modal فوق CafeListPage

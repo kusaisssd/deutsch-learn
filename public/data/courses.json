@@ -1,0 +1,254 @@
+[
+  {
+    "id": "b1",
+    "level": "B1",
+    "title": "B1 — Selbstständige Sprachverwendung",
+    "description": "A structured B1 course: 5 lessons that build real independence in German — relationships, work, living, health and travel.",
+    "emoji": "🎓",
+    "color": "indigo",
+    "lektionen": [
+      {
+        "id": "b1-l1",
+        "number": 1,
+        "title": "Freundschaft & Beziehungen",
+        "titleEn": "Friendship & Relationships",
+        "goals": [
+          "I can describe people and relationships in detail",
+          "I can use relative clauses to give extra information",
+          "I can use verbs with fixed prepositions (sich freuen über, sich verlieben in …)"
+        ],
+        "vocabulary": [
+          { "de": "die Beziehung, -en", "en": "relationship", "example": "Wir haben eine enge Beziehung." },
+          { "de": "der Freundeskreis", "en": "circle of friends", "example": "Mein Freundeskreis ist klein, aber treu." },
+          { "de": "sich verlassen auf (+ Akk.)", "en": "to rely on", "example": "Ich kann mich immer auf sie verlassen." },
+          { "de": "vertrauen (+ Dat.)", "en": "to trust", "example": "Ich vertraue meinem besten Freund völlig." },
+          { "de": "der Streit, -e", "en": "argument / quarrel", "example": "Nach dem Streit haben wir uns versöhnt." },
+          { "de": "sich versöhnen", "en": "to make up / reconcile", "example": "Sie haben sich schnell wieder versöhnt." },
+          { "de": "eifersüchtig", "en": "jealous", "example": "Manchmal ist er ein bisschen eifersüchtig." },
+          { "de": "zuverlässig", "en": "reliable", "example": "Eine zuverlässige Freundin ist Gold wert." }
+        ],
+        "grammar": [
+          {
+            "title": "Relativsätze (Relative clauses)",
+            "explanation": "Relative clauses add extra information about a noun. They start with a relative pronoun (der/die/das…) that agrees with the noun's GENDER and takes the CASE its role needs inside the clause. The verb goes to the END.\n\nNominativ:  der/die/das/die\nAkkusativ:  den/die/das/die\nDativ:      dem/der/dem/denen\n\nThe relative pronoun matches the gender of the noun it describes, but its case comes from its job in the relative clause.",
+            "examples": [
+              "Das ist der Freund, DER mir immer hilft. (Nominativ — he helps)",
+              "Das ist der Freund, DEN ich seit Jahren kenne. (Akkusativ — I know him)",
+              "Das ist der Freund, DEM ich vertraue. (Dativ — vertrauen + Dat.)",
+              "Die Frau, MIT DER ich arbeite, ist sehr nett. (preposition + Dativ)"
+            ]
+          },
+          {
+            "title": "Verben mit Präpositionen",
+            "explanation": "Many German verbs are followed by a FIXED preposition that you must memorize together with the verb. The preposition decides the case.\n\n• sich freuen ÜBER (+ Akk.) = to be happy about\n• sich freuen AUF (+ Akk.) = to look forward to\n• sich verlieben IN (+ Akk.) = to fall in love with\n• sich ärgern ÜBER (+ Akk.) = to be annoyed about\n• denken AN (+ Akk.) = to think of\n• vertrauen (+ Dat.) = to trust (no preposition, just Dativ)",
+            "examples": [
+              "Ich freue mich über deinen Besuch.",
+              "Sie hat sich in einen netten Mann verliebt.",
+              "Ärgere dich nicht über solche Kleinigkeiten!",
+              "Ich denke oft an meine alten Freunde."
+            ]
+          }
+        ],
+        "reading": {
+          "title": "Dialog: Ein altes Foto",
+          "lines": [
+            "Lena: Schau mal, das ist ein Foto von meiner besten Freundin, die jetzt in Berlin wohnt.",
+            "Tom: Wie lange kennt ihr euch schon?",
+            "Lena: Seit der Schule. Sie ist die Person, der ich am meisten vertraue.",
+            "Tom: Trefft ihr euch noch oft?",
+            "Lena: Leider nicht. Aber wir telefonieren jede Woche. Ich freue mich immer auf unsere Gespräche.",
+            "Tom: Das ist schön. Eine Freundschaft, die so lange hält, ist selten."
+          ],
+          "translation": "Lena shows Tom a photo of her best friend who now lives in Berlin. They have known each other since school, and Lena trusts her the most. They don't meet often but call every week, and Lena always looks forward to their conversations. Tom notes that a friendship lasting that long is rare."
+        }
+      },
+      {
+        "id": "b1-l2",
+        "number": 2,
+        "title": "Arbeit & Beruf",
+        "titleEn": "Work & Career",
+        "goals": [
+          "I can talk about jobs, skills and the workplace",
+          "I can make polite requests and express wishes with Konjunktiv II",
+          "I can give hypothetical advice (an deiner Stelle würde ich …)"
+        ],
+        "vocabulary": [
+          { "de": "die Bewerbung, -en", "en": "job application", "example": "Ich schreibe gerade eine Bewerbung." },
+          { "de": "das Vorstellungsgespräch", "en": "job interview", "example": "Morgen habe ich ein Vorstellungsgespräch." },
+          { "de": "der Lebenslauf", "en": "CV / résumé", "example": "Mein Lebenslauf ist zwei Seiten lang." },
+          { "de": "die Erfahrung, -en", "en": "experience", "example": "Sie hat viel Erfahrung in diesem Bereich." },
+          { "de": "die Kollegin / der Kollege", "en": "colleague", "example": "Meine Kollegen sind sehr hilfsbereit." },
+          { "de": "der Gehalt / das Gehalt", "en": "salary", "example": "Das Gehalt ist nicht alles im Leben." },
+          { "de": "kündigen", "en": "to quit / give notice", "example": "Er hat letzte Woche gekündigt." },
+          { "de": "sich bewerben um (+ Akk.)", "en": "to apply for", "example": "Ich bewerbe mich um eine neue Stelle." }
+        ],
+        "grammar": [
+          {
+            "title": "Konjunktiv II (Hypothetical & polite)",
+            "explanation": "Konjunktiv II expresses things that are unreal, hypothetical, or polite. The most common everyday form is 'würde + Infinitiv'.\n\n• würde + Infinitiv → general hypothetical: Ich würde gern reisen.\n• hätte (from haben) → Ich hätte gern einen Kaffee.\n• wäre (from sein) → Das wäre toll.\n• könnte (from können) → Könnten Sie mir helfen?\n\nUse it for:\n1) Polite requests: Könnten Sie …? / Würden Sie …?\n2) Wishes: Ich hätte gern … / Ich würde gern …\n3) Advice: An deiner Stelle würde ich …",
+            "examples": [
+              "Könnten Sie mir bitte das Gehalt nennen?",
+              "Ich hätte gern mehr Verantwortung.",
+              "An deiner Stelle würde ich die Stelle annehmen.",
+              "Es wäre schön, wenn wir flexibler arbeiten könnten."
+            ]
+          }
+        ],
+        "reading": {
+          "title": "Text: Der erste Arbeitstag",
+          "lines": [
+            "Sara hat sich um eine Stelle als Designerin beworben und das Vorstellungsgespräch war erfolgreich.",
+            "An ihrem ersten Tag war sie nervös. „Könnten Sie mir bitte mein Büro zeigen?\", fragte sie höflich.",
+            "Ihre neue Kollegin lächelte: „Natürlich! An deiner Stelle würde ich zuerst einen Kaffee trinken.\"",
+            "Sara dachte: „Ich hätte gern solche netten Kollegen in meinem alten Job gehabt.\"",
+            "Am Ende des Tages war sie sicher: Diese Entscheidung war richtig."
+          ],
+          "translation": "Sara applied for a job as a designer and the interview went well. On her first day she was nervous and politely asked to be shown her office. Her new colleague kindly suggested she have a coffee first. Sara thought she would have liked such nice colleagues at her old job. By the end of the day, she was sure the decision was right."
+        }
+      },
+      {
+        "id": "b1-l3",
+        "number": 3,
+        "title": "Wohnen & Zusammenleben",
+        "titleEn": "Living & Cohabitation",
+        "goals": [
+          "I can describe a home, rooms and furniture",
+          "I can say WHERE something is and WHERE it's going (Wechselpräpositionen)",
+          "I can use correct adjective endings before nouns"
+        ],
+        "vocabulary": [
+          { "de": "die Wohnung, -en", "en": "apartment", "example": "Wir suchen eine größere Wohnung." },
+          { "de": "die Miete", "en": "rent", "example": "Die Miete ist leider sehr hoch." },
+          { "de": "der Mitbewohner / die Mitbewohnerin", "en": "flatmate", "example": "Mein Mitbewohner ist sehr ordentlich." },
+          { "de": "der Vermieter / die Vermieterin", "en": "landlord/landlady", "example": "Der Vermieter wohnt im selben Haus." },
+          { "de": "das Möbelstück, -e", "en": "piece of furniture", "example": "Das Sofa ist mein liebstes Möbelstück." },
+          { "de": "umziehen", "en": "to move house", "example": "Nächsten Monat ziehen wir um." },
+          { "de": "die Nebenkosten (Pl.)", "en": "additional/utility costs", "example": "Die Nebenkosten sind im Preis enthalten." },
+          { "de": "gemütlich", "en": "cozy", "example": "Das Wohnzimmer ist sehr gemütlich." }
+        ],
+        "grammar": [
+          {
+            "title": "Wechselpräpositionen (Wo? vs. Wohin?)",
+            "explanation": "Nine prepositions take EITHER Dativ OR Akkusativ depending on the question:\nin, an, auf, über, unter, vor, hinter, neben, zwischen.\n\n• WO? (location, no movement) → DATIV\n• WOHIN? (movement to a place) → AKKUSATIV\n\nThink: 'where is it sitting' (Dativ) vs. 'where is it going' (Akkusativ).",
+            "examples": [
+              "Das Bild hängt AN DER Wand. (Wo? → Dativ)",
+              "Ich hänge das Bild AN DIE Wand. (Wohin? → Akkusativ)",
+              "Die Katze schläft AUF DEM Sofa. (Wo? → Dativ)",
+              "Die Katze springt AUF DAS Sofa. (Wohin? → Akkusativ)"
+            ]
+          },
+          {
+            "title": "Adjektivdeklination (nach bestimmtem Artikel)",
+            "explanation": "After the definite article (der/die/das), adjectives take these endings:\n\n• Nominativ: der gemütlichE / die schönE / das großE\n• Akkusativ: den gemütlichEN / die schönE / das großE\n• Dativ:     dem gemütlichEN / der schönEN / dem großEN\n\nRule of thumb after 'der'-words: '-e' in the easy spots, '-en' almost everywhere else (all Dativ, all plural, masculine Akkusativ).",
+            "examples": [
+              "Die gemütliche Wohnung gefällt mir.",
+              "Ich miete die gemütliche Wohnung.",
+              "In der gemütlichen Wohnung fühle ich mich wohl.",
+              "Der neue Mitbewohner ist sehr nett."
+            ]
+          }
+        ],
+        "reading": {
+          "title": "Anzeige & Dialog: Die neue WG",
+          "lines": [
+            "„Schönes Zimmer in zentraler Wohnung frei! Die Miete beträgt 400 Euro plus Nebenkosten.\"",
+            "Max: Guten Tag, ich rufe wegen des Zimmers an. Ist es noch frei?",
+            "Vermieterin: Ja! Möchten Sie es sich ansehen? Das Zimmer liegt neben der Küche.",
+            "Max: Gern. Darf ich meine eigenen Möbel mitbringen?",
+            "Vermieterin: Natürlich. Sie können das Bett ans Fenster und den Schreibtisch in die Ecke stellen.",
+            "Max: Perfekt. In der hellen Wohnung würde ich mich bestimmt wohlfühlen."
+          ],
+          "translation": "An ad offers a nice room in a central apartment for 400 euros plus utilities. Max calls about it; the landlady invites him to view it and explains the room is next to the kitchen. He asks if he can bring his own furniture. She says yes — he can put the bed by the window and the desk in the corner. Max feels he would be comfortable in the bright apartment."
+        }
+      },
+      {
+        "id": "b1-l4",
+        "number": 4,
+        "title": "Gesundheit & Lebensstil",
+        "titleEn": "Health & Lifestyle",
+        "goals": [
+          "I can talk about health, habits and well-being",
+          "I can connect ideas with obwohl, deshalb and trotzdem",
+          "I can give and understand advice about a healthy life"
+        ],
+        "vocabulary": [
+          { "de": "sich ernähren", "en": "to eat / feed oneself", "example": "Ich versuche, mich gesund zu ernähren." },
+          { "de": "die Bewegung", "en": "exercise / movement", "example": "Bewegung ist wichtig für den Körper." },
+          { "de": "der Stress", "en": "stress", "example": "Zu viel Stress macht krank." },
+          { "de": "sich entspannen", "en": "to relax", "example": "Am Wochenende entspanne ich mich gern." },
+          { "de": "die Gewohnheit, -en", "en": "habit", "example": "Schlechte Gewohnheiten sind schwer zu ändern." },
+          { "de": "vermeiden", "en": "to avoid", "example": "Ich vermeide fettiges Essen." },
+          { "de": "der Schlafmangel", "en": "lack of sleep", "example": "Schlafmangel führt zu Konzentrationsproblemen." },
+          { "de": "auf etwas achten", "en": "to pay attention to sth.", "example": "Du solltest auf deine Gesundheit achten." }
+        ],
+        "grammar": [
+          {
+            "title": "Konnektoren: obwohl, deshalb, trotzdem",
+            "explanation": "These connectors link two ideas, but they behave differently in word order:\n\n• OBWOHL (although) = subordinating → verb goes to the END of its clause.\n  Obwohl ich müde bin, gehe ich joggen.\n\n• DESHALB (therefore) = adverb → it takes position 1, so the verb comes SECOND (V2).\n  Ich bin müde. Deshalb gehe ich früh ins Bett.\n\n• TROTZDEM (nevertheless) = adverb → also V2.\n  Es regnet. Trotzdem gehe ich spazieren.",
+            "examples": [
+              "Obwohl er wenig Zeit hat, kocht er jeden Tag frisch.",
+              "Sie isst sehr gesund. Deshalb fühlt sie sich fit.",
+              "Ich hatte wenig Schlaf. Trotzdem war ich produktiv.",
+              "Obwohl das Fitnessstudio teuer ist, gehe ich gern hin."
+            ]
+          }
+        ],
+        "reading": {
+          "title": "Text: Ein gesünderer Alltag",
+          "lines": [
+            "Markus arbeitet viel und hat oft Stress. Obwohl er weiß, dass das ungesund ist, macht er selten Pausen.",
+            "Letztes Jahr war er ständig müde. Deshalb hat er seinen Lebensstil geändert.",
+            "Jetzt steht er früher auf und macht morgens Sport. Trotzdem schafft er seine ganze Arbeit.",
+            "„Ich achte jetzt mehr auf meine Ernährung und vermeide zu viel Kaffee\", sagt er.",
+            "Sein Tipp: „Kleine Gewohnheiten verändern alles — man muss nur anfangen.\""
+          ],
+          "translation": "Markus works a lot and is often stressed. Although he knows it's unhealthy, he rarely takes breaks. Last year he was constantly tired, so he changed his lifestyle. Now he gets up earlier and exercises in the morning, yet he still gets all his work done. He pays more attention to his diet and avoids too much coffee. His tip: small habits change everything — you just have to start."
+        }
+      },
+      {
+        "id": "b1-l5",
+        "number": 5,
+        "title": "Reisen & Umwelt",
+        "titleEn": "Travel & Environment",
+        "goals": [
+          "I can talk about travel plans and environmental issues",
+          "I can understand and form the passive voice (Passiv)",
+          "I can describe processes (how something is done)"
+        ],
+        "vocabulary": [
+          { "de": "die Umwelt", "en": "environment", "example": "Wir müssen die Umwelt schützen." },
+          { "de": "der Klimawandel", "en": "climate change", "example": "Der Klimawandel betrifft uns alle." },
+          { "de": "öffentliche Verkehrsmittel", "en": "public transport", "example": "Ich nutze oft öffentliche Verkehrsmittel." },
+          { "de": "vermeiden / reduzieren", "en": "to avoid / reduce", "example": "Plastik sollte reduziert werden." },
+          { "de": "die Unterkunft, -̈e", "en": "accommodation", "example": "Wir haben eine günstige Unterkunft gefunden." },
+          { "de": "nachhaltig", "en": "sustainable", "example": "Nachhaltiges Reisen wird immer beliebter." },
+          { "de": "der Müll", "en": "trash / waste", "example": "Der Müll wird getrennt gesammelt." },
+          { "de": "die Sehenswürdigkeit, -en", "en": "tourist attraction", "example": "Wir haben viele Sehenswürdigkeiten besucht." }
+        ],
+        "grammar": [
+          {
+            "title": "Passiv (Passive voice)",
+            "explanation": "The passive focuses on the ACTION, not on who does it. It's very common in instructions, processes and formal texts.\n\nFORM: werden + Partizip II\n\n• Präsens Passiv: Der Müll WIRD getrennt. (The trash is separated.)\n• Präteritum Passiv: Das Hotel WURDE gebaut. (The hotel was built.)\n• with modal: Plastik MUSS reduziert WERDEN. (Plastic must be reduced.)\n\nThe doer (if mentioned) uses 'von + Dativ':\n  Die Stadt wird VON Touristen besucht.",
+            "examples": [
+              "In Deutschland wird der Müll getrennt.",
+              "Das Ticket wird online gekauft.",
+              "Die Altstadt wurde im Krieg zerstört.",
+              "Energie muss gespart werden."
+            ]
+          }
+        ],
+        "reading": {
+          "title": "Text: Nachhaltig reisen",
+          "lines": [
+            "Immer mehr Menschen wollen umweltfreundlich reisen. Aber wie wird das gemacht?",
+            "Zuerst werden öffentliche Verkehrsmittel statt des Autos benutzt. Der Zug ist oft eine gute Wahl.",
+            "Am Reiseziel wird der Müll getrennt und Wasser wird gespart.",
+            "Viele Unterkünfte werden heute nachhaltig gebaut und mit Solarenergie betrieben.",
+            "„Die Umwelt kann nur geschützt werden, wenn jeder ein bisschen mithilft\", sagt eine Reiseexpertin."
+          ],
+          "translation": "More and more people want to travel in an eco-friendly way. But how is it done? First, public transport is used instead of the car — the train is often a good choice. At the destination, trash is separated and water is saved. Many accommodations are now built sustainably and run on solar energy. A travel expert says the environment can only be protected if everyone helps a little."
+        }
+      }
+    ]
+  }
+]

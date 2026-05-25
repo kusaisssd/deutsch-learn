@@ -99,17 +99,39 @@
       How to learn German with this app
     </h2>
     <p class="text-center text-slate-600 mb-6">
-      Five complementary skills — combine them daily for the fastest progress.
+      Start with a structured course, then reinforce with the practice tools.
     </p>
 
-    <!--
-      3 step cards.
-      Same structural pattern × 3, different colors/content/links.
-      Color themes match destination pages for visual continuity.
-    -->
     <div class="space-y-4">
 
-      <!-- ─────── Step 1: Sentences (indigo) ─────── -->
+      <!-- ─────── Recommended start: Courses (indigo) ─────── -->
+      <a [routerLink]="'/courses'"
+         class="block bg-gradient-to-br from-indigo-50 to-white rounded-xl border-2 border-indigo-300 hover:border-indigo-500 hover:shadow-lg hover:-translate-y-1 transition-all p-4 sm:p-6 group">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center text-xl font-bold transition-transform group-hover:scale-110">
+            🎓
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-1">
+              <h3 class="text-xl font-bold text-slate-800">Follow a course</h3>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-600 text-white uppercase tracking-wide">Start here</span>
+            </div>
+            <p class="text-slate-600 mb-3">
+              A guided, step-by-step path — like a real language course. No more feeling lost.
+            </p>
+            <ul class="text-sm text-slate-700 space-y-1 mb-4">
+              <li>✓ Full lessons: goals, vocabulary, grammar &amp; reading</li>
+              <li>✓ Locked progression — finish one lesson to unlock the next</li>
+              <li>✓ Always know your next step ("Continue")</li>
+            </ul>
+            <span class="inline-block text-indigo-700 font-semibold group-hover:underline">
+              Open the B1 course →
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ─────── Step 1: Sentences (emerald) ─────── -->
       <a [routerLink]="'/levels'"
          class="block bg-white rounded-xl border-2 border-emerald-200 hover:border-emerald-500 hover:shadow-lg hover:-translate-y-1 transition-all p-4 sm:p-6 group">
         <div class="flex items-start gap-4">

@@ -11,6 +11,7 @@ import { Injectable, computed, effect, signal } from '@angular/core';
  */
 const SENTENCES_KEY = 'deutsch-learn:completed-sentences';
 const CONVERSATIONS_KEY = 'deutsch-learn:completed-conversations';
+const LEKTIONEN_KEY = 'deutsch-learn:completed-lektionen';
 
 /**
  * ProgressService — تتبّع تقدم المستخدم محلياً (sentences + conversations).
@@ -104,12 +105,51 @@ export class ProgressService {
   }
 
   // ═══════════════════════════════════════════
+  // 🎓 LEKTIONEN (string ids مثل 'b1-l1')
+  // ═══════════════════════════════════════════
+
+  private readonly _completedLektionIds = signal<Set<string>>(
+    this.loadFromStorage<string>(LEKTIONEN_KEY)
+  );
+
+  /** نسخة للقراءة (Set من معرّفات الدروس المنجزة) */
+  readonly completedLektionIds = this._completedLektionIds.asReadonly();
+
+  /** هل الدرس منجز؟ */
+  isLektionCompleted(id: string): boolean {
+    return this._completedLektionIds().has(id);
+  }
+
+  /** تأشير درس كمنجز (يفتح الدرس التالي) */
+  markLektionCompleted(id: string): void {
+    if (this._completedLektionIds().has(id)) return;
+    this._completedLektionIds.update(s => new Set(s).add(id));
+  }
+
+  /** إلغاء إنجاز درس (للمراجعة/إعادة الضبط) */
+  unmarkLektionCompleted(id: string): void {
+    if (!this._completedLektionIds().has(id)) return;
+    this._completedLektionIds.update(s => {
+      const next = new Set(s);
+      next.delete(id);
+      return next;
+    });
+  }
+
+  /** كم درس منجز من قائمة معطاة (لشريط تقدّم الكورس) */
+  countCompletedLektionenAmong(ids: readonly string[]): number {
+    const completed = this._completedLektionIds();
+    return ids.filter(id => completed.has(id)).length;
+  }
+
+  // ═══════════════════════════════════════════
   // 🧹 Reset (يمسح كل شيء)
   // ═══════════════════════════════════════════
 
   resetAll(): void {
     this._completedIds.set(new Set());
     this._completedConversationIds.set(new Set());
+    this._completedLektionIds.set(new Set());
   }
 
   // ═══════════════════════════════════════════

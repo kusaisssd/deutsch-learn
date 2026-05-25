@@ -1,0 +1,66 @@
+<section class="max-w-3xl mx-auto">
+
+  <!-- Heading -->
+  <header class="text-center mb-6 sm:mb-8">
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
+      🎓 Courses
+    </h2>
+    <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
+      A structured, step-by-step path — like a real language course. Follow the
+      lessons in order; each one unlocks the next.
+    </p>
+  </header>
+
+  @if (!loaded()) {
+    <div class="text-center py-12 text-slate-500">
+      <div class="inline-block animate-pulse">Loading courses…</div>
+    </div>
+  } @else {
+
+    <div class="space-y-4">
+      @for (course of courses(); track course.id) {
+        @let stats = statsByCourse()[course.id];
+        @let percent = stats.total > 0 ? (stats.done / stats.total) * 100 : 0;
+
+        <a
+          [routerLink]="['/courses', course.id]"
+          class="block rounded-xl border-2 bg-white hover:shadow-lg hover:-translate-y-1 transition-all p-5 group"
+          [class.border-indigo-200]="course.color === 'indigo'"
+          [class.hover:border-indigo-500]="course.color === 'indigo'"
+        >
+          <div class="flex items-start gap-4">
+            <div class="text-4xl shrink-0">{{ course.emoji }}</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">
+                  {{ course.level }}
+                </span>
+                <h3 class="text-lg font-bold text-slate-800 truncate">{{ course.title }}</h3>
+              </div>
+              <p class="text-sm text-slate-600 mb-3">{{ course.description }}</p>
+
+              <!-- Progress -->
+              <div class="flex items-center justify-between text-xs text-slate-600 mb-1">
+                <span>{{ course.lektionen.length }} lessons</span>
+                <span class="font-semibold">{{ stats.done }} / {{ stats.total }} done</span>
+              </div>
+              <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
+                <div
+                  class="h-full bg-indigo-500 transition-all duration-500"
+                  [style.width.%]="percent"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </a>
+      } @empty {
+        <p class="text-center text-slate-500 py-12">No courses available yet.</p>
+      }
+    </div>
+
+    <p class="text-center text-xs text-slate-400 mt-8 italic">
+      More levels (A1, A2, B2) coming soon.
+    </p>
+  }
+
+</section>
