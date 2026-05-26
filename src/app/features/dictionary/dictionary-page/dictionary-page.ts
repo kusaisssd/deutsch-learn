@@ -67,9 +67,14 @@ export class DictionaryPage {
 
   // ───────── روابط غوغل (صور + أمثلة) ─────────
 
-  /** بحث صور غوغل عن الكلمة (للأسماء: الأداة + الكلمة لدقّة أعلى) */
+  /**
+   * بحث صور غوغل عن *معنى* الكلمة لا عن عنوان فيلم/كتاب يحمل نفس الاسم.
+   * الحيلة: نضيف «Foto» (صورة فوتوغرافية) لتحيّز النتائج نحو صور تصف الشيء،
+   * و نستبعد الضجيج الشائع (أفلام، كتب، ملصقات، صفحات تسوّق).
+   */
   googleImages(word: string): string {
-    return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(word);
+    const q = `${word} Foto -film -buch -poster -kaufen -amazon`;
+    return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(q);
   }
 
   /**
