@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { DictionaryService } from '../../../core/services/dictionary';
 import { SpeechService } from '../../../core/services/speech';
 
@@ -8,8 +8,10 @@ import { SpeechService } from '../../../core/services/speech';
  * يكتب المستخدم كلمة ألمانية فيحصل على:
  *   - إن كانت اسماً: der/die/das + جدول الحالات الأربع (مفرد/جمع) + أمثلة.
  *   - إن كانت فعلاً: تصريف الضمائر في الحاضر و الماضي و الـ Perfekt.
+ *   - ترجمة عربية (تُجلب online مرّة ثم تُخبّأ).
+ *   - اقتراحات «هل تقصد؟» عند الخطأ الإملائي (offline).
  *
- * البيانات تُحمَّل مرّة واحدة (lazy) ثم تعمل offline.
+ * البيانات الصرفية تُحمَّل مرّة واحدة (lazy) ثم تعمل offline.
  */
 @Component({
   selector: 'app-dictionary-page',
@@ -24,26 +26,44 @@ export class DictionaryPage {
   readonly error = this.dict.error;
   readonly ready = this.dict.ready;
 
-  /** النص في صندوق البحث */
   readonly query = signal('');
-  /** آخر كلمة تمّ البحث عنها فعلياً (عند الضغط) */
   readonly submitted = signal('');
 
-  /** نتيجة البحث (تتحدّث تلقائياً عند جاهزية البيانات) */
   readonly result = computed(() => {
     const q = this.submitted();
     if (!q) return null;
     return this.dict.lookup(q);
   });
 
-  /** هل بحثنا و لم نجد شيئاً؟ */
   readonly notFound = computed(() => {
     const r = this.result();
     return r != null && !r.noun && !r.verb;
   });
 
+  /** اقتراحات إملائية عند عدم العثور على الكلمة */
+  readonly suggestions = computed(() => {
+    if (!this.notFound()) return [];
+    return this.dict.suggest(this.submitted());
+  });
+
+  constructor() {
+    // عند ظهور نتيجة، اطلب الترجمة العربية للاسم و/أو الفعل (تُخبّأ)
+    effect(() => {
+      const r = this.result();
+      if (!r) return;
+      if (r.noun) this.dict.translate(r.noun.word);
+      if (r.verb) this.dict.translate(r.verb.infinitive);
+    });
+  }
+
   search(): void {
     this.submitted.set(this.query().trim());
+  }
+
+  /** بحث مباشر عن كلمة (من رقاقة اقتراح) */
+  searchWord(word: string): void {
+    this.query.set(word);
+    this.submitted.set(word);
   }
 
   onInput(value: string): void {
@@ -56,5 +76,16 @@ export class DictionaryPage {
 
   speak(text: string): void {
     this.speech.speak(text);
+  }
+
+  // ───────── الترجمة (تمرير للقالب) ─────────
+  translationOf(word: string): string | undefined {
+    return this.dict.translationOf(word);
+  }
+  isTranslating(word: string): boolean {
+    return this.dict.isTranslating(word);
+  }
+  translationFailed(word: string): boolean {
+    return this.dict.translationFailed(word);
   }
 }

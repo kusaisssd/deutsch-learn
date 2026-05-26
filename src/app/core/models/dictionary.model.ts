@@ -70,3 +70,9 @@ export interface LookupResult {
   noun: NounResult | null;
   verb: VerbResult | null;
 }
+
+/** استجابة MyMemory المبسّطة */
+export interface MyMemoryResponse {
+  responseData?: { translatedText?: string };
+  responseStatus?: number;
+}

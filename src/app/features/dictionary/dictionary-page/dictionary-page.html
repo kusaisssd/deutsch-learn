@@ -48,10 +48,23 @@
     @if (notFound()) {
       <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
         <p class="text-yellow-800 font-medium">لم نجد «{{ res.query }}» في القاموس.</p>
-        <p class="text-yellow-700 text-sm mt-1">
-          تأكّد من الإملاء. ابحث عن صيغة الأساس: المصدر للفعل (مثل gehen)
-          أو المفرد للاسم (مثل Haus).
-        </p>
+        @if (suggestions().length) {
+          <p class="text-yellow-700 text-sm mt-3 mb-2">هل تقصد؟</p>
+          <div class="flex flex-wrap gap-2 justify-center">
+            @for (s of suggestions(); track s) {
+              <button
+                (click)="searchWord(s)"
+                dir="ltr"
+                class="bg-white border border-yellow-300 text-slate-800 rounded-full px-3 py-1 text-sm font-medium hover:bg-yellow-100 hover:border-yellow-400 transition-colors"
+              >{{ s }}</button>
+            }
+          </div>
+        } @else {
+          <p class="text-yellow-700 text-sm mt-1">
+            تأكّد من الإملاء. ابحث عن صيغة الأساس: المصدر للفعل (مثل gehen)
+            أو المفرد للاسم (مثل Haus).
+          </p>
+        }
       </div>
     }
 
@@ -68,6 +81,18 @@
           </div>
           <button (click)="speak(n.article + ' ' + n.word)"
                   class="text-sm bg-indigo-100 text-indigo-700 rounded-full px-3 py-1 hover:bg-indigo-200">🔊</button>
+        </div>
+
+        <!-- الترجمة العربية -->
+        <div class="mb-3 text-sm">
+          @if (translationOf(n.word); as tr) {
+            <span class="text-slate-500">الترجمة: </span>
+            <span class="font-semibold text-slate-800">{{ tr }}</span>
+          } @else if (isTranslating(n.word)) {
+            <span class="text-slate-400">جارٍ جلب الترجمة…</span>
+          } @else if (translationFailed(n.word)) {
+            <span class="text-slate-400">تعذّرت الترجمة (تحتاج إنترنت).</span>
+          }
         </div>
 
         <div class="flex flex-wrap gap-2 text-xs mb-4">
@@ -123,6 +148,18 @@
           </div>
           <button (click)="speak(v.infinitive)"
                   class="text-sm bg-emerald-100 text-emerald-700 rounded-full px-3 py-1 hover:bg-emerald-200">🔊</button>
+        </div>
+
+        <!-- الترجمة العربية -->
+        <div class="mb-3 text-sm">
+          @if (translationOf(v.infinitive); as tr) {
+            <span class="text-slate-500">الترجمة: </span>
+            <span class="font-semibold text-slate-800">{{ tr }}</span>
+          } @else if (isTranslating(v.infinitive)) {
+            <span class="text-slate-400">جارٍ جلب الترجمة…</span>
+          } @else if (translationFailed(v.infinitive)) {
+            <span class="text-slate-400">تعذّرت الترجمة (تحتاج إنترنت).</span>
+          }
         </div>
 
         <div class="flex flex-wrap gap-2 text-xs mb-4" dir="ltr">
