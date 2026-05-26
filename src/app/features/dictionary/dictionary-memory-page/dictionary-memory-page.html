@@ -1,0 +1,107 @@
+<section class="max-w-4xl mx-auto" dir="rtl">
+
+  <a [routerLink]="'/levels'"
+     class="text-emerald-600 hover:underline text-sm mb-3 inline-block">
+    → العودة إلى Practice
+  </a>
+
+  <!-- Heading -->
+  <header class="text-center mb-5">
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
+      🧠 ذاكرة قاموسي
+    </h2>
+    <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
+      كل كلمة بحثت عنها في القاموس تظهر هنا. اقلب البطاقة لتتذكّر الأداة
+      المناسبة (der/die/das) و الترجمة.
+    </p>
+  </header>
+
+  @if (history().length === 0) {
+    <div class="bg-slate-50 border border-slate-200 rounded-xl p-8 text-center">
+      <div class="text-4xl mb-3">📖</div>
+      <p class="text-slate-600 mb-4">لا توجد كلمات بعد. ابحث عن كلمات في القاموس و ستظهر هنا تلقائياً.</p>
+      <a [routerLink]="'/dictionary'"
+         class="inline-block bg-emerald-600 text-white rounded-lg px-5 py-2.5 font-semibold hover:bg-emerald-700 transition-colors">
+        الذهاب إلى القاموس
+      </a>
+    </div>
+  } @else {
+
+    <!-- أدوات التحكّم: فلاتر + خلط + مسح -->
+    @let c = counts();
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+      <div class="flex gap-1 bg-slate-100 rounded-lg p-1">
+        <button (click)="setFilter('all')"
+                class="text-sm px-3 py-1 rounded-md transition-colors"
+                [class.bg-white]="filter() === 'all'"
+                [class.shadow]="filter() === 'all'"
+                [class.font-semibold]="filter() === 'all'">الكل ({{ c.all }})</button>
+        <button (click)="setFilter('noun')"
+                class="text-sm px-3 py-1 rounded-md transition-colors"
+                [class.bg-white]="filter() === 'noun'"
+                [class.shadow]="filter() === 'noun'"
+                [class.font-semibold]="filter() === 'noun'">أسماء ({{ c.noun }})</button>
+        <button (click)="setFilter('verb')"
+                class="text-sm px-3 py-1 rounded-md transition-colors"
+                [class.bg-white]="filter() === 'verb'"
+                [class.shadow]="filter() === 'verb'"
+                [class.font-semibold]="filter() === 'verb'">أفعال ({{ c.verb }})</button>
+      </div>
+      <div class="flex gap-2">
+        <button (click)="shuffleCards()"
+                class="text-sm bg-indigo-100 text-indigo-700 rounded-lg px-3 py-1.5 hover:bg-indigo-200 transition-colors">🔀 خلط</button>
+        <button (click)="clearAll()"
+                class="text-sm bg-red-50 text-red-600 rounded-lg px-3 py-1.5 hover:bg-red-100 transition-colors">🗑️ مسح الكل</button>
+      </div>
+    </div>
+
+    <p class="text-xs text-slate-400 mb-3">💡 خمّن الأداة ثم اضغط البطاقة لتقلبها.</p>
+
+    <!-- شبكة البطاقات -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+      @for (e of view(); track e.kind + ':' + e.word) {
+        <div class="relative">
+          <!-- زر الحذف -->
+          <button (click)="remove(e, $event)"
+                  class="absolute top-1 left-1 z-10 w-6 h-6 rounded-full bg-white/80 text-slate-400 hover:text-red-500 text-xs shadow">✕</button>
+
+          <button class="flip" [class.flipped]="isFlipped(e)" (click)="toggle(e)">
+            <div class="flip-inner">
+              <!-- الوجه الأمامي: الكلمة -->
+              <div class="flip-face bg-white border-2 border-slate-200">
+                <span class="text-lg font-bold text-slate-800" dir="ltr">{{ e.word }}</span>
+                @if (e.kind === 'noun') {
+                  <span class="text-xs text-slate-400 mt-1">ما الأداة؟</span>
+                } @else {
+                  <span class="text-xs text-slate-400 mt-1">فعل</span>
+                }
+              </div>
+
+              <!-- الوجه الخلفي: الأداة + الترجمة -->
+              <div class="flip-face text-white"
+                   [class.bg-blue-500]="e.kind === 'noun' && e.gender === 'M'"
+                   [class.bg-rose-500]="e.kind === 'noun' && e.gender === 'F'"
+                   [class.bg-emerald-500]="e.kind === 'noun' && e.gender === 'N'"
+                   [class.bg-slate-600]="e.kind === 'verb'">
+                @if (e.kind === 'noun') {
+                  <span class="text-2xl font-bold" dir="ltr">{{ e.article }}</span>
+                  <span class="text-sm font-medium" dir="ltr">{{ e.word }}</span>
+                } @else {
+                  <span class="text-base font-bold" dir="ltr">{{ e.word }}</span>
+                  <span class="text-xs opacity-80">فعل</span>
+                }
+                @if (translationOf(e.word); as tr) {
+                  <span class="text-xs mt-1 opacity-90">{{ tr }}</span>
+                }
+                <button (click)="speak((e.kind === 'noun' ? e.article + ' ' : '') + e.word, $event)"
+                        class="mt-1 text-white/80 hover:text-white text-sm">🔊</button>
+              </div>
+            </div>
+          </button>
+        </div>
+      }
+    </div>
+
+  }
+
+</section>

@@ -166,6 +166,15 @@ export const routes: Routes = [
     title: 'Dictionary - Deutsch Learn',
   },
 
+  // 🆕 ذاكرة قاموسي: بطاقات قلب لكل الكلمات المبحوثة (ضمن Practice)
+  {
+    path: 'dictionary-memory',
+    loadComponent: () =>
+      import('./features/dictionary/dictionary-memory-page/dictionary-memory-page')
+        .then(m => m.DictionaryMemoryPage),
+    title: 'ذاكرة قاموسي - Deutsch Learn',
+  },
+
   // أي URL غير معروف → نرجع للصفحة الرئيسية (أكثر طبيعية من /levels الآن)
   {
     path: '**',
