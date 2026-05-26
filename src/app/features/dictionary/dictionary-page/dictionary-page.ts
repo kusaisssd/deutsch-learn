@@ -72,9 +72,12 @@ export class DictionaryPage {
     return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(word);
   }
 
-  /** بحث غوغل عن المعنى و أمثلة واقعية */
-  googleExamples(word: string): string {
-    return 'https://www.google.com/search?q=' + encodeURIComponent(`${word} Bedeutung Beispielsätze`);
+  /**
+   * أمثلة واقعية مع ترجمة عربية لكل جملة عبر Reverso Context (ألماني→عربي).
+   * أفضل من بحث غوغل العام: كل جملة مثال مقترنة بترجمتها العربية مباشرةً.
+   */
+  reversoExamples(word: string): string {
+    return 'https://context.reverso.net/translation/german-arabic/' + encodeURIComponent(word);
   }
 
   search(): void {
