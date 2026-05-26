@@ -61,6 +61,8 @@ export class DictionaryPage {
           this.dict.translate(r.verb.infinitive);
           this.dict.record({ word: r.verb.infinitive, kind: 'verb' });
         }
+        // غير موجودة في القاموس الصرفي؟ نطلب ترجمتها على الأقل (online + cache)
+        if (!r.noun && !r.verb) this.dict.translate(r.query);
       });
     });
   }
@@ -83,6 +85,11 @@ export class DictionaryPage {
    */
   reversoExamples(word: string): string {
     return 'https://context.reverso.net/translation/german-arabic/' + encodeURIComponent(word);
+  }
+
+  /** بحث غوغل بعبارة: ترجم "الكلمة" إلى العربية (للكلمات غير الموجودة) */
+  googleTranslateSearch(word: string): string {
+    return 'https://www.google.com/search?q=' + encodeURIComponent(`ترجم "${word}" إلى العربية`);
   }
 
   search(): void {

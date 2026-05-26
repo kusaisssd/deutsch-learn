@@ -125,7 +125,10 @@ export class DictionaryService {
 
     const cap = query.charAt(0).toUpperCase() + query.slice(1);
     const rawNoun = nouns[query] ?? nouns[cap] ?? null;
-    const noun = rawNoun ? this.buildNoun(rawNoun[1] || cap, rawNoun) : null;
+    let noun = rawNoun ? this.buildNoun(rawNoun[1] || cap, rawNoun) : null;
+
+    // لم يُعثَر مباشرةً؟ جرّب تحليله كاسم مركّب (الجنس من الجزء الأخير).
+    if (!noun) noun = this.resolveCompoundNoun(query);
 
     const lower = query.toLowerCase();
     const rawVerb = verbs[lower] ?? verbs[query] ?? null;
@@ -304,7 +307,40 @@ export class DictionaryService {
   // بناء النتائج
   // ═══════════════════════════════════════════
 
-  private buildNoun(word: string, r: RawNoun): NounResult {
+  /**
+   * يحاول حلّ كلمة كاسم مركّب: يبحث عن أطول اسم معروف يكون «نهاية» الكلمة
+   * (الجزء الأخير/Head)، فيرث جنسه و يبني كل الحالات بإضافة البادئة.
+   * مثال: Merkfähigkeit → Head = Fähigkeit (die) → die Merkfähigkeit،
+   * الجمع die Merkfähigkeiten. (تحليل تقديري؛ جنس المركّب من جزئه الأخير.)
+   */
+  private resolveCompoundNoun(query: string): NounResult | null {
+    const nouns = this._nouns();
+    if (!nouns) return null;
+    this.buildIndex();
+    const cap = query.charAt(0).toUpperCase() + query.slice(1);
+
+    // i = طول البادئة (≥2)؛ نبدأ من الأصغر لنحصل على أطول Head (≥3 أحرف).
+    for (let i = 2; i <= cap.length - 3; i++) {
+      const suffix = cap.slice(i);
+      const cands = this.index!.get(this.norm(suffix));
+      if (!cands) continue;
+      const headKey = cands.find(k => nouns[k] && k.charAt(0) === k.charAt(0).toUpperCase());
+      if (!headKey) continue;
+
+      const raw = nouns[headKey];
+      const prefix = cap.slice(0, i);
+      const join = (form: string) => (form ? prefix + form.toLowerCase() : '');
+      const [g, nomS, nomP, akkS, akkP, datS, datP, genS, genP] = raw;
+      const merged: RawNoun = [
+        g, join(nomS), join(nomP), join(akkS), join(akkP),
+        join(datS), join(datP), join(genS), join(genP),
+      ];
+      return this.buildNoun(join(nomS) || cap, merged, true, headKey);
+    }
+    return null;
+  }
+
+  private buildNoun(word: string, r: RawNoun, compound = false, head?: string): NounResult {
     const [g, nomS, nomP, akkS, akkP, datS, datP, genS, genP] = r;
     const cases: { key: keyof typeof ARTICLES; de: string; ar: string; s: string; p: string }[] = [
       { key: 'NOM', de: 'Nominativ', ar: 'النوميناتيف (الفاعل)', s: nomS, p: nomP },
@@ -330,6 +366,8 @@ export class DictionaryService {
       genderAr: GENDER_AR[g],
       pluralNom: nomP || '—',
       rows,
+      compound,
+      head,
     };
   }
 

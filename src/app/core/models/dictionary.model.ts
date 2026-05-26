@@ -40,6 +40,10 @@ export interface NounResult {
   genderAr: string;     // مذكّر / مؤنّث / محايد
   pluralNom: string;    // صيغة الجمع (Nominativ)
   rows: NounCaseRow[];
+  /** هل استُنتجت كاسم مركّب (التحليل تقديري حسب الجزء الأخير)؟ */
+  compound?: boolean;
+  /** الجزء الأخير المعروف (Head) للاسم المركّب */
+  head?: string;
 }
 
 /** صفّ ضمير في جدول تصريف فعل */

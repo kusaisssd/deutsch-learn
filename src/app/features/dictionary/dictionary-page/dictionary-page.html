@@ -47,7 +47,36 @@
 
     @if (notFound()) {
       <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
-        <p class="text-yellow-800 font-medium">لم نجد «{{ res.query }}» في القاموس.</p>
+        <p class="text-yellow-800 font-medium">لم نجد «{{ res.query }}» في قاموسنا الصرفي.</p>
+
+        <!-- ترجمة فورية (online) للكلمة غير الموجودة -->
+        <div class="mt-2 text-sm">
+          @if (translationOf(res.query); as tr) {
+            <span class="text-slate-500">الترجمة: </span>
+            <span class="font-semibold text-slate-800">{{ tr }}</span>
+          } @else if (isTranslating(res.query)) {
+            <span class="text-slate-400">جارٍ جلب الترجمة…</span>
+          } @else if (translationFailed(res.query)) {
+            <span class="text-slate-400">تعذّرت الترجمة (تحتاج إنترنت).</span>
+          }
+        </div>
+
+        <!-- روابط خارجية -->
+        <div class="flex flex-wrap gap-2 justify-center mt-3">
+          <a [href]="googleTranslateSearch(res.query)" target="_blank" rel="noopener noreferrer"
+             class="text-sm bg-emerald-600 text-white rounded-lg px-3 py-1.5 hover:bg-emerald-700 transition-colors">
+            🌐 ترجم في غوغل
+          </a>
+          <a [href]="reversoExamples(res.query)" target="_blank" rel="noopener noreferrer"
+             class="text-sm bg-violet-50 text-violet-700 border border-violet-200 rounded-lg px-3 py-1.5 hover:bg-violet-100 transition-colors">
+            📝 أمثلة (Reverso)
+          </a>
+          <a [href]="googleImages(res.query)" target="_blank" rel="noopener noreferrer"
+             class="text-sm bg-blue-50 text-blue-700 border border-blue-200 rounded-lg px-3 py-1.5 hover:bg-blue-100 transition-colors">
+            🖼️ صور غوغل
+          </a>
+        </div>
+
         @if (suggestions().length) {
           <p class="text-yellow-700 text-sm mt-3 mb-2">هل تقصد؟</p>
           <div class="flex flex-wrap gap-2 justify-center">
@@ -98,7 +127,17 @@
         <div class="flex flex-wrap gap-2 text-xs mb-4">
           <span class="px-2 py-1 rounded-full bg-slate-100 text-slate-600">اسم · {{ n.genderAr }}</span>
           <span class="px-2 py-1 rounded-full bg-slate-100 text-slate-600" dir="ltr">Plural: die {{ n.pluralNom }}</span>
+          @if (n.compound) {
+            <span class="px-2 py-1 rounded-full bg-amber-100 text-amber-700">اسم مركّب</span>
+          }
         </div>
+
+        @if (n.compound) {
+          <p class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-2 mb-3">
+            ℹ️ كلمة مركّبة — الأداة و التصريف مُستنتَجان من جزئها الأخير
+            «<span dir="ltr">{{ n.head }}</span>» (تحليل تقديري؛ صحيح في معظم الحالات).
+          </p>
+        }
 
         <!-- روابط غوغل: صور + أمثلة واقعية -->
         <div class="flex flex-wrap gap-2 mb-4">
