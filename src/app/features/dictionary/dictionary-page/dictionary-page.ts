@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { DictionaryService } from '../../../core/services/dictionary';
 import { SpeechService } from '../../../core/services/speech';
 
@@ -47,13 +47,34 @@ export class DictionaryPage {
   });
 
   constructor() {
-    // عند ظهور نتيجة، اطلب الترجمة العربية للاسم و/أو الفعل (تُخبّأ)
+    // عند ظهور نتيجة: اطلب الترجمة العربية و سجّل الكلمة في الذاكرة.
+    // untracked: حتى لا تُعاد بسبب كتابة إشارات الترجمة، بل عند تغيّر النتيجة فقط.
     effect(() => {
       const r = this.result();
       if (!r) return;
-      if (r.noun) this.dict.translate(r.noun.word);
-      if (r.verb) this.dict.translate(r.verb.infinitive);
+      untracked(() => {
+        if (r.noun) {
+          this.dict.translate(r.noun.word);
+          this.dict.record({ word: r.noun.word, kind: 'noun', article: r.noun.article, gender: r.noun.gender });
+        }
+        if (r.verb) {
+          this.dict.translate(r.verb.infinitive);
+          this.dict.record({ word: r.verb.infinitive, kind: 'verb' });
+        }
+      });
     });
+  }
+
+  // ───────── روابط غوغل (صور + أمثلة) ─────────
+
+  /** بحث صور غوغل عن الكلمة (للأسماء: الأداة + الكلمة لدقّة أعلى) */
+  googleImages(word: string): string {
+    return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(word);
+  }
+
+  /** بحث غوغل عن المعنى و أمثلة واقعية */
+  googleExamples(word: string): string {
+    return 'https://www.google.com/search?q=' + encodeURIComponent(`${word} Bedeutung Beispielsätze`);
   }
 
   search(): void {

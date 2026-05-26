@@ -100,6 +100,18 @@
           <span class="px-2 py-1 rounded-full bg-slate-100 text-slate-600" dir="ltr">Plural: die {{ n.pluralNom }}</span>
         </div>
 
+        <!-- روابط غوغل: صور + أمثلة واقعية -->
+        <div class="flex flex-wrap gap-2 mb-4">
+          <a [href]="googleImages(n.article + ' ' + n.word)" target="_blank" rel="noopener noreferrer"
+             class="text-sm bg-blue-50 text-blue-700 border border-blue-200 rounded-lg px-3 py-1.5 hover:bg-blue-100 transition-colors">
+            🖼️ صور غوغل
+          </a>
+          <a [href]="googleExamples(n.word)" target="_blank" rel="noopener noreferrer"
+             class="text-sm bg-slate-50 text-slate-700 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-100 transition-colors">
+            📝 أمثلة واقعية
+          </a>
+        </div>
+
         <!-- جدول الحالات -->
         <div class="overflow-x-auto">
           <table class="w-full text-sm border-collapse">
@@ -165,6 +177,18 @@
         <div class="flex flex-wrap gap-2 text-xs mb-4" dir="ltr">
           <span class="px-2 py-1 rounded-full bg-slate-100 text-slate-600">Partizip II: {{ v.partizip2 }}</span>
           <span class="px-2 py-1 rounded-full bg-slate-100 text-slate-600">Hilfsverb: {{ v.aux }}</span>
+        </div>
+
+        <!-- روابط غوغل: صور + أمثلة واقعية -->
+        <div class="flex flex-wrap gap-2 mb-4">
+          <a [href]="googleImages(v.infinitive)" target="_blank" rel="noopener noreferrer"
+             class="text-sm bg-blue-50 text-blue-700 border border-blue-200 rounded-lg px-3 py-1.5 hover:bg-blue-100 transition-colors">
+            🖼️ صور غوغل
+          </a>
+          <a [href]="googleExamples(v.infinitive)" target="_blank" rel="noopener noreferrer"
+             class="text-sm bg-slate-50 text-slate-700 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-100 transition-colors">
+            📝 أمثلة واقعية
+          </a>
         </div>
 
         <div class="space-y-4">

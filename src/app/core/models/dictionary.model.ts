@@ -76,3 +76,13 @@ export interface MyMemoryResponse {
   responseData?: { translatedText?: string };
   responseStatus?: number;
 }
+
+/** عنصر في سجلّ البحث (لقسم «ذاكرة قاموسي» لاحقاً) */
+export interface DictHistoryEntry {
+  word: string;
+  kind: 'noun' | 'verb';
+  article?: string;     // der/die/das (للأسماء)
+  gender?: Gender;      // M/F/N (للأسماء)
+  /** وقت آخر بحث (ms) — لترتيب الأحدث */
+  ts: number;
+}

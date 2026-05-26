@@ -1,7 +1,7 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {
-  Gender, LookupResult, MyMemoryResponse, NounCaseRow, NounResult,
+  DictHistoryEntry, Gender, LookupResult, MyMemoryResponse, NounCaseRow, NounResult,
   RawNoun, RawVerb, VerbConjRow, VerbResult, VerbTenseTable,
 } from '../models/dictionary.model';
 
@@ -25,6 +25,8 @@ const SEIN_PRES = ['bin', 'bist', 'ist', 'sind', 'seid', 'sind'];
 
 /** مفتاح تخزين الترجمات المُخبّأة محلياً */
 const TRANSLATIONS_KEY = 'deutsch-learn:dict-translations';
+/** مفتاح تخزين سجلّ الكلمات المبحوثة (لقسم «ذاكرة قاموسي») */
+const HISTORY_KEY = 'deutsch-learn:dict-history';
 
 /**
  * DictionaryService — يحمّل قاموسَي الأسماء و الأفعال (lazy، مرّة واحدة)
@@ -54,13 +56,36 @@ export class DictionaryService {
   private readonly _translating = signal<Set<string>>(new Set());
   private readonly _transFailed = signal<Set<string>>(new Set());
 
+  // ───────── سجلّ البحث (للذاكرة لاحقاً) ─────────
+  private readonly _history = signal<DictHistoryEntry[]>(this.loadHistory());
+  /** كل الكلمات التي بحثها المستخدم (الأحدث أولاً) */
+  readonly history = this._history.asReadonly();
+
   /** فهرس مُطبَّع للاقتراحات (يُبنى مرّة بعد التحميل) */
   private index: Map<string, string[]> | null = null;
 
   constructor() {
     this.load();
-    // حفظ الترجمات المُخبّأة تلقائياً
+    // حفظ الترجمات و السجلّ تلقائياً
     effect(() => this.saveTranslations(this._translations()));
+    effect(() => this.save(HISTORY_KEY, this._history()));
+  }
+
+  /** يسجّل كلمة مبحوثة (يزيل التكرار و يضعها في المقدّمة) */
+  record(entry: Omit<DictHistoryEntry, 'ts'>): void {
+    this._history.update(list => {
+      const rest = list.filter(x => !(x.word === entry.word && x.kind === entry.kind));
+      return [{ ...entry, ts: Date.now() }, ...rest].slice(0, 1000);
+    });
+  }
+
+  /** يحذف كلمة من السجلّ */
+  removeFromHistory(word: string, kind: 'noun' | 'verb'): void {
+    this._history.update(list => list.filter(x => !(x.word === word && x.kind === kind)));
+  }
+
+  clearHistory(): void {
+    this._history.set([]);
   }
 
   private load(): void {
@@ -255,10 +280,23 @@ export class DictionaryService {
   }
 
   private saveTranslations(map: Record<string, string>): void {
+    this.save(TRANSLATIONS_KEY, map);
+  }
+
+  private loadHistory(): DictHistoryEntry[] {
     try {
-      localStorage.setItem(TRANSLATIONS_KEY, JSON.stringify(map));
+      const raw = localStorage.getItem(HISTORY_KEY);
+      return raw ? (JSON.parse(raw) as DictHistoryEntry[]) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private save(key: string, value: unknown): void {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
     } catch (e) {
-      console.warn('Failed to cache translations:', e);
+      console.warn(`Failed to save to localStorage (${key}):`, e);
     }
   }
 
