@@ -63,6 +63,8 @@ export class DictionaryService {
 
   /** فهرس مُطبَّع للاقتراحات (يُبنى مرّة بعد التحميل) */
   private index: Map<string, string[]> | null = null;
+  /** كل المفاتيح + نسخة صغيرة الأحرف (للإكمال التلقائي) */
+  private allKeys: { k: string; l: string }[] | null = null;
 
   constructor() {
     this.load();
@@ -225,6 +227,42 @@ export class DictionaryService {
     }
 
     return out.slice(0, 8);
+  }
+
+  /** يبني قائمة كل المفاتيح مرّة واحدة (مع إزالة التكرار حسب الأحرف الصغيرة) */
+  private buildKeys(): void {
+    if (this.allKeys) return;
+    const seen = new Set<string>();
+    const arr: { k: string; l: string }[] = [];
+    const add = (k: string) => {
+      const l = k.toLowerCase();
+      if (!seen.has(l)) { seen.add(l); arr.push({ k, l }); }
+    };
+    const nouns = this._nouns();
+    const verbs = this._verbs();
+    if (nouns) for (const k of Object.keys(nouns)) add(k);
+    if (verbs) for (const k of Object.keys(verbs)) add(k);
+    this.allKeys = arr;
+  }
+
+  /**
+   * إكمال تلقائي: كلمات تبدأ بالبادئة المكتوبة (≥3 أحرف).
+   * تُرتّب الأقصر أولاً (الكلمات الأساسية قبل المركّبة الطويلة).
+   */
+  prefixSuggest(prefix: string, limit = 8): string[] {
+    if (!this.ready()) return [];
+    const p = prefix.trim().toLowerCase();
+    if (p.length < 3) return [];
+    this.buildKeys();
+    const hits: string[] = [];
+    for (const { k, l } of this.allKeys!) {
+      if (l.startsWith(p)) {
+        hits.push(k);
+        if (hits.length >= 80) break; // سقف ليبقى سريعاً
+      }
+    }
+    hits.sort((a, b) => a.length - b.length);
+    return hits.slice(0, limit);
   }
 
   // ═══════════════════════════════════════════

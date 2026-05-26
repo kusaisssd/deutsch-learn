@@ -46,6 +46,13 @@ export class DictionaryPage {
     return this.dict.suggest(this.submitted());
   });
 
+  /** إكمال تلقائي حيّ أثناء الكتابة (≥3 أحرف، يختفي بعد البحث) */
+  readonly liveSuggestions = computed(() => {
+    const q = this.query().trim();
+    if (q.length < 3 || q === this.submitted()) return [];
+    return this.dict.prefixSuggest(q);
+  });
+
   constructor() {
     // عند ظهور نتيجة: اطلب الترجمة العربية و سجّل الكلمة في الذاكرة.
     // untracked: حتى لا تُعاد بسبب كتابة إشارات الترجمة، بل عند تغيّر النتيجة فقط.
@@ -90,6 +97,11 @@ export class DictionaryPage {
   /** بحث غوغل بعبارة: ترجم "الكلمة" إلى العربية (للكلمات غير الموجودة) */
   googleTranslateSearch(word: string): string {
     return 'https://www.google.com/search?q=' + encodeURIComponent(`ترجم "${word}" إلى العربية`);
+  }
+
+  /** صفحة الكلمة في ويكاموس الألماني (معاني، تصريف، ترجمات) */
+  wiktionary(word: string): string {
+    return 'https://de.wiktionary.org/wiki/' + encodeURIComponent(word);
   }
 
   search(): void {

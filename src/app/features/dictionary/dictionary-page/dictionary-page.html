@@ -11,23 +11,42 @@
     </p>
   </header>
 
-  <!-- صندوق البحث -->
-  <form (submit)="search(); $event.preventDefault()" class="flex gap-2 mb-4">
-    <input
-      [value]="query()"
-      (input)="onInput($any($event.target).value)"
-      type="text"
-      dir="ltr"
-      placeholder="z. B. Haus, gehen, Kind, arbeiten…"
-      class="flex-1 rounded-lg border border-slate-300 px-4 py-3 text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
-      autofocus
-    />
-    <button
-      type="submit"
-      [disabled]="!query().trim() || loading()"
-      class="bg-emerald-600 text-white rounded-lg px-5 font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50"
-    >بحث</button>
-  </form>
+  <!-- صندوق البحث + الإكمال التلقائي -->
+  <div class="relative mb-4">
+    <form (submit)="search(); $event.preventDefault()" class="flex gap-2">
+      <input
+        [value]="query()"
+        (input)="onInput($any($event.target).value)"
+        type="text"
+        dir="ltr"
+        placeholder="z. B. Haus, gehen, Kind, arbeiten…"
+        class="flex-1 rounded-lg border border-slate-300 px-4 py-3 text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
+        autocomplete="off"
+        autofocus
+      />
+      <button
+        type="submit"
+        [disabled]="!query().trim() || loading()"
+        class="bg-emerald-600 text-white rounded-lg px-5 font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50"
+      >بحث</button>
+    </form>
+
+    <!-- قائمة الإكمال التلقائي -->
+    @if (liveSuggestions().length) {
+      <ul class="absolute z-20 left-0 right-0 mt-1 bg-white border border-slate-200 rounded-lg shadow-lg max-h-72 overflow-y-auto">
+        @for (s of liveSuggestions(); track s) {
+          <li>
+            <button
+              type="button"
+              (click)="searchWord(s)"
+              dir="ltr"
+              class="w-full text-left px-4 py-2 text-slate-800 hover:bg-emerald-50 transition-colors"
+            >{{ s }}</button>
+          </li>
+        }
+      </ul>
+    }
+  </div>
 
   <!-- حالات التحميل / الخطأ -->
   @if (loading()) {
@@ -74,6 +93,10 @@
           <a [href]="googleImages(res.query)" target="_blank" rel="noopener noreferrer"
              class="text-sm bg-blue-50 text-blue-700 border border-blue-200 rounded-lg px-3 py-1.5 hover:bg-blue-100 transition-colors">
             🖼️ صور غوغل
+          </a>
+          <a [href]="wiktionary(res.query)" target="_blank" rel="noopener noreferrer"
+             class="text-sm bg-slate-50 text-slate-700 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-100 transition-colors">
+            📚 Wiktionary
           </a>
         </div>
 
@@ -148,6 +171,10 @@
           <a [href]="reversoExamples(n.word)" target="_blank" rel="noopener noreferrer"
              class="text-sm bg-violet-50 text-violet-700 border border-violet-200 rounded-lg px-3 py-1.5 hover:bg-violet-100 transition-colors">
             📝 أمثلة + ترجمة (Reverso)
+          </a>
+          <a [href]="wiktionary(n.word)" target="_blank" rel="noopener noreferrer"
+             class="text-sm bg-slate-50 text-slate-700 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-100 transition-colors">
+            📚 Wiktionary
           </a>
         </div>
 
@@ -227,6 +254,10 @@
           <a [href]="reversoExamples(v.infinitive)" target="_blank" rel="noopener noreferrer"
              class="text-sm bg-violet-50 text-violet-700 border border-violet-200 rounded-lg px-3 py-1.5 hover:bg-violet-100 transition-colors">
             📝 أمثلة + ترجمة (Reverso)
+          </a>
+          <a [href]="wiktionary(v.infinitive)" target="_blank" rel="noopener noreferrer"
+             class="text-sm bg-slate-50 text-slate-700 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-100 transition-colors">
+            📚 Wiktionary
           </a>
         </div>
 
