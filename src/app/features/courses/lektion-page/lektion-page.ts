@@ -5,6 +5,7 @@ import { ProgressService } from '../../../core/services/progress';
 import { SpeechService } from '../../../core/services/speech';
 import { SpeechRecognitionService } from '../../../core/services/speech-recognition';
 import { compareGerman, ComparisonResult } from '../../../shared/utils/similarity';
+import { shuffle } from '../../../shared/utils/shuffle';
 import { LektionStep } from '../../../core/models/course.model';
 
 /**
@@ -125,6 +126,26 @@ export class LektionPage {
     source: this.currentStep,
     computation: (step) =>
       step?.kind === 'reading' && step.questions ? step.questions.map(() => null) : [],
+  });
+
+  /**
+   * 🔀 ترتيب عرض مخلوط لخيارات الـ quiz (يحلّ مشكلة "الإجابة الصحيحة دائماً أولاً").
+   * يحوي الفهارس الأصلية بترتيب عشوائي. نعرض الخيار حسب الفهرس الأصلي،
+   * فيبقى correct (في الداتا) صحيحاً لكن موضعه على الشاشة يتنوّع.
+   */
+  readonly quizOrder = linkedSignal<LektionStep | null, number[]>({
+    source: this.currentStep,
+    computation: (step) =>
+      step?.options ? shuffle(step.options.map((_, i) => i)) : [],
+  });
+
+  /** ترتيب عرض مخلوط لكل سؤال من أسئلة القراءة المتعددة */
+  readonly readingOrders = linkedSignal<LektionStep | null, number[][]>({
+    source: this.currentStep,
+    computation: (step) =>
+      step?.kind === 'reading' && step.questions
+        ? step.questions.map(q => shuffle(q.options.map((_, i) => i)))
+        : [],
   });
 
   /** اختيار خيار لسؤال قراءة معيّن (يُقفل بعد الاختيار) */

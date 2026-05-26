@@ -119,24 +119,24 @@
               @if (step.prompt) {
                 <p class="text-sm text-indigo-600 font-semibold mb-2 text-right" dir="rtl">{{ step.prompt }}</p>
               }
-              <p class="text-xl font-medium text-slate-800 mb-5">{{ step.question }}</p>
+              <p class="text-xl font-medium text-slate-800 mb-5" dir="auto">{{ step.question }}</p>
 
               <div class="space-y-2">
-                @for (opt of step.options; track $index) {
-                  <button type="button" (click)="selectOption($index)"
-                          [disabled]="answered()"
-                          class="w-full text-left px-4 py-3 rounded-lg border-2 font-medium transition-colors"
-                          [class.border-slate-200]="!answered() && selectedOption() !== $index"
+                @for (oi of quizOrder(); track oi) {
+                  <button type="button" (click)="selectOption(oi)"
+                          [disabled]="answered()" dir="auto"
+                          class="w-full text-start px-4 py-3 rounded-lg border-2 font-medium transition-colors"
+                          [class.border-slate-200]="!answered() && selectedOption() !== oi"
                           [class.bg-white]="!answered()"
                           [class.hover:border-indigo-300]="!answered()"
-                          [class.border-green-500]="answered() && $index === step.correct"
-                          [class.bg-green-50]="answered() && $index === step.correct"
-                          [class.border-red-400]="answered() && selectedOption() === $index && $index !== step.correct"
-                          [class.bg-red-50]="answered() && selectedOption() === $index && $index !== step.correct"
-                          [class.opacity-60]="answered() && selectedOption() !== $index && $index !== step.correct">
-                    {{ opt }}
-                    @if (answered() && $index === step.correct) { <span class="float-right">✓</span> }
-                    @if (answered() && selectedOption() === $index && $index !== step.correct) { <span class="float-right">✗</span> }
+                          [class.border-green-500]="answered() && oi === step.correct"
+                          [class.bg-green-50]="answered() && oi === step.correct"
+                          [class.border-red-400]="answered() && selectedOption() === oi && oi !== step.correct"
+                          [class.bg-red-50]="answered() && selectedOption() === oi && oi !== step.correct"
+                          [class.opacity-60]="answered() && selectedOption() !== oi && oi !== step.correct">
+                    {{ step.options?.[oi] }}
+                    @if (answered() && oi === step.correct) { <span class="float-left">✓</span> }
+                    @if (answered() && selectedOption() === oi && oi !== step.correct) { <span class="float-left">✗</span> }
                   </button>
                 }
               </div>
@@ -214,18 +214,18 @@
                       {{ qi + 1 }}. {{ q.question }}
                     </p>
                     <div class="space-y-2">
-                      @for (opt of q.options; track $index) {
-                        <button type="button" (click)="selectReadingOption(qi, $index)" [disabled]="qAnswered"
-                                class="w-full text-left px-3 py-2 rounded-lg border-2 font-medium transition-colors text-sm"
-                                [class.border-slate-200]="!qAnswered && ans !== $index"
+                      @for (oi of readingOrders()[qi]; track oi) {
+                        <button type="button" (click)="selectReadingOption(qi, oi)" [disabled]="qAnswered" dir="auto"
+                                class="w-full text-start px-3 py-2 rounded-lg border-2 font-medium transition-colors text-sm"
+                                [class.border-slate-200]="!qAnswered && ans !== oi"
                                 [class.bg-white]="!qAnswered"
                                 [class.hover:border-indigo-300]="!qAnswered"
-                                [class.border-green-500]="qAnswered && $index === q.correct"
-                                [class.bg-green-50]="qAnswered && $index === q.correct"
-                                [class.border-red-400]="qAnswered && ans === $index && $index !== q.correct"
-                                [class.bg-red-50]="qAnswered && ans === $index && $index !== q.correct"
-                                [class.opacity-60]="qAnswered && ans !== $index && $index !== q.correct">
-                          {{ opt }}
+                                [class.border-green-500]="qAnswered && oi === q.correct"
+                                [class.bg-green-50]="qAnswered && oi === q.correct"
+                                [class.border-red-400]="qAnswered && ans === oi && oi !== q.correct"
+                                [class.bg-red-50]="qAnswered && ans === oi && oi !== q.correct"
+                                [class.opacity-60]="qAnswered && ans !== oi && oi !== q.correct">
+                          {{ q.options[oi] }}
                         </button>
                       }
                     </div>
