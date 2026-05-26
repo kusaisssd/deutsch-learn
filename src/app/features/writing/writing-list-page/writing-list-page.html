@@ -1,0 +1,98 @@
+<section class="max-w-3xl mx-auto" dir="rtl">
+
+  <!-- Heading -->
+  <header class="text-center mb-6">
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
+      ✍️ الكتابة
+    </h2>
+    <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
+      تدرّب على كتابة نصّ ألماني مترابط (B1). كل تمرين فيه نقاط، بنية، عبارات
+      مفيدة، صندوق كتابة، و نموذج إجابة لتقارن نصّك به.
+    </p>
+  </header>
+
+  @if (!loaded()) {
+    <div class="text-center py-12 text-slate-500">
+      <div class="inline-block animate-pulse">جارٍ التحميل…</div>
+    </div>
+  } @else {
+
+    <!-- شريط تقدّم بسيط -->
+    @let s = stats();
+    <div class="bg-white border border-slate-200 rounded-lg p-3 mb-5 flex items-center justify-between text-sm">
+      <span class="text-slate-600">تمارينك</span>
+      <span class="font-semibold text-emerald-700">{{ s.done }} / {{ s.total }} مُنجَز</span>
+    </div>
+
+    <!-- دليل الترابط (قابل للطيّ) -->
+    @if (guide(); as g) {
+      <details class="bg-amber-50 border border-amber-200 rounded-xl mb-6 group">
+        <summary class="cursor-pointer list-none p-4 flex items-center justify-between font-bold text-amber-900">
+          <span>🔗 دليل الترابط — أدوات الربط (Konnektoren)</span>
+          <span class="text-amber-500 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <div class="px-4 pb-4">
+          <p class="text-sm text-amber-800 mb-4 leading-relaxed">{{ g.intro }}</p>
+          <div class="space-y-3">
+            @for (cg of g.connectors; track cg.category) {
+              <div class="bg-white rounded-lg border border-amber-100 p-3">
+                <h4 class="font-semibold text-slate-800 text-sm mb-2">
+                  {{ cg.emoji }} {{ cg.category }}
+                </h4>
+                <ul class="space-y-1.5">
+                  @for (it of cg.items; track it.de) {
+                    <li class="text-sm">
+                      <span class="font-bold text-emerald-700" dir="ltr">{{ it.de }}</span>
+                      <span class="text-slate-500"> — {{ it.ar }}</span>
+                      <span class="block text-slate-600 text-xs mt-0.5" dir="ltr">↳ {{ it.example }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+          </div>
+        </div>
+      </details>
+    }
+
+    <!-- التمارين مُجمَّعة حسب النوع -->
+    @for (kind of kinds; track kind) {
+      @let meta = kindMeta[kind];
+      @let tasks = groups()[kind];
+      @if (tasks.length) {
+        <div class="mb-6">
+          <div class="mb-2">
+            <h3 class="text-lg font-bold text-slate-800">{{ meta.emoji }} {{ meta.label }}</h3>
+            <p class="text-xs text-slate-500">{{ meta.hint }}</p>
+          </div>
+          <ul class="space-y-2">
+            @for (t of tasks; track t.id) {
+              <li>
+                <a
+                  [routerLink]="['/writing', t.id]"
+                  class="flex items-center gap-3 rounded-lg border p-3 transition-all hover:shadow-md bg-white"
+                  [class.border-green-300]="isDone(t.id)"
+                  [class.bg-green-50]="isDone(t.id)"
+                  [class.border-slate-200]="!isDone(t.id)"
+                >
+                  <div class="text-2xl shrink-0">{{ t.emoji }}</div>
+                  <div class="flex-1 min-w-0 text-right">
+                    <p class="font-medium text-slate-800">{{ t.titleAr }}</p>
+                    <p class="text-xs text-slate-400" dir="ltr">{{ t.title }}</p>
+                  </div>
+                  @if (isDone(t.id)) {
+                    <span class="text-green-600 text-lg shrink-0">✓</span>
+                  } @else {
+                    <span class="text-emerald-500 text-lg shrink-0">←</span>
+                  }
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    }
+
+  }
+
+</section>

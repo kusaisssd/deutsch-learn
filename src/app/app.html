@@ -49,7 +49,7 @@
             desktop → flex (لاحقاً، حسب المساحة المتوفرة)
         -->
         <nav class="w-full sm:w-auto">
-          <div class="grid grid-cols-6 sm:flex gap-1 bg-emerald-700/40 rounded-lg p-1">
+          <div class="grid grid-cols-7 sm:flex gap-1 bg-emerald-700/40 rounded-lg p-1">
             <!--
               كل tab:
                 mobile  → flex-col (emoji فوق، text تحت)
@@ -63,6 +63,14 @@
             >
               <span class="text-base sm:text-sm leading-none">🎓</span>
               <span class="text-[10px] sm:text-sm font-medium leading-tight">منهج كامل</span>
+            </a>
+            <a
+              [routerLink]="'/writing'"
+              routerLinkActive="bg-emerald-800 shadow"
+              class="flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 px-1 sm:px-4 py-1.5 rounded-md hover:bg-emerald-700 transition-colors text-center"
+            >
+              <span class="text-base sm:text-sm leading-none">✍️</span>
+              <span class="text-[10px] sm:text-sm font-medium leading-tight">كتابة</span>
             </a>
             <a
               [routerLink]="'/levels'"

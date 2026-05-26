@@ -140,6 +140,22 @@ export const routes: Routes = [
     title: 'Conversation - Deutsch Learn',
   },
 
+  // 🆕 Writing: تدريب الكتابة المترابطة (B1) — مواضيع رأي، قصص، وصف رسوم
+  {
+    path: 'writing',
+    loadComponent: () =>
+      import('./features/writing/writing-list-page/writing-list-page')
+        .then(m => m.WritingListPage),
+    title: 'Writing - Deutsch Learn',
+  },
+  {
+    path: 'writing/:taskId',
+    loadComponent: () =>
+      import('./features/writing/writing-task-page/writing-task-page')
+        .then(m => m.WritingTaskPage),
+    title: 'Writing Task - Deutsch Learn',
+  },
+
   // أي URL غير معروف → نرجع للصفحة الرئيسية (أكثر طبيعية من /levels الآن)
   {
     path: '**',

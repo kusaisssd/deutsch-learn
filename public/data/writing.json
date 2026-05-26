@@ -1,0 +1,383 @@
+{
+  "guide": {
+    "intro": "النصّ المترابط (kohärenter Text) ليس مجرّد جمل صحيحة متتالية، بل أفكار مرتبطة بأدوات ربط (Konnektoren) واضحة و ببنية منظّمة: مقدّمة → صلب → خاتمة. كلما استخدمت روابط مناسبة، بدا نصّك ناضجاً و سهل المتابعة. تصفّح هذه الأدوات و استخدمها في تمارينك.",
+    "connectors": [
+      {
+        "category": "الترتيب الزمني / تسلسل الأفكار",
+        "emoji": "🔢",
+        "items": [
+          { "de": "zuerst", "ar": "أولاً", "example": "Zuerst möchte ich das Problem beschreiben." },
+          { "de": "dann / danach", "ar": "ثم / بعد ذلك", "example": "Danach gebe ich meine Meinung." },
+          { "de": "außerdem", "ar": "إضافةً إلى ذلك", "example": "Außerdem ist es billiger." },
+          { "de": "schließlich / zum Schluss", "ar": "أخيراً / في الختام", "example": "Zum Schluss fasse ich alles zusammen." }
+        ]
+      },
+      {
+        "category": "السبب (Grund)",
+        "emoji": "❓",
+        "items": [
+          { "de": "weil", "ar": "لأنّ (الفعل للآخر)", "example": "Ich lerne Deutsch, weil ich in Berlin studieren möchte." },
+          { "de": "denn", "ar": "لأنّ (الترتيب عادي)", "example": "Ich bleibe zu Hause, denn ich bin krank." },
+          { "de": "da", "ar": "بما أنّ", "example": "Da das Wetter schön ist, gehen wir spazieren." },
+          { "de": "nämlich", "ar": "أي / و ذلك أنّ", "example": "Er kommt nicht; er ist nämlich krank." }
+        ]
+      },
+      {
+        "category": "النتيجة (Folge)",
+        "emoji": "➡️",
+        "items": [
+          { "de": "deshalb / deswegen", "ar": "لذلك", "example": "Es regnet, deshalb bleibe ich zu Hause." },
+          { "de": "daher", "ar": "من هنا / لذا", "example": "Das Auto war teuer, daher habe ich es nicht gekauft." },
+          { "de": "also", "ar": "إذاً", "example": "Du bist müde, also geh schlafen." },
+          { "de": "aus diesem Grund", "ar": "لهذا السبب", "example": "Aus diesem Grund bin ich dagegen." }
+        ]
+      },
+      {
+        "category": "التضاد (Gegensatz)",
+        "emoji": "↔️",
+        "items": [
+          { "de": "aber", "ar": "لكن", "example": "Das Handy ist praktisch, aber teuer." },
+          { "de": "jedoch", "ar": "غير أنّ", "example": "Viele finden das gut; ich jedoch sehe das anders." },
+          { "de": "trotzdem", "ar": "رغم ذلك", "example": "Es war kalt, trotzdem sind wir geschwommen." },
+          { "de": "obwohl", "ar": "رغم أنّ (الفعل للآخر)", "example": "Obwohl es teuer ist, kaufe ich es." }
+        ]
+      },
+      {
+        "category": "المثال و التوضيح (Beispiel)",
+        "emoji": "💡",
+        "items": [
+          { "de": "zum Beispiel (z. B.)", "ar": "على سبيل المثال", "example": "Ich treibe gern Sport, zum Beispiel Fußball." },
+          { "de": "beispielsweise", "ar": "مثلاً", "example": "Man kann beispielsweise online lernen." },
+          { "de": "das heißt (d. h.)", "ar": "أي", "example": "Ich arbeite Vollzeit, das heißt 40 Stunden pro Woche." }
+        ]
+      },
+      {
+        "category": "إبداء الرأي (Meinung)",
+        "emoji": "🗣️",
+        "items": [
+          { "de": "meiner Meinung nach", "ar": "في رأيي", "example": "Meiner Meinung nach sind soziale Medien nützlich." },
+          { "de": "ich finde, dass …", "ar": "أجد أنّ", "example": "Ich finde, dass man weniger fernsehen sollte." },
+          { "de": "ich bin der Ansicht, dass …", "ar": "أرى أنّ", "example": "Ich bin der Ansicht, dass Sport wichtig ist." },
+          { "de": "einerseits … andererseits", "ar": "من جهة … و من جهة أخرى", "example": "Einerseits ist es bequem, andererseits ungesund." }
+        ]
+      },
+      {
+        "category": "الخلاصة (Zusammenfassung)",
+        "emoji": "✅",
+        "items": [
+          { "de": "zusammenfassend", "ar": "إجمالاً", "example": "Zusammenfassend kann man sagen, dass …" },
+          { "de": "alles in allem", "ar": "في المجمل", "example": "Alles in allem war es eine gute Erfahrung." },
+          { "de": "abschließend", "ar": "ختاماً", "example": "Abschließend möchte ich betonen, dass …" },
+          { "de": "insgesamt", "ar": "بشكل عام", "example": "Insgesamt überwiegen die Vorteile." }
+        ]
+      }
+    ]
+  },
+  "tasks": [
+    {
+      "id": "op-social-media",
+      "kind": "opinion",
+      "level": "B1",
+      "emoji": "📱",
+      "title": "Soziale Medien — Fluch oder Segen?",
+      "titleAr": "وسائل التواصل الاجتماعي — نعمة أم نقمة؟",
+      "prompt": "Immer mehr Menschen verbringen täglich viele Stunden in sozialen Medien wie Instagram oder TikTok. Schreiben Sie einen Text (ca. 120 Wörter): Wie stehen Sie dazu? Nennen Sie Vor- und Nachteile und geben Sie Ihre eigene Meinung.",
+      "promptAr": "يقضي الناس وقتاً متزايداً يومياً على وسائل التواصل. اكتب نصاً (≈120 كلمة) تذكر فيه الإيجابيات و السلبيات ثم رأيك الشخصي.",
+      "minWords": 110,
+      "leitpunkte": [
+        "قدّم الموضوع في جملة أو جملتين (Einleitung).",
+        "اذكر ميزة واحدة على الأقل (Vorteil): التواصل، المعلومات، الترفيه.",
+        "اذكر عيباً واحداً على الأقل (Nachteil): الوقت، الإدمان، مقارنة النفس بالآخرين.",
+        "اكتب رأيك الشخصي بوضوح (meine Meinung).",
+        "اختم بخلاصة أو اقتراح (Schluss)."
+      ],
+      "structure": [
+        { "part": "المقدّمة (Einleitung)", "hint": "اطرح الموضوع و أهميته في جملة قصيرة.", "starters": ["Heutzutage spielen soziale Medien eine große Rolle.", "In der letzten Zeit wird viel über … diskutiert."] },
+        { "part": "الصلب (Hauptteil)", "hint": "ميزة + عيب مع أمثلة و روابط (einerseits … andererseits).", "starters": ["Einerseits …", "Andererseits …", "Ein großer Vorteil ist, dass …", "Ein Nachteil ist jedoch, dass …"] },
+        { "part": "الخاتمة (Schluss)", "hint": "رأيك + اقتراح أو خلاصة.", "starters": ["Meiner Meinung nach …", "Zusammenfassend würde ich sagen, dass …"] }
+      ],
+      "redemittel": [
+        { "label": "للميزات", "phrases": [
+          { "de": "Ein großer Vorteil ist, dass man in Kontakt bleibt.", "ar": "ميزة كبيرة أنّ المرء يبقى على تواصل." },
+          { "de": "Man kann sich schnell informieren.", "ar": "يمكن الحصول على المعلومات بسرعة." }
+        ] },
+        { "label": "للعيوب", "phrases": [
+          { "de": "Viele verbringen zu viel Zeit damit.", "ar": "كثيرون يقضون وقتاً طويلاً جداً معها." },
+          { "de": "Das kann zu Stress und Sucht führen.", "ar": "قد يؤدّي ذلك إلى التوتّر و الإدمان." }
+        ] },
+        { "label": "للرأي", "phrases": [
+          { "de": "Meiner Meinung nach sollte man die Nutzung begrenzen.", "ar": "في رأيي ينبغي تحديد الاستخدام." }
+        ] }
+      ],
+      "checklist": [
+        "هل بدأت بمقدّمة قصيرة؟",
+        "هل ذكرت ميزة و عيباً مع روابط (einerseits/andererseits, aber, trotzdem)؟",
+        "هل عبّرت عن رأيك بوضوح بعبارة رأي؟",
+        "هل اختتمت بخلاصة؟",
+        "هل راجعت موضع الفعل في جمل weil/dass (الفعل للآخر)؟",
+        "هل وصلت إلى عدد الكلمات المطلوب تقريباً؟"
+      ],
+      "model": "Heutzutage spielen soziale Medien wie Instagram oder TikTok eine große Rolle im Alltag vieler Menschen. Immer mehr Nutzer verbringen täglich mehrere Stunden online. Doch ist das positiv oder negativ?\n\nEinerseits haben soziale Medien viele Vorteile. Man bleibt mit Freunden und der Familie in Kontakt, auch wenn sie weit weg wohnen. Außerdem kann man sich schnell über aktuelle Themen informieren. Andererseits gibt es auch Nachteile. Viele Menschen verbringen zu viel Zeit am Handy, deshalb haben sie weniger Zeit für echte Hobbys. Außerdem vergleichen sich manche ständig mit anderen, was zu Stress führen kann.\n\nMeiner Meinung nach sind soziale Medien nützlich, wenn man sie mit Maß benutzt. Zusammenfassend würde ich sagen, dass jeder selbst eine gesunde Balance finden sollte.",
+      "modelNotesAr": "لاحظ البنية الواضحة: مقدّمة تطرح السؤال، ثم «einerseits … andererseits» تنظّم الميزة و العيب، و روابط (außerdem, deshalb) تربط الأفكار، ثم خاتمة برأي شخصي + «zusammenfassend». استُخدمت weil/was بشكل صحيح مع موضع الفعل."
+    },
+    {
+      "id": "op-stadt-land",
+      "kind": "opinion",
+      "level": "B1",
+      "emoji": "🏙️",
+      "title": "Leben in der Stadt oder auf dem Land?",
+      "titleAr": "العيش في المدينة أم في الريف؟",
+      "prompt": "Manche Menschen leben lieber in der Großstadt, andere bevorzugen das Land. Schreiben Sie einen Text (ca. 120 Wörter): Wo möchten Sie lieber leben und warum? Vergleichen Sie beide Möglichkeiten.",
+      "promptAr": "بعض الناس يفضّلون المدينة الكبيرة و آخرون الريف. اكتب نصاً (≈120 كلمة): أين تفضّل العيش و لماذا؟ قارن بين الخيارين.",
+      "minWords": 110,
+      "leitpunkte": [
+        "قدّم الموضوع (Einleitung).",
+        "اذكر مزايا المدينة: العمل، المواصلات، الترفيه.",
+        "اذكر مزايا الريف: الهدوء، الطبيعة، الإيجار الأرخص.",
+        "قل أين تفضّل أنت العيش و لماذا (weil).",
+        "اختم بخلاصة."
+      ],
+      "structure": [
+        { "part": "المقدّمة", "hint": "اطرح المقارنة بجملة.", "starters": ["Viele Menschen fragen sich, ob das Leben in der Stadt oder auf dem Land besser ist."] },
+        { "part": "الصلب", "hint": "مزايا المدينة ثم مزايا الريف مع روابط مقارنة.", "starters": ["In der Stadt gibt es …", "Auf dem Land dagegen …", "Im Gegensatz zur Stadt …"] },
+        { "part": "الخاتمة", "hint": "تفضيلك الشخصي + سبب.", "starters": ["Ich persönlich würde lieber … leben, weil …", "Alles in allem …"] }
+      ],
+      "redemittel": [
+        { "label": "للمدينة", "phrases": [
+          { "de": "In der Stadt gibt es viele Arbeitsplätze und gute Verbindungen.", "ar": "في المدينة فرص عمل كثيرة و مواصلات جيدة." },
+          { "de": "Das kulturelle Angebot ist größer.", "ar": "العروض الثقافية أكثر." }
+        ] },
+        { "label": "للريف", "phrases": [
+          { "de": "Auf dem Land ist es ruhiger und die Luft ist sauberer.", "ar": "في الريف أهدأ و الهواء أنقى." },
+          { "de": "Die Mieten sind oft günstiger.", "ar": "الإيجارات غالباً أرخص." }
+        ] },
+        { "label": "للمقارنة", "phrases": [
+          { "de": "Im Gegensatz zur Stadt …", "ar": "على عكس المدينة …" },
+          { "de": "… dagegen …", "ar": "… في المقابل …" }
+        ] }
+      ],
+      "checklist": [
+        "هل قارنت الخيارين بأدوات مقارنة (dagegen, im Gegensatz zu)؟",
+        "هل ذكرت سبب تفضيلك بـ weil (الفعل للآخر)؟",
+        "هل النصّ مقسوم إلى فقرات؟",
+        "هل اختتمت بخلاصة؟",
+        "هل راجعت الأدوات و النهايات (in der Stadt / auf dem Land)؟"
+      ],
+      "model": "Viele Menschen fragen sich, ob das Leben in der Großstadt oder auf dem Land besser ist. Beide Möglichkeiten haben ihre Vor- und Nachteile.\n\nIn der Stadt gibt es viele Arbeitsplätze, gute öffentliche Verkehrsmittel und ein großes kulturelles Angebot. Man kann zum Beispiel ins Theater oder ins Kino gehen. Allerdings sind die Mieten oft sehr hoch und es ist meistens laut. Auf dem Land dagegen ist es ruhiger und die Natur ist direkt vor der Tür. Die Luft ist sauberer und das Leben ist günstiger. Im Gegensatz zur Stadt gibt es jedoch weniger Jobs und schlechtere Verbindungen.\n\nIch persönlich würde lieber in der Stadt leben, weil ich dort leichter Arbeit finde. Alles in allem hängt die richtige Wahl aber von den eigenen Bedürfnissen ab.",
+      "modelNotesAr": "النموذج يستخدم المقارنة المتوازنة: مزايا المدينة ثم «dagegen» للريف، و «im Gegensatz zur Stadt» و «allerdings/jedoch» للتضاد. الخاتمة فيها تفضيل شخصي بـ weil + جملة موازِنة. لاحظ «in der Stadt» (Dativ) مقابل الثبات المكاني."
+    },
+    {
+      "id": "op-fremdsprachen",
+      "kind": "opinion",
+      "level": "B1",
+      "emoji": "🗣️",
+      "title": "Wie wichtig ist es, Fremdsprachen zu lernen?",
+      "titleAr": "ما أهمية تعلّم اللغات الأجنبية؟",
+      "prompt": "Einige Leute sagen, dass man dank Übersetzungs-Apps keine Fremdsprachen mehr lernen muss. Schreiben Sie einen Text (ca. 120 Wörter) und nehmen Sie Stellung: Stimmen Sie zu oder nicht?",
+      "promptAr": "يقول البعض إنه بفضل تطبيقات الترجمة لم نعد بحاجة لتعلّم اللغات. اكتب نصاً (≈120 كلمة) و أبدِ موقفك: هل توافق أم لا؟",
+      "minWords": 110,
+      "leitpunkte": [
+        "اطرح الموضوع و رأي الطرف الآخر (Einleitung).",
+        "حجّة مع: لماذا التطبيقات مفيدة؟",
+        "حجّة ضد: لماذا تعلّم اللغة ما زال مهماً (Kultur, Beruf, Reisen)؟",
+        "موقفك الواضح (Stellungnahme).",
+        "خاتمة."
+      ],
+      "structure": [
+        { "part": "المقدّمة", "hint": "اعرض الرأي محلّ النقاش.", "starters": ["In letzter Zeit behaupten manche, dass Übersetzungs-Apps das Sprachenlernen überflüssig machen."] },
+        { "part": "الصلب", "hint": "حجّة مؤيّدة ثم حجّة معارِضة مع روابط.", "starters": ["Es stimmt, dass …", "Trotzdem bin ich der Ansicht, dass …", "Ein wichtiger Grund ist, dass …"] },
+        { "part": "الخاتمة", "hint": "موقفك + خلاصة.", "starters": ["Aus diesen Gründen finde ich, dass …", "Abschließend …"] }
+      ],
+      "redemittel": [
+        { "label": "موافقة جزئية", "phrases": [
+          { "de": "Es stimmt, dass Apps im Urlaub praktisch sind.", "ar": "صحيح أنّ التطبيقات عملية في العطلة." }
+        ] },
+        { "label": "اعتراض", "phrases": [
+          { "de": "Trotzdem ersetzt eine App keine echte Kommunikation.", "ar": "رغم ذلك لا يحلّ التطبيق محلّ التواصل الحقيقي." },
+          { "de": "Wer eine Sprache spricht, versteht auch die Kultur besser.", "ar": "من يتحدّث لغة يفهم ثقافتها أفضل." }
+        ] },
+        { "label": "للموقف", "phrases": [
+          { "de": "Aus diesen Gründen bin ich der Meinung, dass …", "ar": "لهذه الأسباب أرى أنّ …" }
+        ] }
+      ],
+      "checklist": [
+        "هل عرضت رأي الطرف الآخر أولاً؟",
+        "هل قدّمت حجّة مع و حجّة ضد بروابط (trotzdem, ein Grund ist)؟",
+        "هل موقفك واضح؟",
+        "هل استخدمت جمل dass بشكل صحيح؟",
+        "هل اختتمت بـ abschließend/aus diesen Gründen؟"
+      ],
+      "model": "In letzter Zeit behaupten manche Menschen, dass man wegen Übersetzungs-Apps keine Fremdsprachen mehr lernen muss. Ich sehe das jedoch anders.\n\nEs stimmt, dass solche Apps im Urlaub oder beim schnellen Übersetzen sehr praktisch sind. Man kann zum Beispiel ein Schild oder eine Speisekarte sofort verstehen. Trotzdem ersetzt eine App keine echte Kommunikation. Wer eine Sprache wirklich spricht, kann spontan reagieren und versteht außerdem die Kultur der Menschen viel besser. Ein weiterer wichtiger Grund ist der Beruf: Viele Firmen suchen Mitarbeiter, die Fremdsprachen können.\n\nAus diesen Gründen bin ich der Meinung, dass das Sprachenlernen weiterhin sehr wichtig bleibt. Abschließend würde ich sagen, dass Apps eine gute Hilfe sind, aber das Lernen nicht ersetzen können.",
+      "modelNotesAr": "نموذج «Stellungnahme» كلاسيكي: عرض رأي الآخر، موافقة جزئية («Es stimmt, dass…»)، ثم اعتراض قوي بـ «Trotzdem» مع حجج متعدّدة («ein weiterer Grund»)، فموقف صريح («Aus diesen Gründen…») و خاتمة «Abschließend»."
+    },
+    {
+      "id": "st-reise",
+      "kind": "story",
+      "level": "B1",
+      "emoji": "✈️",
+      "title": "Eine unvergessliche Reise",
+      "titleAr": "رحلة لا تُنسى",
+      "prompt": "Erzählen Sie von einer Reise, die Sie nie vergessen werden (ca. 120 Wörter). Wohin sind Sie gefahren? Was haben Sie erlebt? Warum war die Reise besonders? Schreiben Sie in der Vergangenheit (Perfekt / Präteritum).",
+      "promptAr": "احكِ عن رحلة لن تنساها (≈120 كلمة): إلى أين سافرت؟ ماذا اختبرت؟ لماذا كانت مميّزة؟ اكتب في الماضي (Perfekt / Präteritum).",
+      "minWords": 110,
+      "leitpunkte": [
+        "متى و إلى أين سافرت؟ (Einleitung)",
+        "ماذا فعلت هناك بالترتيب الزمني (zuerst, dann, danach)؟",
+        "حدث مميّز أو مفاجأة.",
+        "كيف شعرت؟ لماذا لا تُنسى؟ (Schluss)"
+      ],
+      "structure": [
+        { "part": "المقدّمة", "hint": "الزمان و المكان و مع مَن.", "starters": ["Vor zwei Jahren bin ich mit meiner Familie nach … gefahren.", "Letzten Sommer habe ich eine Reise nach … gemacht."] },
+        { "part": "الصلب", "hint": "أحداث بالترتيب الزمني في الماضي.", "starters": ["Zuerst …", "Danach …", "Eines Tages …", "Plötzlich …"] },
+        { "part": "الخاتمة", "hint": "شعورك و سبب كونها لا تُنسى.", "starters": ["Diese Reise werde ich nie vergessen, weil …", "Es war ein unvergessliches Erlebnis."] }
+      ],
+      "redemittel": [
+        { "label": "الترتيب الزمني", "phrases": [
+          { "de": "Zuerst sind wir am Flughafen angekommen.", "ar": "أولاً وصلنا إلى المطار." },
+          { "de": "Danach / Am nächsten Tag …", "ar": "بعد ذلك / في اليوم التالي …" },
+          { "de": "Schließlich sind wir wieder nach Hause geflogen.", "ar": "أخيراً عدنا بالطائرة إلى البيت." }
+        ] },
+        { "label": "المشاعر", "phrases": [
+          { "de": "Ich war total begeistert.", "ar": "كنتُ متحمّساً جداً." },
+          { "de": "Das war ein unvergessliches Erlebnis.", "ar": "كانت تجربة لا تُنسى." }
+        ] }
+      ],
+      "checklist": [
+        "هل كتبت كل الأفعال في الماضي (Perfekt/Präteritum)؟",
+        "هل استخدمت روابط زمنية (zuerst, dann, danach, schließlich)؟",
+        "هل تذكّرت sein مع أفعال الحركة (bin gefahren/gegangen)؟",
+        "هل وصفت شعورك في النهاية؟",
+        "هل النصّ مترابط لا قائمة جمل منفصلة؟"
+      ],
+      "model": "Vor zwei Jahren bin ich mit meiner Familie nach Italien gefahren. Es war unsere erste große Reise zusammen, deshalb haben wir uns sehr darauf gefreut.\n\nZuerst sind wir mit dem Zug nach Rom gefahren. Dort haben wir das Kolosseum und viele alte Gebäude besichtigt. Danach sind wir ans Meer gefahren und haben jeden Tag geschwommen. Eines Abends haben wir in einem kleinen Restaurant gegessen, und plötzlich hat der Besitzer für uns gesungen. Alle Gäste haben mitgemacht, und wir haben viel gelacht.\n\nDiese Reise werde ich nie vergessen, weil wir als Familie so viel Zeit zusammen verbracht haben. Es war wirklich ein unvergessliches Erlebnis, und ich möchte unbedingt wieder dorthin fahren.",
+      "modelNotesAr": "كل الأفعال في الماضي: «bin gefahren» (حركة→sein) مقابل «haben besichtigt/gegessen». الترتيب الزمني واضح (zuerst, danach, eines Abends, plötzlich)، و الخاتمة تشرح لماذا لا تُنسى بـ weil. لاحظ الترابط بـ deshalb."
+    },
+    {
+      "id": "st-schlechter-tag",
+      "kind": "story",
+      "level": "B1",
+      "emoji": "🌧️",
+      "title": "Ein Tag, an dem alles schiefging",
+      "titleAr": "يوم سار فيه كل شيء بشكل خاطئ",
+      "prompt": "Erzählen Sie von einem Tag, an dem wirklich alles schiefgelaufen ist (ca. 120 Wörter). Was ist passiert? Schreiben Sie in der Vergangenheit und in der richtigen Reihenfolge.",
+      "promptAr": "احكِ عن يوم سار فيه كل شيء بشكل خاطئ (≈120 كلمة): ماذا حدث؟ اكتب في الماضي و بالترتيب الصحيح.",
+      "minWords": 110,
+      "leitpunkte": [
+        "كيف بدأ اليوم؟ (Einleitung)",
+        "سلسلة المشاكل بالترتيب (zuerst, dann, später).",
+        "الذروة: أسوأ لحظة.",
+        "كيف انتهى اليوم و شعورك (Schluss)."
+      ],
+      "structure": [
+        { "part": "المقدّمة", "hint": "متى و كيف بدأ.", "starters": ["Letzten Montag ist wirklich alles schiefgegangen.", "Der Tag begann schon schlecht."] },
+        { "part": "الصلب", "hint": "مشاكل متتابعة في الماضي مع روابط زمنية و سببية.", "starters": ["Zuerst …", "Deshalb …", "Als ich … wollte, …", "Später …"] },
+        { "part": "الخاتمة", "hint": "نهاية اليوم + شعور أو درس.", "starters": ["Am Ende war ich völlig erschöpft.", "Trotzdem konnte ich am nächsten Tag darüber lachen."] }
+      ],
+      "redemittel": [
+        { "label": "للمشاكل", "phrases": [
+          { "de": "Mein Wecker hat nicht geklingelt.", "ar": "لم يرنّ منبّهي." },
+          { "de": "Ich habe den Bus verpasst.", "ar": "فاتني الباص." },
+          { "de": "Es fing auch noch an zu regnen.", "ar": "و بدأت تمطر أيضاً فوق ذلك." }
+        ] },
+        { "label": "روابط سببية", "phrases": [
+          { "de": "Deshalb bin ich zu spät gekommen.", "ar": "لذلك تأخّرت." },
+          { "de": "weil … / als …", "ar": "لأنّ … / عندما …" }
+        ] }
+      ],
+      "checklist": [
+        "هل الأفعال كلها في الماضي؟",
+        "هل رتّبت الأحداث زمنياً؟",
+        "هل استخدمت deshalb/weil لربط السبب بالنتيجة؟",
+        "هل هناك «ذروة» للقصة؟",
+        "هل ختمت بشعور أو درس؟"
+      ],
+      "model": "Letzten Montag ist wirklich alles schiefgegangen. Der Tag begann schon schlecht, denn mein Wecker hat nicht geklingelt.\n\nZuerst bin ich viel zu spät aufgewacht. Deshalb hatte ich keine Zeit zu frühstücken und musste schnell aus dem Haus rennen. Als ich an der Haltestelle ankam, war der Bus gerade weg, also habe ich ihn verpasst. Später, im Büro, hat mein Computer plötzlich nicht mehr funktioniert, und ich konnte meine Arbeit nicht speichern. Zu allem Übel fing es am Nachmittag auch noch an zu regnen, und ich hatte natürlich keinen Regenschirm dabei.\n\nAm Ende war ich völlig erschöpft und nass. Trotzdem konnte ich am nächsten Tag schon über diesen verrückten Tag lachen.",
+      "modelNotesAr": "قصة بذروة تصاعدية: مشاكل متتابعة مربوطة بـ denn/deshalb/also (سبب-نتيجة) و روابط زمنية (zuerst, später, am Nachmittag). جملة «Als ich … ankam» تُظهر استخدام als للماضي. الخاتمة بـ trotzdem تعطي انقلاباً لطيفاً."
+    },
+    {
+      "id": "gr-smartphone",
+      "kind": "graph",
+      "level": "B1",
+      "emoji": "📊",
+      "title": "Grafik: Smartphone-Nutzung pro Tag",
+      "titleAr": "رسم بياني: استخدام الهاتف الذكي يومياً",
+      "prompt": "Die Grafik zeigt, wie viele Stunden pro Tag verschiedene Altersgruppen ihr Smartphone nutzen: 14–19 Jahre: 5 Std. · 20–29 Jahre: 4 Std. · 30–49 Jahre: 3 Std. · ab 50 Jahre: 1,5 Std. Beschreiben Sie die Grafik (ca. 120 Wörter): Nennen Sie das Thema, die wichtigsten Zahlen und einen Vergleich.",
+      "promptAr": "يُظهر الرسم عدد ساعات استخدام الهاتف يومياً حسب الفئة العمرية (14–19: 5 س · 20–29: 4 س · 30–49: 3 س · 50+: 1.5 س). صف الرسم (≈120 كلمة): الموضوع، أهم الأرقام، و مقارنة.",
+      "minWords": 100,
+      "leitpunkte": [
+        "اذكر ماذا يُظهر الرسم و مصدره/موضوعه (Einleitung).",
+        "اذكر أعلى قيمة و أدنى قيمة.",
+        "قارن بين الفئات (mehr als / weniger als / am meisten).",
+        "اختم بملاحظة أو استنتاج (Schluss)."
+      ],
+      "structure": [
+        { "part": "المقدّمة", "hint": "ماذا يُظهر الرسم.", "starters": ["Die Grafik zeigt, wie viele Stunden pro Tag verschiedene Altersgruppen ihr Smartphone nutzen.", "Das Thema der Grafik ist …"] },
+        { "part": "الصلب", "hint": "أعلى/أدنى قيمة + مقارنات بالأرقام.", "starters": ["Am meisten nutzen … das Smartphone, nämlich …", "Im Vergleich dazu …", "Mit … Stunden liegt … an der Spitze."] },
+        { "part": "الخاتمة", "hint": "استنتاج عام.", "starters": ["Zusammenfassend zeigt die Grafik, dass …", "Insgesamt erkennt man, dass …"] }
+      ],
+      "redemittel": [
+        { "label": "لعرض الرسم", "phrases": [
+          { "de": "Die Grafik zeigt / stellt … dar.", "ar": "الرسم يُظهر / يعرض …" },
+          { "de": "Auf der Grafik sieht man …", "ar": "في الرسم نرى …" }
+        ] },
+        { "label": "للأرقام و المقارنة", "phrases": [
+          { "de": "Am meisten / am wenigsten …", "ar": "الأكثر / الأقل …" },
+          { "de": "… nutzen das Smartphone mehr als …", "ar": "… يستخدمون الهاتف أكثر من …" },
+          { "de": "Im Vergleich dazu …", "ar": "بالمقارنة مع ذلك …" },
+          { "de": "Mit fünf Stunden liegt die jüngste Gruppe an der Spitze.", "ar": "بخمس ساعات تتصدّر الفئة الأصغر." }
+        ] }
+      ],
+      "checklist": [
+        "هل قدّمت موضوع الرسم في جملة افتتاحية؟",
+        "هل ذكرت أعلى و أدنى قيمة بالأرقام؟",
+        "هل استخدمت أدوات المقارنة (mehr als, am meisten, im Vergleich dazu)؟",
+        "هل أعطيت استنتاجاً في الخاتمة؟",
+        "هل تجنّبت إبداء رأي شخصي (الوصف موضوعي)؟"
+      ],
+      "model": "Die Grafik zeigt, wie viele Stunden pro Tag verschiedene Altersgruppen ihr Smartphone nutzen. Dargestellt werden vier Gruppen, von Jugendlichen bis zu Personen ab 50 Jahren.\n\nAuffällig ist, dass die jüngste Gruppe das Smartphone am meisten nutzt. Mit fünf Stunden pro Tag liegen die 14- bis 19-Jährigen klar an der Spitze. Die 20- bis 29-Jährigen folgen mit vier Stunden. Die Gruppe der 30- bis 49-Jährigen verbringt im Vergleich dazu nur drei Stunden am Handy. Am wenigsten nutzen die Personen ab 50 Jahren ihr Smartphone, nämlich nur etwa anderthalb Stunden täglich.\n\nZusammenfassend zeigt die Grafik, dass die Smartphone-Nutzung mit steigendem Alter deutlich abnimmt. Je jünger die Menschen sind, desto mehr Zeit verbringen sie also am Smartphone.",
+      "modelNotesAr": "وصف موضوعي بلا رأي: افتتاح بـ «Die Grafik zeigt»، ثم أعلى قيمة («am meisten… an der Spitze») و أدنى قيمة («am wenigsten… nämlich»)، مع مقارنات («im Vergleich dazu», «folgen mit»). الخاتمة استنتاج عام + جملة «je … desto» الجميلة."
+    },
+    {
+      "id": "gr-freizeit",
+      "kind": "graph",
+      "level": "B1",
+      "emoji": "📈",
+      "title": "Grafik: Beliebteste Freizeitaktivitäten",
+      "titleAr": "رسم بياني: أكثر أنشطة وقت الفراغ شعبية",
+      "prompt": "Die Umfrage zeigt die beliebtesten Freizeitaktivitäten von Jugendlichen (Mehrfachantworten): Freunde treffen: 80 % · Sport: 65 % · Videospiele: 55 % · Lesen: 30 % · Musik machen: 20 %. Beschreiben Sie die Grafik (ca. 120 Wörter).",
+      "promptAr": "يُظهر الاستطلاع أكثر أنشطة وقت الفراغ شعبية لدى الشباب (إجابات متعدّدة): لقاء الأصدقاء 80% · الرياضة 65% · ألعاب الفيديو 55% · القراءة 30% · العزف 20%. صف الرسم (≈120 كلمة).",
+      "minWords": 100,
+      "leitpunkte": [
+        "اذكر موضوع الاستطلاع (Einleitung).",
+        "النشاط الأكثر شعبية و الأقل بالنِّسَب المئوية.",
+        "قارن بين نشاطين أو ثلاثة (Prozent, mehr/weniger).",
+        "اختم باستنتاج (Schluss)."
+      ],
+      "structure": [
+        { "part": "المقدّمة", "hint": "ماذا يقيس الاستطلاع.", "starters": ["Die Grafik zeigt die beliebtesten Freizeitaktivitäten von Jugendlichen.", "In der Umfrage wurden Jugendliche gefragt, …"] },
+        { "part": "الصلب", "hint": "ترتيب الأنشطة بالنسب مع مقارنات.", "starters": ["An erster Stelle steht …", "Auf dem zweiten Platz folgt …", "Am wenigsten beliebt ist …", "… Prozent der Jugendlichen …"] },
+        { "part": "الخاتمة", "hint": "استنتاج.", "starters": ["Insgesamt erkennt man, dass …", "Zusammenfassend …"] }
+      ],
+      "redemittel": [
+        { "label": "للترتيب", "phrases": [
+          { "de": "An erster Stelle steht …", "ar": "في المرتبة الأولى يأتي …" },
+          { "de": "Auf dem zweiten / dritten Platz folgt …", "ar": "في المرتبة الثانية/الثالثة يأتي …" },
+          { "de": "Am wenigsten beliebt ist …", "ar": "الأقل شعبية هو …" }
+        ] },
+        { "label": "للنسب", "phrases": [
+          { "de": "80 Prozent der Jugendlichen treffen gern Freunde.", "ar": "80% من الشباب يحبّون لقاء الأصدقاء." },
+          { "de": "Etwas mehr als die Hälfte spielt Videospiele.", "ar": "أكثر بقليل من النصف يلعبون ألعاب الفيديو." }
+        ] }
+      ],
+      "checklist": [
+        "هل ذكرت موضوع الاستطلاع؟",
+        "هل استخدمت «Prozent» و عبارات الترتيب (an erster Stelle, folgt)؟",
+        "هل قارنت بين الأنشطة؟",
+        "هل الخاتمة استنتاج عام لا رأي؟",
+        "هل راجعت الأرقام و النسب؟"
+      ],
+      "model": "Die Grafik zeigt die Ergebnisse einer Umfrage zu den beliebtesten Freizeitaktivitäten von Jugendlichen. Dabei waren mehrere Antworten möglich.\n\nAn erster Stelle steht das Treffen mit Freunden: 80 Prozent der Jugendlichen nennen diese Aktivität. Auf dem zweiten Platz folgt Sport mit 65 Prozent. Etwas mehr als die Hälfte, nämlich 55 Prozent, spielt außerdem gern Videospiele. Deutlich weniger beliebt ist das Lesen, das nur 30 Prozent angeben. Am wenigsten beliebt ist das Musizieren mit lediglich 20 Prozent.\n\nInsgesamt erkennt man, dass soziale und sportliche Aktivitäten bei Jugendlichen am wichtigsten sind. Im Vergleich dazu spielen ruhige Hobbys wie Lesen oder Musik machen eine kleinere Rolle.",
+      "modelNotesAr": "وصف نسب احترافي: «an erster Stelle / auf dem zweiten Platz / am wenigsten beliebt» لترتيب القيم، مع دمج النسب بسلاسة («nämlich 55 Prozent»). الخاتمة تستنتج نمطاً عاماً («soziale … Aktivitäten … am wichtigsten») مع مقارنة ختامية «im Vergleich dazu»."
+    }
+  ]
+}
