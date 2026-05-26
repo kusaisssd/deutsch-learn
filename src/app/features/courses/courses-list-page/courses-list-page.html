@@ -11,6 +11,21 @@
     </p>
   </header>
 
+  <!-- زر قسم الكتابة (مهارة مكمّلة للمنهج) -->
+  <a
+    [routerLink]="'/writing'"
+    class="flex items-center gap-3 rounded-xl border-2 border-amber-200 bg-amber-50 hover:border-amber-400 hover:shadow-md transition-all p-4 mb-5"
+  >
+    <div class="text-3xl shrink-0">✍️</div>
+    <div class="flex-1 min-w-0 text-right">
+      <h3 class="font-bold text-amber-900">تدريب الكتابة (Schreiben)</h3>
+      <p class="text-sm text-amber-800">
+        تمارين كتابة موجّهة لنصّ مترابط (B1): مواضيع رأي، قصص، و وصف رسوم — مع نماذج إجابة.
+      </p>
+    </div>
+    <span class="text-amber-500 text-lg shrink-0">←</span>
+  </a>
+
   @if (!loaded()) {
     <div class="text-center py-12 text-slate-500">
       <div class="inline-block animate-pulse">جارٍ التحميل…</div>

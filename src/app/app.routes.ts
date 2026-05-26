@@ -156,6 +156,16 @@ export const routes: Routes = [
     title: 'Writing Task - Deutsch Learn',
   },
 
+  // 🆕 Dictionary: قاموس تصريف (أداة الاسم + الحالات، و تصريف الأفعال)
+  // البيانات تُحمَّل lazy عند فتح الصفحة ثم تعمل offline.
+  {
+    path: 'dictionary',
+    loadComponent: () =>
+      import('./features/dictionary/dictionary-page/dictionary-page')
+        .then(m => m.DictionaryPage),
+    title: 'Dictionary - Deutsch Learn',
+  },
+
   // أي URL غير معروف → نرجع للصفحة الرئيسية (أكثر طبيعية من /levels الآن)
   {
     path: '**',
