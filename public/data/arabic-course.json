@@ -1,0 +1,765 @@
+{
+  "id": "ar-de",
+  "title": "Arabisch für Deutschsprachige",
+  "description": "Schritt für Schritt von den Buchstaben über das Lesen bis zum Bauen erster Sätze.",
+  "lektionen": [
+    {
+      "id": "ar-l1", "number": 1, "phase": 1,
+      "title": "Buchstaben 1 – 7", "subtitle": "ا ب ت ث ج ح خ",
+      "steps": [
+        { "kind": "intro", "section": "🎯 Lernziele", "title": "Die ersten sieben Buchstaben",
+          "text": "Du lernst die ersten sieben arabischen Buchstaben — wie sie aussehen, wie sie klingen und in welchen Wörtern sie vorkommen.",
+          "points": ["7 Buchstaben erkennen", "Den Klang jedes Buchstabens hören", "Beispielwörter laut lesen können"] },
+
+        { "kind": "letter", "section": "🔤 Alif", "letter": "ا", "name": "Alif", "translit": "ā / a",
+          "germanHint": "Langes A wie in „Vater“. Trägt am Wortanfang oft Hilfsvokale.",
+          "examples": [
+            { "ar": "أَب", "translit": "ab", "de": "Vater" },
+            { "ar": "بَاب", "translit": "bāb", "de": "Tür" },
+            { "ar": "سَمَاء", "translit": "samāʾ", "de": "Himmel" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Ba", "letter": "ب", "name": "Bā", "translit": "b",
+          "germanHint": "Wie das deutsche B (Buch).",
+          "examples": [
+            { "ar": "بَاب", "translit": "bāb", "de": "Tür" },
+            { "ar": "كِتَاب", "translit": "kitāb", "de": "Buch" },
+            { "ar": "حَبِيب", "translit": "ḥabīb", "de": "Geliebter" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Ta", "letter": "ت", "name": "Tā", "translit": "t",
+          "germanHint": "Wie das deutsche T (Tisch).",
+          "examples": [
+            { "ar": "تِين", "translit": "tīn", "de": "Feigen" },
+            { "ar": "بَيْت", "translit": "bait", "de": "Haus" },
+            { "ar": "بِنْت", "translit": "bint", "de": "Mädchen" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Tha", "letter": "ث", "name": "Thā", "translit": "th",
+          "germanHint": "Wie das englische „th“ in „think“ (stimmlos).",
+          "examples": [
+            { "ar": "ثَلَاثَة", "translit": "thalātha", "de": "drei" },
+            { "ar": "مِثْل", "translit": "mithl", "de": "wie / ähnlich" },
+            { "ar": "حَدِيث", "translit": "ḥadīth", "de": "Gespräch" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Jim", "letter": "ج", "name": "Jīm", "translit": "dsch / j",
+          "germanHint": "Hocharabisch: wie „dsch“ (Dschungel). Syrisch: weich wie franz. „j“.",
+          "examples": [
+            { "ar": "جَمَل", "translit": "jamal", "de": "Kamel" },
+            { "ar": "جَبَل", "translit": "jabal", "de": "Berg" },
+            { "ar": "دَجَاج", "translit": "dajāj", "de": "Hühner" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Ḥa", "letter": "ح", "name": "Ḥā", "translit": "ḥ",
+          "germanHint": "Kein deutsches Äquivalent! Kräftig gehauchtes H aus der Kehle.",
+          "examples": [
+            { "ar": "حُبّ", "translit": "ḥubb", "de": "Liebe" },
+            { "ar": "بَحْر", "translit": "baḥr", "de": "Meer" },
+            { "ar": "رُوح", "translit": "rūḥ", "de": "Seele" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Kha", "letter": "خ", "name": "Khā", "translit": "ch",
+          "germanHint": "Wie das deutsche „ch“ in „Bach“.",
+          "examples": [
+            { "ar": "خُبْز", "translit": "khubz", "de": "Brot" },
+            { "ar": "أَخ", "translit": "akh", "de": "Bruder" },
+            { "ar": "مَطْبَخ", "translit": "maṭbakh", "de": "Küche" }
+          ] },
+
+        { "kind": "quiz", "section": "✅ Erkennen",
+          "prompt": "Welcher Buchstabe ist „B“?", "question": "B (wie in بَاب)",
+          "options": ["ب", "ت", "ث"], "correct": 0,
+          "explanation": "ب = Bā = B. Hat einen Punkt UNTEN. ت (zwei Punkte oben) = T, ث (drei Punkte oben) = Th." },
+
+        { "kind": "quiz", "section": "✅ Erkennen",
+          "prompt": "Welcher Buchstabe ist „Ḥ“ (gehauchtes H)?", "question": "ḥ (wie in بَحْر)",
+          "options": ["ح", "خ", "ج"], "correct": 0,
+          "explanation": "ح = Ḥā (ohne Punkt). خ (Punkt oben) = Kha (wie Bach). ج (Punkt unten) = Jim." },
+
+        { "kind": "quiz", "section": "✅ Erkennen",
+          "prompt": "Welcher Buchstabe ist „Ch“ (wie in Bach)?", "question": "ch (wie in خُبْز)",
+          "options": ["خ", "ج", "ح"], "correct": 0,
+          "explanation": "خ = Khā mit einem Punkt OBEN. Der Klang ist wie deutsch „ch“ in „Bach“." },
+
+        { "kind": "speak", "section": "🎤 Aussprache",
+          "prompt": "Lies das Wort laut vor:", "text": "بَاب", "translit": "bāb",
+          "hint": "B + langes A + B = „bāb“ (Tür)." },
+
+        { "kind": "speak", "section": "🎤 Aussprache",
+          "prompt": "Versuche das gehauchte ح:", "text": "حُبّ", "translit": "ḥubb",
+          "hint": "ḥ ist kein normales H — drücke kräftiger aus der Kehle." },
+
+        { "kind": "recap", "section": "🎉 Wiederholung", "title": "Super! Du kennst jetzt 7 Buchstaben.",
+          "points": [
+            "ا (Alif) — langes A, am Anfang oft Träger für Vokale",
+            "ب (Ba) — B, Punkt unten",
+            "ت (Ta) — T, zwei Punkte oben",
+            "ث (Tha) — th, drei Punkte oben",
+            "ج (Jim) — dsch/j, Punkt unten",
+            "ح (Ḥa) — gehauchtes H, kein Punkt",
+            "خ (Kha) — ch (wie Bach), Punkt oben"
+          ] }
+      ]
+    },
+
+    {
+      "id": "ar-l2", "number": 2, "phase": 1,
+      "title": "Buchstaben 8 – 14", "subtitle": "د ذ ر ز س ش ص",
+      "steps": [
+        { "kind": "intro", "section": "🎯 Lernziele", "title": "Sieben weitere Buchstaben",
+          "text": "Weiter geht es mit dem zweiten Block. Achte auf Pünktchen-Unterschiede und Emphatische Laute.",
+          "points": ["7 neue Buchstaben", "Unterschied gewöhnlich vs. emphatisch (s ≠ ṣ)", "10+ neue Wörter"] },
+
+        { "kind": "letter", "section": "🔤 Dal", "letter": "د", "name": "Dāl", "translit": "d",
+          "germanHint": "Wie das deutsche D.",
+          "examples": [
+            { "ar": "دَار", "translit": "dār", "de": "Haus / Wohnhaus" },
+            { "ar": "وَلَد", "translit": "walad", "de": "Junge" },
+            { "ar": "بَلَد", "translit": "balad", "de": "Land" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Dhal", "letter": "ذ", "name": "Dhāl", "translit": "dh",
+          "germanHint": "Wie das englische „th“ in „this“ (stimmhaft).",
+          "examples": [
+            { "ar": "ذَهَب", "translit": "dhahab", "de": "Gold" },
+            { "ar": "لَذِيذ", "translit": "ladhīdh", "de": "lecker" },
+            { "ar": "هَذَا", "translit": "hādhā", "de": "dieses" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Ra", "letter": "ر", "name": "Rā", "translit": "r",
+          "germanHint": "Gerolltes R (Zungenspitze) — wie spanisches/italienisches R.",
+          "examples": [
+            { "ar": "رَجُل", "translit": "rajul", "de": "Mann" },
+            { "ar": "نَهْر", "translit": "nahr", "de": "Fluss" },
+            { "ar": "مَدْرَسَة", "translit": "madrasa", "de": "Schule" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Zay", "letter": "ز", "name": "Zāy", "translit": "z",
+          "germanHint": "Wie das englische z / französisches z (stimmhaft).",
+          "examples": [
+            { "ar": "زَهْرَة", "translit": "zahra", "de": "Blume" },
+            { "ar": "مَوْز", "translit": "mawz", "de": "Bananen" },
+            { "ar": "خُبْز", "translit": "khubz", "de": "Brot" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Sin", "letter": "س", "name": "Sīn", "translit": "s",
+          "germanHint": "Wie das scharfe s / ß im Deutschen.",
+          "examples": [
+            { "ar": "سَمَك", "translit": "samak", "de": "Fisch" },
+            { "ar": "دَرْس", "translit": "dars", "de": "Lektion" },
+            { "ar": "شَمْس", "translit": "shams", "de": "Sonne" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Shin", "letter": "ش", "name": "Shīn", "translit": "sch",
+          "germanHint": "Wie das deutsche sch (Schule). Drei Punkte oben.",
+          "examples": [
+            { "ar": "شَمْس", "translit": "shams", "de": "Sonne" },
+            { "ar": "شُكْرًا", "translit": "shukran", "de": "danke" },
+            { "ar": "مِشْمِش", "translit": "mishmish", "de": "Aprikose" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Sad", "letter": "ص", "name": "Ṣād", "translit": "ṣ",
+          "germanHint": "Emphatisches S — Zunge weiter hinten, dunklerer Klang.",
+          "examples": [
+            { "ar": "صَبَاح", "translit": "ṣabāḥ", "de": "Morgen" },
+            { "ar": "قِصَّة", "translit": "qiṣṣa", "de": "Geschichte" },
+            { "ar": "نَصّ", "translit": "naṣṣ", "de": "Text" }
+          ] },
+
+        { "kind": "discovery", "section": "📐 Emphatisch vs. normal",
+          "instruction": "Hör genau hin — der Unterschied zwischen س (s) und ص (ṣ) ist subtil aber wichtig:",
+          "examples": [
+            "سَيْف (saif) = Schwert",
+            "صَيْف (ṣaif) = Sommer",
+            "Sehr ähnlich, aber zwei verschiedene Wörter!"
+          ],
+          "question": "🤔 Worin liegt der Unterschied?",
+          "reveal": "Emphatische Buchstaben (ص, ض, ط, ظ) werden mit der Zunge WEITER HINTEN gesprochen. Der Klang ist dunkler. Das hörst du auch bei den Vokalen drumherum." },
+
+        { "kind": "quiz", "section": "✅ Erkennen",
+          "prompt": "Welcher ist „R“?", "question": "r (wie in „rajul“)",
+          "options": ["ر", "ز", "د"], "correct": 0,
+          "explanation": "ر hat keinen Punkt. ز (mit Punkt oben) = Z. د (ähnlich aber gerader) = D." },
+
+        { "kind": "quiz", "section": "✅ Erkennen",
+          "prompt": "Welcher ist „sch“?", "question": "sch (wie in „shams“)",
+          "options": ["ش", "س", "ص"], "correct": 0,
+          "explanation": "ش = Shin mit drei Punkten oben. س (ohne Punkte) = S. ص = emphatisches S." },
+
+        { "kind": "speak", "section": "🎤 Aussprache",
+          "prompt": "Lies vor — gerolltes R:", "text": "مَدْرَسَة", "translit": "madrasa",
+          "hint": "Rolle das R mit der Zungenspitze." },
+
+        { "kind": "speak", "section": "🎤 Aussprache",
+          "prompt": "Vergleiche s vs. ṣ:", "text": "صَبَاح", "translit": "ṣabāḥ",
+          "hint": "Zunge weiter hinten als bei einem normalen s." },
+
+        { "kind": "recap", "section": "🎉 Wiederholung", "title": "Stark! Du kennst nun 14 Buchstaben.",
+          "points": [
+            "د (Dal) — D",
+            "ذ (Dhal) — dh wie engl. „this“",
+            "ر (Ra) — gerolltes R",
+            "ز (Zay) — Z",
+            "س (Sin) — S",
+            "ش (Shin) — sch",
+            "ص (Sad) — emphatisches S, dunkler Klang"
+          ] }
+      ]
+    },
+
+    {
+      "id": "ar-l3", "number": 3, "phase": 1,
+      "title": "Buchstaben 15 – 21", "subtitle": "ض ط ظ ع غ ف ق",
+      "steps": [
+        { "kind": "intro", "section": "🎯 Lernziele", "title": "Die schwierigsten Buchstaben",
+          "text": "Dieser Block enthält die für Deutschsprachige härtesten Laute (ع, ق, ḍ, ṭ). Übe sie langsam — du wirst sie schaffen.",
+          "points": ["3 emphatische Laute (ḍ ṭ ẓ)", "ع — der schwierigste Laut", "غ und ق unterscheiden"] },
+
+        { "kind": "letter", "section": "🔤 Ḍad", "letter": "ض", "name": "Ḍād", "translit": "ḍ",
+          "germanHint": "Emphatisches D — Zunge presst seitlich gegen die Backenzähne.",
+          "examples": [
+            { "ar": "ضَبّ", "translit": "ḍabb", "de": "Eidechse" },
+            { "ar": "مَرَض", "translit": "maraḍ", "de": "Krankheit" },
+            { "ar": "أَرْض", "translit": "arḍ", "de": "Erde" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Ṭa", "letter": "ط", "name": "Ṭā", "translit": "ṭ",
+          "germanHint": "Emphatisches T — Zunge weiter hinten, dumpfer Klang.",
+          "examples": [
+            { "ar": "طِبّ", "translit": "ṭibb", "de": "Medizin" },
+            { "ar": "نَشَاط", "translit": "nashāṭ", "de": "Aktivität" },
+            { "ar": "خَطّ", "translit": "khaṭṭ", "de": "Linie / Schrift" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Ẓa", "letter": "ظ", "name": "Ẓā", "translit": "ẓ",
+          "germanHint": "Emphatisches DH — wie ذ, aber dunkler.",
+          "examples": [
+            { "ar": "ظِلّ", "translit": "ẓill", "de": "Schatten" },
+            { "ar": "نَظَر", "translit": "naẓar", "de": "Blick" },
+            { "ar": "حَافِظ", "translit": "ḥāfiẓ", "de": "Hüter / Wächter" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 ʿAyn", "letter": "ع", "name": "ʿAyn", "translit": "ʿ",
+          "germanHint": "Der schwierigste arabische Laut. Tief in der Kehle gepresst. Übe vor dem Spiegel.",
+          "examples": [
+            { "ar": "عَيْد", "translit": "ʿīd", "de": "Fest" },
+            { "ar": "شَعْر", "translit": "shaʿr", "de": "Haar" },
+            { "ar": "سَاعَة", "translit": "sāʿa", "de": "Stunde / Uhr" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Ghayn", "letter": "غ", "name": "Ghayn", "translit": "gh",
+          "germanHint": "Wie ein gerolltes französisches R (Paris). Stimmhaftes Pendant zu خ.",
+          "examples": [
+            { "ar": "غُول", "translit": "ghūl", "de": "Monster" },
+            { "ar": "مَغْرِب", "translit": "maghrib", "de": "Westen / Sonnenuntergang" },
+            { "ar": "لُغَة", "translit": "lugha", "de": "Sprache" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Fa", "letter": "ف", "name": "Fā", "translit": "f",
+          "germanHint": "Wie das deutsche F.",
+          "examples": [
+            { "ar": "فَم", "translit": "fam", "de": "Mund" },
+            { "ar": "ضِفْدَع", "translit": "ḍifdaʿ", "de": "Frosch" },
+            { "ar": "خَوْف", "translit": "khauf", "de": "Angst" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Qaf", "letter": "ق", "name": "Qāf", "translit": "q",
+          "germanHint": "Wie K, aber TIEF im Rachen. Im Syrischen oft als „ʾ“ (glottal stop) gesprochen.",
+          "examples": [
+            { "ar": "قَلَم", "translit": "qalam", "de": "Stift" },
+            { "ar": "وَرَق", "translit": "waraq", "de": "Papier" },
+            { "ar": "قَلْب", "translit": "qalb", "de": "Herz" }
+          ] },
+
+        { "kind": "discovery", "section": "📐 ʿAyn üben",
+          "instruction": "ع ist der „arabischste“ Laut. Hier ein Trick zum Üben:",
+          "examples": [
+            "Schritt 1: Sag ein normales „a“.",
+            "Schritt 2: Drücke die Mitte deines Halses leicht zusammen, während du den Ton hältst.",
+            "Schritt 3: Der Ton wird gepresst, fast schon „würgend“ — das ist ع!"
+          ],
+          "question": "🤔 Warum so schwierig?",
+          "reveal": "ع ist ein „pharyngeal voiced fricative“ — ein Laut tief in der Kehle, den das Deutsche nicht kennt. Nicht entmutigen: auch Muttersprachler trainieren Kinder darauf. Übe mit dem Wort „عيد“ (ʿīd) und vergleiche es mit „إيد“ (īd)." },
+
+        { "kind": "quiz", "section": "✅ Erkennen",
+          "prompt": "Welcher ist „q“ (tiefes K)?", "question": "q (wie in „qalam“)",
+          "options": ["ق", "ف", "غ"], "correct": 0,
+          "explanation": "ق hat ZWEI Punkte oben. ف hat einen Punkt oben (F). غ ist gh (gerolltes R)." },
+
+        { "kind": "quiz", "section": "✅ Erkennen",
+          "prompt": "Welcher ist ʿAyn?", "question": "ʿ (Kehllaut, kein dt. Äquivalent)",
+          "options": ["ع", "غ", "ح"], "correct": 0,
+          "explanation": "ع hat keinen Punkt. غ (mit Punkt) = gh. ح (ähnliche Form aber anders) = gehauchtes H." },
+
+        { "kind": "speak", "section": "🎤 Aussprache",
+          "prompt": "Trau dich an ʿAyn:", "text": "عَيْد", "translit": "ʿīd",
+          "hint": "Drücke aus der Kehle. Das „ʿ“ kommt VOR dem „ī“." },
+
+        { "kind": "speak", "section": "🎤 Aussprache",
+          "prompt": "Tiefes Q:", "text": "قَلْب", "translit": "qalb",
+          "hint": "Das q kommt aus dem hinteren Rachen — nicht ans K vorne!" },
+
+        { "kind": "recap", "section": "🎉 Wiederholung", "title": "Großartig! 21 Buchstaben geschafft.",
+          "points": [
+            "ض (Ḍad) — emphatisches D",
+            "ط (Ṭa) — emphatisches T",
+            "ظ (Ẓa) — emphatisches DH",
+            "ع (ʿAyn) — Kehllaut, schwierig aber wichtig",
+            "غ (Ghayn) — wie franz. R",
+            "ف (Fa) — F",
+            "ق (Qaf) — tiefes K"
+          ] }
+      ]
+    },
+
+    {
+      "id": "ar-l4", "number": 4, "phase": 1,
+      "title": "Buchstaben 22 – 28", "subtitle": "ك ل م ن ه و ي",
+      "steps": [
+        { "kind": "intro", "section": "🎯 Lernziele", "title": "Die letzten sieben — fast geschafft!",
+          "text": "Mit diesem Block kennst du das ganze arabische Alphabet. Die letzten Buchstaben sind die leichtesten.",
+          "points": ["7 Buchstaben (alle relativ einfach)", "Vollständiges Alphabet (28 Buchstaben)", "Bereit für das Lesen"] },
+
+        { "kind": "letter", "section": "🔤 Kaf", "letter": "ك", "name": "Kāf", "translit": "k",
+          "germanHint": "Wie das deutsche K. Vorne im Mund, NICHT tief (≠ ق).",
+          "examples": [
+            { "ar": "كِتَاب", "translit": "kitāb", "de": "Buch" },
+            { "ar": "مَلِك", "translit": "malik", "de": "König" },
+            { "ar": "دِيك", "translit": "dīk", "de": "Hahn" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Lam", "letter": "ل", "name": "Lām", "translit": "l",
+          "germanHint": "Wie das deutsche L.",
+          "examples": [
+            { "ar": "لَوْن", "translit": "laun", "de": "Farbe" },
+            { "ar": "جَمَل", "translit": "jamal", "de": "Kamel" },
+            { "ar": "طَوِيل", "translit": "ṭawīl", "de": "lang / groß" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Mim", "letter": "م", "name": "Mīm", "translit": "m",
+          "germanHint": "Wie das deutsche M.",
+          "examples": [
+            { "ar": "مَكْتَب", "translit": "maktab", "de": "Büro" },
+            { "ar": "قَمَر", "translit": "qamar", "de": "Mond" },
+            { "ar": "نَجْم", "translit": "najm", "de": "Stern" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Nun", "letter": "ن", "name": "Nūn", "translit": "n",
+          "germanHint": "Wie das deutsche N.",
+          "examples": [
+            { "ar": "نَهْر", "translit": "nahr", "de": "Fluss" },
+            { "ar": "اِبْن", "translit": "ibn", "de": "Sohn" },
+            { "ar": "شَمْس", "translit": "shams", "de": "Sonne" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Ha", "letter": "ه", "name": "Hā", "translit": "h",
+          "germanHint": "Wie das deutsche H (Haus). Sanfter als ح.",
+          "examples": [
+            { "ar": "هَذَا", "translit": "hādhā", "de": "dieses" },
+            { "ar": "نَهْر", "translit": "nahr", "de": "Fluss" },
+            { "ar": "شَفَه", "translit": "shafah", "de": "Lippe" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Waw", "letter": "و", "name": "Wāw", "translit": "w / ū",
+          "germanHint": "Doppelfunktion: als Konsonant = englisches „w“, als langer Vokal = „uu“.",
+          "examples": [
+            { "ar": "وَرْد", "translit": "ward", "de": "Rosen" },
+            { "ar": "نَوْم", "translit": "naum", "de": "Schlaf" },
+            { "ar": "جَوّ", "translit": "jaww", "de": "Wetter / Atmosphäre" }
+          ] },
+
+        { "kind": "letter", "section": "🔤 Ya", "letter": "ي", "name": "Yā", "translit": "y / ī",
+          "germanHint": "Doppelfunktion: als Konsonant = „j“, als langer Vokal = „ii“.",
+          "examples": [
+            { "ar": "يَد", "translit": "yad", "de": "Hand" },
+            { "ar": "لَيْل", "translit": "lail", "de": "Nacht" },
+            { "ar": "شَاي", "translit": "shāy", "de": "Tee" }
+          ] },
+
+        { "kind": "discovery", "section": "📐 و und ي sind besonders",
+          "instruction": "و und ي haben zwei Rollen:",
+          "examples": [
+            "Konsonant: wَلَد (walad) = Junge — hier ist و = w",
+            "Langvokal: نُور (nūr) = Licht — hier ist و = uu",
+            "Konsonant: يَد (yad) = Hand — hier ist ي = j",
+            "Langvokal: بَيْت (bait) hat aber wieder eine andere Funktion: hier bildet ي einen Diphthong „ai“"
+          ],
+          "question": "🤔 Woher weiß ich, welche Rolle?",
+          "reveal": "Faustregel: Steht ein Vokalzeichen DRAUF, ist es ein Konsonant. Steht NICHTS drauf (kein Sukun ◌ْ und kein Vokal), ist es meist ein Langvokal." },
+
+        { "kind": "quiz", "section": "✅ Erkennen",
+          "prompt": "Welcher ist „n“?", "question": "n (wie in „nahr“)",
+          "options": ["ن", "ت", "ث"], "correct": 0,
+          "explanation": "ن = Nūn mit einem Punkt oben. ت hat zwei Punkte, ث hat drei." },
+
+        { "kind": "speak", "section": "🎤 Aussprache",
+          "prompt": "Sag laut:", "text": "كِتَاب", "translit": "kitāb",
+          "hint": "K-i-t-aa-b — vier verschiedene Buchstaben." },
+
+        { "kind": "recap", "section": "🎉 ALPHABET KOMPLETT!", "title": "Alle 28 Buchstaben — bravo!",
+          "points": [
+            "Du kennst jetzt das gesamte arabische Alphabet.",
+            "Nächster Schritt: Vokale (Bewegungen / Ḥarakāt) und kurze Wörter lesen.",
+            "Übung macht den Meister — wiederhole die schwierigen Buchstaben (ع, ق, ḥ, ḍ).",
+            "Du bist bereit für das echte Lesen!"
+          ] }
+      ]
+    },
+
+    {
+      "id": "ar-l5", "number": 5, "phase": 2,
+      "title": "Vokale & erstes Lesen", "subtitle": "Ḥarakāt + erste Wörter",
+      "steps": [
+        { "kind": "intro", "section": "🎯 Lernziele", "title": "Vokalisierung",
+          "text": "Arabisch wird normalerweise ohne kurze Vokale geschrieben — diese werden als kleine Zeichen ÜBER oder UNTER den Buchstaben gesetzt. In Lehrbüchern und im Koran siehst du sie immer.",
+          "points": ["Die drei kurzen Vokale (a, i, u)", "Sukun (kein Vokal)", "Shadda (Verdoppelung)", "Erste vollvokalisierte Wörter lesen"] },
+
+        { "kind": "discovery", "section": "📐 Die drei kurzen Vokale",
+          "instruction": "Die Vokale stehen OBEN oder UNTEN am Buchstaben:",
+          "examples": [
+            "بَ = ba (Fatḥa = Strich OBEN = kurzes a)",
+            "بِ = bi (Kasra = Strich UNTEN = kurzes i)",
+            "بُ = bu (Ḍamma = kleines و OBEN = kurzes u)"
+          ],
+          "question": "🤔 Drei Vokale reichen aus?",
+          "reveal": "Ja — Arabisch hat nur 3 kurze Vokale (a, i, u) und ihre LANGEN Versionen (ā, ī, ū). Die langen werden mit den Buchstaben ا (ā), ي (ī), و (ū) geschrieben." },
+
+        { "kind": "flashcard", "section": "🔤 Fatḥa", "front": "Kurzes „a“ (◌َ)",
+          "back": { "ar": "بَ تَ دَ كَ", "translit": "ba, ta, da, ka" },
+          "example": "بَيْت (bait) = Haus" },
+
+        { "kind": "flashcard", "section": "🔤 Kasra", "front": "Kurzes „i“ (◌ِ)",
+          "back": { "ar": "بِ تِ دِ كِ", "translit": "bi, ti, di, ki" },
+          "example": "بِنْت (bint) = Mädchen" },
+
+        { "kind": "flashcard", "section": "🔤 Ḍamma", "front": "Kurzes „u“ (◌ُ)",
+          "back": { "ar": "بُ تُ دُ كُ", "translit": "bu, tu, du, ku" },
+          "example": "كُتُب (kutub) = Bücher" },
+
+        { "kind": "flashcard", "section": "🔤 Sukun", "front": "Kein Vokal (◌ْ)",
+          "back": { "ar": "بْ تْ دْ كْ", "translit": "(stumm — direkter Konsonant)" },
+          "example": "بِنْت (bint) — das نْ trägt Sukun, daher direkt vor t" },
+
+        { "kind": "flashcard", "section": "🔤 Shadda", "front": "Verdoppelung des Buchstabens (◌ّ)",
+          "back": { "ar": "بّ تّ دّ كّ", "translit": "(Buchstabe wird DOPPELT)" },
+          "example": "حُبّ (ḥubb) = Liebe — das ب wird verdoppelt" },
+
+        { "kind": "discovery", "section": "📐 Lange vs. kurze Vokale",
+          "instruction": "Vergleiche:",
+          "examples": [
+            "كَتَب = „kataba“ (kurze a's) = er schrieb",
+            "كِتَاب = „kitāb“ (kurzes i, dann langes ā) = Buch",
+            "كُتُب = „kutub“ (zweimal kurzes u) = Bücher"
+          ],
+          "question": "🤔 Wie erkenne ich lange Vokale?",
+          "reveal": "Lange Vokale haben einen ZUSÄTZLICHEN Buchstaben: ā = Fatḥa + ا, ī = Kasra + ي, ū = Ḍamma + و." },
+
+        { "kind": "reading", "section": "📖 Lies diese Wörter",
+          "title": "Erste vollvokalisierte Wörter",
+          "lines": [
+            { "ar": "بَيْت", "translit": "bait", "de": "Haus" },
+            { "ar": "كِتَاب", "translit": "kitāb", "de": "Buch" },
+            { "ar": "قَلَم", "translit": "qalam", "de": "Stift" },
+            { "ar": "وَرْد", "translit": "ward", "de": "Rosen" },
+            { "ar": "شَمْس", "translit": "shams", "de": "Sonne" },
+            { "ar": "قَمَر", "translit": "qamar", "de": "Mond" }
+          ],
+          "questions": [
+            { "question": "Wie liest man بَيْت ?", "options": ["bait", "bit", "but"], "correct": 0,
+              "explanation": "ب = b, Fatḥa = a, ي mit Sukun = i (Diphthong „ai“), ت = t → „bait“." },
+            { "question": "Wie liest man كِتَاب ?", "options": ["kitāb", "katab", "kutub"], "correct": 0,
+              "explanation": "ك+Kasra = ki, ت+Fatḥa = ta, ا = langes ā, ب = b → „kitāb“." }
+          ] },
+
+        { "kind": "quiz", "section": "✅ Test",
+          "prompt": "Was bedeutet das Vokalzeichen ◌ِ (Strich unten)?",
+          "question": "kurzes …",
+          "options": ["i", "a", "u"], "correct": 0,
+          "explanation": "◌ِ heißt Kasra und steht UNTEN am Buchstaben — kurzes i." },
+
+        { "kind": "speak", "section": "🎤 Aussprache",
+          "prompt": "Lies langsam:", "text": "كِتَاب جَدِيد", "translit": "kitāb jadīd",
+          "hint": "Zwei Wörter: kitāb (Buch) + jadīd (neu) = „ein neues Buch“." },
+
+        { "kind": "recap", "section": "🎉 Wiederholung", "title": "Du kannst jetzt lesen!",
+          "points": [
+            "Fatḥa (◌َ) = kurzes a, Kasra (◌ِ) = kurzes i, Ḍamma (◌ُ) = kurzes u.",
+            "Sukun (◌ْ) = kein Vokal nach diesem Buchstaben.",
+            "Shadda (◌ّ) = Buchstabe wird verdoppelt.",
+            "Lange Vokale werden mit ا / ي / و geschrieben."
+          ] }
+      ]
+    },
+
+    {
+      "id": "ar-l6", "number": 6, "phase": 2,
+      "title": "Der Artikel ال", "subtitle": "Sonnen- und Mondbuchstaben",
+      "steps": [
+        { "kind": "intro", "section": "🎯 Lernziele", "title": "Der bestimmte Artikel",
+          "text": "Arabisch hat nur EINEN bestimmten Artikel: ال (al-). Aber je nach folgendem Buchstaben wird er anders ausgesprochen.",
+          "points": ["ال = der/die/das", "Mondbuchstaben (al- wird normal gesprochen)", "Sonnenbuchstaben (das L wird verschluckt)"] },
+
+        { "kind": "discovery", "section": "📐 al- vor verschiedenen Buchstaben",
+          "instruction": "Beobachte:",
+          "examples": [
+            "اَلْكِتَاب = al-kitāb (das Buch) — man hört das L deutlich.",
+            "اَلْقَمَر = al-qamar (der Mond) — das L wird gesprochen.",
+            "اَلشَّمْس = ASCH-schams (die Sonne) — das L verschwindet!",
+            "اَلسَّلَام = AS-salām (der Friede) — auch hier kein L."
+          ],
+          "question": "🤔 Warum manchmal mit L, manchmal ohne?",
+          "reveal": "Der nächste Buchstabe entscheidet:\n• Mondbuchstaben (14 Stück) → al- bleibt mit L\n• Sonnenbuchstaben (14 Stück) → L wird vom nächsten Buchstaben „aufgesaugt“ (er wird verdoppelt)." },
+
+        { "kind": "flashcard", "section": "🌙 Mondbuchstaben (al- bleibt)", "front": "Vor diesen 14: al- ganz normal",
+          "back": { "ar": "ا ب ج ح خ ع غ ف ق ك م ه و ي", "translit": "kein Wechsel" },
+          "example": "اَلْكَلْب = al-kalb (der Hund)" },
+
+        { "kind": "flashcard", "section": "☀️ Sonnenbuchstaben (L verschwindet)", "front": "Vor diesen 14: das L wird zum folgenden Buchstaben",
+          "back": { "ar": "ت ث د ذ ر ز س ش ص ض ط ظ ل ن", "translit": "L wird assimiliert" },
+          "example": "اَلشَّمْس = asch-schams (die Sonne, kein L mehr!)" },
+
+        { "kind": "quiz", "section": "✅ Test",
+          "prompt": "Wie spricht man اَلْبَيْت ?",
+          "question": "البيت (das Haus)",
+          "options": ["al-bait", "ab-bait", "as-bait"], "correct": 0,
+          "explanation": "ب ist ein Mondbuchstabe → al- bleibt → „al-bait“." },
+
+        { "kind": "quiz", "section": "✅ Test",
+          "prompt": "Wie spricht man اَلشَّمْس ?",
+          "question": "الشمس (die Sonne)",
+          "options": ["asch-schams", "al-shams", "as-shams"], "correct": 0,
+          "explanation": "ش ist ein SONNENbuchstabe → L verschwindet, ش wird verdoppelt → „asch-schams“." },
+
+        { "kind": "quiz", "section": "✅ Test",
+          "prompt": "Wie spricht man اَلْقَمَر ?",
+          "question": "القمر (der Mond)",
+          "options": ["al-qamar", "aq-qamar", "asch-qamar"], "correct": 0,
+          "explanation": "ق ist ein MONDbuchstabe (passenderweise) → al- bleibt → „al-qamar“." },
+
+        { "kind": "reading", "section": "📖 Lies mit Artikel",
+          "title": "Mit und ohne Sonnenassimilation",
+          "lines": [
+            { "ar": "اَلْبَيْت كَبِير", "translit": "al-bait kabīr", "de": "Das Haus ist groß." },
+            { "ar": "اَلشَّمْس جَمِيلَة", "translit": "asch-schams jamīla", "de": "Die Sonne ist schön." },
+            { "ar": "اَلْكِتَاب جَدِيد", "translit": "al-kitāb jadīd", "de": "Das Buch ist neu." },
+            { "ar": "اَلسَّمَاء زَرْقَاء", "translit": "as-samāʾ zarqāʾ", "de": "Der Himmel ist blau." }
+          ],
+          "questions": [
+            { "question": "Warum heißt es „asch-schams“ und nicht „al-shams“?",
+              "options": ["ش ist ein Sonnenbuchstabe", "al- gibt es vor ش nicht", "Es ist ein Diphthong"], "correct": 0,
+              "explanation": "ش gehört zu den 14 Sonnenbuchstaben → das L des Artikels wird assimiliert." }
+          ] },
+
+        { "kind": "speak", "section": "🎤 Aussprache",
+          "prompt": "Sprich beide Versionen:", "text": "اَلْكِتَاب", "translit": "al-kitāb",
+          "hint": "Mondbuchstabe → das L ist klar hörbar." },
+
+        { "kind": "speak", "section": "🎤 Aussprache",
+          "prompt": "Und jetzt mit Sonnenbuchstabe:", "text": "اَلشَّمْس", "translit": "asch-schams",
+          "hint": "Das L verschwindet, ش wird verdoppelt." },
+
+        { "kind": "recap", "section": "🎉 Wiederholung", "title": "Du beherrschst den Artikel!",
+          "points": [
+            "ال = der/die/das (nur EIN Artikel im Arabischen).",
+            "Mondbuchstaben (14): a-l- klar gesprochen.",
+            "Sonnenbuchstaben (14): das L wird vom Folgekonsonanten ersetzt (Verdopplung mit Shadda).",
+            "Trick: Mondbuchstaben sind die „seltenen“ Laute (q, k, ʿ, gh, h, m, w, j, b, f, x, ḥ, jim, alif)."
+          ] }
+      ]
+    },
+
+    {
+      "id": "ar-l7", "number": 7, "phase": 4,
+      "title": "Sätze bauen — ohne Verb", "subtitle": "Im Präsens gibt es kein „sein“",
+      "steps": [
+        { "kind": "intro", "section": "🎯 Lernziele", "title": "Nominalsatz",
+          "text": "Im Arabischen gibt es im Präsens KEIN Verb „sein“. „Er ist Arzt“ heißt einfach „هو طبيب“ (huwa ṭabīb) = „Er Arzt“.",
+          "points": ["Den Nominalsatz verstehen", "Personalpronomen kennen", "Eigene Sätze bauen"] },
+
+        { "kind": "discovery", "section": "📐 Kein „sein“ im Präsens",
+          "instruction": "Vergleiche:",
+          "examples": [
+            "Deutsch: Er IST Arzt. — Arabisch: هو طبيب (huwa ṭabīb) = „Er Arzt“",
+            "Deutsch: Das Haus IST groß. — Arabisch: البيت كبير (al-bait kabīr) = „Das-Haus groß“",
+            "Deutsch: Ich BIN Schüler. — Arabisch: أنا طالب (ana ṭālib) = „Ich Schüler“"
+          ],
+          "question": "🤔 Wirklich kein „sein“?",
+          "reveal": "Genau — im Präsens gibt es kein Wort für „sein“. Im Präteritum schon (كان = kāna = war), aber das lernen wir später." },
+
+        { "kind": "flashcard", "section": "🔤 Pronomen", "front": "ich",
+          "back": { "ar": "أَنَا", "translit": "ana" }, "example": "أَنَا طَالِب = Ich (bin) Schüler" },
+
+        { "kind": "flashcard", "section": "🔤 Pronomen", "front": "du (männl.)",
+          "back": { "ar": "أَنْتَ", "translit": "anta" }, "example": "أَنْتَ مُعَلِّم = Du (bist) Lehrer" },
+
+        { "kind": "flashcard", "section": "🔤 Pronomen", "front": "du (weibl.)",
+          "back": { "ar": "أَنْتِ", "translit": "anti" }, "example": "أَنْتِ طَبِيبَة = Du (bist) Ärztin" },
+
+        { "kind": "flashcard", "section": "🔤 Pronomen", "front": "er",
+          "back": { "ar": "هُوَ", "translit": "huwa" }, "example": "هُوَ طَبِيب = Er (ist) Arzt" },
+
+        { "kind": "flashcard", "section": "🔤 Pronomen", "front": "sie",
+          "back": { "ar": "هِيَ", "translit": "hiya" }, "example": "هِيَ بِنْت = Sie (ist) ein Mädchen" },
+
+        { "kind": "flashcard", "section": "🔤 Pronomen", "front": "wir",
+          "back": { "ar": "نَحْنُ", "translit": "naḥnu" }, "example": "نَحْنُ أَصْدِقَاء = Wir (sind) Freunde" },
+
+        { "kind": "builder", "section": "🧩 Bauen", "prompt": "Bilde: „Er ist Arzt.“",
+          "words": [
+            { "ar": "هُوَ", "translit": "huwa" },
+            { "ar": "طَبِيب", "translit": "ṭabīb" }
+          ],
+          "hint": "Reihenfolge: Subjekt + Prädikat.",
+          "fullAr": "هُوَ طَبِيب", "fullTranslit": "huwa ṭabīb", "german": "Er ist Arzt." },
+
+        { "kind": "builder", "section": "🧩 Bauen", "prompt": "Bilde: „Das Haus ist groß.“",
+          "words": [
+            { "ar": "اَلْبَيْت", "translit": "al-bait" },
+            { "ar": "كَبِير", "translit": "kabīr" }
+          ],
+          "hint": "Substantiv mit Artikel + Adjektiv.",
+          "fullAr": "اَلْبَيْت كَبِير", "fullTranslit": "al-bait kabīr", "german": "Das Haus ist groß." },
+
+        { "kind": "builder", "section": "🧩 Bauen", "prompt": "Bilde: „Ich bin Schüler.“",
+          "words": [
+            { "ar": "أَنَا", "translit": "ana" },
+            { "ar": "طَالِب", "translit": "ṭālib" }
+          ],
+          "fullAr": "أَنَا طَالِب", "fullTranslit": "ana ṭālib", "german": "Ich bin Schüler." },
+
+        { "kind": "builder", "section": "🧩 Bauen", "prompt": "Bilde: „Sie ist eine Lehrerin.“",
+          "words": [
+            { "ar": "هِيَ", "translit": "hiya" },
+            { "ar": "مُعَلِّمَة", "translit": "muʿallima" }
+          ],
+          "hint": "„Lehrerin“ endet auf ة (Tāʾ marbūṭa) — weiblich.",
+          "fullAr": "هِيَ مُعَلِّمَة", "fullTranslit": "hiya muʿallima", "german": "Sie ist Lehrerin." },
+
+        { "kind": "builder", "section": "🧩 Bauen", "prompt": "Bilde: „Wir sind Freunde.“",
+          "words": [
+            { "ar": "نَحْنُ", "translit": "naḥnu" },
+            { "ar": "أَصْدِقَاء", "translit": "aṣdiqāʾ" }
+          ],
+          "fullAr": "نَحْنُ أَصْدِقَاء", "fullTranslit": "naḥnu aṣdiqāʾ", "german": "Wir sind Freunde." },
+
+        { "kind": "speak", "section": "🎤 Aussprache",
+          "prompt": "Sag laut:", "text": "أَنَا طَالِب", "translit": "ana ṭālib",
+          "hint": "ana = ich, ṭālib = Schüler (Mann). Eine Frau sagt „ana ṭāliba“." },
+
+        { "kind": "recap", "section": "🎉 Wiederholung", "title": "Du baust echte Sätze!",
+          "points": [
+            "Im Präsens kein „sein“ — direkt Subjekt + Prädikat.",
+            "Personalpronomen: ana, anta/anti, huwa/hiya, naḥnu.",
+            "Reihenfolge: meist Subjekt + Aussage.",
+            "Adjektive richten sich nach dem Substantiv (m/w)."
+          ] }
+      ]
+    },
+
+    {
+      "id": "ar-l8", "number": 8, "phase": 4,
+      "title": "Sätze mit Verben", "subtitle": "Im Präsens",
+      "steps": [
+        { "kind": "intro", "section": "🎯 Lernziele", "title": "Verben im Präsens",
+          "text": "Arabische Verben werden je nach Person konjugiert. Du wirst hier einige wichtige Verben kennenlernen und damit Sätze bauen.",
+          "points": ["Wichtige Verben kennen", "Konjugation im Präsens (1. Person)", "Eigene Sätze mit Verben bilden"] },
+
+        { "kind": "discovery", "section": "📐 Verb-Endungen",
+          "instruction": "Vergleiche das Verb „trinken“ (شَرِبَ → يَشْرَب):",
+          "examples": [
+            "Ich trinke: أَنَا أَشْرَب (ana ashrab) — Präfix أ",
+            "Du trinkst: أَنْتَ تَشْرَب (anta tashrab) — Präfix ت",
+            "Er trinkt: هُوَ يَشْرَب (huwa yashrab) — Präfix ي",
+            "Wir trinken: نَحْنُ نَشْرَب (naḥnu nashrab) — Präfix ن"
+          ],
+          "question": "🤔 Was ändert sich?",
+          "reveal": "Im Präsens bekommt der Verbstamm vorne ein Präfix (a, t, y, n) und manchmal hinten eine Endung. Anders als im Deutschen ist es ein PRÄFIX, nicht eine Endung." },
+
+        { "kind": "flashcard", "section": "🔤 Verb: trinken",
+          "front": "ich trinke", "back": { "ar": "أَشْرَب", "translit": "ashrab" }, "example": "أَشْرَب مَاء (ashrab māʾ) = Ich trinke Wasser" },
+
+        { "kind": "flashcard", "section": "🔤 Verb: essen",
+          "front": "ich esse", "back": { "ar": "آكُل", "translit": "ākul" }, "example": "آكُل خُبْز (ākul khubz) = Ich esse Brot" },
+
+        { "kind": "flashcard", "section": "🔤 Verb: lesen",
+          "front": "ich lese", "back": { "ar": "أَقْرَأ", "translit": "aqraʾ" }, "example": "أَقْرَأ كِتَاب (aqraʾ kitāb) = Ich lese ein Buch" },
+
+        { "kind": "flashcard", "section": "🔤 Verb: schreiben",
+          "front": "ich schreibe", "back": { "ar": "أَكْتُب", "translit": "aktub" }, "example": "أَكْتُب دَرْس (aktub dars) = Ich schreibe eine Lektion" },
+
+        { "kind": "flashcard", "section": "🔤 Verb: gehen",
+          "front": "ich gehe", "back": { "ar": "أَذْهَب", "translit": "adhhab" }, "example": "أَذْهَب إِلَى الْمَدْرَسَة (adhhab ilā l-madrasa) = Ich gehe zur Schule" },
+
+        { "kind": "builder", "section": "🧩 Bauen", "prompt": "Bilde: „Ich trinke Wasser.“",
+          "words": [
+            { "ar": "أَشْرَب", "translit": "ashrab" },
+            { "ar": "مَاء", "translit": "māʾ" }
+          ],
+          "hint": "Pronomen ist optional im Arabischen, weil das Verb-Präfix bereits zeigt, wer.",
+          "fullAr": "أَشْرَب مَاء", "fullTranslit": "ashrab māʾ", "german": "Ich trinke Wasser." },
+
+        { "kind": "builder", "section": "🧩 Bauen", "prompt": "Bilde: „Er liest ein Buch.“",
+          "words": [
+            { "ar": "هُوَ", "translit": "huwa" },
+            { "ar": "يَقْرَأ", "translit": "yaqraʾ" },
+            { "ar": "كِتَاب", "translit": "kitāb" }
+          ],
+          "hint": "Subjekt + Verb + Objekt.",
+          "fullAr": "هُوَ يَقْرَأ كِتَاب", "fullTranslit": "huwa yaqraʾ kitāb", "german": "Er liest ein Buch." },
+
+        { "kind": "builder", "section": "🧩 Bauen", "prompt": "Bilde: „Wir essen Brot.“",
+          "words": [
+            { "ar": "نَحْنُ", "translit": "naḥnu" },
+            { "ar": "نَأْكُل", "translit": "naʾkul" },
+            { "ar": "خُبْز", "translit": "khubz" }
+          ],
+          "fullAr": "نَحْنُ نَأْكُل خُبْز", "fullTranslit": "naḥnu naʾkul khubz", "german": "Wir essen Brot." },
+
+        { "kind": "builder", "section": "🧩 Bauen", "prompt": "Bilde: „Sie geht zur Schule.“",
+          "words": [
+            { "ar": "هِيَ", "translit": "hiya" },
+            { "ar": "تَذْهَب", "translit": "tadhhab" },
+            { "ar": "إِلَى", "translit": "ilā" },
+            { "ar": "اَلْمَدْرَسَة", "translit": "al-madrasa" }
+          ],
+          "hint": "„zu“ = إلى (ilā). „Schule“ ist weiblich.",
+          "fullAr": "هِيَ تَذْهَب إِلَى الْمَدْرَسَة", "fullTranslit": "hiya tadhhab ilā l-madrasa", "german": "Sie geht zur Schule." },
+
+        { "kind": "builder", "section": "🧩 Bauen", "prompt": "Bilde: „Ich schreibe einen Brief.“",
+          "words": [
+            { "ar": "أَكْتُب", "translit": "aktub" },
+            { "ar": "رِسَالَة", "translit": "risāla" }
+          ],
+          "fullAr": "أَكْتُب رِسَالَة", "fullTranslit": "aktub risāla", "german": "Ich schreibe einen Brief." },
+
+        { "kind": "reading", "section": "📖 Lies",
+          "title": "Kleine Geschichte",
+          "lines": [
+            { "ar": "أَنَا طَالِب.", "translit": "ana ṭālib.", "de": "Ich bin Schüler." },
+            { "ar": "أَذْهَب إِلَى الْمَدْرَسَة كُلّ يَوْم.", "translit": "adhhab ilā l-madrasa kull yaum.", "de": "Ich gehe jeden Tag zur Schule." },
+            { "ar": "أَقْرَأ كِتَاب وَ أَكْتُب دَرْس.", "translit": "aqraʾ kitāb wa aktub dars.", "de": "Ich lese ein Buch und schreibe eine Lektion." },
+            { "ar": "بَعْدَ الْمَدْرَسَة أَشْرَب شَاي.", "translit": "baʿda l-madrasa ashrab shāy.", "de": "Nach der Schule trinke ich Tee." }
+          ],
+          "questions": [
+            { "question": "Was macht die Person nach der Schule?",
+              "options": ["Tee trinken", "Brot essen", "schlafen"], "correct": 0,
+              "explanation": "„baʿda l-madrasa ashrab shāy“ = nach der Schule trinke ich Tee." }
+          ] },
+
+        { "kind": "speak", "section": "🎤 Aussprache",
+          "prompt": "Sag laut:", "text": "أَشْرَب شَاي", "translit": "ashrab shāy",
+          "hint": "ashrab = ich trinke, shāy = Tee. „Ich trinke Tee.“" },
+
+        { "kind": "recap", "section": "🎉 Wiederholung", "title": "Glückwunsch — du hast den Kurs beendet!",
+          "points": [
+            "Du kennst das gesamte Alphabet (28 Buchstaben).",
+            "Du kannst kurze und lange Vokale erkennen.",
+            "Du verstehst den Artikel ال und Sonnen/Mondbuchstaben.",
+            "Du baust eigene Sätze mit und ohne Verb.",
+            "🚀 Nächste Schritte: mehr Wortschatz im Wortschatz-Bereich, Dialoge und unregelmäßige Verben."
+          ] }
+      ]
+    }
+  ]
+}

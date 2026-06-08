@@ -166,13 +166,29 @@ export const routes: Routes = [
     title: 'Dictionary - Deutsch Learn',
   },
 
-  // 🆕 تعلم العربية: قسم لمتعلّمي العربية من الناطقين بالألمانية
+  // 🆕 Arabisch lernen — Kursübersicht (Phasen + Lektionen, locked progression)
   {
     path: 'learn-arabic',
     loadComponent: () =>
+      import('./features/arabic/arabic-overview-page/arabic-overview-page')
+        .then(m => m.ArabicOverviewPage),
+    title: 'Arabisch lernen - Deutsch Learn',
+  },
+  // Wortschatz-Bibliothek (المفردات المسطّحة)
+  {
+    path: 'learn-arabic/wortschatz',
+    loadComponent: () =>
       import('./features/arabic/learn-arabic-page/learn-arabic-page')
         .then(m => m.LearnArabicPage),
-    title: 'Arabisch lernen - Deutsch Learn',
+    title: 'Wortschatz - Arabisch lernen',
+  },
+  // مشغّل درس واحد
+  {
+    path: 'learn-arabic/lektion/:lektionId',
+    loadComponent: () =>
+      import('./features/arabic/arabic-lektion-page/arabic-lektion-page')
+        .then(m => m.ArabicLektionPage),
+    title: 'Lektion - Arabisch lernen',
   },
 
   // 🆕 ذاكرة قاموسي: بطاقات قلب لكل الكلمات المبحوثة (ضمن Practice)
