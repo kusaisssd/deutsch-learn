@@ -21,6 +21,21 @@
     </p>
   </header>
 
+  <!-- زر Conversations (مُنقول من الـ Header إلى هنا) -->
+  <a
+    [routerLink]="'/conversations'"
+    class="flex items-center gap-3 rounded-xl border-2 border-emerald-200 bg-emerald-50 hover:border-emerald-400 hover:shadow-md transition-all p-3 sm:p-4 mb-4"
+  >
+    <div class="text-2xl sm:text-3xl shrink-0">💬</div>
+    <div class="flex-1 min-w-0">
+      <h3 class="font-bold text-emerald-900 text-sm sm:text-base">Conversations</h3>
+      <p class="text-xs sm:text-sm text-emerald-800">
+        Real dialogues with multiple roles for speaking practice.
+      </p>
+    </div>
+    <span class="text-emerald-500 text-lg shrink-0">→</span>
+  </a>
+
   @if (!loaded()) {
     <div class="text-center py-12 text-slate-500">
       <div class="inline-block animate-pulse">Loading cards…</div>

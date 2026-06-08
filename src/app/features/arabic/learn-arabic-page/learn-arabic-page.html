@@ -1,0 +1,136 @@
+<!-- صفحة «تعلم العربية» — واجهة ألمانية للمتعلّم الألماني -->
+<section class="max-w-4xl mx-auto">
+
+  <!-- Heading -->
+  <header class="text-center mb-6">
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
+      🇸🇦 Arabisch lernen
+    </h2>
+    <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
+      Lerne arabische Wörter mit deutscher Lautumschrift und Aussprache —
+      in <strong>Hocharabisch (Fusha)</strong> und <strong>Syrisch-Levantinisch</strong>.
+    </p>
+    <p class="text-xs text-slate-400 mt-1" dir="rtl">
+      تعلم العربية انطلاقاً من الألمانية — كلمات بالفصحى و باللهجة السورية.
+    </p>
+  </header>
+
+  @if (!loaded()) {
+    <div class="text-center py-12 text-slate-500">
+      <div class="inline-block animate-pulse">Lädt …</div>
+    </div>
+  } @else {
+
+    <!-- مفتاح النطق (قابل للطيّ) -->
+    <details class="bg-amber-50 border border-amber-200 rounded-xl mb-5 group">
+      <summary class="cursor-pointer list-none p-4 flex items-center justify-between font-bold text-amber-900">
+        <span>🔤 Aussprache-Schlüssel (Tipps für schwierige Laute)</span>
+        <span class="text-amber-500 group-open:rotate-180 transition-transform">▼</span>
+      </summary>
+      <div class="px-4 pb-4">
+        <p class="text-xs text-amber-700 mb-3">
+          Diese Laute sind im Deutschen ungewöhnlich. Übe sie zuerst — der Rest ist einfach.
+        </p>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          @for (k of pronunciationKey(); track k.ar) {
+            <li class="bg-white border border-amber-100 rounded-lg p-2 flex items-start gap-2">
+              <span class="text-2xl font-bold text-amber-700 shrink-0" dir="rtl">{{ k.ar }}</span>
+              <div class="flex-1 min-w-0">
+                <div class="text-sm">
+                  <span class="font-bold">{{ k.translit }}</span>
+                  <span class="text-slate-600"> — {{ k.de }}</span>
+                </div>
+                @if (k.example) {
+                  <div class="text-xs text-slate-400 mt-0.5">Bsp.: {{ k.example }}</div>
+                }
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    </details>
+
+    @if (!selected()) {
+      <!-- شبكة الأقسام -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        @for (c of categories(); track c.id) {
+          <button
+            type="button"
+            (click)="open(c.id)"
+            class="rounded-xl border-2 border-slate-200 bg-white hover:border-emerald-400 hover:shadow-md transition-all p-4 text-center"
+          >
+            <div class="text-3xl mb-1">{{ c.emoji }}</div>
+            <div class="font-bold text-slate-800">{{ c.de }}</div>
+            <div class="text-xs text-slate-400 mt-0.5" dir="rtl">{{ c.ar }}</div>
+            <div class="text-xs text-slate-500 mt-1">{{ c.words.length }} Wörter</div>
+          </button>
+        }
+      </div>
+    } @else {
+      <!-- تفاصيل القسم -->
+      @let cat = selected()!;
+
+      <button
+        (click)="close()"
+        class="text-emerald-600 hover:underline text-sm mb-3 inline-block"
+      >← Zurück zu allen Kategorien</button>
+
+      <div class="rounded-xl bg-emerald-600 text-white p-4 mb-4 shadow-md">
+        <div class="flex items-center gap-3">
+          <div class="text-3xl">{{ cat.emoji }}</div>
+          <div>
+            <h3 class="text-xl font-bold">{{ cat.de }}</h3>
+            <p class="text-emerald-100 text-sm" dir="rtl">{{ cat.ar }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- بطاقات الكلمات -->
+      <ul class="space-y-3">
+        @for (w of cat.words; track w.de) {
+          <li class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+            <!-- الكلمة الألمانية -->
+            <h4 class="text-lg font-bold text-slate-800 mb-3">{{ w.de }}</h4>
+
+            <!-- الفصحى -->
+            <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3 mb-2">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-bold text-indigo-700">Hocharabisch (Fusha)</span>
+                <button (click)="speakAr(w.fusha.ar)"
+                        class="text-xs bg-indigo-600 text-white rounded-full px-3 py-1 hover:bg-indigo-700">🔊 Anhören</button>
+              </div>
+              <div class="flex items-baseline gap-3 flex-wrap">
+                <span class="text-2xl text-slate-800 font-bold" dir="rtl">{{ w.fusha.ar }}</span>
+                <span class="text-sm font-mono text-indigo-700" dir="ltr">{{ w.fusha.translit }}</span>
+              </div>
+            </div>
+
+            <!-- السورية -->
+            <div class="bg-rose-50 border border-rose-100 rounded-lg p-3">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-bold text-rose-700">Syrisch (Levantinisch)</span>
+                <button (click)="speakAr(w.syrian.ar)"
+                        class="text-xs bg-rose-600 text-white rounded-full px-3 py-1 hover:bg-rose-700">🔊 Anhören</button>
+              </div>
+              <div class="flex items-baseline gap-3 flex-wrap">
+                <span class="text-2xl text-slate-800 font-bold" dir="rtl">{{ w.syrian.ar }}</span>
+                <span class="text-sm font-mono text-rose-700" dir="ltr">{{ w.syrian.translit }}</span>
+              </div>
+            </div>
+
+            @if (w.note) {
+              <p class="text-xs text-slate-500 mt-2">💡 {{ w.note }}</p>
+            }
+          </li>
+        }
+      </ul>
+
+      <p class="text-xs text-slate-400 text-center mt-6">
+        ℹ️ Die Aussprache wird mit einer Standard-Arabisch-Stimme erzeugt.
+        Authentische syrische Aufnahmen werden später hinzugefügt.
+      </p>
+    }
+
+  }
+
+</section>

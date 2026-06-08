@@ -1,0 +1,117 @@
+{
+  "pronunciationKey": [
+    { "ar": "ح", "translit": "ḥ", "de": "Kräftiges, gehauchtes H aus der Kehle.", "example": "kein direktes Äquivalent im Deutschen" },
+    { "ar": "خ", "translit": "ch", "de": "Wie das deutsche ch in Bach.", "example": "Bach, Krach" },
+    { "ar": "ع", "translit": "ʿ", "de": "Tiefer Kehllaut — Stimme aus der Kehle pressen.", "example": "kein Äquivalent" },
+    { "ar": "غ", "translit": "gh", "de": "Wie ein gerolltes r im Französischen.", "example": "Paris (französisch)" },
+    { "ar": "ق", "translit": "q", "de": "Wie k, aber tiefer hinten im Mund.", "example": "≠ normales k" },
+    { "ar": "ش", "translit": "sch", "de": "Wie das deutsche sch.", "example": "Schule" },
+    { "ar": "ث", "translit": "th", "de": "Wie das englische th in think.", "example": "engl. think" },
+    { "ar": "ذ", "translit": "dh", "de": "Wie das englische th in this.", "example": "engl. this" },
+    { "ar": "ر", "translit": "r", "de": "Gerolltes R (Zungenspitze).", "example": "wie span./ital. r" },
+    { "ar": "ج", "translit": "dsch / j", "de": "Fusha: wie dsch (Dschungel). Syrisch: weich wie franz. j.", "example": "Dschungel" }
+  ],
+  "categories": [
+    {
+      "id": "begruessung",
+      "de": "Begrüßung",
+      "ar": "التحيّات",
+      "emoji": "👋",
+      "words": [
+        { "de": "Hallo",       "fusha": { "ar": "مَرْحَباً", "translit": "marḥaban" }, "syrian": { "ar": "مَرحبا", "translit": "marḥaba" } },
+        { "de": "Guten Morgen", "fusha": { "ar": "صَباحَ الخَيْر", "translit": "ṣabāḥa l-khair" }, "syrian": { "ar": "صباح الخير", "translit": "ṣabāḥ el-kheir" }, "note": "Antwort (Syrisch): ṣabāḥ en-nūr." },
+        { "de": "Guten Abend",  "fusha": { "ar": "مَساءَ الخَيْر", "translit": "masāʾa l-khair" }, "syrian": { "ar": "مَسا الخير", "translit": "masa l-kheir" } },
+        { "de": "Auf Wiedersehen", "fusha": { "ar": "مَعَ السَّلامَة", "translit": "maʿa s-salāma" }, "syrian": { "ar": "مع السلامة", "translit": "maʿ es-salāme" } },
+        { "de": "Willkommen",   "fusha": { "ar": "أَهْلاً وَسَهْلاً", "translit": "ahlan wa-sahlan" }, "syrian": { "ar": "أهلين", "translit": "ahlēn" } },
+        { "de": "Wie geht es dir?", "fusha": { "ar": "كَيْفَ حالُك؟", "translit": "kayfa ḥāluk?" }, "syrian": { "ar": "كيفك؟", "translit": "kīfak? (m) / kīfek? (w)" }, "note": "Syrisch: kīfak zu einem Mann, kīfek zu einer Frau." },
+        { "de": "Mir geht es gut", "fusha": { "ar": "أَنا بِخَيْر", "translit": "ana bi-khair" }, "syrian": { "ar": "أنا منيح", "translit": "ana mnīḥ (m) / mnīḥa (w)" } },
+        { "de": "Wie heißt du?", "fusha": { "ar": "ما اسْمُك؟", "translit": "ma smuk?" }, "syrian": { "ar": "شو اسمك؟", "translit": "schu smak? (m) / smek? (w)" } },
+        { "de": "Ich heiße …",  "fusha": { "ar": "اسْمي …", "translit": "ismī …" }, "syrian": { "ar": "اسمي …", "translit": "ismī …" } }
+      ]
+    },
+    {
+      "id": "hoeflich",
+      "de": "Höfliche Wörter",
+      "ar": "كلمات مهذّبة",
+      "emoji": "🙏",
+      "words": [
+        { "de": "Bitte",       "fusha": { "ar": "مِن فَضْلِك", "translit": "min faḍlik" }, "syrian": { "ar": "من فضلك", "translit": "min faḍlak" } },
+        { "de": "Danke",       "fusha": { "ar": "شُكْراً", "translit": "schukran" }, "syrian": { "ar": "شكراً / مشكور", "translit": "schukran / maschkūr" } },
+        { "de": "Vielen Dank", "fusha": { "ar": "شُكْراً جَزيلاً", "translit": "schukran dschazīlan" }, "syrian": { "ar": "كتير شكراً", "translit": "ktīr schukran" } },
+        { "de": "Entschuldigung", "fusha": { "ar": "آسِف", "translit": "āsif (m) / āsifa (w)" }, "syrian": { "ar": "آسف / عفواً", "translit": "āsif / ʿafwan" } },
+        { "de": "Ja",          "fusha": { "ar": "نَعَم", "translit": "naʿam" }, "syrian": { "ar": "آه / ايه", "translit": "ē / eh" } },
+        { "de": "Nein",        "fusha": { "ar": "لا", "translit": "lā" }, "syrian": { "ar": "لأ", "translit": "laʾ" } },
+        { "de": "Vielleicht",  "fusha": { "ar": "رُبَّما", "translit": "rubbamā" }, "syrian": { "ar": "يمكن", "translit": "yimkin" } },
+        { "de": "Kein Problem", "fusha": { "ar": "لا مُشْكِلَة", "translit": "lā muschkila" }, "syrian": { "ar": "ما في مشكلة", "translit": "mā fī muschkle" } }
+      ]
+    },
+    {
+      "id": "familie",
+      "de": "Familie",
+      "ar": "العائلة",
+      "emoji": "👨‍👩‍👧‍👦",
+      "words": [
+        { "de": "Familie",  "fusha": { "ar": "العائِلَة", "translit": "al-ʿāʾila" }, "syrian": { "ar": "العيلة", "translit": "el-ʿēle" } },
+        { "de": "Vater",    "fusha": { "ar": "أَب", "translit": "ab" }, "syrian": { "ar": "بابا / أبو", "translit": "bāba / abū" } },
+        { "de": "Mutter",   "fusha": { "ar": "أُم", "translit": "umm" }, "syrian": { "ar": "ماما / إمي", "translit": "māma / immī" } },
+        { "de": "Bruder",   "fusha": { "ar": "أَخ", "translit": "akh" }, "syrian": { "ar": "أخ", "translit": "akhū" } },
+        { "de": "Schwester", "fusha": { "ar": "أُخْت", "translit": "ukht" }, "syrian": { "ar": "أخت", "translit": "ekht" } },
+        { "de": "Sohn",     "fusha": { "ar": "اِبْن", "translit": "ibn" }, "syrian": { "ar": "ابن", "translit": "ibn" } },
+        { "de": "Tochter",  "fusha": { "ar": "بِنْت", "translit": "bint" }, "syrian": { "ar": "بنت", "translit": "bint" } },
+        { "de": "Kind",     "fusha": { "ar": "طِفْل", "translit": "ṭifl" }, "syrian": { "ar": "ولد / بنت", "translit": "walad / bint" } },
+        { "de": "Freund",   "fusha": { "ar": "صَديق", "translit": "ṣadīq" }, "syrian": { "ar": "صاحب", "translit": "ṣāḥeb" } }
+      ]
+    },
+    {
+      "id": "zahlen",
+      "de": "Zahlen 1–10",
+      "ar": "الأرقام",
+      "emoji": "🔢",
+      "words": [
+        { "de": "Eins",   "fusha": { "ar": "واحِد", "translit": "wāḥid" }, "syrian": { "ar": "واحد", "translit": "wāḥed" } },
+        { "de": "Zwei",   "fusha": { "ar": "اثْنان", "translit": "ithnān" }, "syrian": { "ar": "تنين", "translit": "tnēn" } },
+        { "de": "Drei",   "fusha": { "ar": "ثَلاثة", "translit": "thalātha" }, "syrian": { "ar": "تلاتة", "translit": "tlāte" } },
+        { "de": "Vier",   "fusha": { "ar": "أَرْبَعة", "translit": "arbaʿa" }, "syrian": { "ar": "أربعة", "translit": "arbaʿa" } },
+        { "de": "Fünf",   "fusha": { "ar": "خَمْسة", "translit": "khamsa" }, "syrian": { "ar": "خمسة", "translit": "khamse" } },
+        { "de": "Sechs",  "fusha": { "ar": "سِتّة", "translit": "sitta" }, "syrian": { "ar": "ستة", "translit": "sitte" } },
+        { "de": "Sieben", "fusha": { "ar": "سَبْعة", "translit": "sabʿa" }, "syrian": { "ar": "سبعة", "translit": "sabʿa" } },
+        { "de": "Acht",   "fusha": { "ar": "ثَمانية", "translit": "thamāniya" }, "syrian": { "ar": "تمانية", "translit": "tmāne" } },
+        { "de": "Neun",   "fusha": { "ar": "تِسْعة", "translit": "tisʿa" }, "syrian": { "ar": "تسعة", "translit": "tisʿa" } },
+        { "de": "Zehn",   "fusha": { "ar": "عَشَرة", "translit": "ʿaschara" }, "syrian": { "ar": "عشرة", "translit": "ʿaschra" } }
+      ]
+    },
+    {
+      "id": "essen",
+      "de": "Essen & Trinken",
+      "ar": "الطعام و الشراب",
+      "emoji": "🍽️",
+      "words": [
+        { "de": "Wasser",   "fusha": { "ar": "ماء", "translit": "māʾ" }, "syrian": { "ar": "مَيّ", "translit": "mayy" } },
+        { "de": "Brot",     "fusha": { "ar": "خُبْز", "translit": "chubz" }, "syrian": { "ar": "خبز", "translit": "chebez" } },
+        { "de": "Kaffee",   "fusha": { "ar": "قَهْوَة", "translit": "qahwa" }, "syrian": { "ar": "قهوة", "translit": "ʾahwe" }, "note": "Syrisch: das ق klingt oft wie ein glottal stop (ʾ)." },
+        { "de": "Tee",      "fusha": { "ar": "شاي", "translit": "schāy" }, "syrian": { "ar": "شاي", "translit": "schāy" } },
+        { "de": "Hunger",   "fusha": { "ar": "جُوع", "translit": "dschūʿ" }, "syrian": { "ar": "جوع", "translit": "jūʿ" } },
+        { "de": "Durst",    "fusha": { "ar": "عَطَش", "translit": "ʿaṭasch" }, "syrian": { "ar": "عطش", "translit": "ʿaṭasch" } },
+        { "de": "Essen (Verb)", "fusha": { "ar": "آكُل", "translit": "ākul" }, "syrian": { "ar": "بآكل", "translit": "bākul" } },
+        { "de": "Trinken (Verb)", "fusha": { "ar": "أَشْرَب", "translit": "aschrab" }, "syrian": { "ar": "بشرب", "translit": "bschrab" } },
+        { "de": "Lecker!", "fusha": { "ar": "لَذيذ", "translit": "ladhīdh" }, "syrian": { "ar": "طيب", "translit": "ṭayyeb" } }
+      ]
+    },
+    {
+      "id": "alltag",
+      "de": "Alltagssätze",
+      "ar": "عبارات يومية",
+      "emoji": "💬",
+      "words": [
+        { "de": "Wie viel kostet das?", "fusha": { "ar": "كَم هذا؟", "translit": "kam hādha?" }, "syrian": { "ar": "أَدَّيش؟", "translit": "addēsch?" } },
+        { "de": "Wo ist …?", "fusha": { "ar": "أَيْنَ …؟", "translit": "ayna …?" }, "syrian": { "ar": "وين …؟", "translit": "wēn …?" } },
+        { "de": "Ich verstehe nicht", "fusha": { "ar": "لا أَفْهَم", "translit": "lā afham" }, "syrian": { "ar": "ما فهمت", "translit": "mā fhimt" } },
+        { "de": "Sprich langsamer, bitte", "fusha": { "ar": "تَكَلَّم بِبُطْء، مِن فَضْلِك", "translit": "takallam bi-buṭʾ, min faḍlik" }, "syrian": { "ar": "احكي شوي شوي", "translit": "iḥkī schwayy schwayy" } },
+        { "de": "Heute",    "fusha": { "ar": "اليَوْم", "translit": "al-yawm" }, "syrian": { "ar": "اليوم", "translit": "el-yōm" } },
+        { "de": "Morgen",   "fusha": { "ar": "غَداً", "translit": "ghadan" }, "syrian": { "ar": "بُكرا", "translit": "bukra" } },
+        { "de": "Gestern",  "fusha": { "ar": "أَمْس", "translit": "ams" }, "syrian": { "ar": "مبارح", "translit": "mbāreḥ" } },
+        { "de": "Ich liebe dich", "fusha": { "ar": "أُحِبُّك", "translit": "uḥibbuk" }, "syrian": { "ar": "بحبّك", "translit": "bḥibbak (m) / bḥibbek (w)" } }
+      ]
+    }
+  ]
+}

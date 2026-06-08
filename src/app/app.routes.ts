@@ -166,6 +166,15 @@ export const routes: Routes = [
     title: 'Dictionary - Deutsch Learn',
   },
 
+  // 🆕 تعلم العربية: قسم لمتعلّمي العربية من الناطقين بالألمانية
+  {
+    path: 'learn-arabic',
+    loadComponent: () =>
+      import('./features/arabic/learn-arabic-page/learn-arabic-page')
+        .then(m => m.LearnArabicPage),
+    title: 'Arabisch lernen - Deutsch Learn',
+  },
+
   // 🆕 ذاكرة قاموسي: بطاقات قلب لكل الكلمات المبحوثة (ضمن Practice)
   {
     path: 'dictionary-memory',
