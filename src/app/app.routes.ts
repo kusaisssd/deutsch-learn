@@ -166,15 +166,15 @@ export const routes: Routes = [
     title: 'Dictionary - Deutsch Learn',
   },
 
-  // 🆕 Arabisch lernen — Kursübersicht (Phasen + Lektionen, locked progression)
+  // 🆕 Arabisch lernen — Pfad-Auswahl (Fusha / Syrisch)
   {
     path: 'learn-arabic',
     loadComponent: () =>
-      import('./features/arabic/arabic-overview-page/arabic-overview-page')
-        .then(m => m.ArabicOverviewPage),
+      import('./features/arabic/arabic-paths-page/arabic-paths-page')
+        .then(m => m.ArabicPathsPage),
     title: 'Arabisch lernen - Deutsch Learn',
   },
-  // Wortschatz-Bibliothek (المفردات المسطّحة)
+  // Wortschatz-Bibliothek (المفردات المسطّحة) — قبل :path لتجنّب الالتباس
   {
     path: 'learn-arabic/wortschatz',
     loadComponent: () =>
@@ -182,13 +182,21 @@ export const routes: Routes = [
         .then(m => m.LearnArabicPage),
     title: 'Wortschatz - Arabisch lernen',
   },
-  // مشغّل درس واحد
+  // Pfad-Übersicht (Szenarien nach Kategorien)
   {
-    path: 'learn-arabic/lektion/:lektionId',
+    path: 'learn-arabic/:path',
     loadComponent: () =>
-      import('./features/arabic/arabic-lektion-page/arabic-lektion-page')
-        .then(m => m.ArabicLektionPage),
-    title: 'Lektion - Arabisch lernen',
+      import('./features/arabic/arabic-path-dashboard-page/arabic-path-dashboard-page')
+        .then(m => m.ArabicPathDashboardPage),
+    title: 'Übersicht - Arabisch lernen',
+  },
+  // Szenario-Player
+  {
+    path: 'learn-arabic/:path/szenario/:id',
+    loadComponent: () =>
+      import('./features/arabic/arabic-scenario-page/arabic-scenario-page')
+        .then(m => m.ArabicScenarioPage),
+    title: 'Szenario - Arabisch lernen',
   },
 
   // 🆕 ذاكرة قاموسي: بطاقات قلب لكل الكلمات المبحوثة (ضمن Practice)

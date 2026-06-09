@@ -1,0 +1,77 @@
+<section class="max-w-3xl mx-auto">
+
+  <button (click)="switchPath()"
+          class="text-emerald-600 hover:underline text-sm mb-3">← Pfad wechseln</button>
+
+  @if (!loaded()) {
+    <div class="text-center py-12 text-slate-500">Lädt …</div>
+  } @else {
+
+    @let info = pathInfo();
+    <header class="rounded-xl text-white p-4 mb-5 shadow-md"
+            [class.bg-indigo-600]="info.color === 'indigo'"
+            [class.bg-rose-600]="info.color === 'rose'">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="text-3xl">{{ info.emoji }}</div>
+        <div>
+          <h2 class="text-xl font-bold">{{ info.name }}</h2>
+          <p class="text-sm opacity-90">Lerne durch echte Situationen</p>
+        </div>
+      </div>
+      @let s = stats();
+      <div class="flex items-center justify-between text-sm mb-1">
+        <span class="opacity-90">{{ s.total }} Szenarien</span>
+        <span class="font-semibold">{{ s.done }} / {{ s.total }} abgeschlossen</span>
+      </div>
+      <div class="h-2 bg-white/30 rounded-full overflow-hidden">
+        <div class="h-full bg-white transition-all duration-500"
+             [style.width.%]="s.total > 0 ? (s.done / s.total) * 100 : 0"></div>
+      </div>
+    </header>
+
+    <!-- Kategorien -->
+    @for (cat of categories(); track cat.id) {
+      @let scenarios = byCategory()[cat.id];
+      @if (scenarios && scenarios.length) {
+        <div class="mb-5">
+          <h3 class="text-base font-bold text-slate-800 mb-2">
+            {{ cat.emoji }} {{ cat.name }}
+          </h3>
+          <ul class="space-y-2">
+            @for (sc of scenarios; track sc.id) {
+              <li>
+                <a [routerLink]="['/learn-arabic', pathValue(), 'szenario', sc.id]"
+                   class="flex items-center gap-3 rounded-lg border p-3 transition-all hover:shadow-md bg-white"
+                   [class.border-green-300]="isDone(sc.id)"
+                   [class.bg-green-50]="isDone(sc.id)"
+                   [class.border-slate-200]="!isDone(sc.id)">
+                  <div class="text-2xl shrink-0">{{ sc.emoji }}</div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-0.5">
+                      <p class="font-medium text-slate-800">{{ sc.title }}</p>
+                      <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
+                            [class.bg-emerald-100]="sc.level === 1"
+                            [class.text-emerald-700]="sc.level === 1"
+                            [class.bg-amber-100]="sc.level === 2"
+                            [class.text-amber-700]="sc.level === 2"
+                            [class.bg-red-100]="sc.level === 3"
+                            [class.text-red-700]="sc.level === 3">Level {{ sc.level }}</span>
+                    </div>
+                    <p class="text-xs text-slate-500">{{ sc.context }}</p>
+                  </div>
+                  @if (isDone(sc.id)) {
+                    <span class="text-green-600 text-lg shrink-0">✓</span>
+                  } @else {
+                    <span class="text-emerald-500 text-lg shrink-0">→</span>
+                  }
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    }
+
+  }
+
+</section>

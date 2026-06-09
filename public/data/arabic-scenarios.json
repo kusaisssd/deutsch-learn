@@ -1,0 +1,524 @@
+{
+  "categories": [
+    { "id": "soziales", "name": "Soziales", "emoji": "👋" },
+    { "id": "essen", "name": "Essen & Trinken", "emoji": "🍽️" },
+    { "id": "reisen", "name": "Reisen & Wege", "emoji": "🧭" },
+    { "id": "gesundheit", "name": "Gesundheit", "emoji": "🩺" },
+    { "id": "arbeit", "name": "Arbeit", "emoji": "💼" }
+  ],
+  "scenarios": [
+
+    {
+      "id": "sich-vorstellen",
+      "emoji": "👋",
+      "title": "Sich vorstellen",
+      "categoryId": "soziales",
+      "context": "Du triffst eine neue Person und möchtest dich vorstellen.",
+      "level": 1,
+      "steps": [
+        { "kind": "intro",
+          "scenario": "Stell dir vor: Du bist in einem Café in Damaskus und triffst eine neue Person. Du möchtest dich vorstellen, ihren Namen erfahren und ein nettes erstes Gespräch führen.",
+          "goals": ["Begrüßen und vorstellen", "Nach Namen und Herkunft fragen", "Ein freundliches Gespräch starten"] },
+
+        { "kind": "vocab", "title": "Wichtige Wörter",
+          "items": [
+            { "fusha": { "ar": "مَرْحَباً", "translit": "marḥaban" }, "syrian": { "ar": "مَرحبا", "translit": "marḥaba" }, "de": "Hallo" },
+            { "fusha": { "ar": "اِسْمي", "translit": "ismī" }, "syrian": { "ar": "اسمي", "translit": "ismī" }, "de": "Ich heiße / mein Name", "note": "Im Syrischen identisch." },
+            { "fusha": { "ar": "ما اسْمُكَ؟", "translit": "ma smuka?" }, "syrian": { "ar": "شو اسمَك؟", "translit": "shū smak?" }, "de": "Wie heißt du?" },
+            { "fusha": { "ar": "كَيْفَ حالُكَ؟", "translit": "kayfa ḥāluk?" }, "syrian": { "ar": "كيفَك؟", "translit": "kīfak?" }, "de": "Wie geht es dir?" },
+            { "fusha": { "ar": "مِن أَيْنَ أَنتَ؟", "translit": "min ayna anta?" }, "syrian": { "ar": "من وين انت؟", "translit": "min wēn inta?" }, "de": "Woher kommst du?" },
+            { "fusha": { "ar": "تَشَرَّفْنا", "translit": "tasharrafnā" }, "syrian": { "ar": "تشرّفنا", "translit": "tsharrafnā" }, "de": "Freut mich (sehr förmlich auch: angenehm)" }
+          ] },
+
+        { "kind": "dialogue", "title": "Erstes Gespräch",
+          "speakers": ["A: Du", "B: Layla"],
+          "lines": [
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "مَرْحَباً، اسْمي ماكس.", "translit": "marḥaban, ismī Max." },
+              "syrian": { "ar": "مَرحبا، اسمي ماكس.", "translit": "marḥaba, ismī Max." },
+              "de": "Hallo, ich heiße Max." } },
+            { "speaker": 1, "sentence": {
+              "fusha": { "ar": "مَرْحَباً ماكس، تَشَرَّفْنا. أَنا لَيْلى.", "translit": "marḥaban Max, tasharrafnā. ana Layla." },
+              "syrian": { "ar": "مَرحبا ماكس، تشرّفنا. أنا ليلى.", "translit": "marḥaba Max, tsharrafnā. ana Layla." },
+              "de": "Hallo Max, freut mich. Ich bin Layla." } },
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "كَيْفَ حالُكِ يا لَيْلى؟", "translit": "kayfa ḥāluki yā Layla?" },
+              "syrian": { "ar": "كيفِك يا ليلى؟", "translit": "kīfik yā Layla?" },
+              "de": "Wie geht es dir, Layla?",
+              "note": "An eine Frau: ḥāluki / kīfik (Endung -i)." } },
+            { "speaker": 1, "sentence": {
+              "fusha": { "ar": "بِخَيْر، شُكْراً. وَأَنتَ؟", "translit": "bi-khair, shukran. wa-anta?" },
+              "syrian": { "ar": "منيحة، شكراً. وانت؟", "translit": "mnīḥa, shukran. winta?" },
+              "de": "Gut, danke. Und du?" } },
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "أَنا بِخَيْر أَيْضاً. مِن أَيْنَ أَنتِ؟", "translit": "ana bi-khair ayḍan. min ayna anti?" },
+              "syrian": { "ar": "أنا منيح كمان. من وين انتي؟", "translit": "ana mnīḥ kamān. min wēn inti?" },
+              "de": "Mir geht es auch gut. Woher kommst du?" } },
+            { "speaker": 1, "sentence": {
+              "fusha": { "ar": "أَنا مِن دِمَشْق.", "translit": "ana min Dimashq." },
+              "syrian": { "ar": "أنا من الشام.", "translit": "ana min ish-Shām." },
+              "de": "Ich komme aus Damaskus.",
+              "note": "Im Syrischen wird Damaskus oft الشام (ish-Shām) genannt." } }
+          ] },
+
+        { "kind": "translate", "prompt": "Wie sagt man auf Arabisch?",
+          "german": "Wie heißt du? (zu einem Mann)",
+          "options": [
+            { "fusha": { "ar": "ما اسْمُكَ؟", "translit": "ma smuka?" }, "syrian": { "ar": "شو اسمَك؟", "translit": "shū smak?" }, "de": "Wie heißt du?" },
+            { "fusha": { "ar": "كَيْفَ حالُكَ؟", "translit": "kayfa ḥāluk?" }, "syrian": { "ar": "كيفَك؟", "translit": "kīfak?" }, "de": "Wie geht es dir?" },
+            { "fusha": { "ar": "مِن أَيْنَ أَنتَ؟", "translit": "min ayna anta?" }, "syrian": { "ar": "من وين انت؟", "translit": "min wēn inta?" }, "de": "Woher kommst du?" }
+          ],
+          "correct": 0,
+          "explanation": "ما اسمك / شو اسمك = Wie ist dein Name. Die anderen fragen nach Befinden und Herkunft." },
+
+        { "kind": "respond",
+          "situation": "Layla begrüßt dich freundlich und sagt:",
+          "prompt": { "fusha": { "ar": "تَشَرَّفْنا!", "translit": "tasharrafnā!" }, "syrian": { "ar": "تشرّفنا!", "translit": "tsharrafnā!" }, "de": "Freut mich (kennenzulernen)!" },
+          "question": "Was antwortest du höflich?",
+          "options": [
+            { "fusha": { "ar": "تَشَرَّفْنا!", "translit": "tasharrafnā!" }, "syrian": { "ar": "تشرّفنا!", "translit": "tsharrafnā!" }, "de": "Freut mich auch!" },
+            { "fusha": { "ar": "مَعَ السَّلامَة.", "translit": "maʿa s-salāma." }, "syrian": { "ar": "مع السلامة.", "translit": "maʿ es-salāme." }, "de": "Auf Wiedersehen." },
+            { "fusha": { "ar": "لا أَفْهَم.", "translit": "lā afham." }, "syrian": { "ar": "ما فهمت.", "translit": "mā fhimt." }, "de": "Ich verstehe nicht." }
+          ],
+          "correct": 0,
+          "explanation": "Auf „freut mich“ antwortet man genauso — تشرّفنا (tasharrafnā) auf Arabisch ist beidseitig." },
+
+        { "kind": "fill", "prompt": "Vervollständige (Vorstellung):",
+          "before": { "ar": "مَرْحَباً، ___", "translit": "marḥaban, ___" },
+          "after": { "ar": "ماكس.", "translit": "Max." },
+          "options": [
+            { "ar": "اسْمي", "translit": "ismī" },
+            { "ar": "كَيْفَ", "translit": "kayfa" },
+            { "ar": "أَيْنَ", "translit": "ayna" }
+          ],
+          "correct": 0,
+          "de": "Hallo, mein Name ist Max.",
+          "explanation": "اسمي (ismī) = mein Name. Direkt + Eigenname." },
+
+        { "kind": "listen", "prompt": "Höre genau zu und beobachte die Schreibung:",
+          "sentence": {
+            "fusha": { "ar": "أَنا مِن أَلْمانيا.", "translit": "ana min Almāniyā." },
+            "syrian": { "ar": "أنا من ألمانيا.", "translit": "ana min Almānyā." },
+            "de": "Ich komme aus Deutschland." } },
+
+        { "kind": "recap", "title": "Du kannst dich jetzt vorstellen!",
+          "points": [
+            "Begrüßen mit marḥaba(n) und sich mit „ismī …“ vorstellen.",
+            "Nach Namen fragen: ma smuka? (Fusha) / shū smak? (Syrisch).",
+            "Nach Befinden fragen: kayfa ḥāluk? / kīfak?",
+            "Höfliche Antwort auf „freut mich“: ebenfalls تشرّفنا."
+          ] }
+      ]
+    },
+
+    {
+      "id": "im-restaurant",
+      "emoji": "🍽️",
+      "title": "Im Restaurant",
+      "categoryId": "essen",
+      "context": "Du gehst in ein Restaurant, schaust die Karte an und bestellst.",
+      "level": 1,
+      "steps": [
+        { "kind": "intro",
+          "scenario": "Du bist hungrig und betrittst ein kleines Restaurant in Aleppo. Der Kellner kommt zu dir und du möchtest etwas bestellen.",
+          "goals": ["Eine Karte anfordern", "Höflich bestellen", "Die Rechnung verlangen"] },
+
+        { "kind": "vocab", "title": "Wichtige Wörter & Sätze",
+          "items": [
+            { "fusha": { "ar": "قائِمَة الطَّعام", "translit": "qāʾimat aṭ-ṭaʿām" }, "syrian": { "ar": "المنيو", "translit": "el-menyū" }, "de": "Speisekarte", "note": "Syrisch übernimmt oft englische Wörter wie „Menu“." },
+            { "fusha": { "ar": "أُريد", "translit": "urīd" }, "syrian": { "ar": "بدّي", "translit": "biddī" }, "de": "Ich möchte / will" },
+            { "fusha": { "ar": "ماء", "translit": "māʾ" }, "syrian": { "ar": "مَيّ", "translit": "mayy" }, "de": "Wasser" },
+            { "fusha": { "ar": "الحِساب", "translit": "al-ḥisāb" }, "syrian": { "ar": "الحساب", "translit": "el-ḥsāb" }, "de": "die Rechnung" },
+            { "fusha": { "ar": "لَذيذ", "translit": "ladhīdh" }, "syrian": { "ar": "طيّب", "translit": "ṭayyeb" }, "de": "lecker" },
+            { "fusha": { "ar": "مِن فَضْلِك", "translit": "min faḍlik" }, "syrian": { "ar": "من فضلك", "translit": "min faḍlak" }, "de": "bitte (höflich)" }
+          ] },
+
+        { "kind": "dialogue", "title": "Bestellen",
+          "speakers": ["A: Kellner", "B: Du"],
+          "lines": [
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "أَهْلاً وَسَهْلاً! تَفَضَّل قائِمَة الطَّعام.", "translit": "ahlan wa sahlan! tafaḍḍal qāʾimat aṭ-ṭaʿām." },
+              "syrian": { "ar": "أهلاً وسهلاً! تفضّل المنيو.", "translit": "ahlan wa sahlan! tfaḍḍal el-menyū." },
+              "de": "Willkommen! Hier ist die Karte, bitte." } },
+            { "speaker": 1, "sentence": {
+              "fusha": { "ar": "شُكْراً. أُريد كَبَاباً وَأُرْزَّاً.", "translit": "shukran. urīd kabāban wa-aruzzan." },
+              "syrian": { "ar": "شكراً. بدّي كباب ورزّ.", "translit": "shukran. biddī kabāb w-rezz." },
+              "de": "Danke. Ich möchte Kebab und Reis." } },
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "وَماذا تَشْرَب؟", "translit": "wa-mādhā tashrab?" },
+              "syrian": { "ar": "وشو بتشرب؟", "translit": "w-shū btshrab?" },
+              "de": "Und was möchten Sie trinken?" } },
+            { "speaker": 1, "sentence": {
+              "fusha": { "ar": "ماءً، مِن فَضْلِك.", "translit": "māʾan, min faḍlik." },
+              "syrian": { "ar": "مَيّ، من فضلك.", "translit": "mayy, min faḍlak." },
+              "de": "Wasser bitte." } },
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "حاضِر!", "translit": "ḥāḍir!" },
+              "syrian": { "ar": "حاضر!", "translit": "ḥāḍer!" },
+              "de": "Wird gemacht!",
+              "note": "حاضر = wörtl. „bereit“, sehr alltäglich." } },
+            { "speaker": 1, "sentence": {
+              "fusha": { "ar": "بَعْدَ قَليل: الحِساب، مِن فَضْلِك.", "translit": "baʿda qalīl: al-ḥisāb, min faḍlik." },
+              "syrian": { "ar": "بعدين: الحساب، من فضلك.", "translit": "baʿdēn: el-ḥsāb, min faḍlak." },
+              "de": "(Später) Die Rechnung, bitte." } }
+          ] },
+
+        { "kind": "respond",
+          "situation": "Der Kellner fragt dich:",
+          "prompt": { "fusha": { "ar": "ماذا تُريد أَنْ تَشْرَب؟", "translit": "mādhā turīd an tashrab?" }, "syrian": { "ar": "شو بدّك تشرب؟", "translit": "shū biddak tshrab?" }, "de": "Was möchtest du trinken?" },
+          "question": "Wähle eine höfliche Bestellung von Wasser:",
+          "options": [
+            { "fusha": { "ar": "أُريد ماءً، مِن فَضْلِك.", "translit": "urīd māʾan, min faḍlik." }, "syrian": { "ar": "بدّي مَيّ، من فضلك.", "translit": "biddī mayy, min faḍlak." }, "de": "Ich möchte Wasser, bitte." },
+            { "fusha": { "ar": "أَيْنَ المَطْعَم؟", "translit": "ayna l-maṭʿam?" }, "syrian": { "ar": "وين المطعم؟", "translit": "wēn el-maṭʿam?" }, "de": "Wo ist das Restaurant?" },
+            { "fusha": { "ar": "الحِساب، مِن فَضْلِك.", "translit": "al-ḥisāb, min faḍlik." }, "syrian": { "ar": "الحساب، من فضلك.", "translit": "el-ḥsāb, min faḍlak." }, "de": "Die Rechnung, bitte." }
+          ],
+          "correct": 0,
+          "explanation": "Auf die Trinkfrage antwortet man mit „Ich möchte … bitte“: urīd / biddī + Getränk + min faḍlik." },
+
+        { "kind": "fill", "prompt": "Vervollständige die Bestellung:",
+          "before": { "ar": "___ كَباب", "translit": "___ kabāb" },
+          "after": { "ar": "مِن فَضْلِك.", "translit": "min faḍlik." },
+          "options": [
+            { "ar": "أُريد", "translit": "urīd" },
+            { "ar": "أَيْنَ", "translit": "ayna" },
+            { "ar": "كَيْفَ", "translit": "kayfa" }
+          ],
+          "correct": 0,
+          "de": "Ich möchte Kebab, bitte.",
+          "explanation": "أريد (Fusha) bedeutet „ich möchte/will“. Im Syrischen wäre es بدّي (biddī)." },
+
+        { "kind": "translate", "prompt": "Wie sagst du:",
+          "german": "Die Rechnung, bitte.",
+          "options": [
+            { "fusha": { "ar": "الحِساب، مِن فَضْلِك.", "translit": "al-ḥisāb, min faḍlik." }, "syrian": { "ar": "الحساب، من فضلك.", "translit": "el-ḥsāb, min faḍlak." }, "de": "Die Rechnung, bitte." },
+            { "fusha": { "ar": "اللَّحْم لَذيذ.", "translit": "al-laḥm ladhīdh." }, "syrian": { "ar": "اللحمة طيّبة.", "translit": "el-laḥme ṭayybe." }, "de": "Das Fleisch ist lecker." },
+            { "fusha": { "ar": "أُريد كَبَاباً.", "translit": "urīd kabāban." }, "syrian": { "ar": "بدّي كباب.", "translit": "biddī kabāb." }, "de": "Ich möchte Kebab." }
+          ],
+          "correct": 0,
+          "explanation": "الحساب (al-ḥisāb / el-ḥsāb) = die Rechnung. Mit „min faḍlik“ wird es höflich." },
+
+        { "kind": "listen", "prompt": "Höre und sage es laut nach:",
+          "sentence": {
+            "fusha": { "ar": "الطَّعام لَذيذ جِدّاً!", "translit": "aṭ-ṭaʿām ladhīdh jiddan!" },
+            "syrian": { "ar": "الأكل كتير طيّب!", "translit": "el-akel ktīr ṭayyeb!" },
+            "de": "Das Essen ist sehr lecker!" } },
+
+        { "kind": "recap", "title": "Du kannst jetzt im Restaurant bestellen!",
+          "points": [
+            "Karte holen: تفضّل المنيو / قائمة الطعام.",
+            "Bestellen mit أريد (Fusha) / بدّي (Syrisch) + Wunsch.",
+            "Höflich mit „min faḍlik“ abschließen.",
+            "Rechnung verlangen: الحساب من فضلك."
+          ] }
+      ]
+    },
+
+    {
+      "id": "weg-fragen",
+      "emoji": "🧭",
+      "title": "Nach dem Weg fragen",
+      "categoryId": "reisen",
+      "context": "Du bist neu in einer Stadt und brauchst eine Wegbeschreibung.",
+      "level": 2,
+      "steps": [
+        { "kind": "intro",
+          "scenario": "Du bist in Damaskus und suchst den Bahnhof. Du sprichst eine Person auf der Straße an und fragst nach dem Weg.",
+          "goals": ["Höflich ansprechen", "Nach Orten fragen (wo)", "Richtungen verstehen"] },
+
+        { "kind": "vocab", "title": "Wichtige Richtungswörter",
+          "items": [
+            { "fusha": { "ar": "عَفْواً", "translit": "ʿafwan" }, "syrian": { "ar": "عَفواً / لو سمحت", "translit": "ʿafwan / law samaḥt" }, "de": "Entschuldigung / bitte", "note": "Zum höflichen Ansprechen." },
+            { "fusha": { "ar": "أَيْنَ", "translit": "ayna" }, "syrian": { "ar": "وين", "translit": "wēn" }, "de": "wo" },
+            { "fusha": { "ar": "يَمين", "translit": "yamīn" }, "syrian": { "ar": "يمين", "translit": "yamīn" }, "de": "rechts" },
+            { "fusha": { "ar": "يَسار / شِمال", "translit": "yasār / shimāl" }, "syrian": { "ar": "شمال", "translit": "shmāl" }, "de": "links" },
+            { "fusha": { "ar": "مُسْتَقيم", "translit": "mustaqīm" }, "syrian": { "ar": "دُغري", "translit": "dughrī" }, "de": "geradeaus", "note": "dughrī ist sehr typisch im Levantinischen." },
+            { "fusha": { "ar": "بَعيد / قَريب", "translit": "baʿīd / qarīb" }, "syrian": { "ar": "بعيد / قريّب", "translit": "baʿīd / qarrīb" }, "de": "weit / nah" }
+          ] },
+
+        { "kind": "dialogue", "title": "Nach dem Bahnhof fragen",
+          "speakers": ["A: Du (Tourist)", "B: Passantin"],
+          "lines": [
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "عَفْواً، أَيْنَ المَحَطَّة؟", "translit": "ʿafwan, ayna l-maḥaṭṭa?" },
+              "syrian": { "ar": "لو سمحتي، وين المحطة؟", "translit": "law samaḥtī, wēn el-maḥaṭṭa?" },
+              "de": "Entschuldigung, wo ist der Bahnhof?" } },
+            { "speaker": 1, "sentence": {
+              "fusha": { "ar": "اِمْشِ مُسْتَقيماً، ثُمَّ يَميناً.", "translit": "imshi mustaqīman, thumma yamīnan." },
+              "syrian": { "ar": "روح دُغري، وبعدين يمين.", "translit": "rūḥ dughrī, w-baʿdēn yamīn." },
+              "de": "Geh geradeaus, dann rechts." } },
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "هَل هِيَ بَعيدَة؟", "translit": "hal hiya baʿīda?" },
+              "syrian": { "ar": "بعيدة؟", "translit": "baʿīde?" },
+              "de": "Ist es weit?" } },
+            { "speaker": 1, "sentence": {
+              "fusha": { "ar": "لا، قَريبَة. خَمْس دَقائِق.", "translit": "lā, qarība. khams daqāʾiq." },
+              "syrian": { "ar": "لأ، قريّبة. خمس دقايق.", "translit": "laʾ, qarrībe. khams daqāyeq." },
+              "de": "Nein, nah. Fünf Minuten." } },
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "شُكْراً جَزيلاً!", "translit": "shukran jazīlan!" },
+              "syrian": { "ar": "كتير شكراً!", "translit": "ktīr shukran!" },
+              "de": "Vielen Dank!" } }
+          ] },
+
+        { "kind": "respond",
+          "situation": "Du hast jemanden mit „Entschuldigung“ angesprochen. Wie fragst du als nächstes nach dem Café?",
+          "prompt": { "fusha": { "ar": "نَعَم؟", "translit": "naʿam?" }, "syrian": { "ar": "نعم؟", "translit": "naʿam?" }, "de": "Ja, bitte? (zuhörend)" },
+          "question": "Wähle die richtige Frage:",
+          "options": [
+            { "fusha": { "ar": "أَيْنَ المَقْهى؟", "translit": "ayna l-maqhā?" }, "syrian": { "ar": "وين القهوة؟", "translit": "wēn el-ʾahwe?" }, "de": "Wo ist das Café?" },
+            { "fusha": { "ar": "ما اسْمُك؟", "translit": "ma smuk?" }, "syrian": { "ar": "شو اسمك؟", "translit": "shū smak?" }, "de": "Wie heißt du?" },
+            { "fusha": { "ar": "كَم السّاعَة؟", "translit": "kam as-sāʿa?" }, "syrian": { "ar": "قدّيش الساعة؟", "translit": "addēsh es-sāʿa?" }, "de": "Wie spät ist es?" }
+          ],
+          "correct": 0,
+          "explanation": "Wo-Frage = أين / وين + Substantiv mit Artikel. Beachte: قهوة kann „Kaffee“ oder „Café“ heißen." },
+
+        { "kind": "fill", "prompt": "Vervollständige die Wegbeschreibung:",
+          "before": { "ar": "روح دُغري، وبعدين", "translit": "rūḥ dughrī, w-baʿdēn" },
+          "after": { "ar": ".", "translit": "." },
+          "options": [
+            { "ar": "شمال", "translit": "shmāl" },
+            { "ar": "بعيد", "translit": "baʿīd" },
+            { "ar": "شكراً", "translit": "shukran" }
+          ],
+          "correct": 0,
+          "de": "Geh geradeaus, dann links.",
+          "explanation": "شمال (Syrisch) = links. yamīn ist rechts." },
+
+        { "kind": "translate", "prompt": "Wie sagst du auf Arabisch:",
+          "german": "Ist es weit?",
+          "options": [
+            { "fusha": { "ar": "هَل هِيَ بَعيدَة؟", "translit": "hal hiya baʿīda?" }, "syrian": { "ar": "بعيدة؟", "translit": "baʿīde?" }, "de": "Ist es weit?" },
+            { "fusha": { "ar": "ما اسْمُك؟", "translit": "ma smuk?" }, "syrian": { "ar": "شو اسمك؟", "translit": "shū smak?" }, "de": "Wie heißt du?" },
+            { "fusha": { "ar": "أَيْنَ السّوق؟", "translit": "ayna s-sūq?" }, "syrian": { "ar": "وين السوق؟", "translit": "wēn es-sūq?" }, "de": "Wo ist der Markt?" }
+          ],
+          "correct": 0,
+          "explanation": "بعيدة (baʿīda) ist die weibliche Form (die Stadt/der Bahnhof ist weiblich behandelt durch المحطة)." },
+
+        { "kind": "listen", "prompt": "Höre eine kurze Wegbeschreibung:",
+          "sentence": {
+            "fusha": { "ar": "اِمْشِ مُسْتَقيماً ثُمَّ يَساراً عِنْدَ التَّقَاطُع.", "translit": "imshi mustaqīman thumma yasāran ʿinda t-taqāṭuʿ." },
+            "syrian": { "ar": "روح دُغري وبعدين شمال عند المفرق.", "translit": "rūḥ dughrī w-baʿdēn shmāl ʿand el-mafraq." },
+            "de": "Geh geradeaus, dann links an der Kreuzung." } },
+
+        { "kind": "recap", "title": "Du findest deinen Weg!",
+          "points": [
+            "Höflich ansprechen: عفواً / لو سمحت.",
+            "Wo-Frage: أين … (Fusha) / وين … (Syrisch).",
+            "Richtungen: مستقيم/دغري (geradeaus), يمين (rechts), شمال (links).",
+            "Bedanken: شكراً جزيلاً / كتير شكراً."
+          ] }
+      ]
+    },
+
+    {
+      "id": "beim-arzt",
+      "emoji": "🩺",
+      "title": "Beim Arzt",
+      "categoryId": "gesundheit",
+      "context": "Du fühlst dich krank und gehst zum Arzt. Beschreibe deine Beschwerden.",
+      "level": 2,
+      "steps": [
+        { "kind": "intro",
+          "scenario": "Du bist erkältet und hast Halsschmerzen. Du gehst zum Arzt und beschreibst deine Beschwerden.",
+          "goals": ["Beschwerden beschreiben (Schmerzen)", "Auf Fragen des Arztes antworten", "Anweisungen verstehen"] },
+
+        { "kind": "vocab", "title": "Gesundheits-Wortschatz",
+          "items": [
+            { "fusha": { "ar": "أَنا مَريض", "translit": "ana marīḍ" }, "syrian": { "ar": "أنا مريض", "translit": "ana marīḍ" }, "de": "Ich bin krank (m.)" },
+            { "fusha": { "ar": "يُؤلِمُني …", "translit": "yuʾlimunī …" }, "syrian": { "ar": "عم يوجعني …", "translit": "ʿam yūjaʿnī …" }, "de": "… tut mir weh" },
+            { "fusha": { "ar": "رَأس", "translit": "raʾs" }, "syrian": { "ar": "راس", "translit": "rās" }, "de": "Kopf" },
+            { "fusha": { "ar": "حَلْق", "translit": "ḥalq" }, "syrian": { "ar": "زور", "translit": "zōr" }, "de": "Hals", "note": "Im Syrischen sagt man oft zōr (Hals/Rachen)." },
+            { "fusha": { "ar": "حَرارَة / حُمَّى", "translit": "ḥarāra / ḥummā" }, "syrian": { "ar": "حرارة / سخونة", "translit": "ḥarāra / sukhūne" }, "de": "Fieber" },
+            { "fusha": { "ar": "دَواء", "translit": "dawāʾ" }, "syrian": { "ar": "دوا", "translit": "dawa" }, "de": "Medikament" },
+            { "fusha": { "ar": "مُنذُ يَومين", "translit": "mundhu yawmayn" }, "syrian": { "ar": "من يومين", "translit": "min yōmēn" }, "de": "seit zwei Tagen" }
+          ] },
+
+        { "kind": "dialogue", "title": "Sprechstunde",
+          "speakers": ["A: Arzt", "B: Patient"],
+          "lines": [
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "ما الَّذي يُؤلِمُك؟", "translit": "mā lladhī yuʾlimuk?" },
+              "syrian": { "ar": "شو عم يوجعك؟", "translit": "shū ʿam yūjaʿak?" },
+              "de": "Was tut Ihnen weh?" } },
+            { "speaker": 1, "sentence": {
+              "fusha": { "ar": "يُؤلِمُني حَلْقي وَعِنْدي حَرارَة.", "translit": "yuʾlimunī ḥalqī wa-ʿindī ḥarāra." },
+              "syrian": { "ar": "زوري عم يوجعني وعندي حرارة.", "translit": "zōrī ʿam yūjaʿnī w-ʿindī ḥarāra." },
+              "de": "Mein Hals tut mir weh und ich habe Fieber." } },
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "مُنذُ مَتى؟", "translit": "mundhu matā?" },
+              "syrian": { "ar": "من إيمتى؟", "translit": "min ēmtā?" },
+              "de": "Seit wann?" } },
+            { "speaker": 1, "sentence": {
+              "fusha": { "ar": "مُنذُ يَومين.", "translit": "mundhu yawmayn." },
+              "syrian": { "ar": "من يومين.", "translit": "min yōmēn." },
+              "de": "Seit zwei Tagen." } },
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "خُذ هذا الدَّواء ثَلاث مَرّات في اليَوم.", "translit": "khudh hādhā d-dawāʾ thalāth marrāt fī l-yawm." },
+              "syrian": { "ar": "خود هالدوا تلت مرات بالنهار.", "translit": "khōd hal-dawa tlit marrāt bin-nhār." },
+              "de": "Nehmen Sie dieses Medikament drei Mal am Tag." } },
+            { "speaker": 1, "sentence": {
+              "fusha": { "ar": "شُكْراً يا دُكْتور.", "translit": "shukran yā duktūr." },
+              "syrian": { "ar": "شكراً يا دكتور.", "translit": "shukran yā doktōr." },
+              "de": "Danke, Herr Doktor." } }
+          ] },
+
+        { "kind": "respond",
+          "situation": "Der Arzt fragt dich:",
+          "prompt": { "fusha": { "ar": "ما الَّذي يُؤلِمُك؟", "translit": "mā lladhī yuʾlimuk?" }, "syrian": { "ar": "شو عم يوجعك؟", "translit": "shū ʿam yūjaʿak?" }, "de": "Was tut Ihnen weh?" },
+          "question": "Du hast Kopfschmerzen. Was sagst du?",
+          "options": [
+            { "fusha": { "ar": "يُؤلِمُني رَأسي.", "translit": "yuʾlimunī raʾsī." }, "syrian": { "ar": "راسي عم يوجعني.", "translit": "rāsī ʿam yūjaʿnī." }, "de": "Mein Kopf tut weh." },
+            { "fusha": { "ar": "أَنا جائِع.", "translit": "ana jāʾiʿ." }, "syrian": { "ar": "أنا جوعان.", "translit": "ana jūʿān." }, "de": "Ich bin hungrig." },
+            { "fusha": { "ar": "أُحِبُّ القَهْوَة.", "translit": "uḥibbu l-qahwa." }, "syrian": { "ar": "بحبّ القهوة.", "translit": "bḥibb el-ʾahwe." }, "de": "Ich mag Kaffee." }
+          ],
+          "correct": 0,
+          "explanation": "„Mein Kopf tut mir weh“ — beachte das ـي/سي für „mein“. Die anderen passen nicht zum Kontext beim Arzt." },
+
+        { "kind": "fill", "prompt": "Vervollständige (deine Beschwerden):",
+          "before": { "ar": "عندي", "translit": "ʿindī" },
+          "after": { "ar": "من يومين.", "translit": "min yōmēn." },
+          "options": [
+            { "ar": "حرارة", "translit": "ḥarāra" },
+            { "ar": "سيارة", "translit": "sayyāra" },
+            { "ar": "كتاب", "translit": "ktāb" }
+          ],
+          "correct": 0,
+          "de": "Ich habe seit zwei Tagen Fieber.",
+          "explanation": "حرارة (ḥarāra) = Fieber. ʿindī … min yōmēn = „Ich habe … seit zwei Tagen“." },
+
+        { "kind": "translate", "prompt": "Wie sagst du:",
+          "german": "Mein Hals tut mir weh.",
+          "options": [
+            { "fusha": { "ar": "يُؤلِمُني حَلْقي.", "translit": "yuʾlimunī ḥalqī." }, "syrian": { "ar": "زوري عم يوجعني.", "translit": "zōrī ʿam yūjaʿnī." }, "de": "Mein Hals tut mir weh." },
+            { "fusha": { "ar": "أَنا تَعْبان.", "translit": "ana taʿbān." }, "syrian": { "ar": "أنا تعبان.", "translit": "ana taʿbān." }, "de": "Ich bin müde." },
+            { "fusha": { "ar": "ما عِنْدي وَقْت.", "translit": "mā ʿindī waqt." }, "syrian": { "ar": "ما عندي وقت.", "translit": "mā ʿindī waʾt." }, "de": "Ich habe keine Zeit." }
+          ],
+          "correct": 0,
+          "explanation": "Im Syrischen ist „zōr“ häufig für „Hals/Rachen“. ʿam yūjaʿnī = es schmerzt mich gerade." },
+
+        { "kind": "listen", "prompt": "Höre eine Anweisung des Arztes:",
+          "sentence": {
+            "fusha": { "ar": "اِسْتَرِح في البَيْت وَاشْرَب كَثيراً مِن الماء.", "translit": "istariḥ fi l-bayt wa-shrab kathīran min al-māʾ." },
+            "syrian": { "ar": "اِرتاح بالبيت واشرب كتير ميّ.", "translit": "irtāḥ bil-bēt w-ishrab ktīr mayy." },
+            "de": "Ruh dich zu Hause aus und trinke viel Wasser." } },
+
+        { "kind": "recap", "title": "Du kannst zum Arzt gehen!",
+          "points": [
+            "Beschwerden ausdrücken: يؤلمني … / … عم يوجعني.",
+            "Körperteile: راس (Kopf), زور (Hals), بطن (Bauch).",
+            "„Seit wann“ verstehen: من إيمتى.",
+            "Anweisungen folgen: خود الدوا / خذ هذا الدواء."
+          ] }
+      ]
+    },
+
+    {
+      "id": "vorstellungsgespraech",
+      "emoji": "💼",
+      "title": "Vorstellungsgespräch",
+      "categoryId": "arbeit",
+      "context": "Du bewirbst dich auf eine Stelle und gehst zum Vorstellungsgespräch.",
+      "level": 3,
+      "steps": [
+        { "kind": "intro",
+          "scenario": "Du bewirbst dich bei einer Firma in Beirut. Im Gespräch musst du dich vorstellen, deine Erfahrung erklären und Fragen beantworten.",
+          "goals": ["Deinen Werdegang erklären", "Sprachen und Fähigkeiten nennen", "Höflich Fragen stellen und beantworten"] },
+
+        { "kind": "vocab", "title": "Berufs-Wortschatz",
+          "items": [
+            { "fusha": { "ar": "العَمَل", "translit": "al-ʿamal" }, "syrian": { "ar": "الشغل", "translit": "esh-shughl" }, "de": "die Arbeit" },
+            { "fusha": { "ar": "خِبْرَة", "translit": "khibra" }, "syrian": { "ar": "خبرة", "translit": "khibra" }, "de": "Erfahrung" },
+            { "fusha": { "ar": "أَتَكَلَّم", "translit": "atakallam" }, "syrian": { "ar": "بحكي", "translit": "biḥkī" }, "de": "ich spreche / rede" },
+            { "fusha": { "ar": "لُغات", "translit": "lughāt" }, "syrian": { "ar": "لغات", "translit": "lughāt" }, "de": "Sprachen" },
+            { "fusha": { "ar": "أَسْتَطيع", "translit": "astaṭīʿ" }, "syrian": { "ar": "بقدر", "translit": "biʾdar" }, "de": "ich kann" },
+            { "fusha": { "ar": "عَمِلْتُ", "translit": "ʿamiltu" }, "syrian": { "ar": "اشتغلت", "translit": "ishtaghalt" }, "de": "ich habe gearbeitet" },
+            { "fusha": { "ar": "سَنَوات", "translit": "sanawāt" }, "syrian": { "ar": "سنين", "translit": "snīn" }, "de": "Jahre" }
+          ] },
+
+        { "kind": "dialogue", "title": "Das Gespräch",
+          "speakers": ["A: Interviewerin", "B: Du"],
+          "lines": [
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "أَهْلاً وَسَهْلاً. عَرِّفْنا عَن نَفْسِك.", "translit": "ahlan wa sahlan. ʿarrifnā ʿan nafsik." },
+              "syrian": { "ar": "أهلاً وسهلاً. عرّفنا عن حالك.", "translit": "ahlan wa sahlan. ʿarrifna ʿan ḥālak." },
+              "de": "Willkommen. Stellen Sie sich vor." } },
+            { "speaker": 1, "sentence": {
+              "fusha": { "ar": "اسْمي ماكس، أَنا مِن أَلْمانيا. عَمِلْتُ كَمُهَنْدِس بَرامِج خَمْس سَنَوات.", "translit": "ismī Max, ana min Almāniyā. ʿamiltu ka-muhandis barāmij khams sanawāt." },
+              "syrian": { "ar": "اسمي ماكس، أنا من ألمانيا. اشتغلت مهندس برامج خمس سنين.", "translit": "ismī Max, ana min Almānyā. ishtaghalt muhandis barāmij khams snīn." },
+              "de": "Ich heiße Max, komme aus Deutschland. Ich habe fünf Jahre als Softwareentwickler gearbeitet." } },
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "أَيَّ لُغات تَتَكَلَّم؟", "translit": "ayya lughāt tatakallam?" },
+              "syrian": { "ar": "شو لغات بتحكي؟", "translit": "shū lughāt biḥkī?" },
+              "de": "Welche Sprachen sprechen Sie?" } },
+            { "speaker": 1, "sentence": {
+              "fusha": { "ar": "أَتَكَلَّم الأَلْمانيَّة وَالإِنْكِليزيَّة، وَأَتَعَلَّم العَرَبيَّة.", "translit": "atakallam al-almāniyya wa-l-inkilīziyya, wa-ataʿallam al-ʿarabiyya." },
+              "syrian": { "ar": "بحكي ألماني وإنكليزي، وعم اتعلّم عربي.", "translit": "biḥkī almānī w-inkilīzī, w-ʿam atʿallam ʿarabī." },
+              "de": "Ich spreche Deutsch und Englisch, und ich lerne Arabisch." } },
+            { "speaker": 0, "sentence": {
+              "fusha": { "ar": "هَل لَدَيْك أَسْئِلَة؟", "translit": "hal ladayka asʾila?" },
+              "syrian": { "ar": "عندك أسئلة؟", "translit": "ʿindak asʾile?" },
+              "de": "Haben Sie Fragen?" } },
+            { "speaker": 1, "sentence": {
+              "fusha": { "ar": "نَعَم، مَتى تَبْدَأ الوَظيفَة؟", "translit": "naʿam, matā tabdaʾ al-waẓīfa?" },
+              "syrian": { "ar": "أيوا، إيمتى بتبلّش الوظيفة؟", "translit": "ēwa, ēmtā btballish el-waẓīfe?" },
+              "de": "Ja — wann beginnt die Stelle?" } }
+          ] },
+
+        { "kind": "respond",
+          "situation": "Die Interviewerin fragt nach deinen Sprachen:",
+          "prompt": { "fusha": { "ar": "أَيَّ لُغات تَتَكَلَّم؟", "translit": "ayya lughāt tatakallam?" }, "syrian": { "ar": "شو لغات بتحكي؟", "translit": "shū lughāt biḥkī?" }, "de": "Welche Sprachen sprechen Sie?" },
+          "question": "Wie antwortest du, dass du Deutsch und Englisch sprichst?",
+          "options": [
+            { "fusha": { "ar": "أَتَكَلَّم الأَلْمانيَّة وَالإِنْكِليزيَّة.", "translit": "atakallam al-almāniyya wa-l-inkilīziyya." }, "syrian": { "ar": "بحكي ألماني وإنكليزي.", "translit": "biḥkī almānī w-inkilīzī." }, "de": "Ich spreche Deutsch und Englisch." },
+            { "fusha": { "ar": "عَمِلْتُ في بَيْروت.", "translit": "ʿamiltu fī Bayrūt." }, "syrian": { "ar": "اشتغلت ببيروت.", "translit": "ishtaghalt b-Bayrūt." }, "de": "Ich habe in Beirut gearbeitet." },
+            { "fusha": { "ar": "أَنا مُهَنْدِس.", "translit": "ana muhandis." }, "syrian": { "ar": "أنا مهندس.", "translit": "ana muhandis." }, "de": "Ich bin Ingenieur." }
+          ],
+          "correct": 0,
+          "explanation": "Direkt auf die Frage antworten: أتكلّم (Fusha) / بحكي (Syrisch) + Sprache(n). „wa-“ / „w-“ verbindet zwei Sprachen." },
+
+        { "kind": "fill", "prompt": "Vervollständige (deine Erfahrung):",
+          "before": { "ar": "اشتغلت خمس", "translit": "ishtaghalt khams" },
+          "after": { "ar": "بألمانيا.", "translit": "b-Almānyā." },
+          "options": [
+            { "ar": "سنين", "translit": "snīn" },
+            { "ar": "ساعات", "translit": "sāʿāt" },
+            { "ar": "قهوة", "translit": "ʾahwe" }
+          ],
+          "correct": 0,
+          "de": "Ich habe fünf Jahre in Deutschland gearbeitet.",
+          "explanation": "Zeit-Angabe: Zahl + Plural-Substantiv. سنين (Syrisch) = Jahre, ساعات = Stunden." },
+
+        { "kind": "translate", "prompt": "Wie sagst du im Vorstellungsgespräch:",
+          "german": "Ich kann (das).",
+          "options": [
+            { "fusha": { "ar": "أَسْتَطيع.", "translit": "astaṭīʿ." }, "syrian": { "ar": "بقدر.", "translit": "biʾdar." }, "de": "Ich kann." },
+            { "fusha": { "ar": "لا أَعْرِف.", "translit": "lā aʿrif." }, "syrian": { "ar": "ما بعرف.", "translit": "mā baʿrif." }, "de": "Ich weiß nicht." },
+            { "fusha": { "ar": "أُحِبّ.", "translit": "uḥibb." }, "syrian": { "ar": "بحبّ.", "translit": "bḥibb." }, "de": "Ich mag / liebe." }
+          ],
+          "correct": 0,
+          "explanation": "أستطيع / بقدر = „können“ — Fähigkeit ausdrücken. Sehr wichtig im Berufskontext." },
+
+        { "kind": "respond",
+          "situation": "Am Ende des Gesprächs:",
+          "prompt": { "fusha": { "ar": "هَل لَدَيْك أَسْئِلَة؟", "translit": "hal ladayka asʾila?" }, "syrian": { "ar": "عندك أسئلة؟", "translit": "ʿindak asʾile?" }, "de": "Haben Sie Fragen?" },
+          "question": "Eine gute höfliche Frage:",
+          "options": [
+            { "fusha": { "ar": "مَتى تَبْدَأ الوَظيفَة؟", "translit": "matā tabdaʾ al-waẓīfa?" }, "syrian": { "ar": "إيمتى بتبلّش الوظيفة؟", "translit": "ēmtā btballish el-waẓīfe?" }, "de": "Wann beginnt die Stelle?" },
+            { "fusha": { "ar": "أَيْنَ المَطْعَم؟", "translit": "ayna l-maṭʿam?" }, "syrian": { "ar": "وين المطعم؟", "translit": "wēn el-maṭʿam?" }, "de": "Wo ist das Restaurant?" },
+            { "fusha": { "ar": "كَيْفَ الطَّقْس؟", "translit": "kayfa ṭ-ṭaqs?" }, "syrian": { "ar": "كيف الطقس؟", "translit": "kīf eṭ-ṭaʾs?" }, "de": "Wie ist das Wetter?" }
+          ],
+          "correct": 0,
+          "explanation": "Im Beruf ist „Wann beginnt die Stelle?“ eine relevante Frage. Die anderen passen nicht zum Kontext." },
+
+        { "kind": "recap", "title": "Du beherrschst das Vorstellungsgespräch!",
+          "points": [
+            "Werdegang erklären: اشتغلت / عملتُ + Beruf + Zeitraum.",
+            "Sprachen nennen: بحكي / أتكلّم + Sprache.",
+            "Können ausdrücken: بقدر / أستطيع.",
+            "Höfliche Frage stellen: إيمتى تبلّش …؟ (Wann beginnt …?)."
+          ] }
+      ]
+    }
+
+  ]
+}
