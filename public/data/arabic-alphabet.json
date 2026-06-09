@@ -1,0 +1,368 @@
+{
+  "letters": [
+    {
+      "id": "alif", "letter": "ا", "name": "Alif", "arabicName": "أَلِف", "position": 1,
+      "fushaSound": "ā / a", "syrianSound": "ā / a",
+      "germanHint": "Langes A wie in „Vater“. Trägt am Wortanfang oft einen Hilfsvokal (أَ، إِ، أُ).",
+      "examples": [
+        { "fusha": { "ar": "أَب", "translit": "ab" }, "syrian": { "ar": "أَب", "translit": "ab" }, "de": "Vater" },
+        { "fusha": { "ar": "بَاب", "translit": "bāb" }, "syrian": { "ar": "بَاب", "translit": "bāb" }, "de": "Tür" },
+        { "fusha": { "ar": "ماء", "translit": "māʾ" }, "syrian": { "ar": "مَيّ", "translit": "mayy" }, "de": "Wasser" },
+        { "fusha": { "ar": "سَماء", "translit": "samāʾ" }, "syrian": { "ar": "سَما", "translit": "sama" }, "de": "Himmel" },
+        { "fusha": { "ar": "أَخ", "translit": "akh" }, "syrian": { "ar": "أَخ", "translit": "akh" }, "de": "Bruder" },
+        { "fusha": { "ar": "يَد", "translit": "yad" }, "syrian": { "ar": "إيد", "translit": "īd" }, "de": "Hand" }
+      ]
+    },
+    {
+      "id": "ba", "letter": "ب", "name": "Bā", "arabicName": "باء", "position": 2,
+      "fushaSound": "b", "syrianSound": "b",
+      "germanHint": "Wie das deutsche B (Buch). Hat einen Punkt UNTER dem Buchstaben.",
+      "examples": [
+        { "fusha": { "ar": "بَيْت", "translit": "bait" }, "syrian": { "ar": "بيت", "translit": "bēt" }, "de": "Haus" },
+        { "fusha": { "ar": "كِتَاب", "translit": "kitāb" }, "syrian": { "ar": "كتاب", "translit": "ktāb" }, "de": "Buch" },
+        { "fusha": { "ar": "قَلْب", "translit": "qalb" }, "syrian": { "ar": "قلب", "translit": "ʾalb" }, "de": "Herz" },
+        { "fusha": { "ar": "بَحْر", "translit": "baḥr" }, "syrian": { "ar": "بحر", "translit": "baḥr" }, "de": "Meer" },
+        { "fusha": { "ar": "بِنْت", "translit": "bint" }, "syrian": { "ar": "بنت", "translit": "bint" }, "de": "Mädchen" },
+        { "fusha": { "ar": "حَبيب", "translit": "ḥabīb" }, "syrian": { "ar": "حبيب", "translit": "ḥabīb" }, "de": "Geliebter" }
+      ]
+    },
+    {
+      "id": "ta", "letter": "ت", "name": "Tā", "arabicName": "تاء", "position": 3,
+      "fushaSound": "t", "syrianSound": "t",
+      "germanHint": "Wie das deutsche T (Tisch). Hat zwei Punkte OBEN.",
+      "examples": [
+        { "fusha": { "ar": "تُفّاحَة", "translit": "tuffāḥa" }, "syrian": { "ar": "تفاحة", "translit": "tiffāḥa" }, "de": "Apfel" },
+        { "fusha": { "ar": "بَيْت", "translit": "bait" }, "syrian": { "ar": "بيت", "translit": "bēt" }, "de": "Haus" },
+        { "fusha": { "ar": "تِينة", "translit": "tīna" }, "syrian": { "ar": "تينة", "translit": "tīne" }, "de": "Feige" },
+        { "fusha": { "ar": "تَاريخ", "translit": "tārīkh" }, "syrian": { "ar": "تاريخ", "translit": "tārīkh" }, "de": "Geschichte / Datum" },
+        { "fusha": { "ar": "بِنْت", "translit": "bint" }, "syrian": { "ar": "بنت", "translit": "bint" }, "de": "Mädchen" },
+        { "fusha": { "ar": "مَتى", "translit": "matā" }, "syrian": { "ar": "إيمتى", "translit": "ēmtā" }, "de": "wann" }
+      ]
+    },
+    {
+      "id": "tha", "letter": "ث", "name": "Thā", "arabicName": "ثاء", "position": 4,
+      "fushaSound": "th (wie engl. think)", "syrianSound": "t (oft ersetzt durch ت)",
+      "germanHint": "In der Fusha wie engl. „th“ in „think“. Im Syrischen wird es meist als „t“ gesprochen.",
+      "examples": [
+        { "fusha": { "ar": "ثَلاثَة", "translit": "thalātha" }, "syrian": { "ar": "تلاتة", "translit": "tlāte" }, "de": "drei" },
+        { "fusha": { "ar": "ثَلْج", "translit": "thalj" }, "syrian": { "ar": "تَلج", "translit": "talj" }, "de": "Schnee / Eis" },
+        { "fusha": { "ar": "كَثير", "translit": "kathīr" }, "syrian": { "ar": "كتير", "translit": "ktīr" }, "de": "viel" },
+        { "fusha": { "ar": "ثَوْب", "translit": "thaub" }, "syrian": { "ar": "توب", "translit": "tōb" }, "de": "Kleid / Stoff" },
+        { "fusha": { "ar": "مَثَل", "translit": "mathal" }, "syrian": { "ar": "مَتَل", "translit": "matal" }, "de": "Sprichwort" },
+        { "fusha": { "ar": "حَديث", "translit": "ḥadīth" }, "syrian": { "ar": "حَكي", "translit": "ḥaki" }, "de": "Gespräch / Rede" }
+      ]
+    },
+    {
+      "id": "jim", "letter": "ج", "name": "Jīm", "arabicName": "جيم", "position": 5,
+      "fushaSound": "dsch (wie Dschungel)", "syrianSound": "j (weich, wie franz. j)",
+      "germanHint": "Fusha: wie „dsch“ (Dschungel). Syrisch: weich wie das französische j (jour).",
+      "examples": [
+        { "fusha": { "ar": "جَمَل", "translit": "jamal" }, "syrian": { "ar": "جمل", "translit": "jamal" }, "de": "Kamel" },
+        { "fusha": { "ar": "جَبَل", "translit": "jabal" }, "syrian": { "ar": "جبل", "translit": "jabal" }, "de": "Berg" },
+        { "fusha": { "ar": "جامِعَة", "translit": "jāmiʿa" }, "syrian": { "ar": "جامعة", "translit": "jāmʿa" }, "de": "Universität" },
+        { "fusha": { "ar": "دَجاج", "translit": "dajāj" }, "syrian": { "ar": "دجاج", "translit": "djāj" }, "de": "Hähnchen" },
+        { "fusha": { "ar": "رَجُل", "translit": "rajul" }, "syrian": { "ar": "رِجَّال", "translit": "rijjāl" }, "de": "Mann" },
+        { "fusha": { "ar": "جَميل", "translit": "jamīl" }, "syrian": { "ar": "حلو", "translit": "ḥilu" }, "de": "schön / hübsch" }
+      ]
+    },
+    {
+      "id": "ha", "letter": "ح", "name": "Ḥā", "arabicName": "حاء", "position": 6,
+      "fushaSound": "ḥ (gehaucht, aus der Kehle)", "syrianSound": "ḥ (gleich)",
+      "germanHint": "Kein deutsches Äquivalent. Kräftig gehauchtes H tief aus der Kehle — wie atmen mit Reibung.",
+      "examples": [
+        { "fusha": { "ar": "حُبّ", "translit": "ḥubb" }, "syrian": { "ar": "حبّ", "translit": "ḥubb" }, "de": "Liebe" },
+        { "fusha": { "ar": "صَباح", "translit": "ṣabāḥ" }, "syrian": { "ar": "صباح", "translit": "ṣabāḥ" }, "de": "Morgen" },
+        { "fusha": { "ar": "بَحْر", "translit": "baḥr" }, "syrian": { "ar": "بحر", "translit": "baḥr" }, "de": "Meer" },
+        { "fusha": { "ar": "أَحْمَر", "translit": "aḥmar" }, "syrian": { "ar": "أحمر", "translit": "aḥmar" }, "de": "rot" },
+        { "fusha": { "ar": "مِفْتاح", "translit": "miftāḥ" }, "syrian": { "ar": "مفتاح", "translit": "miftāḥ" }, "de": "Schlüssel" },
+        { "fusha": { "ar": "رُوح", "translit": "rūḥ" }, "syrian": { "ar": "روح", "translit": "rūḥ" }, "de": "Seele" }
+      ]
+    },
+    {
+      "id": "kha", "letter": "خ", "name": "Khā", "arabicName": "خاء", "position": 7,
+      "fushaSound": "ch (wie Bach)", "syrianSound": "ch (gleich)",
+      "germanHint": "Wie das deutsche „ch“ in „Bach“ oder „Buch“. Hat einen Punkt OBEN.",
+      "examples": [
+        { "fusha": { "ar": "خُبْز", "translit": "khubz" }, "syrian": { "ar": "خبز", "translit": "khibez" }, "de": "Brot" },
+        { "fusha": { "ar": "أَخ", "translit": "akh" }, "syrian": { "ar": "أخ", "translit": "akh" }, "de": "Bruder" },
+        { "fusha": { "ar": "أُخت", "translit": "ukht" }, "syrian": { "ar": "إخت", "translit": "ikht" }, "de": "Schwester" },
+        { "fusha": { "ar": "مَطْبَخ", "translit": "maṭbakh" }, "syrian": { "ar": "مطبخ", "translit": "maṭbakh" }, "de": "Küche" },
+        { "fusha": { "ar": "خَير", "translit": "khair" }, "syrian": { "ar": "خير", "translit": "khēr" }, "de": "Gut / Wohl" },
+        { "fusha": { "ar": "تاريخ", "translit": "tārīkh" }, "syrian": { "ar": "تاريخ", "translit": "tārīkh" }, "de": "Geschichte" }
+      ]
+    },
+    {
+      "id": "dal", "letter": "د", "name": "Dāl", "arabicName": "دال", "position": 8,
+      "fushaSound": "d", "syrianSound": "d",
+      "germanHint": "Wie das deutsche D (Dorf). Sieht aus wie ein Halbmond.",
+      "examples": [
+        { "fusha": { "ar": "دار", "translit": "dār" }, "syrian": { "ar": "دار", "translit": "dār" }, "de": "Haus / Wohnung" },
+        { "fusha": { "ar": "وَلَد", "translit": "walad" }, "syrian": { "ar": "ولد", "translit": "walad" }, "de": "Junge" },
+        { "fusha": { "ar": "بَلَد", "translit": "balad" }, "syrian": { "ar": "بلد", "translit": "balad" }, "de": "Land" },
+        { "fusha": { "ar": "يَد", "translit": "yad" }, "syrian": { "ar": "إيد", "translit": "īd" }, "de": "Hand" },
+        { "fusha": { "ar": "مَدينَة", "translit": "madīna" }, "syrian": { "ar": "مدينة", "translit": "madīne" }, "de": "Stadt" },
+        { "fusha": { "ar": "جَديد", "translit": "jadīd" }, "syrian": { "ar": "جديد", "translit": "jdīd" }, "de": "neu" }
+      ]
+    },
+    {
+      "id": "dhal", "letter": "ذ", "name": "Dhāl", "arabicName": "ذال", "position": 9,
+      "fushaSound": "dh (wie engl. this)", "syrianSound": "d / z (ersetzt)",
+      "germanHint": "Fusha: wie engl. „th“ in „this“. Im Syrischen meist als d oder z gesprochen.",
+      "examples": [
+        { "fusha": { "ar": "ذَهَب", "translit": "dhahab" }, "syrian": { "ar": "دَهَب", "translit": "dahab" }, "de": "Gold" },
+        { "fusha": { "ar": "هَذا", "translit": "hādhā" }, "syrian": { "ar": "هاد", "translit": "hād" }, "de": "dies (m.)" },
+        { "fusha": { "ar": "لَذيذ", "translit": "ladhīdh" }, "syrian": { "ar": "طيّب", "translit": "ṭayyeb" }, "de": "lecker" },
+        { "fusha": { "ar": "أُذُن", "translit": "udhun" }, "syrian": { "ar": "إدِن", "translit": "iden" }, "de": "Ohr" },
+        { "fusha": { "ar": "ذَكاء", "translit": "dhakāʾ" }, "syrian": { "ar": "ذكاء", "translit": "zakāʾ" }, "de": "Intelligenz" },
+        { "fusha": { "ar": "ذُرَة", "translit": "dhura" }, "syrian": { "ar": "ذرة", "translit": "dura" }, "de": "Mais" }
+      ]
+    },
+    {
+      "id": "ra", "letter": "ر", "name": "Rā", "arabicName": "راء", "position": 10,
+      "fushaSound": "r (gerollt)", "syrianSound": "r (gerollt)",
+      "germanHint": "Gerolltes R mit der Zungenspitze — wie im Spanischen oder Italienischen.",
+      "examples": [
+        { "fusha": { "ar": "رَجُل", "translit": "rajul" }, "syrian": { "ar": "رِجَّال", "translit": "rijjāl" }, "de": "Mann" },
+        { "fusha": { "ar": "نَهْر", "translit": "nahr" }, "syrian": { "ar": "نهر", "translit": "nahr" }, "de": "Fluss" },
+        { "fusha": { "ar": "مَدْرَسَة", "translit": "madrasa" }, "syrian": { "ar": "مدرسة", "translit": "madrase" }, "de": "Schule" },
+        { "fusha": { "ar": "وَرْد", "translit": "ward" }, "syrian": { "ar": "ورد", "translit": "ward" }, "de": "Rose" },
+        { "fusha": { "ar": "كَبير", "translit": "kabīr" }, "syrian": { "ar": "كبير", "translit": "kbīr" }, "de": "groß" },
+        { "fusha": { "ar": "بَرْد", "translit": "bard" }, "syrian": { "ar": "برد", "translit": "bard" }, "de": "Kälte" }
+      ]
+    },
+    {
+      "id": "zay", "letter": "ز", "name": "Zāy", "arabicName": "زاي", "position": 11,
+      "fushaSound": "z (stimmhaft)", "syrianSound": "z (gleich)",
+      "germanHint": "Stimmhaftes z wie im Englischen „zebra“ — NICHT wie deutsches z (ts).",
+      "examples": [
+        { "fusha": { "ar": "زَهْرَة", "translit": "zahra" }, "syrian": { "ar": "زهرة", "translit": "zahra" }, "de": "Blume" },
+        { "fusha": { "ar": "مَوْز", "translit": "mauz" }, "syrian": { "ar": "موز", "translit": "mōz" }, "de": "Banane(n)" },
+        { "fusha": { "ar": "زَيْت", "translit": "zait" }, "syrian": { "ar": "زيت", "translit": "zēt" }, "de": "Öl" },
+        { "fusha": { "ar": "أَزْرَق", "translit": "azraq" }, "syrian": { "ar": "أزرق", "translit": "azraʾ" }, "de": "blau" },
+        { "fusha": { "ar": "عَزيز", "translit": "ʿazīz" }, "syrian": { "ar": "عزيز", "translit": "ʿazīz" }, "de": "lieb / wertvoll" },
+        { "fusha": { "ar": "خُبْز", "translit": "khubz" }, "syrian": { "ar": "خبز", "translit": "khibez" }, "de": "Brot" }
+      ]
+    },
+    {
+      "id": "sin", "letter": "س", "name": "Sīn", "arabicName": "سين", "position": 12,
+      "fushaSound": "s (scharf)", "syrianSound": "s (gleich)",
+      "germanHint": "Wie das scharfe s / ß im Deutschen (Straße, weiß).",
+      "examples": [
+        { "fusha": { "ar": "سَمَك", "translit": "samak" }, "syrian": { "ar": "سمك", "translit": "samak" }, "de": "Fisch" },
+        { "fusha": { "ar": "شَمْس", "translit": "shams" }, "syrian": { "ar": "شمس", "translit": "shams" }, "de": "Sonne" },
+        { "fusha": { "ar": "دَرْس", "translit": "dars" }, "syrian": { "ar": "درس", "translit": "dars" }, "de": "Lektion" },
+        { "fusha": { "ar": "رَأْس", "translit": "raʾs" }, "syrian": { "ar": "راس", "translit": "rās" }, "de": "Kopf" },
+        { "fusha": { "ar": "سُكَّر", "translit": "sukkar" }, "syrian": { "ar": "سكّر", "translit": "sukkar" }, "de": "Zucker" },
+        { "fusha": { "ar": "سَعيد", "translit": "saʿīd" }, "syrian": { "ar": "مبسوط", "translit": "mabsūṭ" }, "de": "glücklich" }
+      ]
+    },
+    {
+      "id": "shin", "letter": "ش", "name": "Shīn", "arabicName": "شين", "position": 13,
+      "fushaSound": "sch", "syrianSound": "sch",
+      "germanHint": "Wie das deutsche sch (Schule). Hat drei Punkte OBEN.",
+      "examples": [
+        { "fusha": { "ar": "شَمْس", "translit": "shams" }, "syrian": { "ar": "شمس", "translit": "shams" }, "de": "Sonne" },
+        { "fusha": { "ar": "شُكْراً", "translit": "shukran" }, "syrian": { "ar": "شكراً", "translit": "shukran" }, "de": "danke" },
+        { "fusha": { "ar": "شارِع", "translit": "shāriʿ" }, "syrian": { "ar": "شارع", "translit": "shāreʿ" }, "de": "Straße" },
+        { "fusha": { "ar": "شَجَرَة", "translit": "shajara" }, "syrian": { "ar": "شجرة", "translit": "shajra" }, "de": "Baum" },
+        { "fusha": { "ar": "ماذا", "translit": "mādhā" }, "syrian": { "ar": "شو", "translit": "shū" }, "de": "was" },
+        { "fusha": { "ar": "عَطْشان", "translit": "ʿaṭshān" }, "syrian": { "ar": "عطشان", "translit": "ʿaṭshān" }, "de": "durstig" }
+      ]
+    },
+    {
+      "id": "sad", "letter": "ص", "name": "Ṣād", "arabicName": "صاد", "position": 14,
+      "fushaSound": "ṣ (emphatisch)", "syrianSound": "ṣ (gleich)",
+      "germanHint": "Emphatisches S — Zunge weiter hinten, dunklerer Klang als س.",
+      "examples": [
+        { "fusha": { "ar": "صَباح", "translit": "ṣabāḥ" }, "syrian": { "ar": "صباح", "translit": "ṣabāḥ" }, "de": "Morgen" },
+        { "fusha": { "ar": "صَديق", "translit": "ṣadīq" }, "syrian": { "ar": "صاحب", "translit": "ṣāḥeb" }, "de": "Freund" },
+        { "fusha": { "ar": "أَصْفَر", "translit": "aṣfar" }, "syrian": { "ar": "أصفر", "translit": "aṣfar" }, "de": "gelb" },
+        { "fusha": { "ar": "نِصْف", "translit": "niṣf" }, "syrian": { "ar": "نُصّ", "translit": "nuṣṣ" }, "de": "Hälfte / halb" },
+        { "fusha": { "ar": "قِصَّة", "translit": "qiṣṣa" }, "syrian": { "ar": "قصّة", "translit": "ʾiṣṣa" }, "de": "Geschichte" },
+        { "fusha": { "ar": "صَيْف", "translit": "ṣaif" }, "syrian": { "ar": "صيف", "translit": "ṣēf" }, "de": "Sommer" }
+      ]
+    },
+    {
+      "id": "dad", "letter": "ض", "name": "Ḍād", "arabicName": "ضاد", "position": 15,
+      "fushaSound": "ḍ (emphatisch)", "syrianSound": "ḍ (gleich)",
+      "germanHint": "Emphatisches D — Zunge presst seitlich gegen die Backenzähne. Arabisch wird wegen dieses Lauts „Sprache des Ḍād“ genannt.",
+      "examples": [
+        { "fusha": { "ar": "أَبْيَض", "translit": "abyaḍ" }, "syrian": { "ar": "أبيض", "translit": "abyaḍ" }, "de": "weiß" },
+        { "fusha": { "ar": "مَريض", "translit": "marīḍ" }, "syrian": { "ar": "مريض", "translit": "marīḍ" }, "de": "krank" },
+        { "fusha": { "ar": "أَخْضَر", "translit": "akhḍar" }, "syrian": { "ar": "أخضر", "translit": "akhḍar" }, "de": "grün" },
+        { "fusha": { "ar": "أَرْض", "translit": "arḍ" }, "syrian": { "ar": "أرض", "translit": "arḍ" }, "de": "Erde" },
+        { "fusha": { "ar": "بَيْض", "translit": "baiḍ" }, "syrian": { "ar": "بيض", "translit": "bēḍ" }, "de": "Eier" },
+        { "fusha": { "ar": "مَوْضوع", "translit": "mauḍūʿ" }, "syrian": { "ar": "موضوع", "translit": "mawḍūʿ" }, "de": "Thema" }
+      ]
+    },
+    {
+      "id": "ta-emph", "letter": "ط", "name": "Ṭā", "arabicName": "طاء", "position": 16,
+      "fushaSound": "ṭ (emphatisch)", "syrianSound": "ṭ (gleich)",
+      "germanHint": "Emphatisches T — Zunge weiter hinten, dumpfer Klang als ت.",
+      "examples": [
+        { "fusha": { "ar": "طَيِّب", "translit": "ṭayyib" }, "syrian": { "ar": "طيّب", "translit": "ṭayyeb" }, "de": "gut / lecker" },
+        { "fusha": { "ar": "مَطار", "translit": "maṭār" }, "syrian": { "ar": "مطار", "translit": "maṭār" }, "de": "Flughafen" },
+        { "fusha": { "ar": "بَطّيخ", "translit": "baṭṭīkh" }, "syrian": { "ar": "بطّيخ", "translit": "baṭṭīkh" }, "de": "Wassermelone" },
+        { "fusha": { "ar": "مَطْعَم", "translit": "maṭʿam" }, "syrian": { "ar": "مطعم", "translit": "maṭʿam" }, "de": "Restaurant" },
+        { "fusha": { "ar": "قِطّ", "translit": "qiṭṭ" }, "syrian": { "ar": "بسّ", "translit": "biss" }, "de": "Katze", "note": "Syrisch: قطة/بس — beide üblich." },
+        { "fusha": { "ar": "خَطّ", "translit": "khaṭṭ" }, "syrian": { "ar": "خطّ", "translit": "khaṭṭ" }, "de": "Linie / Schrift" }
+      ]
+    },
+    {
+      "id": "za-emph", "letter": "ظ", "name": "Ẓā", "arabicName": "ظاء", "position": 17,
+      "fushaSound": "ẓ (emphatisch)", "syrianSound": "ḍ / z (ersetzt)",
+      "germanHint": "Selten. Emphatisches dh — wie ذ aber dunkler. Im Syrischen oft als ض oder ز gesprochen.",
+      "examples": [
+        { "fusha": { "ar": "ظِلّ", "translit": "ẓill" }, "syrian": { "ar": "ضلّ", "translit": "ḍall" }, "de": "Schatten" },
+        { "fusha": { "ar": "ظَهْر", "translit": "ẓahr" }, "syrian": { "ar": "ضَهر", "translit": "ḍahr" }, "de": "Rücken" },
+        { "fusha": { "ar": "نَظَر", "translit": "naẓar" }, "syrian": { "ar": "نَظَر", "translit": "naḍar" }, "de": "Blick / Sicht" },
+        { "fusha": { "ar": "مَنْظَر", "translit": "manẓar" }, "syrian": { "ar": "منظر", "translit": "manḍar" }, "de": "Aussicht / Szene" },
+        { "fusha": { "ar": "حافِظ", "translit": "ḥāfiẓ" }, "syrian": { "ar": "حافظ", "translit": "ḥāfeẓ" }, "de": "Hüter / Beschützer" },
+        { "fusha": { "ar": "مَحْفَظَة", "translit": "maḥfaẓa" }, "syrian": { "ar": "محفظة", "translit": "maḥfaẓa" }, "de": "Brieftasche" }
+      ]
+    },
+    {
+      "id": "ayn", "letter": "ع", "name": "ʿAyn", "arabicName": "عين", "position": 18,
+      "fushaSound": "ʿ (Kehllaut)", "syrianSound": "ʿ (gleich)",
+      "germanHint": "Der schwierigste Laut. Tief in der Kehle gepresst — kein deutsches Äquivalent. Tipp: Tonbildung wie beim leichten Würgen.",
+      "examples": [
+        { "fusha": { "ar": "عَيْن", "translit": "ʿain" }, "syrian": { "ar": "عين", "translit": "ʿēn" }, "de": "Auge / Quelle" },
+        { "fusha": { "ar": "ساعَة", "translit": "sāʿa" }, "syrian": { "ar": "ساعة", "translit": "sāʿa" }, "de": "Stunde / Uhr" },
+        { "fusha": { "ar": "شارِع", "translit": "shāriʿ" }, "syrian": { "ar": "شارع", "translit": "shāreʿ" }, "de": "Straße" },
+        { "fusha": { "ar": "عَشاء", "translit": "ʿashāʾ" }, "syrian": { "ar": "عشا", "translit": "ʿasha" }, "de": "Abendessen" },
+        { "fusha": { "ar": "عيد", "translit": "ʿīd" }, "syrian": { "ar": "عيد", "translit": "ʿīd" }, "de": "Fest" },
+        { "fusha": { "ar": "أَرْبَعَة", "translit": "arbaʿa" }, "syrian": { "ar": "أربعة", "translit": "arbaʿa" }, "de": "vier" }
+      ]
+    },
+    {
+      "id": "ghayn", "letter": "غ", "name": "Ghayn", "arabicName": "غين", "position": 19,
+      "fushaSound": "gh", "syrianSound": "gh",
+      "germanHint": "Wie ein gerolltes französisches R (Paris). Stimmhaftes Pendant zu خ.",
+      "examples": [
+        { "fusha": { "ar": "غُرْفَة", "translit": "ghurfa" }, "syrian": { "ar": "غرفة", "translit": "ghurfe" }, "de": "Zimmer" },
+        { "fusha": { "ar": "لُغَة", "translit": "lugha" }, "syrian": { "ar": "لغة", "translit": "lugha" }, "de": "Sprache" },
+        { "fusha": { "ar": "غَنيّ", "translit": "ghaniyy" }, "syrian": { "ar": "غني", "translit": "ghani" }, "de": "reich" },
+        { "fusha": { "ar": "فارِغ", "translit": "fārigh" }, "syrian": { "ar": "فاضي", "translit": "fāḍi" }, "de": "leer" },
+        { "fusha": { "ar": "عَمَل", "translit": "ʿamal" }, "syrian": { "ar": "شُغل", "translit": "shughl" }, "de": "Arbeit" },
+        { "fusha": { "ar": "مَغْرِب", "translit": "maghrib" }, "syrian": { "ar": "مغرب", "translit": "maghrib" }, "de": "Westen / Sonnenuntergang" }
+      ]
+    },
+    {
+      "id": "fa", "letter": "ف", "name": "Fā", "arabicName": "فاء", "position": 20,
+      "fushaSound": "f", "syrianSound": "f",
+      "germanHint": "Wie das deutsche F (Fisch). Hat einen Punkt OBEN.",
+      "examples": [
+        { "fusha": { "ar": "فَم", "translit": "fam" }, "syrian": { "ar": "تُمّ", "translit": "tumm" }, "de": "Mund" },
+        { "fusha": { "ar": "مِفْتاح", "translit": "miftāḥ" }, "syrian": { "ar": "مفتاح", "translit": "miftāḥ" }, "de": "Schlüssel" },
+        { "fusha": { "ar": "خَوْف", "translit": "khauf" }, "syrian": { "ar": "خوف", "translit": "khōf" }, "de": "Angst" },
+        { "fusha": { "ar": "فِنْجان", "translit": "finjān" }, "syrian": { "ar": "فنجان", "translit": "finjān" }, "de": "Tasse" },
+        { "fusha": { "ar": "فُرْن", "translit": "furn" }, "syrian": { "ar": "فرن", "translit": "fern" }, "de": "Ofen / Bäckerei" },
+        { "fusha": { "ar": "في", "translit": "fī" }, "syrian": { "ar": "بـ", "translit": "b-" }, "de": "in (Präposition)" }
+      ]
+    },
+    {
+      "id": "qaf", "letter": "ق", "name": "Qāf", "arabicName": "قاف", "position": 21,
+      "fushaSound": "q (tief im Rachen)", "syrianSound": "ʾ (glottal stop)",
+      "germanHint": "Fusha: wie K, aber TIEF im Rachen. Im Syrischen meist als „ʾ“ (Glottisschlag, wie deutsches Beʾamten) gesprochen.",
+      "examples": [
+        { "fusha": { "ar": "قَلَم", "translit": "qalam" }, "syrian": { "ar": "قلم", "translit": "ʾalam" }, "de": "Stift" },
+        { "fusha": { "ar": "قَلْب", "translit": "qalb" }, "syrian": { "ar": "قلب", "translit": "ʾalb" }, "de": "Herz" },
+        { "fusha": { "ar": "قَهْوَة", "translit": "qahwa" }, "syrian": { "ar": "قهوة", "translit": "ʾahwe" }, "de": "Kaffee" },
+        { "fusha": { "ar": "وَرَق", "translit": "waraq" }, "syrian": { "ar": "ورق", "translit": "waraʾ" }, "de": "Papier" },
+        { "fusha": { "ar": "قَريب", "translit": "qarīb" }, "syrian": { "ar": "قريّب", "translit": "ʾarrīb" }, "de": "nah" },
+        { "fusha": { "ar": "وَقْت", "translit": "waqt" }, "syrian": { "ar": "وقت", "translit": "waʾt" }, "de": "Zeit" }
+      ]
+    },
+    {
+      "id": "kaf", "letter": "ك", "name": "Kāf", "arabicName": "كاف", "position": 22,
+      "fushaSound": "k", "syrianSound": "k",
+      "germanHint": "Wie das deutsche K (Katze). Vorne im Mund, NICHT tief im Rachen (≠ ق).",
+      "examples": [
+        { "fusha": { "ar": "كِتاب", "translit": "kitāb" }, "syrian": { "ar": "كتاب", "translit": "ktāb" }, "de": "Buch" },
+        { "fusha": { "ar": "كَلِمَة", "translit": "kalima" }, "syrian": { "ar": "كلمة", "translit": "kilme" }, "de": "Wort" },
+        { "fusha": { "ar": "مَلِك", "translit": "malik" }, "syrian": { "ar": "ملك", "translit": "malik" }, "de": "König" },
+        { "fusha": { "ar": "مَكْتَب", "translit": "maktab" }, "syrian": { "ar": "مكتب", "translit": "maktab" }, "de": "Büro" },
+        { "fusha": { "ar": "أَكْل", "translit": "akl" }, "syrian": { "ar": "أكل", "translit": "akel" }, "de": "Essen" },
+        { "fusha": { "ar": "ديك", "translit": "dīk" }, "syrian": { "ar": "ديك", "translit": "dīk" }, "de": "Hahn" }
+      ]
+    },
+    {
+      "id": "lam", "letter": "ل", "name": "Lām", "arabicName": "لام", "position": 23,
+      "fushaSound": "l", "syrianSound": "l",
+      "germanHint": "Wie das deutsche L (Lampe). Bildet zusammen mit ا den Artikel ال (al-).",
+      "examples": [
+        { "fusha": { "ar": "لَوْن", "translit": "laun" }, "syrian": { "ar": "لون", "translit": "lōn" }, "de": "Farbe" },
+        { "fusha": { "ar": "لَيْل", "translit": "lail" }, "syrian": { "ar": "ليل", "translit": "lēl" }, "de": "Nacht" },
+        { "fusha": { "ar": "حَليب", "translit": "ḥalīb" }, "syrian": { "ar": "حليب", "translit": "ḥalīb" }, "de": "Milch" },
+        { "fusha": { "ar": "جَميل", "translit": "jamīl" }, "syrian": { "ar": "حلو", "translit": "ḥilu" }, "de": "schön" },
+        { "fusha": { "ar": "قَليل", "translit": "qalīl" }, "syrian": { "ar": "شويّ", "translit": "shwayy" }, "de": "wenig / ein bisschen" },
+        { "fusha": { "ar": "عَمَل", "translit": "ʿamal" }, "syrian": { "ar": "شغل", "translit": "shughl" }, "de": "Arbeit" }
+      ]
+    },
+    {
+      "id": "mim", "letter": "م", "name": "Mīm", "arabicName": "ميم", "position": 24,
+      "fushaSound": "m", "syrianSound": "m",
+      "germanHint": "Wie das deutsche M (Mama).",
+      "examples": [
+        { "fusha": { "ar": "أُمّ", "translit": "umm" }, "syrian": { "ar": "إمّ", "translit": "imm" }, "de": "Mutter" },
+        { "fusha": { "ar": "قَمَر", "translit": "qamar" }, "syrian": { "ar": "قمر", "translit": "ʾamar" }, "de": "Mond" },
+        { "fusha": { "ar": "ماء", "translit": "māʾ" }, "syrian": { "ar": "مَيّ", "translit": "mayy" }, "de": "Wasser" },
+        { "fusha": { "ar": "نَجْم", "translit": "najm" }, "syrian": { "ar": "نجم", "translit": "najm" }, "de": "Stern" },
+        { "fusha": { "ar": "مُهِمّ", "translit": "muhimm" }, "syrian": { "ar": "مهمّ", "translit": "muhimm" }, "de": "wichtig" },
+        { "fusha": { "ar": "ماذا", "translit": "mādhā" }, "syrian": { "ar": "شو", "translit": "shū" }, "de": "was" }
+      ]
+    },
+    {
+      "id": "nun", "letter": "ن", "name": "Nūn", "arabicName": "نون", "position": 25,
+      "fushaSound": "n", "syrianSound": "n",
+      "germanHint": "Wie das deutsche N. Sieht aus wie ein Boot mit einem Punkt.",
+      "examples": [
+        { "fusha": { "ar": "نَهْر", "translit": "nahr" }, "syrian": { "ar": "نهر", "translit": "nahr" }, "de": "Fluss" },
+        { "fusha": { "ar": "ابْن", "translit": "ibn" }, "syrian": { "ar": "ابن", "translit": "ibn" }, "de": "Sohn" },
+        { "fusha": { "ar": "بِنْت", "translit": "bint" }, "syrian": { "ar": "بنت", "translit": "bint" }, "de": "Tochter / Mädchen" },
+        { "fusha": { "ar": "نَجْم", "translit": "najm" }, "syrian": { "ar": "نجم", "translit": "najm" }, "de": "Stern" },
+        { "fusha": { "ar": "عُنْوان", "translit": "ʿunwān" }, "syrian": { "ar": "عنوان", "translit": "ʿunwān" }, "de": "Adresse" },
+        { "fusha": { "ar": "نائِم", "translit": "nāʾim" }, "syrian": { "ar": "نايم", "translit": "nāyem" }, "de": "schlafend" }
+      ]
+    },
+    {
+      "id": "ha-soft", "letter": "ه", "name": "Hā", "arabicName": "هاء", "position": 26,
+      "fushaSound": "h (sanft)", "syrianSound": "h (gleich)",
+      "germanHint": "Wie das deutsche H (Haus). Sanfter als ح.",
+      "examples": [
+        { "fusha": { "ar": "هَذا", "translit": "hādhā" }, "syrian": { "ar": "هاد", "translit": "hād" }, "de": "dies" },
+        { "fusha": { "ar": "أَهْلاً", "translit": "ahlan" }, "syrian": { "ar": "أهلين", "translit": "ahlēn" }, "de": "Willkommen / Hallo" },
+        { "fusha": { "ar": "شَهْر", "translit": "shahr" }, "syrian": { "ar": "شهر", "translit": "shahr" }, "de": "Monat" },
+        { "fusha": { "ar": "نَهْر", "translit": "nahr" }, "syrian": { "ar": "نهر", "translit": "nahr" }, "de": "Fluss" },
+        { "fusha": { "ar": "وَجْه", "translit": "wajh" }, "syrian": { "ar": "وجه", "translit": "wijj" }, "de": "Gesicht" },
+        { "fusha": { "ar": "فاكِهَة", "translit": "fākiha" }, "syrian": { "ar": "فاكهة", "translit": "fākhe" }, "de": "Frucht" }
+      ]
+    },
+    {
+      "id": "waw", "letter": "و", "name": "Wāw", "arabicName": "واو", "position": 27,
+      "fushaSound": "w / ū", "syrianSound": "w / ū / ō",
+      "germanHint": "Doppelfunktion: als Konsonant = engl. „w“; als Langvokal = langes „uu“. Auch häufig „und“ (wa / w-).",
+      "examples": [
+        { "fusha": { "ar": "وَلَد", "translit": "walad" }, "syrian": { "ar": "ولد", "translit": "walad" }, "de": "Junge" },
+        { "fusha": { "ar": "يَوْم", "translit": "yaum" }, "syrian": { "ar": "يوم", "translit": "yōm" }, "de": "Tag" },
+        { "fusha": { "ar": "وَرْد", "translit": "ward" }, "syrian": { "ar": "ورد", "translit": "ward" }, "de": "Rosen" },
+        { "fusha": { "ar": "نَوْم", "translit": "naum" }, "syrian": { "ar": "نوم", "translit": "nōm" }, "de": "Schlaf" },
+        { "fusha": { "ar": "وَطَن", "translit": "waṭan" }, "syrian": { "ar": "وطن", "translit": "waṭan" }, "de": "Heimat" },
+        { "fusha": { "ar": "نُور", "translit": "nūr" }, "syrian": { "ar": "نور", "translit": "nūr" }, "de": "Licht" }
+      ]
+    },
+    {
+      "id": "ya", "letter": "ي", "name": "Yā", "arabicName": "ياء", "position": 28,
+      "fushaSound": "y / ī", "syrianSound": "y / ī / ē",
+      "germanHint": "Doppelfunktion: als Konsonant = deutsches „J“ (ja); als Langvokal = langes „ii“. Im Syrischen oft auch „ē“.",
+      "examples": [
+        { "fusha": { "ar": "يَد", "translit": "yad" }, "syrian": { "ar": "إيد", "translit": "īd" }, "de": "Hand" },
+        { "fusha": { "ar": "يَوْم", "translit": "yaum" }, "syrian": { "ar": "يوم", "translit": "yōm" }, "de": "Tag" },
+        { "fusha": { "ar": "لَيْل", "translit": "lail" }, "syrian": { "ar": "ليل", "translit": "lēl" }, "de": "Nacht" },
+        { "fusha": { "ar": "بَيْت", "translit": "bait" }, "syrian": { "ar": "بيت", "translit": "bēt" }, "de": "Haus" },
+        { "fusha": { "ar": "شاي", "translit": "shāy" }, "syrian": { "ar": "شاي", "translit": "shāy" }, "de": "Tee" },
+        { "fusha": { "ar": "يَمين", "translit": "yamīn" }, "syrian": { "ar": "يمين", "translit": "yamīn" }, "de": "rechts" }
+      ]
+    }
+  ]
+}

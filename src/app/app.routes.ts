@@ -190,6 +190,22 @@ export const routes: Routes = [
         .then(m => m.ArabicPathDashboardPage),
     title: 'Übersicht - Arabisch lernen',
   },
+  // Alphabet: Übersicht (28 Buchstaben)
+  {
+    path: 'learn-arabic/:path/alphabet',
+    loadComponent: () =>
+      import('./features/arabic/arabic-alphabet-page/arabic-alphabet-page')
+        .then(m => m.ArabicAlphabetPage),
+    title: 'Alphabet - Arabisch lernen',
+  },
+  // Alphabet: einzelner Buchstabe mit Beispielen
+  {
+    path: 'learn-arabic/:path/alphabet/:letterId',
+    loadComponent: () =>
+      import('./features/arabic/arabic-letter-page/arabic-letter-page')
+        .then(m => m.ArabicLetterPage),
+    title: 'Buchstabe - Arabisch lernen',
+  },
   // Szenario-Player
   {
     path: 'learn-arabic/:path/szenario/:id',

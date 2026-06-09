@@ -29,6 +29,31 @@
       </div>
     </header>
 
+    <!-- Grundlagen (Alphabet + Wortschatz) -->
+    <h3 class="text-base font-bold text-slate-800 mb-2">🎓 Grundlagen</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+      <a [routerLink]="['/learn-arabic', pathValue(), 'alphabet']"
+         class="flex items-center gap-3 rounded-xl border-2 border-emerald-200 bg-emerald-50 hover:border-emerald-400 hover:shadow-md transition-all p-3">
+        <div class="text-3xl shrink-0">🔤</div>
+        <div class="flex-1 min-w-0">
+          <h4 class="font-bold text-emerald-900">Alphabet</h4>
+          <p class="text-xs text-emerald-800">28 Buchstaben mit Aussprache &amp; vielen Beispielwörtern</p>
+        </div>
+        <span class="text-emerald-500 shrink-0">→</span>
+      </a>
+      <a [routerLink]="'/learn-arabic/wortschatz'"
+         class="flex items-center gap-3 rounded-xl border-2 border-amber-200 bg-amber-50 hover:border-amber-400 hover:shadow-md transition-all p-3">
+        <div class="text-3xl shrink-0">📚</div>
+        <div class="flex-1 min-w-0">
+          <h4 class="font-bold text-amber-900">Wortschatz</h4>
+          <p class="text-xs text-amber-800">Vokabel-Bibliothek nach Themen</p>
+        </div>
+        <span class="text-amber-500 shrink-0">→</span>
+      </a>
+    </div>
+
+    <h3 class="text-base font-bold text-slate-800 mb-3">🎬 Szenarien</h3>
+
     <!-- Kategorien -->
     @for (cat of categories(); track cat.id) {
       @let scenarios = byCategory()[cat.id];
