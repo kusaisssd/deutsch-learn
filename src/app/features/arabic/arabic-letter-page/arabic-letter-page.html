@@ -1,6 +1,6 @@
 <section class="max-w-3xl mx-auto">
 
-  <a [routerLink]="['/learn-arabic', pathValue(), 'alphabet']"
+  <a [routerLink]="'/learn-arabic/alphabet'"
      class="text-emerald-600 hover:underline text-sm mb-3 inline-block">← Alle Buchstaben</a>
 
   @if (!loaded()) {
@@ -14,21 +14,9 @@
     @let l = letter()!;
     @let lk = lookup()!;
 
-    <!-- البطاقة الرئيسية -->
+    <!-- بطاقة الحرف الكبيرة -->
     <div class="bg-gradient-to-br from-emerald-500 to-emerald-700 text-white rounded-2xl p-6 mb-5 shadow-lg text-center relative">
-      <div class="absolute top-3 right-3">
-        <button (click)="toggleCompare()"
-                class="text-xs font-semibold rounded-full px-3 py-1.5 transition-colors"
-                [class.bg-white]="compareOn()"
-                [class.text-slate-800]="compareOn()"
-                [class.bg-white\/20]="!compareOn()"
-                [class.text-white]="!compareOn()">
-          🔄 {{ compareOn() ? 'Vergleich AN' : 'Vergleich aus' }}
-        </button>
-      </div>
-      <div class="absolute top-3 left-3 text-xs opacity-90">
-        {{ l.position }} / 28
-      </div>
+      <div class="absolute top-3 left-3 text-xs opacity-90">{{ l.position }} / 28</div>
 
       <div class="text-8xl sm:text-9xl mb-3" dir="rtl">{{ l.letter }}</div>
       <div class="text-2xl font-bold mb-0.5">{{ l.name }}</div>
@@ -40,17 +28,17 @@
       </button>
     </div>
 
-    <!-- النطق -->
+    <!-- النطق في الصيغتين -->
     <div class="bg-white border border-slate-200 rounded-xl p-4 mb-4">
-      <h3 class="text-sm font-bold text-slate-800 mb-2">🗣️ Aussprache</h3>
-      <div class="space-y-2">
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-semibold text-indigo-700 bg-indigo-50 rounded-full px-2 py-0.5">Fusha</span>
-          <span class="font-mono text-slate-800">{{ l.fushaSound }}</span>
+      <h3 class="text-sm font-bold text-slate-800 mb-3">🗣️ Aussprache</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
+          <div class="text-xs font-bold text-indigo-700 mb-1">Hocharabisch (Fusha)</div>
+          <div class="font-mono text-slate-800">{{ l.fushaSound }}</div>
         </div>
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-semibold text-rose-700 bg-rose-50 rounded-full px-2 py-0.5">Syrisch</span>
-          <span class="font-mono text-slate-800">{{ l.syrianSound }}</span>
+        <div class="bg-rose-50 border border-rose-200 rounded-lg p-3">
+          <div class="text-xs font-bold text-rose-700 mb-1">Syrisch</div>
+          <div class="font-mono text-slate-800">{{ l.syrianSound }}</div>
         </div>
       </div>
       <p class="text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg p-3 mt-3">
@@ -58,43 +46,46 @@
       </p>
     </div>
 
-    <!-- الكلمات الأمثلة -->
+    <!-- الأمثلة: الفصحى و السورية دائماً معاً -->
     <div class="bg-white border border-slate-200 rounded-xl p-4 mb-5">
       <h3 class="text-sm font-bold text-slate-800 mb-3">
-        📚 {{ l.examples.length }} Beispielwörter <span class="text-slate-400 font-normal">({{ primaryLabel() }})</span>
+        📚 {{ l.examples.length }} Beispielwörter
       </h3>
-      <ul class="space-y-2">
+      <ul class="space-y-3">
         @for (ex of l.examples; track ex.de) {
-          <li class="bg-slate-50 border border-slate-200 rounded-lg p-3 flex items-start gap-3">
-            <button (click)="speakAr(primary(ex).ar)"
-                    class="bg-white border border-slate-200 rounded-full w-9 h-9 hover:bg-emerald-50 shrink-0">🔊</button>
-            <div class="flex-1 min-w-0">
-              <div class="text-xs text-slate-500 mb-0.5">{{ ex.de }}</div>
-              <div class="flex items-baseline gap-2 flex-wrap">
-                <span class="text-2xl text-slate-800 font-bold" dir="rtl">{{ primary(ex).ar }}</span>
-                <span class="text-xs font-mono text-emerald-700" dir="ltr">{{ primary(ex).translit }}</span>
-              </div>
-              @if (compareOn()) {
-                <div class="mt-2 pt-2 border-t border-slate-200 flex items-start gap-2">
-                  <button (click)="speakAr(other(ex).ar)"
-                          class="text-xs text-slate-500 hover:text-emerald-600 shrink-0">🔊</button>
-                  <div class="flex-1 min-w-0">
-                    <span class="text-xs text-slate-400">{{ otherLabel() }}: </span>
-                    <span class="text-base text-slate-700" dir="rtl">{{ other(ex).ar }}</span>
-                    <span class="text-xs font-mono text-slate-500 ml-1" dir="ltr">{{ other(ex).translit }}</span>
-                  </div>
+          <li class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+            <div class="text-xs font-semibold text-slate-500 mb-2">{{ ex.de }}</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <!-- Fusha -->
+              <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-2 flex items-center gap-2">
+                <button (click)="speakAr(ex.fusha.ar)"
+                        class="bg-white border border-indigo-200 rounded-full w-8 h-8 hover:bg-indigo-100 shrink-0 text-sm">🔊</button>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10px] font-bold text-indigo-700 leading-none">FUSHA</div>
+                  <div class="text-lg text-slate-800 leading-tight" dir="rtl">{{ ex.fusha.ar }}</div>
+                  <div class="text-[10px] font-mono text-indigo-700" dir="ltr">{{ ex.fusha.translit }}</div>
                 </div>
-              }
-              @if (ex.note) {
-                <p class="text-xs text-amber-700 mt-1">💡 {{ ex.note }}</p>
-              }
+              </div>
+              <!-- Syrisch -->
+              <div class="bg-rose-50 border border-rose-100 rounded-lg p-2 flex items-center gap-2">
+                <button (click)="speakAr(ex.syrian.ar)"
+                        class="bg-white border border-rose-200 rounded-full w-8 h-8 hover:bg-rose-100 shrink-0 text-sm">🔊</button>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10px] font-bold text-rose-700 leading-none">SYRISCH</div>
+                  <div class="text-lg text-slate-800 leading-tight" dir="rtl">{{ ex.syrian.ar }}</div>
+                  <div class="text-[10px] font-mono text-rose-700" dir="ltr">{{ ex.syrian.translit }}</div>
+                </div>
+              </div>
             </div>
+            @if (ex.note) {
+              <p class="text-xs text-amber-700 mt-2">💡 {{ ex.note }}</p>
+            }
           </li>
         }
       </ul>
     </div>
 
-    <!-- التنقّل بين الحروف -->
+    <!-- تنقّل بين الحروف -->
     <div class="flex items-center justify-between gap-3">
       <button (click)="lk.prev ? goToLetter(lk.prev.id) : null"
               [disabled]="!lk.prev"

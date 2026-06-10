@@ -1,6 +1,6 @@
 <section class="max-w-4xl mx-auto">
 
-  <a [routerLink]="['/learn-arabic', pathValue()]"
+  <a [routerLink]="'/learn-arabic'"
      class="text-emerald-600 hover:underline text-sm mb-3 inline-block">← Zurück zur Übersicht</a>
 
   <header class="text-center mb-5">
@@ -8,8 +8,8 @@
       🔤 Das arabische Alphabet
     </h2>
     <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
-      28 Buchstaben. Klicke auf einen, um seine Aussprache und viele Beispielwörter
-      in <strong>{{ pathValue() === 'fusha' ? 'Hocharabisch' : 'Syrisch' }}</strong> zu sehen.
+      28 Buchstaben. Klicke auf einen, um seine Aussprache (Fusha &amp; Syrisch)
+      und viele Beispielwörter zu sehen.
     </p>
   </header>
 
@@ -18,11 +18,11 @@
   } @else {
     <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
       @for (letter of letters(); track letter.id) {
-        <a [routerLink]="['/learn-arabic', pathValue(), 'alphabet', letter.id]"
+        <a [routerLink]="['/learn-arabic/alphabet', letter.id]"
            class="bg-white border-2 border-slate-200 rounded-xl p-3 sm:p-4 hover:border-emerald-400 hover:shadow-md transition-all text-center group">
           <div class="text-4xl sm:text-5xl text-slate-800 mb-1" dir="rtl">{{ letter.letter }}</div>
           <div class="text-xs font-bold text-emerald-700">{{ letter.name }}</div>
-          <div class="text-[10px] text-slate-400 mt-0.5">{{ soundFor(letter) }}</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">{{ letter.fushaSound }}</div>
           <div class="text-[10px] text-slate-300 mt-1">{{ letter.examples.length }} Wörter</div>
         </a>
       }

@@ -166,15 +166,14 @@ export const routes: Routes = [
     title: 'Dictionary - Deutsch Learn',
   },
 
-  // 🆕 Arabisch lernen — Pfad-Auswahl (Fusha / Syrisch)
+  // 🆕 Arabisch lernen — vereinheitlichte Übersicht (Fusha + Syrisch immer beides)
   {
     path: 'learn-arabic',
     loadComponent: () =>
-      import('./features/arabic/arabic-paths-page/arabic-paths-page')
-        .then(m => m.ArabicPathsPage),
+      import('./features/arabic/arabic-path-dashboard-page/arabic-path-dashboard-page')
+        .then(m => m.ArabicPathDashboardPage),
     title: 'Arabisch lernen - Deutsch Learn',
   },
-  // Wortschatz-Bibliothek (المفردات المسطّحة) — قبل :path لتجنّب الالتباس
   {
     path: 'learn-arabic/wortschatz',
     loadComponent: () =>
@@ -182,33 +181,22 @@ export const routes: Routes = [
         .then(m => m.LearnArabicPage),
     title: 'Wortschatz - Arabisch lernen',
   },
-  // Pfad-Übersicht (Szenarien nach Kategorien)
   {
-    path: 'learn-arabic/:path',
-    loadComponent: () =>
-      import('./features/arabic/arabic-path-dashboard-page/arabic-path-dashboard-page')
-        .then(m => m.ArabicPathDashboardPage),
-    title: 'Übersicht - Arabisch lernen',
-  },
-  // Alphabet: Übersicht (28 Buchstaben)
-  {
-    path: 'learn-arabic/:path/alphabet',
+    path: 'learn-arabic/alphabet',
     loadComponent: () =>
       import('./features/arabic/arabic-alphabet-page/arabic-alphabet-page')
         .then(m => m.ArabicAlphabetPage),
     title: 'Alphabet - Arabisch lernen',
   },
-  // Alphabet: einzelner Buchstabe mit Beispielen
   {
-    path: 'learn-arabic/:path/alphabet/:letterId',
+    path: 'learn-arabic/alphabet/:letterId',
     loadComponent: () =>
       import('./features/arabic/arabic-letter-page/arabic-letter-page')
         .then(m => m.ArabicLetterPage),
     title: 'Buchstabe - Arabisch lernen',
   },
-  // Szenario-Player
   {
-    path: 'learn-arabic/:path/szenario/:id',
+    path: 'learn-arabic/szenario/:id',
     loadComponent: () =>
       import('./features/arabic/arabic-scenario-page/arabic-scenario-page')
         .then(m => m.ArabicScenarioPage),
