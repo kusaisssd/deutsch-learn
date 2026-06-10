@@ -1,9 +1,12 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ArabicService } from '../../../core/services/arabic';
+import { ArabicScenariosService } from '../../../core/services/arabic-scenarios';
+import { ArabicAlphabetService } from '../../../core/services/arabic-alphabet';
 import { SpeechService } from '../../../core/services/speech';
 import { CelebrationService } from '../../../core/services/celebration';
 import { ArabicWord } from '../../../core/models/arabic.model';
+import { BilingualVocab } from '../../../core/models/arabic-scenarios.model';
 import { shuffle } from '../../../shared/utils/shuffle';
 
 type GameKey = 'memory' | 'audio' | 'dialect';
@@ -25,17 +28,53 @@ interface MemoryCard {
 })
 export class ArabicGamesPage {
   private words = inject(ArabicService);
+  private scenarios = inject(ArabicScenariosService);
+  private alphabet = inject(ArabicAlphabetService);
   readonly speech = inject(SpeechService);
   private celebrate = inject(CelebrationService);
 
   readonly loaded = this.words.loaded;
   readonly currentGame = signal<GameKey | null>(null);
 
-  /** كل المفردات في قائمة واحدة (للاختيار العشوائي) */
+  /** كل المفردات من القاموس (للذاكرة و Hör-Quiz) */
   readonly allWords = computed<ArabicWord[]>(() => {
     const arr: ArabicWord[] = [];
     for (const c of this.words.categories()) arr.push(...c.words);
     return arr;
+  });
+
+  /**
+   * مجموعة كلمات موسّعة لـ Dialekt-Spiel:
+   * تجمع 218 كلمة قاموس + مفردات السيناريوهات + أمثلة الأحرف (~500+)،
+   * مع إزالة المتكرّرات و الكلمات التي تتطابق فيها الفصحى مع السورية
+   * (لا فائدة من اللعبة لها).
+   */
+  readonly expandedDialectPool = computed<BilingualVocab[]>(() => {
+    const map = new Map<string, BilingualVocab>();
+    const add = (v: BilingualVocab) => {
+      if (!v.fusha?.ar || !v.syrian?.ar || !v.de) return;
+      if (v.fusha.ar === v.syrian.ar) return; // ما في فرق
+      const key = `${v.fusha.ar}::${v.syrian.ar}`;
+      if (!map.has(key)) map.set(key, v);
+    };
+
+    // 1) قاموس المفردات
+    for (const c of this.words.categories()) {
+      for (const w of c.words) add(w as BilingualVocab);
+    }
+    // 2) مفردات السيناريوهات
+    for (const s of this.scenarios.scenarios()) {
+      for (const st of s.steps) {
+        if (st.kind === 'vocab') {
+          for (const item of st.items) add(item);
+        }
+      }
+    }
+    // 3) أمثلة الأحرف
+    for (const l of this.alphabet.letters()) {
+      for (const ex of l.examples) add(ex);
+    }
+    return Array.from(map.values());
   });
 
   openGame(g: GameKey) {
@@ -179,10 +218,13 @@ export class ArabicGamesPage {
   // ═══════════════════════════════════════════
   // 🇸🇾 Dialect Match: فصحى → اختر السورية الصحيحة
   // ═══════════════════════════════════════════
+  /** عدد جولات Dialekt الخاصّ (أكثر من باقي الألعاب لأن المخزون أكبر) */
+  readonly DIALECT_ROUNDS = 15;
+
   readonly dialectRound = signal(0);
   readonly dialectScore = signal(0);
-  readonly dialectCurrent = signal<ArabicWord | null>(null);
-  readonly dialectOptions = signal<ArabicWord[]>([]);
+  readonly dialectCurrent = signal<BilingualVocab | null>(null);
+  readonly dialectOptions = signal<BilingualVocab[]>([]);
   readonly dialectSelected = signal<number | null>(null);
 
   private startDialect() {
@@ -192,32 +234,37 @@ export class ArabicGamesPage {
   }
 
   nextDialect() {
-    if (this.dialectRound() >= this.TOTAL_ROUNDS) return;
+    if (this.dialectRound() >= this.DIALECT_ROUNDS) return;
     this.dialectRound.update(r => r + 1);
     this.dialectSelected.set(null);
 
-    const pool = this.allWords();
-    // اختر كلمة فصحى و سوريّة تختلفان (لجعل التحدّي حقيقياً)
-    let correct: ArabicWord;
-    let attempts = 0;
-    do {
-      correct = pool[Math.floor(Math.random() * pool.length)];
-      attempts++;
-    } while (correct.fusha.ar === correct.syrian.ar && attempts < 10);
-
+    // المخزون الموسّع: قاموس + سيناريوهات + أمثلة أحرف (مع تفعيل الفلاتر)
+    const pool = this.expandedDialectPool();
+    if (pool.length < 4) {
+      // fallback: استخدم القاموس فقط
+      const fallback = this.allWords() as unknown as BilingualVocab[];
+      const f = fallback[Math.floor(Math.random() * fallback.length)];
+      const others = shuffle(fallback.filter(w => w.syrian.ar !== f.syrian.ar)).slice(0, 3);
+      this.dialectCurrent.set(f);
+      this.dialectOptions.set(shuffle([f, ...others]));
+      return;
+    }
+    const correct = pool[Math.floor(Math.random() * pool.length)];
     const others = shuffle(pool.filter(w => w.syrian.ar !== correct.syrian.ar)).slice(0, 3);
-    const options = shuffle([correct, ...others]);
     this.dialectCurrent.set(correct);
-    this.dialectOptions.set(options);
+    this.dialectOptions.set(shuffle([correct, ...others]));
   }
 
-  selectDialect(opt: ArabicWord, idx: number) {
+  selectDialect(opt: BilingualVocab, idx: number) {
     if (this.dialectSelected() !== null) return;
     this.dialectSelected.set(idx);
-    if (opt.syrian.ar === this.dialectCurrent()!.syrian.ar) {
+    const correct = this.dialectCurrent()!;
+    if (opt.syrian.ar === correct.syrian.ar) {
       this.dialectScore.update(s => s + 1);
       this.celebrate.small();
     }
+    // نطق تلقائي للسورية الصحيحة بعد لحظة
+    setTimeout(() => this.speakAr(correct.syrian.ar), 400);
   }
   isDialectCorrect(idx: number): boolean {
     const sel = this.dialectSelected();
@@ -229,11 +276,11 @@ export class ArabicGamesPage {
     return sel === idx && !this.isDialectCorrect(idx);
   }
   readonly dialectDone = computed(() =>
-    this.dialectRound() >= this.TOTAL_ROUNDS && this.dialectSelected() !== null);
+    this.dialectRound() >= this.DIALECT_ROUNDS && this.dialectSelected() !== null);
 
   dialectRestart() { this.startDialect(); }
   dialectFinish() {
-    if (this.dialectScore() >= this.TOTAL_ROUNDS * 0.7) this.celebrate.big();
+    if (this.dialectScore() >= this.DIALECT_ROUNDS * 0.7) this.celebrate.big();
   }
 
   // ═══════════════════════════════════════════
