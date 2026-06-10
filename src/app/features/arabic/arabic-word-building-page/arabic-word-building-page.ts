@@ -68,6 +68,13 @@ export class ArabicWordBuildingPage {
   /** النصّ المُجمَّع (للعرض في منطقة البناء) */
   readonly assembled = computed(() => this.picked().map(i => this.letters()[i]).join(''));
 
+  /** نقل لاتيني تقريبي للنصّ المُجمَّع (يتراكم مع كل حرف يُختار) */
+  readonly assembledTranslit = computed(() =>
+    this.picked()
+      .map(i => this.svc.infoFor(this.letters()[i]).sound.split(/[\/ ]/)[0])
+      .join('-')
+  );
+
   pickLetter(originalIdx: number) {
     if (this.checked()) return;
     this.picked.update(p => [...p, originalIdx]);

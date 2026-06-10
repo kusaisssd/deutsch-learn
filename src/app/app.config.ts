@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
@@ -26,7 +26,17 @@ export const appConfig: ApplicationConfig = {
      *   نكتب فقط `level = input.required<string>()` في الـ component.
      *   Angular يربط :level من الـ URL تلقائياً بهذا الـ input!
      */
-    provideRouter(routes, withComponentInputBinding()),
+    /**
+     * withInMemoryScrolling:
+     *   - scrollPositionRestoration:'top' → كل تنقّل يبدأ من أعلى الصفحة
+     *     (يحلّ مشكلة بقاء المستخدم في الأسفل بعد الانتقال).
+     *   - anchorScrolling:'enabled' → دعم الروابط بمعرّفات #anchor.
+     */
+    provideRouter(
+      routes,
+      withComponentInputBinding(),
+      withInMemoryScrolling({ scrollPositionRestoration: 'top', anchorScrolling: 'enabled' }),
+    ),
 
     /**
      * تفعيل HttpClient (لطلبات HTTP).

@@ -58,9 +58,10 @@
             </button>
           }
         </div>
-        <!-- النصّ المُجمَّع (لتظهر الأحرف متّصلة طبيعياً) -->
+        <!-- النصّ المُجمَّع (لتظهر الأحرف متّصلة طبيعياً) + نقل لاتيني -->
         <div class="text-center mt-3">
           <div class="text-3xl text-slate-800" dir="rtl">{{ assembled() }}</div>
+          <div class="text-xs font-mono text-slate-500 mt-1" dir="ltr">{{ assembledTranslit() }}</div>
         </div>
       }
     </div>

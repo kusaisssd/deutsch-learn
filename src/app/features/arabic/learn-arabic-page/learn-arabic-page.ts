@@ -1,4 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ArabicService } from '../../../core/services/arabic';
 import { SpeechService } from '../../../core/services/speech';
 
@@ -14,7 +15,7 @@ import { SpeechService } from '../../../core/services/speech';
  */
 @Component({
   selector: 'app-learn-arabic-page',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './learn-arabic-page.html',
 })
 export class LearnArabicPage {
