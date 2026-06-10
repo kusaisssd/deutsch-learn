@@ -2,6 +2,7 @@ import { Component, computed, inject, input, linkedSignal } from '@angular/core'
 import { Router, RouterLink } from '@angular/router';
 import { ArabicWordBuildingService } from '../../../core/services/arabic-word-building';
 import { SpeechService } from '../../../core/services/speech';
+import { CelebrationService } from '../../../core/services/celebration';
 import { shuffle } from '../../../shared/utils/shuffle';
 import { WordBuilding } from '../../../core/models/arabic-word-building.model';
 
@@ -23,6 +24,7 @@ export class ArabicWordBuildingPage {
   private svc = inject(ArabicWordBuildingService);
   private router = inject(Router);
   readonly speech = inject(SpeechService);
+  private celebrate = inject(CelebrationService);
 
   readonly loaded = this.svc.loaded;
   readonly lookup = computed(() => this.svc.wordLookup(this.wordId())());
@@ -87,7 +89,11 @@ export class ArabicWordBuildingPage {
   }
 
   check() {
-    if (this.complete()) this.checked.set(true);
+    if (this.complete()) {
+      this.checked.set(true);
+      // 🎉 احتفاء كبير عند بناء الكلمة بشكل صحيح
+      if (this.correct()) this.celebrate.big();
+    }
   }
 
   reset() {

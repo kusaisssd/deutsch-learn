@@ -1,0 +1,30 @@
+@if (active(); as a) {
+  <!-- key=seed يُجبر Angular على إعادة إنشاء الـ DOM عند كل احتفاء فتُعاد الـ animations -->
+  <div class="celebration"
+       [class.big]="a.type === 'big'"
+       [attr.data-seed]="a.seed"
+       (click)="dismiss()">
+
+    <!-- العبارة العربية -->
+    <div class="phrase" dir="rtl">{{ a.phrase }}</div>
+
+    <!-- ألعاب نارية: جسيمات تنفجر من المركز -->
+    <div class="fireworks">
+      @for (i of particles(); track i) {
+        <span class="particle"
+              [style.--angle]="angle(i) + 'deg'"
+              [style.--color]="color(i)"
+              [style.--delay]="(i % 4) * 0.05 + 's'"></span>
+      }
+    </div>
+
+    <!-- حلقات متموّجة (للاحتفاء الكبير فقط) -->
+    @if (a.type === 'big') {
+      <div class="rings">
+        <span class="ring r1"></span>
+        <span class="ring r2"></span>
+        <span class="ring r3"></span>
+      </div>
+    }
+  </div>
+}

@@ -1,0 +1,152 @@
+// ──────────────────────────────────────────────
+// 🎉 احتفاء عربي مع ألعاب نارية
+// ──────────────────────────────────────────────
+.celebration {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;            // لا تحجب التطبيق
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  animation: bg-fade 1.8s ease-out forwards;
+}
+
+.celebration.big {
+  animation: bg-fade-big 3s ease-out forwards;
+  pointer-events: auto;            // للضغط للتجاوز
+  cursor: pointer;
+}
+
+@keyframes bg-fade {
+  0%, 100% { background: transparent; }
+}
+@keyframes bg-fade-big {
+  0% { background: rgba(16, 185, 129, 0); }
+  20% { background: rgba(16, 185, 129, 0.18); }
+  100% { background: rgba(16, 185, 129, 0); }
+}
+
+// ─── العبارة العربية ───
+.phrase {
+  position: relative;
+  z-index: 2;
+  font-size: clamp(2.2rem, 8vw, 4rem);
+  font-weight: 900;
+  color: #047857;
+  text-shadow:
+    0 0 16px rgba(16, 185, 129, 0.5),
+    0 6px 20px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  animation: phrase-pop 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  user-select: none;
+}
+
+.celebration.big .phrase {
+  font-size: clamp(2.8rem, 10vw, 5.5rem);
+  color: #d97706;
+  text-shadow:
+    0 0 24px rgba(245, 158, 11, 0.6),
+    0 0 48px rgba(245, 158, 11, 0.3),
+    0 8px 28px rgba(0, 0, 0, 0.3);
+  animation: phrase-pop-big 3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes phrase-pop {
+  0%   { transform: scale(0) rotate(-25deg); opacity: 0; }
+  35%  { transform: scale(1.25) rotate(8deg); opacity: 1; }
+  55%  { transform: scale(1) rotate(0deg); }
+  80%  { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.6); opacity: 0; }
+}
+
+@keyframes phrase-pop-big {
+  0%   { transform: scale(0) rotate(-35deg); opacity: 0; }
+  20%  { transform: scale(1.35) rotate(12deg); opacity: 1; }
+  35%  { transform: scale(0.95) rotate(-4deg); }
+  50%  { transform: scale(1.08) rotate(2deg); }
+  65%  { transform: scale(1) rotate(0); }
+  85%  { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.7); opacity: 0; }
+}
+
+// ─── ألعاب نارية ───
+.fireworks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  margin-left: -6px;
+  background: var(--color, #10b981);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--color, #10b981);
+  transform-origin: 0 0;
+  // يدور بزاوية محدّدة ثم ينطلق للخارج بفضل translateX داخل الـ keyframes
+  animation: burst 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+.celebration.big .particle {
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  margin-left: -7px;
+  animation: burst-big 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes burst {
+  0%   { transform: rotate(var(--angle, 0deg)) translateX(0) scale(0); opacity: 0; }
+  20%  { transform: rotate(var(--angle, 0deg)) translateX(40px) scale(1); opacity: 1; }
+  100% { transform: rotate(var(--angle, 0deg)) translateX(220px) scale(0.3); opacity: 0; }
+}
+
+@keyframes burst-big {
+  0%   { transform: rotate(var(--angle, 0deg)) translateX(0) scale(0); opacity: 0; }
+  15%  { transform: rotate(var(--angle, 0deg)) translateX(50px) scale(1.2); opacity: 1; }
+  100% { transform: rotate(var(--angle, 0deg)) translateX(340px) scale(0.2); opacity: 0; }
+}
+
+// ─── حلقات (للاحتفاء الكبير) ───
+.rings {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring {
+  position: absolute;
+  border: 4px solid #f59e0b;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  opacity: 0;
+  animation: ring-expand 2.4s ease-out forwards;
+}
+
+.ring.r1 { animation-delay: 0.0s; }
+.ring.r2 { animation-delay: 0.35s; border-color: #10b981; }
+.ring.r3 { animation-delay: 0.7s;  border-color: #ec4899; }
+
+@keyframes ring-expand {
+  0%   { transform: scale(0); opacity: 0.9; border-width: 6px; }
+  100% { transform: scale(9); opacity: 0; border-width: 1px; }
+}
+
+// ─── احترام تفضيل تقليل الحركة ───
+@media (prefers-reduced-motion: reduce) {
+  .phrase, .particle, .ring { animation-duration: 0.01ms !important; }
+  .celebration.big { animation: none; }
+}

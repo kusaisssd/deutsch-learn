@@ -2,6 +2,7 @@ import { Component, computed, inject, input, linkedSignal } from '@angular/core'
 import { Router, RouterLink } from '@angular/router';
 import { ArabicScenariosService } from '../../../core/services/arabic-scenarios';
 import { SpeechService } from '../../../core/services/speech';
+import { CelebrationService } from '../../../core/services/celebration';
 import { Step } from '../../../core/models/arabic-scenarios.model';
 import { shuffle } from '../../../shared/utils/shuffle';
 
@@ -22,6 +23,7 @@ export class ArabicScenarioPage {
   private svc = inject(ArabicScenariosService);
   private router = inject(Router);
   readonly speech = inject(SpeechService);
+  private celebrate = inject(CelebrationService);
 
   readonly loaded = this.svc.loaded;
   readonly scenario = computed(() => this.svc.scenarioById(this.id())());
@@ -74,6 +76,8 @@ export class ArabicScenarioPage {
   selectOption(i: number) {
     if (this.answered()) return;
     this.selectedOption.set(i);
+    // 🎉 احتفاء صغير عند الإجابة الصحيحة
+    if (this.isCorrect()) this.celebrate.small();
   }
 
   revealListen() { this.listenRevealed.set(true); }
@@ -81,9 +85,12 @@ export class ArabicScenarioPage {
   advance() {
     if (!this.canAdvance()) return;
     if (this.isLastStep()) {
+      // 🎉 احتفاء كبير عند إنهاء الدرس
+      this.celebrate.big();
       const sc = this.scenario();
       if (sc) this.svc.markDone(sc.id);
-      this.router.navigate(['/learn-arabic']);
+      // تأخير صغير ليرى المستخدم الاحتفاء قبل الانتقال
+      setTimeout(() => this.router.navigate(['/learn-arabic']), 1200);
     } else {
       this.stepIndex.update(i => i + 1);
     }

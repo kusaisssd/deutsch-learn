@@ -1,10 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { Celebration } from './shared/components/celebration/celebration';
 
 @Component({
   selector: 'app-root',
-  // نستورد RouterOutlet ليعرض الصفحات، و RouterLink لشريط التنقل
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  // نستورد RouterOutlet ليعرض الصفحات، و RouterLink لشريط التنقل،
+  // و Celebration ليعرض الاحتفاء العربي عند الإنجازات.
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, Celebration],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
