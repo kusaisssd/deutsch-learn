@@ -5,8 +5,11 @@
        [attr.data-seed]="a.seed"
        (click)="dismiss()">
 
-    <!-- العبارة العربية -->
-    <div class="phrase" dir="rtl">{{ a.phrase }}</div>
+    <!-- العبارة العربية + النقل اللاتيني -->
+    <div class="phrase-wrap">
+      <div class="phrase" dir="rtl">{{ a.ar }}</div>
+      <div class="translit" dir="ltr">{{ a.translit }}</div>
+    </div>
 
     <!-- ألعاب نارية: جسيمات تنفجر من المركز -->
     <div class="fireworks">
