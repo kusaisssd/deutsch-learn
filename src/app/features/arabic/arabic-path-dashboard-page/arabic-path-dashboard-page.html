@@ -18,22 +18,31 @@
 
     <!-- Grundlagen -->
     <h3 class="text-base font-bold text-slate-800 mb-2">🎓 Grundlagen</h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
       <a [routerLink]="'/learn-arabic/alphabet'"
          class="flex items-center gap-3 rounded-xl border-2 border-emerald-200 bg-emerald-50 hover:border-emerald-400 hover:shadow-md transition-all p-3">
         <div class="text-3xl shrink-0">🔤</div>
         <div class="flex-1 min-w-0">
           <h4 class="font-bold text-emerald-900">Alphabet</h4>
-          <p class="text-xs text-emerald-800">28 Buchstaben mit Aussprache &amp; vielen Beispielwörtern</p>
+          <p class="text-xs text-emerald-800">28 Buchstaben &amp; Beispiele</p>
         </div>
         <span class="text-emerald-500 shrink-0">→</span>
+      </a>
+      <a [routerLink]="'/learn-arabic/wortbildung'"
+         class="flex items-center gap-3 rounded-xl border-2 border-indigo-200 bg-indigo-50 hover:border-indigo-400 hover:shadow-md transition-all p-3">
+        <div class="text-3xl shrink-0">🧩</div>
+        <div class="flex-1 min-w-0">
+          <h4 class="font-bold text-indigo-900">Wortbildung</h4>
+          <p class="text-xs text-indigo-800">61 Wörter aus Buchstaben bauen</p>
+        </div>
+        <span class="text-indigo-500 shrink-0">→</span>
       </a>
       <a [routerLink]="'/learn-arabic/wortschatz'"
          class="flex items-center gap-3 rounded-xl border-2 border-amber-200 bg-amber-50 hover:border-amber-400 hover:shadow-md transition-all p-3">
         <div class="text-3xl shrink-0">📚</div>
         <div class="flex-1 min-w-0">
           <h4 class="font-bold text-amber-900">Wortschatz</h4>
-          <p class="text-xs text-amber-800">Große Vokabel-Bibliothek nach Themen</p>
+          <p class="text-xs text-amber-800">218 Vokabeln nach Themen</p>
         </div>
         <span class="text-amber-500 shrink-0">→</span>
       </a>

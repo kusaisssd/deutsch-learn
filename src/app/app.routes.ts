@@ -196,6 +196,20 @@ export const routes: Routes = [
     title: 'Buchstabe - Arabisch lernen',
   },
   {
+    path: 'learn-arabic/wortbildung',
+    loadComponent: () =>
+      import('./features/arabic/arabic-word-building-list-page/arabic-word-building-list-page')
+        .then(m => m.ArabicWordBuildingListPage),
+    title: 'Wortbildung - Arabisch lernen',
+  },
+  {
+    path: 'learn-arabic/wortbildung/:wordId',
+    loadComponent: () =>
+      import('./features/arabic/arabic-word-building-page/arabic-word-building-page')
+        .then(m => m.ArabicWordBuildingPage),
+    title: 'Wort bauen - Arabisch lernen',
+  },
+  {
     path: 'learn-arabic/szenario/:id',
     loadComponent: () =>
       import('./features/arabic/arabic-scenario-page/arabic-scenario-page')

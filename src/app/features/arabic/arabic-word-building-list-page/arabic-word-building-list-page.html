@@ -1,0 +1,48 @@
+<section class="max-w-4xl mx-auto">
+
+  <a [routerLink]="'/learn-arabic'"
+     class="text-emerald-600 hover:underline text-sm mb-3 inline-block">← Zurück zur Übersicht</a>
+
+  <header class="text-center mb-5">
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
+      🧩 Wortbildung
+    </h2>
+    <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
+      Lerne, wie Wörter aus Buchstaben gebaut werden. Wähle ein Wort und
+      ordne die Buchstaben in der richtigen Reihenfolge an.
+    </p>
+  </header>
+
+  @if (!loaded()) {
+    <div class="text-center py-12 text-slate-500">Lädt …</div>
+  } @else {
+
+    @for (lvl of levels; track lvl.num) {
+      @let words = byDifficulty()[lvl.num];
+      @if (words && words.length) {
+        <div class="mb-6">
+          <h3 class="text-base font-bold text-slate-800 mb-2">
+            {{ lvl.emoji }} {{ lvl.label }}
+            <span class="text-xs font-normal text-slate-400 ml-1">({{ words.length }})</span>
+          </h3>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
+            @for (w of words; track w.id) {
+              <a [routerLink]="['/learn-arabic/wortbildung', w.id]"
+                 class="bg-white border-2 border-slate-200 rounded-xl p-3 hover:border-emerald-400 hover:shadow-md transition-all text-center">
+                <div class="text-xs text-slate-500 mb-1">{{ w.de }}</div>
+                <div class="text-2xl sm:text-3xl text-slate-800" dir="rtl">{{ w.word }}</div>
+                <div class="text-[10px] font-mono text-emerald-700 mt-1" dir="ltr">{{ w.translit }}</div>
+                <div class="text-[10px] text-slate-400 mt-1">{{ w.letters.length }} Buchstaben</div>
+              </a>
+            }
+          </div>
+        </div>
+      }
+    }
+
+    <p class="text-center text-xs text-slate-400 mt-6">
+      💡 Tipp: Beginne mit den einfachen Wörtern und arbeite dich nach oben.
+    </p>
+  }
+
+</section>
