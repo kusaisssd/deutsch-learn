@@ -302,28 +302,35 @@
                 @let showCorrect = answered() && oi === step.correct;
                 @let showWrong = isSelected && oi !== step.correct;
                 <button (click)="selectOption(oi)" [disabled]="answered()"
-                        class="w-full p-3 rounded-lg border-2 transition-all"
+                        class="w-full p-3 rounded-lg border-2 transition-all text-left"
                         [class.bg-green-50]="showCorrect"
                         [class.border-green-500]="showCorrect"
                         [class.bg-red-50]="showWrong"
                         [class.border-red-500]="showWrong"
                         [class.bg-white]="!showCorrect && !showWrong"
                         [class.border-slate-200]="!showCorrect && !showWrong">
+                  <!-- المعنى الألماني للخيار: مخفي قبل الجواب لئلا يكشف الإجابة،
+                       يظهر بعد الإجابة لتأكيد المعنى. -->
+                  @if (answered()) {
+                    <div class="text-xs text-slate-600 mb-2 font-medium">{{ opt.de }}</div>
+                  }
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div class="bg-indigo-50 border border-indigo-200 rounded p-1.5 flex items-center gap-1.5">
                       <span (click)="speakAr(opt.fusha.ar); $event.stopPropagation()"
                             class="bg-white border border-indigo-200 rounded-full w-7 h-7 flex items-center justify-center hover:bg-indigo-100 shrink-0 text-xs">🔊</span>
-                      <div class="flex-1 min-w-0 text-left">
+                      <div class="flex-1 min-w-0">
                         <div class="text-[9px] font-bold text-indigo-700 leading-none">FUSHA</div>
                         <div class="text-base text-slate-800 leading-tight" dir="rtl">{{ opt.fusha.ar }}</div>
+                        <div class="text-[10px] font-mono text-indigo-700" dir="ltr">{{ opt.fusha.translit }}</div>
                       </div>
                     </div>
                     <div class="bg-rose-50 border border-rose-200 rounded p-1.5 flex items-center gap-1.5">
                       <span (click)="speakAr(opt.syrian.ar); $event.stopPropagation()"
                             class="bg-white border border-rose-200 rounded-full w-7 h-7 flex items-center justify-center hover:bg-rose-100 shrink-0 text-xs">🔊</span>
-                      <div class="flex-1 min-w-0 text-left">
+                      <div class="flex-1 min-w-0">
                         <div class="text-[9px] font-bold text-rose-700 leading-none">SYRISCH</div>
                         <div class="text-base text-slate-800 leading-tight" dir="rtl">{{ opt.syrian.ar }}</div>
+                        <div class="text-[10px] font-mono text-rose-700" dir="ltr">{{ opt.syrian.translit }}</div>
                       </div>
                     </div>
                   </div>
