@@ -1,15 +1,63 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ArabicService } from '../../../core/services/arabic';
 import { ArabicScenariosService } from '../../../core/services/arabic-scenarios';
 import { ArabicAlphabetService } from '../../../core/services/arabic-alphabet';
+import { ArabicListeningService } from '../../../core/services/arabic-listening';
 import { SpeechService } from '../../../core/services/speech';
+import { SpeechRecognitionService } from '../../../core/services/speech-recognition';
 import { CelebrationService } from '../../../core/services/celebration';
 import { ArabicWord } from '../../../core/models/arabic.model';
 import { BilingualVocab } from '../../../core/models/arabic-scenarios.model';
 import { shuffle } from '../../../shared/utils/shuffle';
 
-type GameKey = 'memory' | 'audio' | 'dialect';
+type GameKey = 'memory' | 'audio' | 'dialect' | 'speak';
+
+/** جملة قابلة للنطق: ثنائية + ترجمة + معرّف */
+interface SpeakSentence {
+  fusha: { ar: string; translit: string };
+  syrian: { ar: string; translit: string };
+  de: string;
+}
+
+/** تطبيع نص عربي للمقارنة: حذف التشكيل، توحيد الألفات و التاء المربوطة */
+function normalizeArabic(s: string): string {
+  return s
+    .replace(/[ً-ْٰ]/g, '')   // tashkeel + diacritics
+    .replace(/[أإآٱ]/g, 'ا')                  // alif variants → bare alif
+    .replace(/ى/g, 'ي')                      // alif maqsura → ya
+    .replace(/ة/g, 'ه')                      // ta marbuta → ha
+    .replace(/[ؤئ]/g, '')                    // hamza on letter → drop
+    .replace(/[^ء-غف-ي\s]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function levenshtein(a: string, b: string): number {
+  const m = a.length, n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  let prev = Array.from({ length: n + 1 }, (_, j) => j);
+  for (let i = 1; i <= m; i++) {
+    const cur = [i];
+    for (let j = 1; j <= n; j++) {
+      const cost = a.charCodeAt(i - 1) === b.charCodeAt(j - 1) ? 0 : 1;
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+    }
+    prev = cur;
+  }
+  return prev[n];
+}
+
+function arabicSimilarity(spoken: string, expected: string): number {
+  const a = normalizeArabic(spoken);
+  const b = normalizeArabic(expected);
+  if (!a && !b) return 1;
+  if (!a || !b) return 0;
+  const dist = levenshtein(a, b);
+  const max = Math.max(a.length, b.length);
+  return Math.max(0, 1 - dist / max);
+}
 
 /** بطاقة لعبة الذاكرة */
 interface MemoryCard {
@@ -30,7 +78,9 @@ export class ArabicGamesPage {
   private words = inject(ArabicService);
   private scenarios = inject(ArabicScenariosService);
   private alphabet = inject(ArabicAlphabetService);
+  private listening = inject(ArabicListeningService);
   readonly speech = inject(SpeechService);
+  readonly speechRec = inject(SpeechRecognitionService);
   private celebrate = inject(CelebrationService);
 
   readonly loaded = this.words.loaded;
@@ -81,10 +131,14 @@ export class ArabicGamesPage {
     this.currentGame.set(g);
     if (g === 'memory') this.startMemory();
     else if (g === 'audio') this.startAudio();
-    else this.startDialect();
+    else if (g === 'dialect') this.startDialect();
+    else this.startSpeak();
   }
 
-  back() { this.currentGame.set(null); }
+  back() {
+    this.speechRec.stop();
+    this.currentGame.set(null);
+  }
 
   // ═══════════════════════════════════════════
   // 🃏 لعبة الذاكرة (Memory Matching)
@@ -282,6 +336,103 @@ export class ArabicGamesPage {
   dialectFinish() {
     if (this.dialectScore() >= this.DIALECT_ROUNDS * 0.7) this.celebrate.big();
   }
+
+  // ═══════════════════════════════════════════
+  // 🎤 Sprechen: انطق الجملة و قارن
+  // ═══════════════════════════════════════════
+  readonly SPEAK_ROUNDS = 10;
+  /** اللهجة المُختارة للنطق (افتراضي: Fusha — Web Speech يدعمها أفضل) */
+  readonly speakDialect = signal<'fusha' | 'syrian'>('fusha');
+  readonly speakRound = signal(0);
+  readonly speakScore = signal(0);
+  readonly speakCurrent = signal<SpeakSentence | null>(null);
+  readonly speakSimilarity = signal<number | null>(null);
+  readonly speakRecognized = signal<string>('');
+  /** هل يسجّل الآن؟ (للزرّ) */
+  readonly speakRecording = this.speechRec.isListening;
+  readonly speakSupported = this.speechRec.isSupported;
+
+  /** مجموعة الجمل: من تمارين الاستماع + سطور الحوارات */
+  readonly speakPool = computed<SpeakSentence[]>(() => {
+    const out: SpeakSentence[] = [];
+    // 1) تمارين الاستماع (15)
+    for (const p of this.listening.passages()) {
+      out.push({ fusha: p.fusha, syrian: p.syrian, de: p.de });
+    }
+    // 2) سطور الحوارات
+    for (const s of this.scenarios.scenarios()) {
+      for (const st of s.steps) {
+        if (st.kind === 'dialogue') {
+          for (const line of st.lines) {
+            out.push({
+              fusha: line.sentence.fusha,
+              syrian: line.sentence.syrian,
+              de: line.sentence.de,
+            });
+          }
+        }
+      }
+    }
+    return out;
+  });
+
+  setSpeakDialect(d: 'fusha' | 'syrian') {
+    this.speechRec.stop();
+    this.speakDialect.set(d);
+  }
+
+  private startSpeak() {
+    this.speechRec.stop();
+    this.speakRound.set(0);
+    this.speakScore.set(0);
+    this.speakSimilarity.set(null);
+    this.speakRecognized.set('');
+    this.nextSpeak();
+  }
+
+  nextSpeak() {
+    this.speechRec.stop();
+    this.speechRec.clearResult();
+    this.speakSimilarity.set(null);
+    this.speakRecognized.set('');
+    if (this.speakRound() >= this.SPEAK_ROUNDS) return;
+    this.speakRound.update(r => r + 1);
+    const pool = this.speakPool();
+    if (!pool.length) return;
+    this.speakCurrent.set(pool[Math.floor(Math.random() * pool.length)]);
+  }
+
+  startSpeakRecording() {
+    this.speechRec.clearResult();
+    this.speakSimilarity.set(null);
+    this.speakRecognized.set('');
+    this.speechRec.start('ar-SA');
+  }
+  stopSpeakRecording() {
+    this.speechRec.stop();
+  }
+
+  /** يحسب التشابه عند وصول نتيجة من التعرّف الصوتي */
+  constructor() {
+    effect(() => {
+      const transcript = this.speechRec.lastTranscript();
+      const cur = this.speakCurrent();
+      if (!transcript || !cur || this.currentGame() !== 'speak') return;
+      const expected = cur[this.speakDialect()].ar;
+      const sim = arabicSimilarity(transcript, expected);
+      this.speakRecognized.set(transcript);
+      this.speakSimilarity.set(sim);
+      if (sim >= 0.7) {
+        this.speakScore.update(s => s + 1);
+        this.celebrate.small();
+      }
+    });
+  }
+
+  /** نسبة مئوية مدوّرة */
+  pct(n: number): number { return Math.round(n * 100); }
+
+  speakRestart() { this.startSpeak(); }
 
   // ═══════════════════════════════════════════
   speakAr(text: string) {

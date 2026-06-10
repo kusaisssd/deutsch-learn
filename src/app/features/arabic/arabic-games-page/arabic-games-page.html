@@ -17,7 +17,7 @@
 
     @if (!currentGame()) {
       <!-- اختيار اللعبة -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <button (click)="openGame('memory')"
                 class="bg-white border-2 border-emerald-200 rounded-xl p-5 hover:border-emerald-400 hover:shadow-md text-center transition-all">
           <div class="text-5xl mb-2">🃏</div>
@@ -35,6 +35,12 @@
           <div class="text-5xl mb-2">🇸🇾</div>
           <h3 class="font-bold text-rose-900 mb-1">Dialekt</h3>
           <p class="text-xs text-rose-800">Fusha → finde<br>die syrische Form</p>
+        </button>
+        <button (click)="openGame('speak')"
+                class="bg-white border-2 border-amber-200 rounded-xl p-5 hover:border-amber-400 hover:shadow-md text-center transition-all">
+          <div class="text-5xl mb-2">🎤</div>
+          <h3 class="font-bold text-amber-900 mb-1">Sprechen</h3>
+          <p class="text-xs text-amber-800">Lies vor und<br>vergleiche dich</p>
         </button>
       </div>
     }
@@ -214,6 +220,124 @@
               <div class="font-bold text-amber-800 mb-1">Spiel zu Ende!</div>
               <div class="text-lg text-amber-700">{{ dialectScore() }} / {{ DIALECT_ROUNDS }} Punkte</div>
               <button (click)="dialectRestart()" class="mt-2 bg-rose-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-rose-700">↻ Neu starten</button>
+            </div>
+          }
+        }
+      }
+    }
+
+    <!-- ═══ SPRECHEN (نطق) ═══ -->
+    @if (currentGame() === 'speak') {
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-3 flex items-center justify-between text-sm">
+        <span class="font-bold text-amber-900">🎤 Sprechen</span>
+        <span class="text-amber-800">Runde {{ speakRound() }} / {{ SPEAK_ROUNDS }} · Punkte: <strong>{{ speakScore() }}</strong></span>
+      </div>
+
+      @if (!speakSupported) {
+        <div class="bg-red-50 border border-red-300 rounded-lg p-4 text-center text-red-800">
+          ⚠️ Web Speech Recognition wird in deinem Browser nicht unterstützt.
+          Bitte verwende <strong>Chrome</strong> oder <strong>Edge</strong>.
+        </div>
+      } @else {
+
+        <!-- اختيار اللهجة -->
+        <div class="flex gap-2 mb-3">
+          <button (click)="setSpeakDialect('fusha')"
+                  class="flex-1 rounded-lg py-2 text-sm font-semibold transition-colors"
+                  [class.bg-indigo-600]="speakDialect() === 'fusha'"
+                  [class.text-white]="speakDialect() === 'fusha'"
+                  [class.bg-white]="speakDialect() !== 'fusha'"
+                  [class.text-slate-700]="speakDialect() !== 'fusha'"
+                  [class.border]="speakDialect() !== 'fusha'"
+                  [class.border-slate-300]="speakDialect() !== 'fusha'">
+            🇸🇦 Fusha üben
+          </button>
+          <button (click)="setSpeakDialect('syrian')"
+                  class="flex-1 rounded-lg py-2 text-sm font-semibold transition-colors"
+                  [class.bg-rose-600]="speakDialect() === 'syrian'"
+                  [class.text-white]="speakDialect() === 'syrian'"
+                  [class.bg-white]="speakDialect() !== 'syrian'"
+                  [class.text-slate-700]="speakDialect() !== 'syrian'"
+                  [class.border]="speakDialect() !== 'syrian'"
+                  [class.border-slate-300]="speakDialect() !== 'syrian'">
+            🇸🇾 Syrisch üben
+          </button>
+        </div>
+
+        @if (speakCurrent(); as cur) {
+          @let form = speakDialect() === 'fusha' ? cur.fusha : cur.syrian;
+          <!-- بطاقة الجملة المطلوبة -->
+          <div class="bg-white border-2 border-amber-200 rounded-xl p-4 mb-3 text-center">
+            <div class="text-xs text-slate-500 mb-1">Lies vor — {{ speakDialect() === 'fusha' ? 'Fusha' : 'Syrisch' }}:</div>
+            <div class="text-2xl text-slate-800 mb-2 leading-relaxed" dir="rtl">{{ form.ar }}</div>
+            <div class="text-sm font-mono text-amber-700 mb-2" dir="ltr">{{ form.translit }}</div>
+            <div class="text-xs text-slate-500 italic">→ {{ cur.de }}</div>
+            <button (click)="speakAr(form.ar)"
+                    class="mt-3 bg-amber-500 text-white rounded-full px-4 py-1.5 text-sm font-semibold hover:bg-amber-600">
+              🔊 Anhören
+            </button>
+          </div>
+
+          <!-- زرّ التسجيل -->
+          @if (!speakRecording()) {
+            <button (click)="startSpeakRecording()"
+                    class="w-full bg-rose-600 text-white rounded-xl py-4 font-bold text-lg hover:bg-rose-700 mb-3">
+              🎤 Aufnehmen
+            </button>
+          } @else {
+            <button (click)="stopSpeakRecording()"
+                    class="w-full bg-red-700 text-white rounded-xl py-4 font-bold text-lg hover:bg-red-800 mb-3 animate-pulse">
+              ⏹ Stoppen (höre dich an…)
+            </button>
+          }
+
+          <!-- النتيجة -->
+          @if (speakSimilarity() !== null) {
+            @let sim = pct(speakSimilarity()!);
+            @let ok = sim >= 70;
+            @let mid = sim >= 50 && sim < 70;
+            <div class="rounded-xl p-4 mb-3 border-2"
+                 [class.bg-green-50]="ok"
+                 [class.border-green-400]="ok"
+                 [class.bg-yellow-50]="mid"
+                 [class.border-yellow-400]="mid"
+                 [class.bg-red-50]="!ok && !mid"
+                 [class.border-red-400]="!ok && !mid">
+              <div class="text-center mb-3">
+                <div class="text-4xl">{{ ok ? '✅' : (mid ? '⚠️' : '❌') }}</div>
+                <div class="text-3xl font-bold"
+                     [class.text-green-700]="ok"
+                     [class.text-yellow-700]="mid"
+                     [class.text-red-700]="!ok && !mid">{{ sim }}% Übereinstimmung</div>
+              </div>
+              <div class="bg-white rounded-lg p-3 border border-slate-200">
+                <div class="text-xs text-slate-500 mb-1">Du hast gesagt:</div>
+                <div class="text-lg text-slate-800" dir="rtl">{{ speakRecognized() || '—' }}</div>
+              </div>
+              <div class="bg-white rounded-lg p-3 border border-slate-200 mt-2">
+                <div class="text-xs text-slate-500 mb-1">Erwartet:</div>
+                <div class="text-lg text-slate-800" dir="rtl">{{ form.ar }}</div>
+                <div class="text-xs font-mono text-amber-700 mt-1" dir="ltr">{{ form.translit }}</div>
+              </div>
+            </div>
+          }
+
+          @if (speechRec.error(); as err) {
+            <p class="text-xs text-red-700 mb-3 text-center">⚠️ {{ err }}</p>
+          }
+
+          <!-- التنقّل -->
+          @if (speakRound() < SPEAK_ROUNDS) {
+            <button (click)="nextSpeak()"
+                    class="w-full bg-amber-500 text-white rounded-lg py-2.5 font-semibold hover:bg-amber-600">
+              ⏭ Nächste Runde
+            </button>
+          } @else if (speakSimilarity() !== null) {
+            <div class="text-center bg-amber-50 border border-amber-300 rounded-xl p-4">
+              <div class="text-3xl mb-1">🏁</div>
+              <div class="font-bold text-amber-800 mb-1">Spiel zu Ende!</div>
+              <div class="text-lg text-amber-700">{{ speakScore() }} / {{ SPEAK_ROUNDS }} gute Aussprachen</div>
+              <button (click)="speakRestart()" class="mt-2 bg-rose-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-rose-700">↻ Neu starten</button>
             </div>
           }
         }
