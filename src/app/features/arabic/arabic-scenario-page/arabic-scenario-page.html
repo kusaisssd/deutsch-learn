@@ -230,23 +230,29 @@
           }
 
           @case ('fill') {
-            <p class="text-slate-700 mb-3">{{ step.prompt }}</p>
-            <div class="bg-amber-50 border-2 border-amber-200 rounded-xl p-4 mb-3 text-center">
-              <div class="flex items-center justify-center gap-2 text-2xl" dir="rtl">
-                <span class="text-slate-800">{{ step.before.ar }}</span>
-                <span class="bg-white border-2 border-amber-400 border-dashed rounded px-3 py-1 min-w-[80px] inline-block">
+            <p class="text-slate-700 mb-1">{{ step.prompt }}</p>
+            <p class="text-xs text-slate-500 mb-3">Lies den Satz, finde das fehlende Wort, und tippe es unten an:</p>
+            <div class="bg-amber-50 border-2 border-amber-200 rounded-xl p-4 mb-3">
+              <!-- المعنى الألماني فوق الجملة لتوضّح ما المطلوب -->
+              <div class="text-sm text-slate-700 mb-3 font-medium text-center">{{ step.de }}</div>
+              <!-- الجملة العربية مع الفراغ: تدفّق طبيعي RTL بلا flex -->
+              <div class="text-2xl text-slate-800 leading-loose text-center break-words" dir="rtl">
+                {{ step.before.ar }}
+                <span class="inline-block align-middle bg-white border-2 border-amber-400 border-dashed rounded px-3 py-1 mx-1 min-w-[70px] text-center">
                   @if (answered()) {
                     <span class="text-emerald-700 font-bold">{{ step.options[step.correct].ar }}</span>
                   } @else {
                     <span class="text-amber-500">___</span>
                   }
                 </span>
-                <span class="text-slate-800">{{ step.after.ar }}</span>
+                {{ step.after.ar }}
               </div>
-              <div class="text-xs font-mono text-slate-500 mt-2" dir="ltr">
-                {{ step.before.translit }} <strong class="text-emerald-700">{{ answered() ? step.options[step.correct].translit : '___' }}</strong> {{ step.after.translit }}
+              <!-- النقل اللاتيني -->
+              <div class="text-xs font-mono text-slate-500 mt-3 text-center" dir="ltr">
+                {{ step.before.translit }}
+                <strong class="text-emerald-700 mx-1">{{ answered() ? step.options[step.correct].translit : '___' }}</strong>
+                {{ step.after.translit }}
               </div>
-              <div class="text-sm text-slate-700 mt-2 font-medium">{{ step.de }}</div>
             </div>
 
             <p class="text-sm font-semibold text-slate-700 mb-2">Wähle das richtige Wort:</p>
