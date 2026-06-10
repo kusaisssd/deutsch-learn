@@ -1,0 +1,92 @@
+<section class="max-w-2xl mx-auto">
+
+  <a [routerLink]="'/learn-arabic'"
+     class="text-emerald-600 hover:underline text-sm mb-3 inline-block">← Zurück zur Übersicht</a>
+
+  <header class="text-center mb-5">
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">🌅 Tagesherausforderung</h2>
+    <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
+      Lerne jeden Tag ein neues Wort. Komm zurück — deine Serie zählt!
+    </p>
+  </header>
+
+  @if (!ready()) {
+    <div class="text-center py-12 text-slate-500">Lädt …</div>
+  } @else {
+
+    @let s = state();
+
+    <!-- بطاقات السلسلة -->
+    <div class="grid grid-cols-3 gap-2 mb-5">
+      <div class="bg-orange-50 border-2 border-orange-200 rounded-xl p-3 text-center">
+        <div class="text-3xl">🔥</div>
+        <div class="text-xl font-bold text-orange-800">{{ s.streak }}</div>
+        <div class="text-[10px] text-orange-700 font-semibold">Streak</div>
+      </div>
+      <div class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-3 text-center">
+        <div class="text-3xl">🏆</div>
+        <div class="text-xl font-bold text-yellow-800">{{ s.bestStreak }}</div>
+        <div class="text-[10px] text-yellow-700 font-semibold">Rekord</div>
+      </div>
+      <div class="rounded-xl p-3 text-center border-2"
+           [class.bg-green-50]="s.doneToday"
+           [class.border-green-300]="s.doneToday"
+           [class.bg-slate-50]="!s.doneToday"
+           [class.border-slate-200]="!s.doneToday">
+        <div class="text-3xl">{{ s.doneToday ? '✅' : '🎯' }}</div>
+        <div class="text-xl font-bold" [class.text-green-800]="s.doneToday" [class.text-slate-700]="!s.doneToday">
+          {{ s.doneToday ? '✓' : '...' }}
+        </div>
+        <div class="text-[10px] font-semibold" [class.text-green-700]="s.doneToday" [class.text-slate-500]="!s.doneToday">
+          {{ s.doneToday ? 'Erledigt' : 'Offen' }}
+        </div>
+      </div>
+    </div>
+
+    @if (wordOfDay(); as w) {
+      <!-- بطاقة كلمة اليوم -->
+      <div class="bg-gradient-to-br from-emerald-500 to-emerald-700 text-white rounded-2xl p-5 mb-4 shadow-lg text-center">
+        <div class="text-xs opacity-90 mb-2">Heute lernst du:</div>
+        <h3 class="text-2xl font-bold mb-2">{{ w.de }}</h3>
+        @if (w.note) {
+          <p class="text-xs opacity-90 mt-1">💡 {{ w.note }}</p>
+        }
+      </div>
+
+      <!-- Fusha + Syrisch -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+        <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-4 text-center">
+          <div class="text-[10px] font-bold text-indigo-700 mb-1">HOCHARABISCH (FUSHA)</div>
+          <div class="text-3xl text-slate-800 mb-1" dir="rtl">{{ w.fusha.ar }}</div>
+          <div class="text-xs font-mono text-indigo-700 mb-2" dir="ltr">{{ w.fusha.translit }}</div>
+          <button (click)="speakAr(w.fusha.ar)"
+                  class="bg-indigo-600 text-white rounded-full px-4 py-1.5 text-sm hover:bg-indigo-700">
+            🔊 Anhören
+          </button>
+        </div>
+        <div class="bg-rose-50 border-2 border-rose-200 rounded-xl p-4 text-center">
+          <div class="text-[10px] font-bold text-rose-700 mb-1">SYRISCH</div>
+          <div class="text-3xl text-slate-800 mb-1" dir="rtl">{{ w.syrian.ar }}</div>
+          <div class="text-xs font-mono text-rose-700 mb-2" dir="ltr">{{ w.syrian.translit }}</div>
+          <button (click)="speakAr(w.syrian.ar)"
+                  class="bg-rose-600 text-white rounded-full px-4 py-1.5 text-sm hover:bg-rose-700">
+            🔊 Anhören
+          </button>
+        </div>
+      </div>
+
+      <!-- زرّ الإنجاز -->
+      <button (click)="done()" [disabled]="s.doneToday"
+              class="w-full bg-amber-500 text-white rounded-xl py-3 font-bold text-lg hover:bg-amber-600 transition-colors disabled:opacity-50 disabled:bg-green-500">
+        @if (s.doneToday) { ✓ Heute abgeschlossen — komm morgen wieder! }
+        @else { 🎉 Gelernt! }
+      </button>
+
+      <p class="text-center text-xs text-slate-400 mt-4">
+        💡 Komm jeden Tag zurück, um deine Streak zu erhöhen.
+      </p>
+    }
+
+  }
+
+</section>

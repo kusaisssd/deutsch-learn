@@ -16,6 +16,22 @@
 
     @let s = stats();
 
+    <!-- روابط سريعة في الأعلى: استماع، تحدّي اليوم، ألعاب -->
+    <nav class="flex flex-wrap gap-2 mb-5">
+      <a [routerLink]="'/learn-arabic/hoeren'"
+         class="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-full px-3 py-1.5 text-sm font-medium hover:bg-emerald-100 transition-colors">
+        🎧 Hörverstehen
+      </a>
+      <a [routerLink]="'/learn-arabic/herausforderung'"
+         class="flex items-center gap-1.5 bg-amber-50 border border-amber-200 text-amber-800 rounded-full px-3 py-1.5 text-sm font-medium hover:bg-amber-100 transition-colors">
+        🌅 Tageschallenge
+      </a>
+      <a [routerLink]="'/learn-arabic/spiele'"
+         class="flex items-center gap-1.5 bg-rose-50 border border-rose-200 text-rose-800 rounded-full px-3 py-1.5 text-sm font-medium hover:bg-rose-100 transition-colors">
+        🎮 Spiele
+      </a>
+    </nav>
+
     <!-- Grundlagen -->
     <h3 class="text-base font-bold text-slate-800 mb-2">🎓 Grundlagen</h3>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">

@@ -1,0 +1,206 @@
+<section class="max-w-3xl mx-auto">
+
+  <a [routerLink]="'/learn-arabic'"
+     class="text-emerald-600 hover:underline text-sm mb-3 inline-block">← Zurück zur Übersicht</a>
+
+  <header class="text-center mb-5">
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">🎮 Arabisch-Spiele</h2>
+    <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
+      Lerne spielerisch: Memory, Hör-Quiz oder Dialekt-Match — alle nutzen
+      deinen Wortschatz aus der Bibliothek.
+    </p>
+  </header>
+
+  @if (!loaded()) {
+    <div class="text-center py-12 text-slate-500">Lädt …</div>
+  } @else {
+
+    @if (!currentGame()) {
+      <!-- اختيار اللعبة -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <button (click)="openGame('memory')"
+                class="bg-white border-2 border-emerald-200 rounded-xl p-5 hover:border-emerald-400 hover:shadow-md text-center transition-all">
+          <div class="text-5xl mb-2">🃏</div>
+          <h3 class="font-bold text-emerald-900 mb-1">Memory</h3>
+          <p class="text-xs text-emerald-800">Finde Paare:<br>Deutsch ↔ Arabisch</p>
+        </button>
+        <button (click)="openGame('audio')"
+                class="bg-white border-2 border-indigo-200 rounded-xl p-5 hover:border-indigo-400 hover:shadow-md text-center transition-all">
+          <div class="text-5xl mb-2">🎧</div>
+          <h3 class="font-bold text-indigo-900 mb-1">Hör-Quiz</h3>
+          <p class="text-xs text-indigo-800">Höre Arabisch,<br>wähle die Bedeutung</p>
+        </button>
+        <button (click)="openGame('dialect')"
+                class="bg-white border-2 border-rose-200 rounded-xl p-5 hover:border-rose-400 hover:shadow-md text-center transition-all">
+          <div class="text-5xl mb-2">🇸🇾</div>
+          <h3 class="font-bold text-rose-900 mb-1">Dialekt</h3>
+          <p class="text-xs text-rose-800">Fusha → finde<br>die syrische Form</p>
+        </button>
+      </div>
+    }
+
+    @if (currentGame()) {
+      <button (click)="back()" class="text-emerald-600 hover:underline text-sm mb-3 inline-block">← Andere Spiele</button>
+    }
+
+    <!-- ═══ MEMORY ═══ -->
+    @if (currentGame() === 'memory') {
+      <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 mb-3 flex items-center justify-between text-sm">
+        <span class="font-bold text-emerald-900">🃏 Memory</span>
+        <div class="flex gap-3 text-emerald-800">
+          <span>Züge: <strong>{{ memoryMoves() }}</strong></span>
+          <button (click)="openGame('memory')" class="bg-emerald-600 text-white rounded-full px-3 py-0.5 text-xs hover:bg-emerald-700">↻ Neu</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+        @for (card of memoryCards(); track card.id; let i = $index) {
+          @let matched = isMemoryMatched(card);
+          @let flipped = isMemoryFlipped(i) || matched;
+          <button class="memory-card aspect-square rounded-lg border-2 p-2 transition-all text-center"
+                  [class.flipped]="flipped"
+                  [class.matched]="matched"
+                  [class.border-emerald-300]="!flipped"
+                  [class.border-green-400]="matched"
+                  [class.bg-emerald-50]="!flipped"
+                  [class.bg-white]="flipped && !matched"
+                  [class.bg-green-50]="matched"
+                  (click)="flipMemory(i)"
+                  [disabled]="matched">
+            @if (flipped) {
+              @if (card.side === 'de') {
+                <div class="text-sm font-bold text-slate-800">{{ card.text }}</div>
+              } @else {
+                <div class="text-xl text-slate-800" dir="rtl">{{ card.text }}</div>
+                <div class="text-[10px] font-mono text-slate-500 mt-1" dir="ltr">{{ card.translit }}</div>
+              }
+            } @else {
+              <div class="text-3xl">?</div>
+            }
+          </button>
+        }
+      </div>
+
+      @if (memoryWon()) {
+        <div class="text-center mt-4 bg-green-50 border border-green-300 rounded-xl p-4">
+          <div class="text-3xl mb-1">🏆</div>
+          <div class="font-bold text-green-800">Geschafft in {{ memoryMoves() }} Zügen!</div>
+          <button (click)="openGame('memory')" class="mt-2 bg-emerald-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-emerald-700">↻ Nochmal spielen</button>
+        </div>
+      }
+    }
+
+    <!-- ═══ AUDIO QUIZ ═══ -->
+    @if (currentGame() === 'audio') {
+      <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-3 mb-3 flex items-center justify-between text-sm">
+        <span class="font-bold text-indigo-900">🎧 Hör-Quiz</span>
+        <span class="text-indigo-800">Runde {{ audioRound() }} / {{ TOTAL_ROUNDS }} · Punkte: <strong>{{ audioScore() }}</strong></span>
+      </div>
+
+      @if (audioCurrent(); as cur) {
+        <div class="bg-white border-2 border-indigo-200 rounded-xl p-4 mb-3 text-center">
+          <p class="text-sm text-slate-600 mb-3">Höre dir das Wort an und wähle die Bedeutung:</p>
+          <button (click)="replayAudio()" class="bg-indigo-600 text-white rounded-full px-6 py-3 font-bold hover:bg-indigo-700">
+            🔊 Anhören
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+          @for (opt of audioOptions(); track $index; let i = $index) {
+            @let correct = isAudioCorrect(i);
+            @let wrong = isAudioWrong(i);
+            <button (click)="selectAudio(opt, i)"
+                    [disabled]="audioSelected() !== null"
+                    class="text-center p-3 rounded-lg border-2 transition-all font-medium"
+                    [class.bg-green-50]="correct"
+                    [class.border-green-500]="correct"
+                    [class.bg-red-50]="wrong"
+                    [class.border-red-500]="wrong"
+                    [class.bg-white]="!correct && !wrong"
+                    [class.border-slate-200]="!correct && !wrong">
+              {{ opt.de }}
+            </button>
+          }
+        </div>
+
+        @if (audioSelected() !== null) {
+          <!-- نتيجة الجولة -->
+          <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 mb-3 text-center">
+            <div class="text-xs text-slate-500 mb-1">Antwort:</div>
+            <div class="text-lg font-bold text-slate-800" dir="rtl">{{ cur.fusha.ar }}</div>
+            <div class="text-xs font-mono text-slate-500" dir="ltr">{{ cur.fusha.translit }}</div>
+            <div class="text-sm text-slate-700 mt-1">{{ cur.de }}</div>
+          </div>
+          @if (audioRound() < TOTAL_ROUNDS) {
+            <button (click)="nextAudio()" class="w-full bg-indigo-600 text-white rounded-lg py-2.5 font-semibold hover:bg-indigo-700">Nächste Runde →</button>
+          } @else {
+            <div class="text-center bg-amber-50 border border-amber-300 rounded-xl p-4">
+              <div class="text-3xl mb-1">🏁</div>
+              <div class="font-bold text-amber-800 mb-1">Spiel zu Ende!</div>
+              <div class="text-lg text-amber-700">{{ audioScore() }} / {{ TOTAL_ROUNDS }} Punkte</div>
+              <button (click)="audioRestart()" class="mt-2 bg-indigo-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-indigo-700">↻ Neu starten</button>
+            </div>
+          }
+        }
+      }
+    }
+
+    <!-- ═══ DIALECT MATCH ═══ -->
+    @if (currentGame() === 'dialect') {
+      <div class="bg-rose-50 border border-rose-200 rounded-xl p-3 mb-3 flex items-center justify-between text-sm">
+        <span class="font-bold text-rose-900">🇸🇾 Dialekt</span>
+        <span class="text-rose-800">Runde {{ dialectRound() }} / {{ TOTAL_ROUNDS }} · Punkte: <strong>{{ dialectScore() }}</strong></span>
+      </div>
+
+      @if (dialectCurrent(); as cur) {
+        <div class="bg-white border-2 border-indigo-200 rounded-xl p-4 mb-3 text-center">
+          <div class="text-xs text-indigo-700 font-bold mb-2">FUSHA</div>
+          <div class="text-3xl text-slate-800 mb-1" dir="rtl">{{ cur.fusha.ar }}</div>
+          <div class="text-xs font-mono text-indigo-700 mb-2" dir="ltr">{{ cur.fusha.translit }}</div>
+          <div class="text-sm text-slate-600">{{ cur.de }}</div>
+          <button (click)="speakAr(cur.fusha.ar)" class="mt-2 bg-indigo-600 text-white rounded-full px-3 py-1 text-xs hover:bg-indigo-700">🔊 Fusha</button>
+        </div>
+
+        <p class="text-sm font-semibold text-slate-700 mb-2 text-center">Wie heißt das auf Syrisch?</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+          @for (opt of dialectOptions(); track $index; let i = $index) {
+            @let correct = isDialectCorrect(i);
+            @let wrong = isDialectWrong(i);
+            <button (click)="selectDialect(opt, i)"
+                    [disabled]="dialectSelected() !== null"
+                    class="p-3 rounded-lg border-2 transition-all text-center"
+                    [class.bg-green-50]="correct"
+                    [class.border-green-500]="correct"
+                    [class.bg-red-50]="wrong"
+                    [class.border-red-500]="wrong"
+                    [class.bg-rose-50]="!correct && !wrong"
+                    [class.border-rose-200]="!correct && !wrong">
+              <div class="text-xl text-slate-800" dir="rtl">{{ opt.syrian.ar }}</div>
+              <div class="text-[10px] font-mono text-slate-500" dir="ltr">{{ opt.syrian.translit }}</div>
+            </button>
+          }
+        </div>
+
+        @if (dialectSelected() !== null) {
+          <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 mb-3 text-center">
+            <div class="text-xs text-slate-500 mb-1">Richtige syrische Form:</div>
+            <div class="text-xl font-bold text-slate-800" dir="rtl">{{ cur.syrian.ar }}</div>
+            <div class="text-xs font-mono text-slate-500" dir="ltr">{{ cur.syrian.translit }}</div>
+          </div>
+          @if (dialectRound() < TOTAL_ROUNDS) {
+            <button (click)="nextDialect()" class="w-full bg-rose-600 text-white rounded-lg py-2.5 font-semibold hover:bg-rose-700">Nächste Runde →</button>
+          } @else {
+            <div class="text-center bg-amber-50 border border-amber-300 rounded-xl p-4">
+              <div class="text-3xl mb-1">🏁</div>
+              <div class="font-bold text-amber-800 mb-1">Spiel zu Ende!</div>
+              <div class="text-lg text-amber-700">{{ dialectScore() }} / {{ TOTAL_ROUNDS }} Punkte</div>
+              <button (click)="dialectRestart()" class="mt-2 bg-rose-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-rose-700">↻ Neu starten</button>
+            </div>
+          }
+        }
+      }
+    }
+
+  }
+
+</section>

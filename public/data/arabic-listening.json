@@ -1,0 +1,170 @@
+{
+  "passages": [
+
+    {
+      "id": "ls-1", "level": 1, "emoji": "👋", "title": "Sich vorstellen",
+      "fusha": { "ar": "اسْمي أَحْمَد وَأَنا مِن دِمَشْق.", "translit": "ismī Aḥmad wa-ana min Dimashq." },
+      "syrian": { "ar": "اسمي أحمد وأنا من الشام.", "translit": "ismī Aḥmad w-ana min ish-Shām." },
+      "de": "Ich heiße Ahmad und ich komme aus Damaskus.",
+      "question": "Woher kommt die Person?",
+      "options": ["Damaskus", "Aleppo", "Beirut"],
+      "correct": 0,
+      "explanation": "Dimashq / ish-Shām = Damaskus."
+    },
+
+    {
+      "id": "ls-2", "level": 1, "emoji": "🏫", "title": "Tagesplan",
+      "fusha": { "ar": "أَذْهَب اليَوم إِلى المَدْرَسَة.", "translit": "adhhab al-yawm ilā l-madrasa." },
+      "syrian": { "ar": "بروح اليوم عَ المدرسة.", "translit": "brūḥ el-yōm ʿa-l-madrase." },
+      "de": "Ich gehe heute zur Schule.",
+      "question": "Wohin geht die Person?",
+      "options": ["Zur Schule", "Zur Arbeit", "Nach Hause"],
+      "correct": 0,
+      "explanation": "madrase = Schule."
+    },
+
+    {
+      "id": "ls-3", "level": 1, "emoji": "🍽️", "title": "Lob fürs Essen",
+      "fusha": { "ar": "الطَّعام لَذيذ جِدّاً.", "translit": "aṭ-ṭaʿām ladhīdh jiddan." },
+      "syrian": { "ar": "الأكل كتير طيّب.", "translit": "el-akel ktīr ṭayyeb." },
+      "de": "Das Essen ist sehr lecker.",
+      "question": "Was sagt die Person über das Essen?",
+      "options": ["Es ist sehr lecker", "Es ist zu salzig", "Es ist kalt"],
+      "correct": 0,
+      "explanation": "ktīr ṭayyeb = sehr lecker."
+    },
+
+    {
+      "id": "ls-4", "level": 1, "emoji": "⏰", "title": "Treffpunkt",
+      "fusha": { "ar": "نَلْتَقي غَداً السّاعَة السّابِعَة.", "translit": "naltaqī ghadan as-sāʿa as-sābiʿa." },
+      "syrian": { "ar": "منلتقي بكرا الساعة سبعة.", "translit": "mnilteʾī bukra es-sāʿa sabʿa." },
+      "de": "Wir treffen uns morgen um sieben Uhr.",
+      "question": "Wann ist das Treffen?",
+      "options": ["Morgen um 7", "Heute um 7", "Übermorgen um 8"],
+      "correct": 0,
+      "explanation": "bukra = morgen, es-sāʿa sabʿa = um 7 Uhr."
+    },
+
+    {
+      "id": "ls-5", "level": 1, "emoji": "☕", "title": "Kaffee bestellen",
+      "fusha": { "ar": "أَحْتاج إِلى قَهْوَة، مِن فَضْلِك.", "translit": "aḥtāj ilā qahwa, min faḍlik." },
+      "syrian": { "ar": "بدّي قهوة، لو سمحت.", "translit": "biddī ʾahwe, law samaḥt." },
+      "de": "Ich brauche einen Kaffee, bitte.",
+      "question": "Was möchte die Person?",
+      "options": ["Einen Kaffee", "Einen Tee", "Wasser"],
+      "correct": 0,
+      "explanation": "biddī = ich möchte, ʾahwe = Kaffee."
+    },
+
+    {
+      "id": "ls-6", "level": 2, "emoji": "🧭", "title": "Wegbeschreibung",
+      "fusha": { "ar": "اِمْشِ مُسْتَقيماً، ثُمَّ يَميناً عِنْدَ التَّقاطُع.", "translit": "imshi mustaqīman, thumma yamīnan ʿinda t-taqāṭuʿ." },
+      "syrian": { "ar": "روح دُغري، وبعدين يمين عند المفرق.", "translit": "rūḥ dughrī, w-baʿdēn yamīn ʿand el-mafraq." },
+      "de": "Geh geradeaus, dann rechts an der Kreuzung.",
+      "question": "Was soll man an der Kreuzung tun?",
+      "options": ["Rechts abbiegen", "Links abbiegen", "Geradeaus weiter"],
+      "correct": 0,
+      "explanation": "yamīn = rechts."
+    },
+
+    {
+      "id": "ls-7", "level": 2, "emoji": "🛒", "title": "Im Markt",
+      "fusha": { "ar": "كَم سِعْر هذا الخُبْز؟ — أَلْفان لِيرة.", "translit": "kam siʿr hādhā l-khubz? — alfān līra." },
+      "syrian": { "ar": "بكم هالخبز؟ — ألفين ليرة.", "translit": "bikam hal-khibez? — alfēn līra." },
+      "de": "Wie viel kostet dieses Brot? — Zweitausend Lira.",
+      "question": "Was kostet das Brot?",
+      "options": ["2000 Lira", "1000 Lira", "500 Lira"],
+      "correct": 0,
+      "explanation": "alfēn = zweitausend."
+    },
+
+    {
+      "id": "ls-8", "level": 2, "emoji": "🩺", "title": "Beim Arzt",
+      "fusha": { "ar": "يُؤلِمُني رَأسي مُنذُ يَومين.", "translit": "yuʾlimunī raʾsī mundhu yawmayn." },
+      "syrian": { "ar": "راسي عم يوجعني من يومين.", "translit": "rāsī ʿam yūjaʿnī min yōmēn." },
+      "de": "Mein Kopf tut mir seit zwei Tagen weh.",
+      "question": "Wie lange hat die Person Schmerzen?",
+      "options": ["Seit 2 Tagen", "Seit gestern", "Seit einer Woche"],
+      "correct": 0,
+      "explanation": "min yōmēn = seit zwei Tagen."
+    },
+
+    {
+      "id": "ls-9", "level": 2, "emoji": "🚖", "title": "Im Taxi",
+      "fusha": { "ar": "إِلى المَطار مِن فَضْلِك، أَنا مُسْتَعْجِل.", "translit": "ilā l-maṭār min faḍlik, ana mustaʿjil." },
+      "syrian": { "ar": "عَ المطار لو سمحت، أنا مستعجل.", "translit": "ʿa-l-maṭār law samaḥt, ana mistaʿjel." },
+      "de": "Zum Flughafen, bitte. Ich habe es eilig.",
+      "question": "Was sagt die Person dem Fahrer?",
+      "options": ["Sie möchte zum Flughafen und hat es eilig", "Sie möchte zum Bahnhof", "Sie möchte langsam fahren"],
+      "correct": 0,
+      "explanation": "mistaʿjel = es eilig haben."
+    },
+
+    {
+      "id": "ls-10", "level": 2, "emoji": "👨‍👩‍👧", "title": "Familie",
+      "fusha": { "ar": "أَخي يَدْرُس في الجامِعَة وَأُختي في المَدْرَسَة.", "translit": "akhī yadrus fī l-jāmiʿa wa-ukhtī fī l-madrasa." },
+      "syrian": { "ar": "أخي عم يدرس بالجامعة وأختي بالمدرسة.", "translit": "akhī ʿam yidrus bil-jāmʿa w-ukhtī bil-madrase." },
+      "de": "Mein Bruder studiert an der Uni und meine Schwester ist in der Schule.",
+      "question": "Wo ist die Schwester?",
+      "options": ["In der Schule", "An der Universität", "Im Café"],
+      "correct": 0,
+      "explanation": "ukhtī = meine Schwester, madrase = Schule."
+    },
+
+    {
+      "id": "ls-11", "level": 3, "emoji": "🚉", "title": "Bahnhof-Durchsage",
+      "fusha": { "ar": "يَنْطَلِق القِطار إِلى حَلَب مِن الرَّصيف الثَّاني بَعْدَ خَمْس دَقائِق.", "translit": "yanṭaliq al-qiṭār ilā Ḥalab min ar-raṣīf ath-thānī baʿda khams daqāʾiq." },
+      "syrian": { "ar": "القطار عَ حلب بيمشي من الرصيف رقم اتنين بعد خمس دقايق.", "translit": "el-ʾiṭār ʿa Ḥalab byimshī min er-rṣīf raqm tnēn baʿd khams daqāyeq." },
+      "de": "Der Zug nach Aleppo fährt in fünf Minuten von Bahnsteig zwei ab.",
+      "question": "Von welchem Bahnsteig fährt der Zug?",
+      "options": ["Bahnsteig 2", "Bahnsteig 1", "Bahnsteig 5"],
+      "correct": 0,
+      "explanation": "raqm tnēn = Nummer zwei."
+    },
+
+    {
+      "id": "ls-12", "level": 3, "emoji": "🌤️", "title": "Wettervorhersage",
+      "fusha": { "ar": "اليَوم الطَّقْس جَميل، الشَّمْس ساطِعَة وَدَرَجَة الحَرارَة عِشْرون.", "translit": "al-yawm aṭ-ṭaqs jamīl, ash-shams sāṭiʿa wa-darajat al-ḥarāra ʿishrūn." },
+      "syrian": { "ar": "اليوم الطقس حلو، الشمس طالعة والحرارة عشرين.", "translit": "el-yōm eṭ-ṭaʾs ḥilu, esh-shams ṭālʿa w-el-ḥarāra ʿishrīn." },
+      "de": "Heute ist das Wetter schön, die Sonne scheint und die Temperatur ist 20 Grad.",
+      "question": "Wie viel Grad ist es heute?",
+      "options": ["20 Grad", "10 Grad", "30 Grad"],
+      "correct": 0,
+      "explanation": "ʿishrīn = zwanzig."
+    },
+
+    {
+      "id": "ls-13", "level": 3, "emoji": "📅", "title": "Mein Tag",
+      "fusha": { "ar": "أَسْتَيْقِظ الصَّباح، أَشْرَب قَهْوَة، ثُمَّ أَذْهَب إِلى العَمَل بِالباص.", "translit": "astayqiẓ aṣ-ṣabāḥ, ashrab qahwa, thumma adhhab ilā l-ʿamal bil-bāṣ." },
+      "syrian": { "ar": "بفيق الصبح، بشرب قهوة، وبعدين بروح عَ الشغل بالباص.", "translit": "bfīq eṣ-ṣubeḥ, bishrab ʾahwe, w-baʿdēn brūḥ ʿa-sh-shughl bil-bāṣ." },
+      "de": "Ich wache morgens auf, trinke Kaffee, dann fahre ich mit dem Bus zur Arbeit.",
+      "question": "Wie kommt die Person zur Arbeit?",
+      "options": ["Mit dem Bus", "Mit dem Taxi", "Zu Fuß"],
+      "correct": 0,
+      "explanation": "bil-bāṣ = mit dem Bus."
+    },
+
+    {
+      "id": "ls-14", "level": 3, "emoji": "🛍️", "title": "Beim Händler feilschen",
+      "fusha": { "ar": "هذِهِ الحَقيبَة جَميلَة، وَلكِنَّها غاليَة. هَل يُمْكِن أَنْ تُنَقِّص لي السِّعْر؟", "translit": "hādhihi l-ḥaqība jamīla, wa-lākinnahā ghāliya. hal yumkin an tunaqqiṣ lī s-siʿr?" },
+      "syrian": { "ar": "هالشنطة حلوة، بس كتير غالية. ممكن تنزّلّي السعر؟", "translit": "hash-shanṭa ḥilwe, bass ktīr ghālye. mumken tnazzilli s-seʿr?" },
+      "de": "Diese Tasche ist schön, aber sehr teuer. Kannst du den Preis senken?",
+      "question": "Was möchte die Person?",
+      "options": ["Einen niedrigeren Preis", "Eine andere Farbe", "Eine größere Tasche"],
+      "correct": 0,
+      "explanation": "tnazzilli s-seʿr = den Preis senken."
+    },
+
+    {
+      "id": "ls-15", "level": 3, "emoji": "🎉", "title": "Einladung zum Essen",
+      "fusha": { "ar": "تَفَضَّلوا عِنْدَنا غَداً عَلى العَشاء، البَيْت بَيْتُكُم!", "translit": "tafaḍḍalū ʿindanā ghadan ʿalā l-ʿashāʾ, al-bayt baytukum!" },
+      "syrian": { "ar": "تفضّلوا عنّا بكرا عَ العشا، البيت بيتكم!", "translit": "tfaḍḍalū ʿinnā bukra ʿa-l-ʿasha, el-bēt bētkon!" },
+      "de": "Kommt morgen zum Abendessen, unser Haus ist euer Haus!",
+      "question": "Wann sollen sie kommen?",
+      "options": ["Morgen zum Abendessen", "Heute zum Frühstück", "Übermorgen"],
+      "correct": 0,
+      "explanation": "bukra ʿa-l-ʿasha = morgen zum Abendessen."
+    }
+
+  ]
+}

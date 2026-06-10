@@ -216,6 +216,28 @@ export const routes: Routes = [
         .then(m => m.ArabicScenarioPage),
     title: 'Szenario - Arabisch lernen',
   },
+  // 🆕 Hörverstehen + Tagesherausforderung + Spiele
+  {
+    path: 'learn-arabic/hoeren',
+    loadComponent: () =>
+      import('./features/arabic/arabic-listening-page/arabic-listening-page')
+        .then(m => m.ArabicListeningPage),
+    title: 'Hörverstehen - Arabisch lernen',
+  },
+  {
+    path: 'learn-arabic/herausforderung',
+    loadComponent: () =>
+      import('./features/arabic/arabic-daily-page/arabic-daily-page')
+        .then(m => m.ArabicDailyPage),
+    title: 'Tagesherausforderung - Arabisch lernen',
+  },
+  {
+    path: 'learn-arabic/spiele',
+    loadComponent: () =>
+      import('./features/arabic/arabic-games-page/arabic-games-page')
+        .then(m => m.ArabicGamesPage),
+    title: 'Spiele - Arabisch lernen',
+  },
 
   // 🆕 ذاكرة قاموسي: بطاقات قلب لكل الكلمات المبحوثة (ضمن Practice)
   {
