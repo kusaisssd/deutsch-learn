@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, linkedSignal, signal } from '@angular/core';
+import { Component, computed, inject, input, linkedSignal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ArabicWordBuildingService } from '../../../core/services/arabic-word-building';
 import { SpeechService } from '../../../core/services/speech';
@@ -43,8 +43,11 @@ export class ArabicWordBuildingPage {
     computation: () => [],
   });
 
-  /** هل تمّ التحقّق؟ */
-  readonly checked = signal(false);
+  /** هل تمّ التحقّق؟ — مرتبط بالكلمة فيُعاد عند تغيّرها */
+  readonly checked = linkedSignal<WordBuilding | null | undefined, boolean>({
+    source: this.word,
+    computation: () => false,
+  });
   /** هل نتيجة بعد التحقّق صحيحة؟ */
   readonly correct = computed(() => {
     const p = this.picked();
