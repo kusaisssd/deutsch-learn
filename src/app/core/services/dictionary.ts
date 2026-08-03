@@ -120,6 +120,20 @@ export class DictionaryService {
     await this.sync.push({ entries: this._history(), updatedAt: Date.now() });
   }
 
+  /**
+   * يستورد بيانات من passphrase آخر (مفتاح آخر في KV) و يدمجها مع الحاليّة.
+   * مفيد إن كان لديك passphrase قديم أو مختلف على جهاز آخر.
+   * يُرجع عدد المدخلات المستوردة (أو -1 عند الفشل).
+   */
+  async importFromOtherPassphrase(otherPassphrase: string): Promise<number> {
+    const cloud = await this.sync.pullWith(otherPassphrase);
+    if (!cloud || !cloud.entries) return 0;
+    const before = this._history().length;
+    const merged = this.sync.merge(this._history(), cloud.entries);
+    this._history.set(merged);
+    return merged.length - before;
+  }
+
   /** يسجّل كلمة مبحوثة (يزيل التكرار و يضعها في المقدّمة).
    * لو المدخل موجود سابقاً، نحتفظ بكل حقوله (AI/translation/asks) إن لم
    * يمرّرها الاستدعاء الجديد — إعادة البحث لا تمسح شيئاً.

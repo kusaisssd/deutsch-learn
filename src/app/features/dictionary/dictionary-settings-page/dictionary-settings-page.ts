@@ -15,7 +15,42 @@ export class DictionarySettingsPage {
   readonly input = signal(this.sync.passphrase());
   readonly syncing = signal(false);
 
+  // ─── استيراد من passphrase آخر (لدمج مفتاحين قديمين) ───
+  readonly otherPass = signal('');
+  readonly importing = signal(false);
+  readonly importMsg = signal<string | null>(null);
+  readonly importError = signal<string | null>(null);
+
   updateInput(v: string) { this.input.set(v); }
+  updateOther(v: string) { this.otherPass.set(v); }
+
+  async importOther() {
+    const other = this.otherPass().trim();
+    if (other.length < 6) {
+      this.importError.set('اكتب الـ passphrase القديم كاملاً (6+ أحرف).');
+      return;
+    }
+    if (other === this.sync.passphrase()) {
+      this.importError.set('هذا نفس الـ passphrase الحالي — لا حاجة للاستيراد.');
+      return;
+    }
+    this.importing.set(true);
+    this.importMsg.set(null);
+    this.importError.set(null);
+    try {
+      const added = await this.dict.importFromOtherPassphrase(other);
+      if (added > 0) {
+        this.importMsg.set(`✅ تمّ استيراد ${added} كلمة/عبارة جديدة من الـ passphrase الآخر و ستُدفع للسحابة الحاليّة تلقائياً.`);
+      } else {
+        this.importMsg.set('لم يوجد شيء جديد لاستيراده (إمّا الـ passphrase فارغ أو الكلمات موجودة أصلاً).');
+      }
+      this.otherPass.set('');
+    } catch (e) {
+      this.importError.set('فشل الاستيراد — تحقّق من الـ passphrase و الاتصال.');
+    } finally {
+      this.importing.set(false);
+    }
+  }
 
   save() {
     this.sync.setPassphrase(this.input().trim());

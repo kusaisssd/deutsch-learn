@@ -74,6 +74,26 @@ export class SyncService {
     }
   }
 
+  /**
+   * يسحب من السحابة باستخدام passphrase مختلف عن النشط.
+   * لا يُعدّل الحالة و لا يحفظ شيئاً — فقط يُرجع الـ blob.
+   * يُستعمل لدمج بيانات passphrase قديم في الحاليّ.
+   */
+  async pullWith(passphrase: string): Promise<SyncBlob | null> {
+    const p = passphrase.trim();
+    if (p.length < 6) return null;
+    try {
+      const res = await firstValueFrom(
+        this.http.get<SyncBlob | null>('/api/sync', {
+          headers: new HttpHeaders({ 'x-sync-key': p }),
+        }),
+      );
+      return res ?? null;
+    } catch {
+      return null;
+    }
+  }
+
   /** يدفع blob كامل للسحابة */
   async push(blob: SyncBlob): Promise<boolean> {
     if (!this.hasPassphrase()) return false;
