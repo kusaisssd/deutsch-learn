@@ -87,8 +87,8 @@ export class DictionaryPage {
   });
 
   constructor() {
-    // عند ظهور نتيجة: اطلب الترجمة العربية و سجّل الكلمة في الذاكرة.
-    // untracked: حتى لا تُعاد بسبب كتابة إشارات الترجمة، بل عند تغيّر النتيجة فقط.
+    // ─── 1) عند ظهور نتيجة: اطلب الترجمة و سجّل الكلمة في السجلّ.
+    // record() يُنشئ المدخل مباشرةً (بلا انتظار الترجمة).
     effect(() => {
       const r = this.result();
       if (!r) return;
@@ -101,12 +101,15 @@ export class DictionaryPage {
           this.dict.translate(r.verb.infinitive);
           this.dict.record({ word: r.verb.infinitive, kind: 'verb' });
         }
-        // غير موجودة في القاموس الصرفي؟ نطلب ترجمتها على الأقل (online + cache)
-        if (!r.noun && !r.verb) this.dict.translate(r.query);
+        // غير موجودة في القاموس الصرفي؟ سجّلها كـ phrase و اطلب الترجمة
+        if (!r.noun && !r.verb && r.query) {
+          this.dict.translate(r.query);
+          this.dict.record({ word: r.query, kind: 'phrase' });
+        }
       });
     });
 
-    // 🤖 عند نجاح Claude AI: سجّل الكلمة + استجابة AI في السجلّ
+    // ─── 2) عند نجاح Claude AI: سجّل الكلمة + استجابة AI (مع الترجمة).
     effect(() => {
       const ai = this.claude.result();
       if (!ai) return;
@@ -123,18 +126,22 @@ export class DictionaryPage {
       });
     });
 
-    // 💬 عند وصول ترجمة عربية (MyMemory) → أضِفها لمدخل السجلّ
+    // ─── 3) عند وصول ترجمة MyMemory (متأخّرة): أضِفها للمدخل.
+    // ملاحظة مهمّة: نقرأ translationOf() خارج untracked() حتى يُعاد
+    // تنفيذ الـ effect عند وصول الترجمة، لا فقط عند تغيّر النتيجة.
     effect(() => {
       const r = this.result();
       if (!r) return;
+      const words: [string, 'noun' | 'verb' | 'phrase'][] = [];
+      if (r.noun) words.push([r.noun.word, 'noun']);
+      if (r.verb) words.push([r.verb.infinitive, 'verb']);
+      if (!r.noun && !r.verb && r.query) words.push([r.query, 'phrase']);
+      // قراءة تتبعيّة — تُعيد تشغيل الـ effect عند تحديث الترجمة
+      const pairs: { word: string; kind: 'noun' | 'verb' | 'phrase'; t: string | undefined }[] =
+        words.map(([w, k]) => ({ word: w, kind: k, t: this.dict.translationOf(w) }));
       untracked(() => {
-        if (r.noun) {
-          const t = this.dict.translationOf(r.noun.word);
-          if (t) this.dict.enrich(r.noun.word, 'noun', { translation: t });
-        }
-        if (r.verb) {
-          const t = this.dict.translationOf(r.verb.infinitive);
-          if (t) this.dict.enrich(r.verb.infinitive, 'verb', { translation: t });
+        for (const p of pairs) {
+          if (p.t) this.dict.enrich(p.word, p.kind, { translation: p.t });
         }
       });
     });
