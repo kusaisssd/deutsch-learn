@@ -26,6 +26,26 @@ function rateLimited(ip: string): boolean {
   return arr.length > RATE_LIMIT_MAX;
 }
 
+async function sha256Hex(input: string): Promise<string> {
+  const buf = new TextEncoder().encode(input);
+  const hash = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hash))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+/**
+ * قائمة السماح: قائمة SHA-256 مفصولة بفواصل تمرّرها في env AUTHORIZED_HASHES.
+ * إن لم تُضبَط → أي passphrase (6+ أحرف) يعمل.
+ * إن ضُبطت → فقط الـ passphrases التي تطابق بصمتها القائمةَ تعمل.
+ */
+async function authorized(passphrase: string): Promise<boolean> {
+  const whitelist = process.env['AUTHORIZED_HASHES']?.trim();
+  if (!whitelist) return true; // لا قائمة → السماح لأيّ passphrase صالح
+  const hash = await sha256Hex(passphrase);
+  return whitelist.split(',').map(s => s.trim().toLowerCase()).includes(hash);
+}
+
 interface ClaudeResponse {
   content?: Array<{ type: string; text: string }>;
   error?: { type: string; message: string };
@@ -90,13 +110,32 @@ export default async function handler(req: Request): Promise<Response> {
   const cors = {
     'access-control-allow-origin': '*',
     'access-control-allow-methods': 'GET, OPTIONS',
-    'access-control-allow-headers': 'content-type',
+    'access-control-allow-headers': 'content-type, x-sync-key',
   };
 
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
   if (req.method !== 'GET') {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), {
       status: 405,
+      headers: { 'content-type': 'application/json', ...cors },
+    });
+  }
+
+  // ─── تحقّق من الـ passphrase: بلا passphrase → منع الوصول ───
+  const passphrase = req.headers.get('x-sync-key')?.trim() ?? '';
+  if (passphrase.length < 6) {
+    return new Response(JSON.stringify({
+      error: 'AI مقفَل: يجب ضبط passphrase من صفحة الإعدادات لاستخدام Claude.',
+    }), {
+      status: 401,
+      headers: { 'content-type': 'application/json', ...cors },
+    });
+  }
+  if (!(await authorized(passphrase))) {
+    return new Response(JSON.stringify({
+      error: 'Passphrase غير مصرَّح به لاستخدام AI على هذا الخادم.',
+    }), {
+      status: 403,
       headers: { 'content-type': 'application/json', ...cors },
     });
   }

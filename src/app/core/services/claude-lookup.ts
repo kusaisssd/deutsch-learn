@@ -1,7 +1,8 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ClaudeAskResult, ClaudeDeepResult, ClaudeLookupResult } from '../models/claude-lookup.model';
+import { SyncService } from './sync';
 
 const CACHE_KEY = 'deutsch-learn:claude-lookup-cache';
 const MAX_CACHE = 500; // اقتصار حجم الـcache على 500 كلمة
@@ -10,9 +11,20 @@ const MAX_CACHE = 500; // اقتصار حجم الـcache على 500 كلمة
  * ClaudeLookupService — يستدعي /api/claude-lookup (خادم Vercel) و يخزّن النتائج
  * محلياً. المفتاح ANTHROPIC_API_KEY لا يمرّ أبداً عبر المتصفّح.
  */
+const NO_PASS_ERROR = 'AI مقفَل: اضبط passphrase من صفحة إعدادات القاموس أوّلاً.';
+
 @Injectable({ providedIn: 'root' })
 export class ClaudeLookupService {
   private http = inject(HttpClient);
+  private sync = inject(SyncService);
+
+  /** هل خدمات الـ AI متاحة؟ (تتطلّب passphrase) */
+  readonly available = () => this.sync.hasPassphrase();
+
+  /** header يحمل الـ passphrase — كل استدعاء AI يجب أن يحمله */
+  private authHeaders(): HttpHeaders {
+    return new HttpHeaders({ 'x-sync-key': this.sync.passphrase() });
+  }
 
   private readonly _loading = signal(false);
   private readonly _error = signal<string | null>(null);
@@ -46,7 +58,7 @@ export class ClaudeLookupService {
     const key = word.trim().toLowerCase();
     if (!key) return;
 
-    // 1) cache hit → فوري
+    // 1) cache hit → فوري (يعمل حتى بلا passphrase — البيانات مخزّنة محلياً)
     const cached = this._cache()[key];
     if (cached) {
       this._result.set(cached);
@@ -54,7 +66,9 @@ export class ClaudeLookupService {
       return;
     }
 
-    // 2) جلب من الخادم
+    // 2) شبكة → يجب وجود passphrase
+    if (!this.available()) { this._error.set(NO_PASS_ERROR); return; }
+
     this._loading.set(true);
     this._error.set(null);
     this._result.set(null);
@@ -63,6 +77,7 @@ export class ClaudeLookupService {
       const res = await firstValueFrom(
         this.http.get<ClaudeLookupResult>('/api/claude-lookup', {
           params: { word: word.trim() },
+          headers: this.authHeaders(),
         }),
       );
       this._result.set(res);
@@ -79,10 +94,12 @@ export class ClaudeLookupService {
   /** يجلب شرحاً أعمق (لا cache — كل استدعاء يستهلك تكلفة صغيرة) */
   async lookupDeep(word: string): Promise<ClaudeDeepResult | null> {
     if (!word.trim()) return null;
+    if (!this.available()) { this._error.set(NO_PASS_ERROR); return null; }
     try {
       const res = await firstValueFrom(
         this.http.get<ClaudeDeepResult>('/api/claude-lookup', {
           params: { word: word.trim(), mode: 'deep' },
+          headers: this.authHeaders(),
         }),
       );
       return res;
@@ -101,10 +118,12 @@ export class ClaudeLookupService {
     const w = word.trim();
     const q = question.trim();
     if (!w || q.length < 2) return null;
+    if (!this.available()) { this._error.set(NO_PASS_ERROR); return null; }
     try {
       const res = await firstValueFrom(
         this.http.get<ClaudeAskResult>('/api/claude-lookup', {
           params: { word: w, mode: 'ask', q },
+          headers: this.authHeaders(),
         }),
       );
       return res?.answer ?? null;

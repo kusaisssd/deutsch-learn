@@ -115,6 +115,37 @@
     </details>
   }
 
+  <!-- ═══ قفل خادم AI على passphrase محدّد (اختياري لكن يوصى به) ═══ -->
+  @if (sync.hasPassphrase() && hash()) {
+    <details class="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-4">
+      <summary class="cursor-pointer font-bold text-purple-900 text-sm">
+        🔒 قفل خادم AI على passphrase (اختياري — يمنع أي زائر عشوائي)
+      </summary>
+      <div class="mt-3 space-y-3 text-xs text-purple-900">
+        <p>
+          حالياً: أي passphrase (6+ أحرف) يستطيع استعمال Claude AI على خادمك.
+          لتقفل الأمر على passphrase الخاصّ بك فقط:
+        </p>
+        <ol class="list-decimal list-inside space-y-1 pr-3">
+          <li>انسخ بصمة SHA-256 التالية:</li>
+          <li dir="ltr" class="font-mono bg-white border border-purple-200 rounded p-2 break-all">{{ hash() }}</li>
+          <li>
+            افتح Vercel Dashboard → مشروع deutsch-learn → Settings → Environment Variables
+          </li>
+          <li>
+            أضف متغيّراً باسم <code class="bg-white px-1 rounded">AUTHORIZED_HASHES</code> و قيمته البصمة أعلاه.
+            (يمكنك وضع عدّة بصمات مفصولة بفواصل إن أردت السماح لأكثر من passphrase.)
+          </li>
+          <li>Redeploy — و بعدها فقط أنت تستطيع استعمال AI</li>
+        </ol>
+        <button (click)="copyHash()"
+                class="bg-purple-600 text-white rounded-lg px-3 py-1.5 text-xs font-semibold hover:bg-purple-700">
+          {{ hashCopied() ? '✓ تم النسخ' : '📋 انسخ البصمة' }}
+        </button>
+      </div>
+    </details>
+  }
+
   <!-- شرح الإعداد -->
   <details class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
     <summary class="cursor-pointer font-bold text-blue-900 text-sm">

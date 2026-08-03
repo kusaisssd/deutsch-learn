@@ -1,7 +1,13 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SyncService } from '../../../core/services/sync';
 import { DictionaryService } from '../../../core/services/dictionary';
+
+async function sha256Hex(input: string): Promise<string> {
+  const buf = new TextEncoder().encode(input);
+  const hash = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
 @Component({
   selector: 'app-dictionary-settings-page',
@@ -92,5 +98,27 @@ export class DictionarySettingsPage {
   formatDate(ts: number): string {
     if (!ts) return '—';
     return new Date(ts).toLocaleString('de-DE');
+  }
+
+  // ─── SHA-256 للـ passphrase الحالي (لقفل خادم AI) ───
+  readonly hash = signal<string>('');
+  readonly hashCopied = signal(false);
+
+  constructor() {
+    // كلما تغيّر الـ passphrase → احسب بصمته
+    effect(async () => {
+      const p = this.sync.passphrase();
+      if (p.length >= 6) this.hash.set(await sha256Hex(p));
+      else this.hash.set('');
+    });
+  }
+
+  async copyHash() {
+    if (!this.hash()) return;
+    try {
+      await navigator.clipboard.writeText(this.hash());
+      this.hashCopied.set(true);
+      setTimeout(() => this.hashCopied.set(false), 2000);
+    } catch { /* clipboard denied */ }
   }
 }

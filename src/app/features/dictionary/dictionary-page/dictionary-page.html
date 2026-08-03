@@ -84,7 +84,20 @@
   </div>
 
   <!-- ═══ اختيار مباشر لطلب Claude — يظهر دائماً في وضع AI ═══ -->
-  @if (searchMode() === 'ai') {
+  @if (searchMode() === 'ai' && !claude.available()) {
+    <div class="bg-amber-50 border-2 border-amber-300 rounded-xl p-4 mb-5 text-center">
+      <div class="text-3xl mb-2">🔒</div>
+      <p class="font-bold text-amber-900 mb-1">خدمات AI مقفلة</p>
+      <p class="text-sm text-amber-800 mb-3">
+        اضبط <strong>passphrase</strong> من صفحة الإعدادات لتفعيل بحث Claude AI و حفظ الكلمات بين أجهزتك.
+      </p>
+      <a [routerLink]="'/dictionary/settings'"
+         class="inline-block bg-amber-600 text-white rounded-lg px-4 py-2 text-sm font-semibold hover:bg-amber-700">
+        ⚙️ ضبط passphrase
+      </a>
+    </div>
+  }
+  @if (searchMode() === 'ai' && claude.available()) {
     @let target = currentTargetWord();
     <div class="bg-white border-2 border-purple-200 rounded-xl p-4 mb-5">
       <h3 class="font-bold text-slate-800 text-sm mb-2 flex items-center gap-2 flex-wrap">

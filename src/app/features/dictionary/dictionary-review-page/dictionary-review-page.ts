@@ -220,7 +220,7 @@ export class DictionaryReviewPage {
   readonly fetchingDeep = signal<string | null>(null);
 
   async fetchAI(e: DictHistoryEntry) {
-    if (this.fetchingAI()) return;
+    if (!this.claude.available() || this.fetchingAI()) return;
     this.fetchingAI.set(e.word);
     try {
       await this.claude.lookup(e.word);
@@ -232,7 +232,7 @@ export class DictionaryReviewPage {
   }
 
   async fetchDeep(e: DictHistoryEntry) {
-    if (this.fetchingDeep()) return;
+    if (!this.claude.available() || this.fetchingDeep()) return;
     this.fetchingDeep.set(e.word);
     try {
       const deep = await this.claude.lookupDeep(e.word);
