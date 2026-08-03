@@ -70,6 +70,8 @@ export class DictionaryService {
 
   private pushTimer: ReturnType<typeof setTimeout> | null = null;
   private syncInitialized = false;
+  /** يمنع الدفع قبل انتهاء أوّل سحب (كي لا يمسح الموبايل السحابة عند الإقلاع) */
+  private readonly _initialPullDone = signal(false);
 
   constructor() {
     this.load();
@@ -78,19 +80,25 @@ export class DictionaryService {
     effect(() => this.save(HISTORY_KEY, this._history()));
 
     // ─── مزامنة سحابية ───
-    // 1) عند وجود passphrase → اسحب مرّة عند بدء التشغيل و ادمج
+    // 1) عند وجود passphrase → اسحب مرّة عند بدء التشغيل و ادمج.
+    //    عند غياب الـ passphrase → اسمح بالدفع مباشرة (لا شيء لتنتظره).
     effect(() => {
       const has = this.sync.hasPassphrase();
       if (has && !this.syncInitialized) {
         this.syncInitialized = true;
-        this.doInitialPull();
+        this.doInitialPull().finally(() => this._initialPullDone.set(true));
+      } else if (!has) {
+        this._initialPullDone.set(true);
       }
     });
 
-    // 2) كل تغيير في السجلّ → ادفع (مؤجَّل ثانيتين لتجميع التغييرات)
+    // 2) كل تغيير في السجلّ → ادفع (مؤجَّل ثانيتين لتجميع التغييرات).
+    //    مهم: لا ندفع قبل انتهاء أوّل سحب — لئلا يستبدل الموبايل السحابةَ
+    //    بحالته المحلّية الفارغة قبل ما يأخذ بيانات الديسكتوب.
     effect(() => {
       const list = this._history();
       if (!this.sync.hasPassphrase() || !this.sync.autoSync()) return;
+      if (!this._initialPullDone()) return;
       if (this.pushTimer) clearTimeout(this.pushTimer);
       this.pushTimer = setTimeout(() => {
         this.sync.push({ entries: list, updatedAt: Date.now() });
