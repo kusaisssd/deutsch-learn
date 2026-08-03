@@ -31,28 +31,27 @@ interface ClaudeResponse {
   error?: { type: string; message: string };
 }
 
+/**
+ * PROMPT_BASIC — الأدنى الممكن (توكنز قليلة).
+ * فقط: الترجمة العربية + مثال واحد قصير. أيّ شيء إضافي (شرح، أمثلة أكثر،
+ * تصريف، إلخ) يُطلب لاحقاً عبر mode=ask بضغطة زرّ.
+ */
 const PROMPT_BASIC = (word: string) => `Du bist ein Deutschlehrer für arabischsprachige Lernende.
 Der Lerner sucht: "${word}"
 
-Antworte NUR mit einem JSON-Objekt (ohne Markdown, ohne Codeblock-Fences) mit folgendem Schema:
+Antworte NUR mit einem JSON-Objekt (ohne Markdown, ohne Codeblock-Fences), knapp:
 {
-  "word": "die korrekte Schreibweise (falls Tippfehler, korrigiert)",
+  "word": "die korrekte Schreibweise (bei Tippfehler korrigiert)",
   "type": "noun" | "verb" | "adjective" | "adverb" | "phrase" | "other",
   "article": "der" | "die" | "das" | null,
-  "arabicTranslation": "die wichtigste arabische Übersetzung, kurz",
-  "meanings": [
-    { "de": "Bedeutung/Definition auf Deutsch", "ar": "arabische Übersetzung dieser Bedeutung" }
-  ],
+  "arabicTranslation": "die wichtigste arabische Übersetzung, sehr kurz",
   "examples": [
-    { "de": "Beispielsatz auf Deutsch", "ar": "arabische Übersetzung des Satzes" }
-  ],
-  "grammar": "kurzer Grammatikhinweis auf Arabisch (z. B. فعل منفصل، مع Dativ دائماً) oder null",
-  "synonyms": ["deutsches Synonym 1", "deutsches Synonym 2"],
-  "usage": "kultureller Hinweis oder Alltagsgebrauch auf Arabisch, oder null"
+    { "de": "EIN kurzer Beispielsatz auf Deutsch", "ar": "arabische Übersetzung" }
+  ]
 }
 
-Gib 2-3 Bedeutungen und 2-3 vielfältige Beispielsätze. Sei präzise und lehrreich.
-Falls das Wort keine deutsche Bedeutung hat, gib type:"other" und erkläre kurz.`;
+Gib GENAU 1 kurzen Beispielsatz. KEINE meanings, KEINE synonyms, KEINE grammar,
+KEINE usage — der Lerner fragt bei Bedarf gezielt danach. Sei minimal und präzise.`;
 
 /**
  * PROMPT_ASK — سؤال مفتوح حول كلمة/جملة.
@@ -151,7 +150,7 @@ export default async function handler(req: Request): Promise<Response> {
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: mode === 'deep' ? 1400 : mode === 'ask' ? 1200 : 1024,
+        max_tokens: mode === 'deep' ? 1400 : mode === 'ask' ? 1200 : 350,
         messages: [{
           role: 'user',
           content: mode === 'deep' ? PROMPT_DEEP(word)

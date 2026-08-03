@@ -214,18 +214,33 @@ export class DictionaryPage {
     }
   }
 
-  /** آخر كلمة/عبارة جرى البحث عنها (لأسئلة AI) */
+  /** الكلمة/العبارة الهدف لأيّ طلب AI:
+   *   1) النصّ المكتوب حاليّاً (يسمح بالسؤال قبل البحث)
+   *   2) وإلا: نتيجة AI الحاليّة
+   *   3) وإلا: نتيجة القاموس المحلّي
+   */
   currentTargetWord(): { word: string; kind: 'noun' | 'verb' | 'phrase' } | null {
+    const q = this.query().trim();
+    if (q) {
+      // إن كان يطابق نتيجة موجودة، خذ نوعها الدقيق
+      const ai = this.claude.result();
+      if (ai && ai.word.toLowerCase() === q.toLowerCase()) {
+        const kind: 'noun' | 'verb' | 'phrase' =
+          ai.type === 'verb' ? 'verb' : ai.type === 'noun' ? 'noun' : 'phrase';
+        return { word: ai.word, kind };
+      }
+      const r = this.result();
+      if (r?.noun && r.noun.word.toLowerCase() === q.toLowerCase()) return { word: r.noun.word, kind: 'noun' };
+      if (r?.verb && r.verb.infinitive.toLowerCase() === q.toLowerCase()) return { word: r.verb.infinitive, kind: 'verb' };
+      // نصّ حرّ لم يُبحث بعد → اعتبره «phrase»
+      return { word: q, kind: 'phrase' };
+    }
     const ai = this.claude.result();
     if (ai) {
       const kind: 'noun' | 'verb' | 'phrase' =
         ai.type === 'verb' ? 'verb' : ai.type === 'noun' ? 'noun' : 'phrase';
       return { word: ai.word, kind };
     }
-    const r = this.result();
-    if (r?.noun) return { word: r.noun.word, kind: 'noun' };
-    if (r?.verb) return { word: r.verb.infinitive, kind: 'verb' };
-    if (r?.query) return { word: r.query, kind: 'phrase' };
     return null;
   }
 

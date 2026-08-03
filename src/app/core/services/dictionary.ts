@@ -138,16 +138,27 @@ export class DictionaryService {
     }));
   }
 
-  /** يُضيف زوج سؤال/جواب Claude لمدخل موجود (يُضاف في نهاية القائمة) */
+  /** يُضيف زوج سؤال/جواب Claude لمدخل. إن لم يكن موجوداً، يُنشَأ.
+   * هذا يتيح للمستخدم أن يسأل مباشرة قبل أي «بحث» رسمي. */
   appendAsk(word: string, kind: 'noun' | 'verb' | 'phrase', ask: { q: string; a: string; preset?: string }): void {
-    this._history.update(list => list.map(e => {
-      if (e.word !== word || e.kind !== kind) return e;
-      const asks = Array.isArray(e.asks) ? [...e.asks] : [];
-      asks.push({ ...ask, ts: Date.now() });
-      // نحدّ العدد لكل مدخل حتى لا ينفجر الحجم في السحابة
-      if (asks.length > 25) asks.splice(0, asks.length - 25);
-      return { ...e, asks, ts: Date.now() };
-    }));
+    this._history.update(list => {
+      const existing = list.find(e => e.word === word && e.kind === kind);
+      if (!existing) {
+        const entry: DictHistoryEntry = {
+          word, kind,
+          asks: [{ ...ask, ts: Date.now() }],
+          ts: Date.now(),
+        };
+        return [entry, ...list].slice(0, 1000);
+      }
+      return list.map(e => {
+        if (e.word !== word || e.kind !== kind) return e;
+        const asks = Array.isArray(e.asks) ? [...e.asks] : [];
+        asks.push({ ...ask, ts: Date.now() });
+        if (asks.length > 25) asks.splice(0, asks.length - 25);
+        return { ...e, asks, ts: Date.now() };
+      });
+    });
   }
 
   /** يحذف كلمة من السجلّ */

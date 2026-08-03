@@ -1,14 +1,14 @@
-/** استجابة Claude AI للبحث عن كلمة */
+/** استجابة Claude AI للبحث عن كلمة — الحقول التي بعد examples اختياريّة (تظهر فقط في الاستجابات القديمة) */
 export interface ClaudeLookupResult {
   word: string;
   type: 'noun' | 'verb' | 'adjective' | 'adverb' | 'phrase' | 'other';
   article: 'der' | 'die' | 'das' | null;
   arabicTranslation: string;
-  meanings: { de: string; ar: string }[];
   examples: { de: string; ar: string }[];
-  grammar: string | null;
-  synonyms: string[];
-  usage: string | null;
+  meanings?: { de: string; ar: string }[];
+  grammar?: string | null;
+  synonyms?: string[];
+  usage?: string | null;
 }
 
 export interface ClaudeLookupError {
