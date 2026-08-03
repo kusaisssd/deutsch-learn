@@ -3,6 +3,24 @@ import { RouterLink } from '@angular/router';
 import { DictionaryService } from '../../../core/services/dictionary';
 import { ClaudeLookupService } from '../../../core/services/claude-lookup';
 import { SpeechService } from '../../../core/services/speech';
+import { DictAsk } from '../../../core/models/claude-lookup.model';
+
+/** طلبات جاهزة يستطيع المستخدم إرسالها بضغطة واحدة */
+export interface PresetQuestion {
+  id: string;
+  icon: string;
+  label: string;   // نص الزرّ (عربي)
+  prompt: string;  // السؤال الذي يُرسل لـ Claude
+}
+
+const PRESET_QUESTIONS: PresetQuestion[] = [
+  { id: 'explain',    icon: '📚', label: 'اشرح لي',           prompt: 'اشرح لي هذه الكلمة بشكل واضح مع سياق استخدامها في الحياة اليومية.' },
+  { id: 'examples',   icon: '💬', label: 'المزيد من الأمثلة', prompt: 'أعطني 5 أمثلة متنوّعة من الحياة اليومية مع ترجمة عربية لكل جملة.' },
+  { id: 'conjugate',  icon: '📐', label: 'التصريف',            prompt: 'أعطني جدول التصريف الكامل (الأزمنة الأساسية إن كان فعلاً، أو الحالات الأربع إن كان اسماً) بطريقة مرتّبة.' },
+  { id: 'synonyms',   icon: '🔗', label: 'مرادفات و أضداد',    prompt: 'أعطني قائمة من المرادفات و الأضداد الأكثر شيوعاً، مع الفرق بينها.' },
+  { id: 'mistakes',   icon: '⚠️', label: 'أخطاء شائعة',        prompt: 'ما الأخطاء الشائعة التي يقع فيها المتحدّثون بالعربية عند استعمال هذه الكلمة؟' },
+  { id: 'culture',    icon: '🌍', label: 'الاستخدام الثقافي',  prompt: 'اشرح لي السياق الثقافي و متى تُستعمل هذه الكلمة في ألمانيا مقارنةً بالعالم العربي.' },
+];
 
 /**
  * صفحة القاموس.
@@ -35,6 +53,11 @@ export class DictionaryPage {
     this.searchMode.set(m);
     this.claude.clearResult();
   }
+
+  readonly presets = PRESET_QUESTIONS;
+  readonly customQuestion = signal('');
+  readonly asking = signal<string | null>(null); // معرّف الـpreset أو 'custom' أثناء التحميل
+  readonly askError = signal<string | null>(null);
 
   readonly query = signal('');
   readonly submitted = signal('');
@@ -83,17 +106,36 @@ export class DictionaryPage {
       });
     });
 
-    // 🤖 عند نجاح Claude AI: سجّل الكلمة في سجلّ المراجعة
+    // 🤖 عند نجاح Claude AI: سجّل الكلمة + استجابة AI في السجلّ
     effect(() => {
       const ai = this.claude.result();
       if (!ai) return;
       untracked(() => {
-        const kind: 'noun' | 'verb' = ai.type === 'verb' ? 'verb' : 'noun';
+        const kind: 'noun' | 'verb' | 'phrase' =
+          ai.type === 'verb' ? 'verb' : (ai.type === 'noun' ? 'noun' : 'phrase');
         this.dict.record({
           word: ai.word,
           kind,
           article: ai.article ?? undefined,
+          translation: ai.arabicTranslation,
+          ai: ai,
         });
+      });
+    });
+
+    // 💬 عند وصول ترجمة عربية (MyMemory) → أضِفها لمدخل السجلّ
+    effect(() => {
+      const r = this.result();
+      if (!r) return;
+      untracked(() => {
+        if (r.noun) {
+          const t = this.dict.translationOf(r.noun.word);
+          if (t) this.dict.enrich(r.noun.word, 'noun', { translation: t });
+        }
+        if (r.verb) {
+          const t = this.dict.translationOf(r.verb.infinitive);
+          if (t) this.dict.enrich(r.verb.infinitive, 'verb', { translation: t });
+        }
       });
     });
   }
@@ -131,10 +173,69 @@ export class DictionaryPage {
   search(): void {
     const q = this.query().trim();
     this.submitted.set(q);
+    // بحث جديد → صفّر أسئلة الحوار السابقة
+    this.customQuestion.set('');
+    this.askError.set(null);
     if (q && this.searchMode() === 'ai') {
       this.claude.lookup(q);
     }
   }
+
+  /** ─── Q&A حول الكلمة الحاليّة ─── */
+
+  /** أزرار جاهزة: إرسال preset مباشر */
+  async askPreset(p: PresetQuestion): Promise<void> {
+    return this.runAsk(p.prompt, p.id);
+  }
+  /** المربّع الحرّ: أرسل ما كتبه المستخدم */
+  async askCustom(): Promise<void> {
+    const q = this.customQuestion().trim();
+    if (q.length < 2) return;
+    await this.runAsk(q, undefined);
+    this.customQuestion.set('');
+  }
+
+  private async runAsk(prompt: string, preset: string | undefined): Promise<void> {
+    const target = this.currentTargetWord();
+    if (!target) return;
+    if (this.asking()) return;
+    this.asking.set(preset ?? 'custom');
+    this.askError.set(null);
+    try {
+      const answer = await this.claude.ask(target.word, prompt);
+      if (!answer) {
+        this.askError.set('تعذّر الحصول على جواب.');
+        return;
+      }
+      // احفظ في السجلّ (لتظهر في المراجعة لاحقاً)
+      this.dict.appendAsk(target.word, target.kind, { q: prompt, a: answer, preset });
+    } finally {
+      this.asking.set(null);
+    }
+  }
+
+  /** آخر كلمة/عبارة جرى البحث عنها (لأسئلة AI) */
+  currentTargetWord(): { word: string; kind: 'noun' | 'verb' | 'phrase' } | null {
+    const ai = this.claude.result();
+    if (ai) {
+      const kind: 'noun' | 'verb' | 'phrase' =
+        ai.type === 'verb' ? 'verb' : ai.type === 'noun' ? 'noun' : 'phrase';
+      return { word: ai.word, kind };
+    }
+    const r = this.result();
+    if (r?.noun) return { word: r.noun.word, kind: 'noun' };
+    if (r?.verb) return { word: r.verb.infinitive, kind: 'verb' };
+    if (r?.query) return { word: r.query, kind: 'phrase' };
+    return null;
+  }
+
+  /** أسئلة/أجوبة سابقة للكلمة الحاليّة (تعرض تحت النتيجة) */
+  readonly currentAsks = computed<DictAsk[]>(() => {
+    const t = this.currentTargetWord();
+    if (!t) return [];
+    const entry = this.dict.history().find(e => e.word === t.word && e.kind === t.kind);
+    return (entry?.asks as DictAsk[] | undefined) ?? [];
+  });
 
   /** بحث مباشر عن كلمة (من رقاقة اقتراح) */
   searchWord(word: string): void {

@@ -1,0 +1,96 @@
+<section class="max-w-2xl mx-auto" dir="rtl">
+
+  <a [routerLink]="'/dictionary'"
+     class="text-emerald-600 hover:underline text-sm mb-3 inline-block">← العودة للقاموس</a>
+
+  <header class="text-center mb-5">
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">☁️ مزامنة بين الأجهزة</h2>
+    <p class="text-sm text-slate-600 max-w-xl mx-auto">
+      اختر passphrase و ضعها على كل أجهزتك — سجلّ بحثك و شروح Claude AI تتزامن تلقائياً.
+    </p>
+  </header>
+
+  <!-- بطاقة الحالة -->
+  <div class="rounded-xl p-4 mb-4 border-2"
+       [class.border-green-300]="sync.hasPassphrase()"
+       [class.bg-green-50]="sync.hasPassphrase()"
+       [class.border-amber-300]="!sync.hasPassphrase()"
+       [class.bg-amber-50]="!sync.hasPassphrase()">
+    <div class="flex items-center gap-3">
+      <div class="text-3xl">{{ sync.hasPassphrase() ? '✅' : '⚠️' }}</div>
+      <div class="flex-1">
+        <div class="font-bold" [class.text-green-800]="sync.hasPassphrase()" [class.text-amber-800]="!sync.hasPassphrase()">
+          {{ sync.hasPassphrase() ? 'المزامنة مُفعّلة' : 'المزامنة غير مُفعّلة' }}
+        </div>
+        <div class="text-xs text-slate-600 mt-0.5">
+          آخر مزامنة: <strong>{{ formatDate(sync.lastSync()) }}</strong>
+        </div>
+        @if (sync.status() === 'pulling') { <div class="text-xs text-blue-700 mt-1">⏳ جارٍ السحب…</div> }
+        @if (sync.status() === 'pushing') { <div class="text-xs text-blue-700 mt-1">⏳ جارٍ الدفع…</div> }
+        @if (sync.error()) { <div class="text-xs text-red-700 mt-1">❌ {{ sync.error() }}</div> }
+      </div>
+    </div>
+  </div>
+
+  <!-- إعداد الـ passphrase -->
+  <div class="bg-white border border-slate-200 rounded-xl p-4 mb-4">
+    <h3 class="font-bold text-slate-800 mb-2">🔑 Passphrase</h3>
+    <p class="text-xs text-slate-500 mb-3">
+      اختر عبارة سرّية (6+ أحرف). استخدم نفسها على أجهزتك الأخرى لمزامنة بياناتك.
+      من يعرف الـ passphrase يستطيع قراءة و تعديل سجلّك — لا تشاركها.
+    </p>
+    <div class="flex gap-2 mb-2">
+      <input type="text" [value]="input()" (input)="updateInput($any($event.target).value)"
+             placeholder="مثال: kosay-morning-2026"
+             dir="ltr"
+             class="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none font-mono text-sm" />
+      <button (click)="useGenerated()"
+              class="bg-slate-100 text-slate-700 rounded-lg px-3 text-sm hover:bg-slate-200">🎲 توليد</button>
+    </div>
+    <div class="flex gap-2">
+      <button (click)="save()"
+              [disabled]="input().length < 6"
+              class="flex-1 bg-emerald-600 text-white rounded-lg py-2 font-semibold hover:bg-emerald-700 disabled:opacity-50">
+        💾 حفظ الـ passphrase
+      </button>
+      @if (sync.hasPassphrase()) {
+        <button (click)="clear()"
+                class="bg-red-50 text-red-600 border border-red-200 rounded-lg px-3 hover:bg-red-100 text-sm">
+          🗑️ حذف
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- المزامنة اليدوية + الأتمتة -->
+  @if (sync.hasPassphrase()) {
+    <div class="bg-white border border-slate-200 rounded-xl p-4 mb-4 space-y-3">
+      <button (click)="syncNow()" [disabled]="syncing()"
+              class="w-full bg-indigo-600 text-white rounded-lg py-2.5 font-semibold hover:bg-indigo-700 disabled:opacity-50">
+        {{ syncing() ? '⏳ جارٍ …' : '🔄 مزامنة الآن (سحب + دفع)' }}
+      </button>
+
+      <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+        <input type="checkbox" [checked]="sync.autoSync()" (change)="toggleAuto()"
+               class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" />
+        مزامنة تلقائية عند كل بحث جديد (موصى بها)
+      </label>
+    </div>
+  }
+
+  <!-- شرح الإعداد -->
+  <details class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+    <summary class="cursor-pointer font-bold text-blue-900 text-sm">
+      ℹ️ كيف تُعِدّ Vercel KV (خطوة لمرّة واحدة)
+    </summary>
+    <ol class="mt-3 space-y-2 text-xs text-blue-900 list-decimal list-inside">
+      <li>افتح Vercel Dashboard → مشروعك (deutsch-learn)</li>
+      <li>تبويب <strong>Storage</strong> → <strong>Create Database</strong> → اختر <strong>KV</strong> (أو Upstash Redis)</li>
+      <li>اسم عشوائي (مثلاً: <code>deutsch-sync</code>) و اضغط Create</li>
+      <li>Vercel يُضيف تلقائياً متغيّرات البيئة (KV_REST_API_URL &amp; KV_REST_API_TOKEN)</li>
+      <li>تبويب Deployments → إعادة النشر (Redeploy) لآخر deployment</li>
+      <li>الطبقة المجانية: 30 ألف عملية/شهر (أكثر من كافٍ)</li>
+    </ol>
+  </details>
+
+</section>

@@ -1,20 +1,36 @@
 <section class="max-w-3xl mx-auto" dir="rtl">
 
-  <a [routerLink]="'/dictionary'"
-     class="text-emerald-600 hover:underline text-sm mb-3 inline-block">← العودة للقاموس</a>
+  <div class="flex items-center justify-between mb-3">
+    <a [routerLink]="'/dictionary'"
+       class="text-emerald-600 hover:underline text-sm">← العودة للقاموس</a>
+    <a [routerLink]="'/dictionary/settings'"
+       class="text-xs bg-slate-100 border border-slate-300 rounded-lg px-3 py-1.5 hover:bg-slate-200">
+      ☁️ إعدادات المزامنة
+    </a>
+  </div>
 
   <header class="text-center mb-4">
-    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
-      📖 مراجعة قاموسي
-    </h2>
-    <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
-      كل ما بحثت عنه، مقسّم حسب اليوم. مناسب للمراجعة المسائية.
-    </p>
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">📖 مراجعة قاموسي</h2>
+    <p class="text-sm text-slate-600 max-w-xl mx-auto">كل ما بحثت عنه، بالترجمة و الشرح — للمراجعة المسائية.</p>
   </header>
 
-  @let s = stats();
+  <!-- شارة المزامنة -->
+  @if (sync.hasPassphrase()) {
+    <div class="text-center mb-3">
+      <span class="inline-flex items-center gap-1 text-xs bg-green-50 border border-green-300 text-green-800 rounded-full px-3 py-1">
+        ☁️ متزامن — آخر مزامنة: {{ sync.lastSync() ? (sync.lastSync() | date:'HH:mm') : '—' }}
+      </span>
+    </div>
+  } @else {
+    <div class="text-center mb-3">
+      <a [routerLink]="'/dictionary/settings'"
+         class="inline-flex items-center gap-1 text-xs bg-amber-50 border border-amber-300 text-amber-800 rounded-full px-3 py-1 hover:bg-amber-100">
+        ⚠️ المزامنة غير مُفعّلة — اضبط passphrase للمزامنة بين أجهزتك
+      </a>
+    </div>
+  }
 
-  <!-- إحصائيات -->
+  @let s = stats();
   @if (s.total > 0) {
     <div class="grid grid-cols-3 gap-2 mb-4">
       <div class="bg-emerald-50 border-2 border-emerald-200 rounded-xl p-2 text-center">
@@ -32,124 +48,365 @@
     </div>
   }
 
-  @if (s.total > 0) {
-    <div class="flex justify-end mb-3">
-      <button (click)="clearAll()"
-              class="text-xs bg-red-50 text-red-600 border border-red-200 rounded-lg px-3 py-1.5 hover:bg-red-100">
-        🗑️ مسح الكل
-      </button>
-    </div>
-  }
-
-  @if (!groups().length) {
+  @if (s.total === 0) {
     <div class="bg-slate-50 border border-slate-200 rounded-xl p-8 text-center">
       <div class="text-4xl mb-3">📖</div>
       <p class="text-slate-600 mb-4">لا توجد كلمات بعد. ابحث في القاموس و ستُحفظ هنا تلقائياً.</p>
       <a [routerLink]="'/dictionary'"
-         class="inline-block bg-emerald-600 text-white rounded-lg px-5 py-2.5 font-semibold hover:bg-emerald-700">
-        الذهاب إلى القاموس
-      </a>
+         class="inline-block bg-emerald-600 text-white rounded-lg px-5 py-2.5 font-semibold hover:bg-emerald-700">الذهاب إلى القاموس</a>
     </div>
   } @else {
 
-    <!-- المجموعات حسب اليوم -->
-    @for (g of groups(); track g.key) {
-      <div class="mb-5">
-        <div class="flex items-center gap-2 mb-2">
-          <h3 class="text-base font-bold text-slate-800"
-              [class.text-emerald-700]="g.isToday">
-            {{ g.isToday ? '🌟' : '📅' }} {{ g.label }}
-          </h3>
-          <span class="text-xs text-slate-400">({{ g.entries.length }})</span>
-        </div>
-        <ul class="space-y-2">
-          @for (e of g.entries; track e.kind + ':' + e.word) {
-            @let ai = aiFor(e.word);
-            @let translation = translationOf(e.word);
-            @let expanded = isExpanded(e);
-            <li class="bg-white border-2 rounded-lg transition-all"
-                [class.border-purple-300]="ai"
-                [class.border-slate-200]="!ai">
-              <!-- العنوان -->
-              <button (click)="toggle(e)"
-                      class="w-full flex items-center gap-3 p-3 text-right hover:bg-slate-50">
-                <button (click)="remove(e, $event)"
-                        class="w-6 h-6 rounded-full bg-slate-100 text-slate-400 hover:text-red-500 text-xs shrink-0">✕</button>
-                <button (click)="speak((e.article ? e.article + ' ' : '') + e.word, $event)"
-                        class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-sm shrink-0">🔊</button>
-                <div class="flex-1 min-w-0 text-right">
-                  <div class="flex items-baseline gap-2 flex-row-reverse" dir="ltr">
-                    @if (e.article) {
-                      <span class="text-lg font-bold"
-                            [class.text-blue-600]="e.gender === 'M'"
-                            [class.text-rose-600]="e.gender === 'F'"
-                            [class.text-emerald-600]="e.gender === 'N'">{{ e.article }}</span>
-                    }
-                    <span class="text-lg font-bold text-slate-800">{{ e.word }}</span>
-                    <span class="text-xs text-slate-400 mr-auto">{{ e.kind === 'noun' ? 'اسم' : 'فعل' }}</span>
-                  </div>
-                  @if (translation) {
-                    <div class="text-sm text-slate-600 mt-0.5">{{ translation }}</div>
-                  }
-                </div>
-                @if (ai) {
-                  <span class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-0.5 font-bold shrink-0">🤖 AI</span>
-                }
-                <span class="text-slate-400 text-sm shrink-0">{{ expanded ? '▲' : '▼' }}</span>
-              </button>
+    <!-- تبديل النمط -->
+    <div class="grid grid-cols-2 gap-2 mb-4">
+      <button (click)="setMode('cards')"
+              class="rounded-lg py-2 text-sm font-semibold transition-colors border"
+              [class.bg-purple-600]="mode() === 'cards'"
+              [class.text-white]="mode() === 'cards'"
+              [class.border-purple-600]="mode() === 'cards'"
+              [class.bg-white]="mode() !== 'cards'"
+              [class.text-slate-700]="mode() !== 'cards'"
+              [class.border-slate-300]="mode() !== 'cards'">
+        🃏 كاردات
+      </button>
+      <button (click)="setMode('list')"
+              class="rounded-lg py-2 text-sm font-semibold transition-colors border"
+              [class.bg-slate-700]="mode() === 'list'"
+              [class.text-white]="mode() === 'list'"
+              [class.border-slate-700]="mode() === 'list'"
+              [class.bg-white]="mode() !== 'list'"
+              [class.text-slate-700]="mode() !== 'list'"
+              [class.border-slate-300]="mode() !== 'list'">
+        📋 قائمة
+      </button>
+    </div>
 
-              <!-- محتوى موسّع (Claude AI) -->
-              @if (expanded && ai) {
-                <div class="border-t border-slate-200 p-3 bg-slate-50">
-                  @if (ai.arabicTranslation) {
-                    <div class="text-sm text-purple-700 font-semibold mb-2">{{ ai.arabicTranslation }}</div>
-                  }
-                  @if (ai.meanings.length) {
-                    <h4 class="text-xs font-bold text-slate-700 mb-1">📚 المعاني</h4>
-                    <ul class="space-y-1 mb-3">
-                      @for (m of ai.meanings; track $index) {
-                        <li class="bg-white border border-slate-200 rounded-lg p-2 text-xs">
-                          <div class="text-slate-800" dir="ltr">{{ m.de }}</div>
-                          <div class="text-slate-600 mt-0.5">{{ m.ar }}</div>
-                        </li>
-                      }
-                    </ul>
-                  }
-                  @if (ai.examples.length) {
-                    <h4 class="text-xs font-bold text-slate-700 mb-1">💬 أمثلة</h4>
+    <!-- ═══ نمط الكاردات ═══ -->
+    @if (mode() === 'cards') {
+
+      <!-- منتقي اليوم -->
+      <div class="mb-3">
+        <div class="flex flex-wrap gap-1.5 items-center">
+          <span class="text-xs text-slate-500 ml-1">اليوم:</span>
+          <button (click)="pickDay('all')"
+                  class="rounded-full px-3 py-1 text-xs font-semibold border transition-colors"
+                  [class.bg-slate-800]="selectedDay() === 'all'"
+                  [class.text-white]="selectedDay() === 'all'"
+                  [class.border-slate-800]="selectedDay() === 'all'"
+                  [class.bg-white]="selectedDay() !== 'all'"
+                  [class.text-slate-700]="selectedDay() !== 'all'"
+                  [class.border-slate-300]="selectedDay() !== 'all'">
+            الكل ({{ history().length }})
+          </button>
+          @for (d of availableDays(); track d.key) {
+            <button (click)="pickDay(d.key)"
+                    class="rounded-full px-3 py-1 text-xs font-semibold border transition-colors"
+                    [class.bg-emerald-600]="selectedDay() === d.key"
+                    [class.text-white]="selectedDay() === d.key"
+                    [class.border-emerald-600]="selectedDay() === d.key"
+                    [class.bg-white]="selectedDay() !== d.key"
+                    [class.text-slate-700]="selectedDay() !== d.key"
+                    [class.border-slate-300]="selectedDay() !== d.key">
+              {{ d.label }} ({{ d.count }})
+            </button>
+          }
+        </div>
+      </div>
+
+      @if (currentCard(); as e) {
+      <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
+        <span>{{ cardIndex() + 1 }} / {{ deck().length }}</span>
+        <div class="flex gap-2">
+          <button (click)="toggleShuffle()"
+                  class="rounded-full px-2 py-1 text-xs border transition-colors"
+                  [class.bg-indigo-600]="shuffled()"
+                  [class.text-white]="shuffled()"
+                  [class.border-indigo-600]="shuffled()"
+                  [class.bg-white]="!shuffled()"
+                  [class.border-slate-300]="!shuffled()">
+            🔀 خلط
+          </button>
+          <button (click)="remove(e, $event)"
+                  class="rounded-full px-2 py-1 text-xs bg-red-50 text-red-600 border border-red-200 hover:bg-red-100">
+            ✕ حذف
+          </button>
+        </div>
+      </div>
+
+      <!-- البطاقة نفسها -->
+      <div class="flip-card mb-4" [class.flipped]="flipped()" (click)="cardTap()">
+        <div class="flip-inner">
+          <!-- الوجه الأمامي -->
+          <div class="flip-face flip-front"
+               [class.bg-blue-100]="e.kind === 'noun' && e.gender === 'M'"
+               [class.bg-rose-100]="e.kind === 'noun' && e.gender === 'F'"
+               [class.bg-emerald-100]="e.kind === 'noun' && e.gender === 'N'"
+               [class.bg-purple-100]="!e.gender">
+            <div class="text-xs text-slate-500 mb-2">{{ e.kind === 'noun' ? 'اسم' : (e.kind === 'verb' ? 'فعل' : 'عبارة') }}</div>
+            <div class="flex items-baseline gap-2" dir="ltr">
+              @if (e.article) {
+                <span class="text-4xl font-bold"
+                      [class.text-blue-700]="e.gender === 'M'"
+                      [class.text-rose-700]="e.gender === 'F'"
+                      [class.text-emerald-700]="e.gender === 'N'">{{ e.article }}</span>
+              }
+              <span class="text-4xl font-bold text-slate-800">{{ e.word }}</span>
+            </div>
+            <button (click)="speak((e.article ? e.article + ' ' : '') + e.word, $event)"
+                    class="mt-4 bg-white border border-slate-300 rounded-full px-4 py-2 hover:bg-slate-100 text-sm">
+              🔊 استمع
+            </button>
+            <div class="text-xs text-slate-500 mt-4">اضغط للقلب ← الترجمة</div>
+            @if (cardIndex() < deck().length - 1) {
+              <div class="text-[10px] text-slate-400 mt-1">و بعد القلب، اضغط مجدّداً للانتقال للتالية ⏭</div>
+            }
+          </div>
+
+          <!-- الوجه الخلفي -->
+          <div class="flip-face flip-back bg-white text-slate-800 overflow-y-auto p-4">
+            <!-- الترجمة -->
+            <div class="mb-3">
+              <div class="text-xs text-slate-500">الترجمة</div>
+              <div class="text-lg font-bold text-emerald-700" dir="rtl">
+                {{ e.translation || aiOf(e)?.arabicTranslation || 'لا توجد ترجمة بعد' }}
+              </div>
+            </div>
+
+            <!-- شرح AI -->
+            @if (aiOf(e); as ai) {
+              @if (ai.meanings && ai.meanings.length) {
+                <div class="mb-3">
+                  <div class="text-xs font-bold text-slate-700 mb-1">📚 المعاني</div>
+                  <ul class="space-y-1">
+                    @for (m of ai.meanings; track $index) {
+                      <li class="bg-slate-50 border border-slate-200 rounded p-2 text-xs">
+                        <div class="text-slate-800" dir="ltr">{{ m.de }}</div>
+                        <div class="text-slate-600 mt-0.5" dir="rtl">{{ m.ar }}</div>
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+              @if (ai.examples && ai.examples.length) {
+                <div class="mb-3">
+                  <div class="text-xs font-bold text-slate-700 mb-1">💬 أمثلة</div>
+                  <ul class="space-y-1">
+                    @for (ex of ai.examples; track $index) {
+                      <li class="bg-emerald-50 border border-emerald-200 rounded p-2 text-xs flex gap-2">
+                        <button (click)="speak(ex.de, $event)"
+                                class="bg-white border border-slate-200 rounded-full w-7 h-7 shrink-0 hover:bg-emerald-100 text-xs">🔊</button>
+                        <div class="flex-1 min-w-0">
+                          <div class="text-slate-800" dir="ltr">{{ ex.de }}</div>
+                          <div class="text-slate-600 mt-0.5" dir="rtl">{{ ex.ar }}</div>
+                        </div>
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+              @if (ai.grammar) {
+                <div class="bg-amber-50 border border-amber-200 rounded p-2 text-xs text-amber-800 mb-2" dir="rtl">
+                  📐 {{ ai.grammar }}
+                </div>
+              }
+              @if (ai.usage) {
+                <div class="bg-blue-50 border border-blue-200 rounded p-2 text-xs text-blue-800 mb-2" dir="rtl">
+                  💡 {{ ai.usage }}
+                </div>
+              }
+
+              <!-- شرح أعمق إن وجد -->
+              @if (aiDeepOf(e); as deep) {
+                <div class="border-t-2 border-purple-200 pt-3 mt-3">
+                  <div class="text-xs font-bold text-purple-700 mb-2">🌟 شرح أعمق</div>
+                  @if (deep.deeperExamples && deep.deeperExamples.length) {
                     <ul class="space-y-1 mb-2">
-                      @for (ex of ai.examples; track $index) {
-                        <li class="bg-emerald-50 border border-emerald-200 rounded-lg p-2 text-xs flex gap-2">
-                          <button (click)="speak(ex.de, $event)" class="text-xs shrink-0">🔊</button>
-                          <div>
-                            <div class="text-slate-800" dir="ltr">{{ ex.de }}</div>
-                            <div class="text-slate-600 mt-0.5">{{ ex.ar }}</div>
+                      @for (ex of deep.deeperExamples; track $index) {
+                        <li class="bg-purple-50 border border-purple-200 rounded p-2 text-xs">
+                          <div class="flex gap-2">
+                            <button (click)="speak(ex.de, $event)"
+                                    class="bg-white border border-slate-200 rounded-full w-6 h-6 shrink-0 hover:bg-purple-100 text-xs">🔊</button>
+                            <div>
+                              <div class="text-slate-800" dir="ltr">{{ ex.de }}</div>
+                              <div class="text-slate-600" dir="rtl">{{ ex.ar }}</div>
+                              @if (ex.context) { <div class="text-purple-600 text-[10px] italic mt-0.5" dir="rtl">{{ ex.context }}</div> }
+                            </div>
                           </div>
                         </li>
                       }
                     </ul>
                   }
-                  @if (ai.grammar) {
-                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-2 text-xs text-amber-800 mb-1">
-                      📐 {{ ai.grammar }}
-                    </div>
+                  @if (deep.culturalContext) {
+                    <div class="bg-blue-50 border border-blue-200 rounded p-2 text-xs text-blue-800 mb-1" dir="rtl">🌍 {{ deep.culturalContext }}</div>
                   }
-                  @if (ai.usage) {
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-2 text-xs text-blue-800">
-                      💡 {{ ai.usage }}
-                    </div>
+                  @if (deep.commonMistakes) {
+                    <div class="bg-red-50 border border-red-200 rounded p-2 text-xs text-red-800 mb-1" dir="rtl">⚠️ {{ deep.commonMistakes }}</div>
                   }
-                </div>
-              } @else if (expanded && !ai) {
-                <div class="border-t border-slate-200 p-3 bg-slate-50 text-xs text-slate-500 text-center">
-                  💡 لا يوجد شرح AI محفوظ لهذه الكلمة. افتحها في القاموس بوضع «🤖 Claude AI» لجلب شرح غنيّ.
+                  @if (deep.relatedPhrases && deep.relatedPhrases.length) {
+                    <div class="text-xs font-bold text-purple-700 mb-1 mt-2">🔗 عبارات ذات صلة</div>
+                    <ul class="space-y-1">
+                      @for (p of deep.relatedPhrases; track $index) {
+                        <li class="bg-white border border-purple-100 rounded p-2 text-xs flex gap-2">
+                          <button (click)="speak(p.de, $event)" class="text-xs shrink-0">🔊</button>
+                          <div>
+                            <div class="text-slate-800" dir="ltr">{{ p.de }}</div>
+                            <div class="text-slate-600" dir="rtl">{{ p.ar }}</div>
+                          </div>
+                        </li>
+                      }
+                    </ul>
+                  }
                 </div>
               }
-            </li>
-          }
-        </ul>
+            } @else {
+              <div class="text-xs text-slate-400 text-center py-3">لا يوجد شرح AI محفوظ.</div>
+            }
+
+            <!-- أسئلة سابقة (Q&A) -->
+            @if (asksOf(e).length) {
+              <div class="border-t border-slate-200 pt-3 mt-3 space-y-2">
+                <div class="text-xs font-bold text-purple-700">💬 أسئلتك السابقة</div>
+                @for (a of asksOf(e); track a.ts) {
+                  <div class="bg-purple-50 border border-purple-100 rounded p-2 text-xs">
+                    <div class="text-purple-700 font-semibold mb-1" dir="rtl">Q: {{ a.q }}</div>
+                    <div class="text-slate-800 whitespace-pre-line" dir="rtl">{{ a.a }}</div>
+                    <div class="flex justify-end mt-1">
+                      <button (click)="speak(a.a, $event)" class="text-[11px] bg-white border border-slate-200 rounded-full px-2 py-0.5 hover:bg-slate-50">🔊</button>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+
+            <!-- أزرار الـ AI -->
+            <div class="flex flex-col gap-2 mt-3 pt-3 border-t border-slate-200">
+              @if (!aiOf(e)) {
+                <button (click)="fetchAI(e); $event.stopPropagation()"
+                        [disabled]="fetchingAI() === e.word"
+                        class="bg-purple-600 text-white rounded-lg py-2 text-sm font-semibold hover:bg-purple-700 disabled:opacity-50">
+                  {{ fetchingAI() === e.word ? '⏳ جارٍ …' : '🤖 جلب شرح Claude AI' }}
+                </button>
+              } @else if (!aiDeepOf(e)) {
+                <button (click)="fetchDeep(e); $event.stopPropagation()"
+                        [disabled]="fetchingDeep() === e.word"
+                        class="bg-purple-600 text-white rounded-lg py-2 text-sm font-semibold hover:bg-purple-700 disabled:opacity-50">
+                  {{ fetchingDeep() === e.word ? '⏳ جارٍ …' : '🌟 اطلب شرحاً أعمق' }}
+                </button>
+              }
+              <a [routerLink]="'/dictionary'" [queryParams]="{}"
+                 class="text-center text-xs text-purple-700 hover:underline pt-1">
+                ← اذهب للقاموس لتسأل سؤالاً جديداً حول هذه الكلمة
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <!-- تنقّل -->
+      <div class="flex items-center justify-between gap-2">
+        <button (click)="prev()" [disabled]="cardIndex() === 0"
+                class="flex-1 bg-white border border-slate-300 rounded-lg py-2.5 font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-30">
+          ← السابق
+        </button>
+        <button (click)="next()" [disabled]="cardIndex() >= deck().length - 1"
+                class="flex-1 bg-emerald-600 text-white rounded-lg py-2.5 font-semibold hover:bg-emerald-700 disabled:opacity-30">
+          التالي →
+        </button>
+      </div>
+      } @else {
+        <!-- لا كلمات في اليوم المختار -->
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-8 text-center">
+          <div class="text-4xl mb-3">📅</div>
+          <p class="text-slate-600 mb-3">لا كلمات محفوظة في هذا اليوم.</p>
+          <button (click)="pickDay('all')"
+                  class="bg-slate-700 text-white rounded-lg px-4 py-2 text-sm hover:bg-slate-800">عرض كل الأيام</button>
+        </div>
+      }
     }
+
+    <!-- ═══ نمط القائمة (نفس السابق) ═══ -->
+    @if (mode() === 'list') {
+      <div class="flex justify-end mb-3">
+        <button (click)="clearAll()"
+                class="text-xs bg-red-50 text-red-600 border border-red-200 rounded-lg px-3 py-1.5 hover:bg-red-100">🗑️ مسح الكل</button>
+      </div>
+
+      @for (g of groups(); track g.key) {
+        <div class="mb-5">
+          <div class="flex items-center gap-2 mb-2">
+            <h3 class="text-base font-bold text-slate-800" [class.text-emerald-700]="g.isToday">
+              {{ g.isToday ? '🌟' : '📅' }} {{ g.label }}
+            </h3>
+            <span class="text-xs text-slate-400">({{ g.entries.length }})</span>
+          </div>
+          <ul class="space-y-2">
+            @for (e of g.entries; track e.kind + ':' + e.word) {
+              @let ai = aiOf(e);
+              @let expanded = isExpanded(e);
+              <li class="bg-white border-2 rounded-lg transition-all"
+                  [class.border-purple-300]="ai" [class.border-slate-200]="!ai">
+                <button (click)="toggle(e)" class="w-full flex items-center gap-3 p-3 text-right hover:bg-slate-50">
+                  <button (click)="remove(e, $event)"
+                          class="w-6 h-6 rounded-full bg-slate-100 text-slate-400 hover:text-red-500 text-xs shrink-0">✕</button>
+                  <button (click)="speak((e.article ? e.article + ' ' : '') + e.word, $event)"
+                          class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-sm shrink-0">🔊</button>
+                  <div class="flex-1 min-w-0 text-right">
+                    <div class="flex items-baseline gap-2 flex-row-reverse" dir="ltr">
+                      @if (e.article) {
+                        <span class="text-lg font-bold"
+                              [class.text-blue-600]="e.gender === 'M'"
+                              [class.text-rose-600]="e.gender === 'F'"
+                              [class.text-emerald-600]="e.gender === 'N'">{{ e.article }}</span>
+                      }
+                      <span class="text-lg font-bold text-slate-800">{{ e.word }}</span>
+                    </div>
+                    @if (e.translation || ai?.arabicTranslation) {
+                      <div class="text-sm text-slate-600 mt-0.5">{{ e.translation || ai?.arabicTranslation }}</div>
+                    }
+                  </div>
+                  @if (ai) { <span class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-0.5 font-bold shrink-0">🤖 AI</span> }
+                  <span class="text-slate-400 text-sm shrink-0">{{ expanded ? '▲' : '▼' }}</span>
+                </button>
+
+                @if (expanded) {
+                  <div class="border-t border-slate-200 p-3 bg-slate-50 space-y-2">
+                    @if (ai) {
+                      @if (ai.examples && ai.examples.length) {
+                        @for (ex of ai.examples; track $index) {
+                          <div class="bg-white border border-emerald-200 rounded p-2 text-xs flex gap-2">
+                            <button (click)="speak(ex.de, $event)" class="text-xs shrink-0">🔊</button>
+                            <div>
+                              <div class="text-slate-800" dir="ltr">{{ ex.de }}</div>
+                              <div class="text-slate-600" dir="rtl">{{ ex.ar }}</div>
+                            </div>
+                          </div>
+                        }
+                      }
+                    }
+                    <div class="flex gap-2 pt-2">
+                      @if (!ai) {
+                        <button (click)="fetchAI(e); $event.stopPropagation()"
+                                [disabled]="fetchingAI() === e.word"
+                                class="flex-1 bg-purple-600 text-white rounded py-1.5 text-xs hover:bg-purple-700 disabled:opacity-50">
+                          {{ fetchingAI() === e.word ? '⏳' : '🤖 جلب شرح AI' }}
+                        </button>
+                      } @else {
+                        <button (click)="fetchDeep(e); $event.stopPropagation()"
+                                [disabled]="fetchingDeep() === e.word"
+                                class="flex-1 bg-purple-600 text-white rounded py-1.5 text-xs hover:bg-purple-700 disabled:opacity-50">
+                          {{ fetchingDeep() === e.word ? '⏳' : '🌟 اطلب شرحاً أعمق' }}
+                        </button>
+                      }
+                    </div>
+                  </div>
+                }
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    }
+
   }
 
 </section>

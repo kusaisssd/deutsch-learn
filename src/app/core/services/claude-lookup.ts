@@ -1,7 +1,7 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { ClaudeLookupResult } from '../models/claude-lookup.model';
+import { ClaudeAskResult, ClaudeDeepResult, ClaudeLookupResult } from '../models/claude-lookup.model';
 
 const CACHE_KEY = 'deutsch-learn:claude-lookup-cache';
 const MAX_CACHE = 500; // اقتصار حجم الـcache على 500 كلمة
@@ -73,6 +73,45 @@ export class ClaudeLookupService {
       this._error.set(msg);
     } finally {
       this._loading.set(false);
+    }
+  }
+
+  /** يجلب شرحاً أعمق (لا cache — كل استدعاء يستهلك تكلفة صغيرة) */
+  async lookupDeep(word: string): Promise<ClaudeDeepResult | null> {
+    if (!word.trim()) return null;
+    try {
+      const res = await firstValueFrom(
+        this.http.get<ClaudeDeepResult>('/api/claude-lookup', {
+          params: { word: word.trim(), mode: 'deep' },
+        }),
+      );
+      return res;
+    } catch (err) {
+      const e = err as HttpErrorResponse;
+      this._error.set(e.error?.error ?? e.message ?? 'خطأ في الاتصال');
+      return null;
+    }
+  }
+
+  /**
+   * يطرح سؤالاً حرّاً على Claude حول كلمة/جملة، و يُرجع نصّ الجواب.
+   * لا يُخبَّأ (كل سؤال مخصّص).
+   */
+  async ask(word: string, question: string): Promise<string | null> {
+    const w = word.trim();
+    const q = question.trim();
+    if (!w || q.length < 2) return null;
+    try {
+      const res = await firstValueFrom(
+        this.http.get<ClaudeAskResult>('/api/claude-lookup', {
+          params: { word: w, mode: 'ask', q },
+        }),
+      );
+      return res?.answer ?? null;
+    } catch (err) {
+      const e = err as HttpErrorResponse;
+      this._error.set(e.error?.error ?? e.message ?? 'خطأ في الاتصال');
+      return null;
     }
   }
 

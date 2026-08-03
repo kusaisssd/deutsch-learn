@@ -4,6 +4,7 @@ import {
   DictHistoryEntry, Gender, LookupResult, MyMemoryResponse, NounCaseRow, NounResult,
   RawNoun, RawVerb, VerbConjRow, VerbResult, VerbTenseTable,
 } from '../models/dictionary.model';
+import { SyncService } from './sync';
 
 /** أدوات التعريف حسب الحالة و الجنس (مفرد) + الجمع */
 const ARTICLES = {
@@ -40,6 +41,7 @@ const HISTORY_KEY = 'deutsch-learn:dict-history';
 @Injectable({ providedIn: 'root' })
 export class DictionaryService {
   private http = inject(HttpClient);
+  private sync = inject(SyncService);
 
   private readonly _nouns = signal<Record<string, RawNoun> | null>(null);
   private readonly _verbs = signal<Record<string, RawVerb> | null>(null);
@@ -66,23 +68,90 @@ export class DictionaryService {
   /** كل المفاتيح + نسخة صغيرة الأحرف (للإكمال التلقائي) */
   private allKeys: { k: string; l: string }[] | null = null;
 
+  private pushTimer: ReturnType<typeof setTimeout> | null = null;
+  private syncInitialized = false;
+
   constructor() {
     this.load();
     // حفظ الترجمات و السجلّ تلقائياً
     effect(() => this.saveTranslations(this._translations()));
     effect(() => this.save(HISTORY_KEY, this._history()));
-  }
 
-  /** يسجّل كلمة مبحوثة (يزيل التكرار و يضعها في المقدّمة) */
-  record(entry: Omit<DictHistoryEntry, 'ts'>): void {
-    this._history.update(list => {
-      const rest = list.filter(x => !(x.word === entry.word && x.kind === entry.kind));
-      return [{ ...entry, ts: Date.now() }, ...rest].slice(0, 1000);
+    // ─── مزامنة سحابية ───
+    // 1) عند وجود passphrase → اسحب مرّة عند بدء التشغيل و ادمج
+    effect(() => {
+      const has = this.sync.hasPassphrase();
+      if (has && !this.syncInitialized) {
+        this.syncInitialized = true;
+        this.doInitialPull();
+      }
+    });
+
+    // 2) كل تغيير في السجلّ → ادفع (مؤجَّل ثانيتين لتجميع التغييرات)
+    effect(() => {
+      const list = this._history();
+      if (!this.sync.hasPassphrase() || !this.sync.autoSync()) return;
+      if (this.pushTimer) clearTimeout(this.pushTimer);
+      this.pushTimer = setTimeout(() => {
+        this.sync.push({ entries: list, updatedAt: Date.now() });
+      }, 2000);
     });
   }
 
+  /** يسحب النسخة السحابية و يدمجها مع المحلية */
+  async doInitialPull(): Promise<void> {
+    const cloud = await this.sync.pull();
+    if (!cloud || !cloud.entries) return;
+    const merged = this.sync.merge(this._history(), cloud.entries);
+    this._history.set(merged);
+  }
+
+  /** مزامنة يدوية (Pull + Push) */
+  async syncNow(): Promise<void> {
+    await this.doInitialPull();
+    await this.sync.push({ entries: this._history(), updatedAt: Date.now() });
+  }
+
+  /** يسجّل كلمة مبحوثة (يزيل التكرار و يضعها في المقدّمة).
+   * لو المدخل موجود سابقاً، نحتفظ بحقول AI/translation إن لم يمرّرها الاستدعاء الجديد.
+   */
+  record(entry: Omit<DictHistoryEntry, 'ts'>): void {
+    this._history.update(list => {
+      const existing = list.find(x => x.word === entry.word && x.kind === entry.kind);
+      const rest = list.filter(x => !(x.word === entry.word && x.kind === entry.kind));
+      const merged: DictHistoryEntry = {
+        ...entry,
+        translation: entry.translation ?? existing?.translation,
+        ai: entry.ai ?? existing?.ai,
+        aiDeep: entry.aiDeep ?? existing?.aiDeep,
+        ts: Date.now(),
+      };
+      return [merged, ...rest].slice(0, 1000);
+    });
+  }
+
+  /** يحدّث مدخلاً موجوداً بحقل AI أو ترجمة (يترك الباقي) */
+  enrich(word: string, kind: 'noun' | 'verb' | 'phrase', patch: Partial<Pick<DictHistoryEntry, 'translation' | 'ai' | 'aiDeep' | 'asks'>>): void {
+    this._history.update(list => list.map(e => {
+      if (e.word !== word || e.kind !== kind) return e;
+      return { ...e, ...patch, ts: Date.now() };
+    }));
+  }
+
+  /** يُضيف زوج سؤال/جواب Claude لمدخل موجود (يُضاف في نهاية القائمة) */
+  appendAsk(word: string, kind: 'noun' | 'verb' | 'phrase', ask: { q: string; a: string; preset?: string }): void {
+    this._history.update(list => list.map(e => {
+      if (e.word !== word || e.kind !== kind) return e;
+      const asks = Array.isArray(e.asks) ? [...e.asks] : [];
+      asks.push({ ...ask, ts: Date.now() });
+      // نحدّ العدد لكل مدخل حتى لا ينفجر الحجم في السحابة
+      if (asks.length > 25) asks.splice(0, asks.length - 25);
+      return { ...e, asks, ts: Date.now() };
+    }));
+  }
+
   /** يحذف كلمة من السجلّ */
-  removeFromHistory(word: string, kind: 'noun' | 'verb'): void {
+  removeFromHistory(word: string, kind: 'noun' | 'verb' | 'phrase'): void {
     this._history.update(list => list.filter(x => !(x.word === word && x.kind === kind)));
   }
 

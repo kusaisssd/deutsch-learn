@@ -31,7 +31,7 @@ interface ClaudeResponse {
   error?: { type: string; message: string };
 }
 
-const PROMPT_TEMPLATE = (word: string) => `Du bist ein Deutschlehrer für arabischsprachige Lernende.
+const PROMPT_BASIC = (word: string) => `Du bist ein Deutschlehrer für arabischsprachige Lernende.
 Der Lerner sucht: "${word}"
 
 Antworte NUR mit einem JSON-Objekt (ohne Markdown, ohne Codeblock-Fences) mit folgendem Schema:
@@ -54,6 +54,39 @@ Antworte NUR mit einem JSON-Objekt (ohne Markdown, ohne Codeblock-Fences) mit fo
 Gib 2-3 Bedeutungen und 2-3 vielfältige Beispielsätze. Sei präzise und lehrreich.
 Falls das Wort keine deutsche Bedeutung hat, gib type:"other" und erkläre kurz.`;
 
+/**
+ * PROMPT_ASK — سؤال مفتوح حول كلمة/جملة.
+ * يُرجع JSON بحقل واحد فقط "answer" باللغة العربية (شرح واضح مع أمثلة عند اللزوم).
+ * الأمثلة الألمانية داخل النص تبقى بالألمانية بين علامتَي «».
+ */
+const PROMPT_ASK = (word: string, question: string) =>
+  `Du bist ein hilfsbereiter Deutschlehrer für arabischsprachige Lernende.
+Der Lerner betrachtet das deutsche Wort/den Ausdruck: "${word}"
+und stellt folgende Frage (auf Arabisch): "${question}"
+
+Antworte NUR mit einem JSON-Objekt (ohne Markdown, ohne Codeblock-Fences):
+{
+  "answer": "eine klare, hilfreiche Antwort auf ARABISCH; deutsche Beispielsätze bleiben deutsch und stehen in Anführungszeichen »…«; nutze Absätze mit \\n\\n wenn nötig; sei präzise und lehrreich; wenn die Frage nach Beispielen fragt, gib 3-5 vielfältige Sätze mit ihrer arabischen Übersetzung; wenn die Frage nach Konjugation fragt, gib eine kurze übersichtliche Tabelle."
+}`;
+
+const PROMPT_DEEP = (word: string) => `Du bist ein Deutschlehrer für arabischsprachige Lernende und lieferst
+eine VERTIEFTE Erklärung des Wortes/Ausdrucks "${word}".
+
+Antworte NUR mit einem JSON-Objekt (ohne Markdown, ohne Codeblock-Fences) mit diesem Schema:
+{
+  "word": "das Wort",
+  "deeperExamples": [
+    { "de": "längerer, kontextreicher Beispielsatz", "ar": "arabische Übersetzung", "context": "kurze Situation/Kontext auf Arabisch" }
+  ],
+  "culturalContext": "kultureller Hintergrund oder Nutzungsraum auf Arabisch, oder null",
+  "commonMistakes": "häufige Fehler von arabischsprachigen Lernenden mit diesem Wort auf Arabisch, oder null",
+  "relatedPhrases": [
+    { "de": "verwandte Redewendung oder Ausdruck", "ar": "arabische Übersetzung/Erklärung" }
+  ]
+}
+
+Gib 3-4 vertiefte Beispiele und 3-4 verwandte Redewendungen.`;
+
 export default async function handler(req: Request): Promise<Response> {
   const cors = {
     'access-control-allow-origin': '*',
@@ -71,8 +104,19 @@ export default async function handler(req: Request): Promise<Response> {
 
   const url = new URL(req.url);
   const word = url.searchParams.get('word')?.trim();
-  if (!word || word.length < 2 || word.length > 80) {
-    return new Response(JSON.stringify({ error: 'Ungültiger Parameter "word" (2–80 Zeichen erforderlich).' }), {
+  const modeParam = url.searchParams.get('mode');
+  const mode: 'basic' | 'deep' | 'ask' =
+    modeParam === 'deep' ? 'deep' : modeParam === 'ask' ? 'ask' : 'basic';
+  const question = url.searchParams.get('q')?.trim() ?? '';
+
+  if (!word || word.length < 2 || word.length > 200) {
+    return new Response(JSON.stringify({ error: 'Ungültiger Parameter "word" (2–200 Zeichen erforderlich).' }), {
+      status: 400,
+      headers: { 'content-type': 'application/json', ...cors },
+    });
+  }
+  if (mode === 'ask' && (question.length < 2 || question.length > 500)) {
+    return new Response(JSON.stringify({ error: 'Ungültiger Parameter "q" (2–500 Zeichen erforderlich für mode=ask).' }), {
       status: 400,
       headers: { 'content-type': 'application/json', ...cors },
     });
@@ -107,8 +151,13 @@ export default async function handler(req: Request): Promise<Response> {
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1024,
-        messages: [{ role: 'user', content: PROMPT_TEMPLATE(word) }],
+        max_tokens: mode === 'deep' ? 1400 : mode === 'ask' ? 1200 : 1024,
+        messages: [{
+          role: 'user',
+          content: mode === 'deep' ? PROMPT_DEEP(word)
+                 : mode === 'ask'  ? PROMPT_ASK(word, question)
+                 : PROMPT_BASIC(word),
+        }],
       }),
     });
 
@@ -141,12 +190,16 @@ export default async function handler(req: Request): Promise<Response> {
       });
     }
 
+    // نطبّق cache على basic/deep فقط — أسئلة الـ ask مخصّصة و لا يجب مشاركتها
+    const cacheHeader = mode === 'ask'
+      ? 'no-store'
+      : 'public, s-maxage=86400, stale-while-revalidate=604800';
+
     return new Response(JSON.stringify(parsed), {
       status: 200,
       headers: {
         'content-type': 'application/json',
-        // Cache CDN-side لكل كلمة يوماً كاملاً — يوفّر تكاليف API
-        'cache-control': 'public, s-maxage=86400, stale-while-revalidate=604800',
+        'cache-control': cacheHeader,
         ...cors,
       },
     });

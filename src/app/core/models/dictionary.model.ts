@@ -81,12 +81,20 @@ export interface MyMemoryResponse {
   responseStatus?: number;
 }
 
-/** عنصر في سجلّ البحث (لقسم «ذاكرة قاموسي» لاحقاً) */
+/** عنصر في سجلّ البحث (يُحفَظ محلياً و يُزامَن سحابياً) */
 export interface DictHistoryEntry {
   word: string;
-  kind: 'noun' | 'verb';
+  kind: 'noun' | 'verb' | 'phrase';
   article?: string;     // der/die/das (للأسماء)
   gender?: Gender;      // M/F/N (للأسماء)
-  /** وقت آخر بحث (ms) — لترتيب الأحدث */
+  /** الترجمة العربية (من MyMemory أو Claude) */
+  translation?: string;
+  /** استجابة Claude AI الكاملة إن جُلبت */
+  ai?: unknown;         // ClaudeLookupResult — نستعمل unknown هنا لتجنّب اعتماد دائري
+  /** استجابة Claude «شرح أعمق» إن طُلبت */
+  aiDeep?: unknown;
+  /** أسئلة حرّة سبق طرحها على AI حول هذه الكلمة (Q&A) */
+  asks?: unknown[];        // DictAsk[] — unknown لتجنّب اعتماد دائري
+  /** وقت آخر بحث/تحديث (ms) — لترتيب الأحدث */
   ts: number;
 }

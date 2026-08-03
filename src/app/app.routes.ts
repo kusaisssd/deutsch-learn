@@ -173,6 +173,14 @@ export const routes: Routes = [
         .then(m => m.DictionaryReviewPage),
     title: 'مراجعة القاموس - Deutsch Learn',
   },
+  // 🆕 إعدادات القاموس: passphrase للمزامنة بين الأجهزة (Vercel KV)
+  {
+    path: 'dictionary/settings',
+    loadComponent: () =>
+      import('./features/dictionary/dictionary-settings-page/dictionary-settings-page')
+        .then(m => m.DictionarySettingsPage),
+    title: 'إعدادات القاموس - Deutsch Learn',
+  },
 
   // 🆕 Arabisch lernen — vereinheitlichte Übersicht (Fusha + Syrisch immer beides)
   {

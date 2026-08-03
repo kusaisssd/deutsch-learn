@@ -1,0 +1,42 @@
+.flip-card {
+  perspective: 1200px;
+  min-height: 22rem;
+  cursor: pointer;
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  min-height: 22rem;
+  transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-face {
+  position: absolute;
+  inset: 0;
+  min-height: 22rem;
+  border-radius: 1rem;
+  border: 2px solid rgb(226 232 240);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.flip-front {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.flip-back {
+  transform: rotateY(180deg);
+  max-height: 32rem;
+}
