@@ -97,8 +97,9 @@ export class SyncService {
 
   /**
    * يدمج قائمتين حسب (word+kind): الأحدث حسب ts يفوز، و الحقول
-   * الاختيارية (translation, ai, aiDeep) تُحفَظ من الأحدث فالأقدم كـfallback
-   * (لئلا يُمسَح شرح AI محفوظ محلياً بسبب نسخة قديمة سحابية).
+   * الاختيارية (translation, ai, aiDeep) تُحفَظ من الأحدث فالأقدم كـfallback.
+   * أمّا asks[] فتُجمع كاتّحاد (union) بلا تكرار حسب ts، حتى لا نفقد
+   * أسئلةً طُرحت على جهاز و لم تصل الآخر بعد.
    */
   merge(a: DictHistoryEntry[], b: DictHistoryEntry[]): DictHistoryEntry[] {
     const map = new Map<string, DictHistoryEntry>();
@@ -114,11 +115,26 @@ export class SyncService {
         translation: newer.translation ?? older.translation,
         ai: newer.ai ?? older.ai,
         aiDeep: newer.aiDeep ?? older.aiDeep,
+        asks: this.mergeAsks(newer.asks, older.asks),
       });
     };
     for (const e of a) consider(e);
     for (const e of b) consider(e);
     return Array.from(map.values()).sort((x, y) => y.ts - x.ts);
+  }
+
+  /** يجمع قائمتَي أسئلة كاتّحاد بلا تكرار (المفتاح = ts) */
+  private mergeAsks(a?: unknown[], b?: unknown[]): unknown[] | undefined {
+    const aa = Array.isArray(a) ? a : [];
+    const bb = Array.isArray(b) ? b : [];
+    if (!aa.length && !bb.length) return undefined;
+    const seen = new Set<number>();
+    const out: unknown[] = [];
+    for (const item of [...aa, ...bb]) {
+      const ts = (item as { ts?: number }).ts;
+      if (typeof ts === 'number' && !seen.has(ts)) { seen.add(ts); out.push(item); }
+    }
+    return out.sort((x, y) => ((x as { ts: number }).ts) - ((y as { ts: number }).ts));
   }
 
   private load(key: string): string | null {

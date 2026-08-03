@@ -38,6 +38,26 @@ export class DictionaryReviewPage {
 
   readonly history = this.dict.history;
   readonly mode = signal<ViewMode>('cards');
+  readonly syncing = signal(false);
+
+  constructor() {
+    // كل مرّة يفتح المستخدم صفحة المراجعة → اسحب أحدث نسخة من السحابة
+    // (فيديو الاستخدام: بحث بالنهار من الديسكتوب، مراجعة بالمساء من الموبايل)
+    if (this.sync.hasPassphrase()) {
+      this.dict.doInitialPull().catch(() => {});
+    }
+  }
+
+  /** مزامنة يدوية فوريّة (زرّ في أعلى الصفحة) */
+  async syncNow() {
+    if (!this.sync.hasPassphrase() || this.syncing()) return;
+    this.syncing.set(true);
+    try {
+      await this.dict.syncNow();
+    } finally {
+      this.syncing.set(false);
+    }
+  }
 
   // ─── فلترة حسب اليوم (نمط الكاردات) ───
   /** 'all' لعرض جميع الأيام، أو مفتاح يوم YYYY-MM-DD */

@@ -14,12 +14,24 @@
     <p class="text-sm text-slate-600 max-w-xl mx-auto">كل ما بحثت عنه، بالترجمة و الشرح — للمراجعة المسائية.</p>
   </header>
 
-  <!-- شارة المزامنة -->
+  <!-- شارة المزامنة + زرّ سحب فوريّ -->
   @if (sync.hasPassphrase()) {
-    <div class="text-center mb-3">
+    <div class="flex items-center justify-center gap-2 mb-3 flex-wrap">
       <span class="inline-flex items-center gap-1 text-xs bg-green-50 border border-green-300 text-green-800 rounded-full px-3 py-1">
-        ☁️ متزامن — آخر مزامنة: {{ sync.lastSync() ? (sync.lastSync() | date:'HH:mm') : '—' }}
+        ☁️ متزامن · آخر مزامنة: {{ sync.lastSync() ? (sync.lastSync() | date:'HH:mm') : '—' }}
       </span>
+      <button (click)="syncNow()" [disabled]="syncing()"
+              class="inline-flex items-center gap-1 text-xs bg-indigo-600 text-white rounded-full px-3 py-1 hover:bg-indigo-700 disabled:opacity-50">
+        @if (syncing()) {
+          <span class="inline-block h-3 w-3 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
+          <span>جارٍ …</span>
+        } @else {
+          <span>🔄 مزامنة الآن</span>
+        }
+      </button>
+      @if (sync.error()) {
+        <span class="w-full text-center text-xs text-red-700 mt-1">⚠️ {{ sync.error() }}</span>
+      }
     </div>
   } @else {
     <div class="text-center mb-3">

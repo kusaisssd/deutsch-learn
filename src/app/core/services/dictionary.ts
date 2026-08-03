@@ -113,7 +113,8 @@ export class DictionaryService {
   }
 
   /** يسجّل كلمة مبحوثة (يزيل التكرار و يضعها في المقدّمة).
-   * لو المدخل موجود سابقاً، نحتفظ بحقول AI/translation إن لم يمرّرها الاستدعاء الجديد.
+   * لو المدخل موجود سابقاً، نحتفظ بكل حقوله (AI/translation/asks) إن لم
+   * يمرّرها الاستدعاء الجديد — إعادة البحث لا تمسح شيئاً.
    */
   record(entry: Omit<DictHistoryEntry, 'ts'>): void {
     this._history.update(list => {
@@ -124,6 +125,7 @@ export class DictionaryService {
         translation: entry.translation ?? existing?.translation,
         ai: entry.ai ?? existing?.ai,
         aiDeep: entry.aiDeep ?? existing?.aiDeep,
+        asks: entry.asks ?? existing?.asks,
         ts: Date.now(),
       };
       return [merged, ...rest].slice(0, 1000);
