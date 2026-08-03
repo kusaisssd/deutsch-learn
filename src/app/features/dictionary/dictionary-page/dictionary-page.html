@@ -1,15 +1,42 @@
 <section class="max-w-3xl mx-auto" dir="rtl">
 
   <!-- Heading -->
-  <header class="text-center mb-5">
+  <header class="text-center mb-4">
     <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
       📖 القاموس
     </h2>
     <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
-      اكتب كلمة ألمانية لتعرف أداتها (der/die/das) و تصريفها في كل الحالات،
-      أو تصريف الفعل في الحاضر و الماضي و الـ Perfekt.
+      اكتب كلمة ألمانية لتعرف أداتها و تصريفها، أو استخدم Claude AI لشرح أعمق.
     </p>
   </header>
+
+  <!-- شريط الأوضاع: محلي / AI / مراجعة -->
+  <div class="grid grid-cols-3 gap-2 mb-4">
+    <button (click)="setMode('local')"
+            class="rounded-lg py-2 text-sm font-semibold transition-colors border"
+            [class.bg-emerald-600]="searchMode() === 'local'"
+            [class.text-white]="searchMode() === 'local'"
+            [class.border-emerald-600]="searchMode() === 'local'"
+            [class.bg-white]="searchMode() !== 'local'"
+            [class.text-slate-700]="searchMode() !== 'local'"
+            [class.border-slate-300]="searchMode() !== 'local'">
+      🏛 محلي
+    </button>
+    <button (click)="setMode('ai')"
+            class="rounded-lg py-2 text-sm font-semibold transition-colors border"
+            [class.bg-purple-600]="searchMode() === 'ai'"
+            [class.text-white]="searchMode() === 'ai'"
+            [class.border-purple-600]="searchMode() === 'ai'"
+            [class.bg-white]="searchMode() !== 'ai'"
+            [class.text-slate-700]="searchMode() !== 'ai'"
+            [class.border-slate-300]="searchMode() !== 'ai'">
+      🤖 Claude AI
+    </button>
+    <a [routerLink]="'/dictionary/review'"
+       class="rounded-lg py-2 text-sm font-semibold text-center transition-colors border bg-white text-slate-700 border-slate-300 hover:bg-amber-50 hover:border-amber-400">
+      📖 مراجعة
+    </a>
+  </div>
 
   <!-- صندوق البحث + الإكمال التلقائي -->
   <div class="relative mb-4">
@@ -59,6 +86,101 @@
       <p class="text-red-800 mb-3">تعذّر تحميل بيانات القاموس.</p>
       <button (click)="retry()" class="bg-red-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-red-700">إعادة المحاولة</button>
     </div>
+  }
+
+  <!-- 🤖 نتيجة Claude AI (فقط في وضع AI) -->
+  @if (searchMode() === 'ai') {
+    @if (claude.loading()) {
+      <div class="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-4 text-center">
+        <div class="inline-block animate-spin rounded-full h-6 w-6 border-4 border-purple-500 border-t-transparent"></div>
+        <p class="text-purple-800 text-sm mt-2">🤖 Claude يفكّر …</p>
+      </div>
+    } @else if (claude.error()) {
+      <div class="bg-red-50 border border-red-300 rounded-xl p-4 mb-4">
+        <p class="text-red-800 text-sm">⚠️ {{ claude.error() }}</p>
+        <p class="text-xs text-red-600 mt-1">تأكّد من ضبط ANTHROPIC_API_KEY في Vercel Dashboard.</p>
+      </div>
+    } @else if (claude.result(); as ai) {
+      <div class="bg-white border-2 border-purple-300 rounded-xl p-4 sm:p-5 mb-5">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-baseline gap-2" dir="ltr">
+            @if (ai.article) {
+              <span class="text-2xl font-bold"
+                    [class.text-blue-600]="ai.article === 'der'"
+                    [class.text-rose-600]="ai.article === 'die'"
+                    [class.text-emerald-600]="ai.article === 'das'">{{ ai.article }}</span>
+            }
+            <span class="text-2xl font-bold text-slate-800">{{ ai.word }}</span>
+          </div>
+          <span class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 font-bold">🤖 Claude</span>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mb-3 text-xs">
+          <span class="px-2 py-1 rounded-full bg-slate-100 text-slate-600">{{ ai.type }}</span>
+          @if (ai.arabicTranslation) {
+            <span class="px-2 py-1 rounded-full bg-purple-100 text-purple-700 font-semibold">{{ ai.arabicTranslation }}</span>
+          }
+        </div>
+
+        <!-- المعاني -->
+        @if (ai.meanings.length) {
+          <div class="mb-3">
+            <h4 class="font-bold text-slate-800 text-sm mb-2">📚 المعاني</h4>
+            <ul class="space-y-1.5">
+              @for (m of ai.meanings; track $index) {
+                <li class="bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm">
+                  <div class="text-slate-800" dir="ltr">{{ m.de }}</div>
+                  <div class="text-slate-600 mt-0.5" dir="rtl">{{ m.ar }}</div>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+
+        <!-- الأمثلة -->
+        @if (ai.examples.length) {
+          <div class="mb-3">
+            <h4 class="font-bold text-slate-800 text-sm mb-2">💬 أمثلة</h4>
+            <ul class="space-y-1.5">
+              @for (ex of ai.examples; track $index) {
+                <li class="bg-emerald-50 border border-emerald-200 rounded-lg p-2 text-sm flex items-start gap-2">
+                  <button (click)="speak(ex.de)" class="bg-white border border-slate-200 rounded-full w-7 h-7 shrink-0 hover:bg-emerald-100 text-xs">🔊</button>
+                  <div class="flex-1 min-w-0">
+                    <div class="text-slate-800" dir="ltr">{{ ex.de }}</div>
+                    <div class="text-slate-600 mt-0.5" dir="rtl">{{ ex.ar }}</div>
+                  </div>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+
+        <!-- المرادفات -->
+        @if (ai.synonyms.length) {
+          <div class="mb-3">
+            <h4 class="font-bold text-slate-800 text-sm mb-1">🔗 مرادفات</h4>
+            <div class="flex flex-wrap gap-1.5" dir="ltr">
+              @for (s of ai.synonyms; track s) {
+                <span class="bg-indigo-100 text-indigo-800 rounded-full px-2 py-0.5 text-xs font-medium">{{ s }}</span>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- ملاحظات -->
+        @if (ai.grammar) {
+          <div class="bg-amber-50 border border-amber-200 rounded-lg p-2 text-xs text-amber-800 mb-2" dir="rtl">
+            📐 <strong>القاعدة:</strong> {{ ai.grammar }}
+          </div>
+        }
+        @if (ai.usage) {
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-2 text-xs text-blue-800" dir="rtl">
+            💡 <strong>الاستخدام:</strong> {{ ai.usage }}
+          </div>
+        }
+      </div>
+    }
   }
 
   <!-- النتيجة -->

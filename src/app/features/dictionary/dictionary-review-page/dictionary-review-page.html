@@ -1,0 +1,155 @@
+<section class="max-w-3xl mx-auto" dir="rtl">
+
+  <a [routerLink]="'/dictionary'"
+     class="text-emerald-600 hover:underline text-sm mb-3 inline-block">← العودة للقاموس</a>
+
+  <header class="text-center mb-4">
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
+      📖 مراجعة قاموسي
+    </h2>
+    <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
+      كل ما بحثت عنه، مقسّم حسب اليوم. مناسب للمراجعة المسائية.
+    </p>
+  </header>
+
+  @let s = stats();
+
+  <!-- إحصائيات -->
+  @if (s.total > 0) {
+    <div class="grid grid-cols-3 gap-2 mb-4">
+      <div class="bg-emerald-50 border-2 border-emerald-200 rounded-xl p-2 text-center">
+        <div class="text-2xl font-bold text-emerald-800">{{ s.today }}</div>
+        <div class="text-[10px] text-emerald-700 font-semibold">اليوم</div>
+      </div>
+      <div class="bg-slate-50 border-2 border-slate-200 rounded-xl p-2 text-center">
+        <div class="text-2xl font-bold text-slate-800">{{ s.total }}</div>
+        <div class="text-[10px] text-slate-600 font-semibold">الإجمالي</div>
+      </div>
+      <div class="bg-purple-50 border-2 border-purple-200 rounded-xl p-2 text-center">
+        <div class="text-2xl font-bold text-purple-800">{{ s.withAI }}</div>
+        <div class="text-[10px] text-purple-700 font-semibold">🤖 بشرح AI</div>
+      </div>
+    </div>
+  }
+
+  @if (s.total > 0) {
+    <div class="flex justify-end mb-3">
+      <button (click)="clearAll()"
+              class="text-xs bg-red-50 text-red-600 border border-red-200 rounded-lg px-3 py-1.5 hover:bg-red-100">
+        🗑️ مسح الكل
+      </button>
+    </div>
+  }
+
+  @if (!groups().length) {
+    <div class="bg-slate-50 border border-slate-200 rounded-xl p-8 text-center">
+      <div class="text-4xl mb-3">📖</div>
+      <p class="text-slate-600 mb-4">لا توجد كلمات بعد. ابحث في القاموس و ستُحفظ هنا تلقائياً.</p>
+      <a [routerLink]="'/dictionary'"
+         class="inline-block bg-emerald-600 text-white rounded-lg px-5 py-2.5 font-semibold hover:bg-emerald-700">
+        الذهاب إلى القاموس
+      </a>
+    </div>
+  } @else {
+
+    <!-- المجموعات حسب اليوم -->
+    @for (g of groups(); track g.key) {
+      <div class="mb-5">
+        <div class="flex items-center gap-2 mb-2">
+          <h3 class="text-base font-bold text-slate-800"
+              [class.text-emerald-700]="g.isToday">
+            {{ g.isToday ? '🌟' : '📅' }} {{ g.label }}
+          </h3>
+          <span class="text-xs text-slate-400">({{ g.entries.length }})</span>
+        </div>
+        <ul class="space-y-2">
+          @for (e of g.entries; track e.kind + ':' + e.word) {
+            @let ai = aiFor(e.word);
+            @let translation = translationOf(e.word);
+            @let expanded = isExpanded(e);
+            <li class="bg-white border-2 rounded-lg transition-all"
+                [class.border-purple-300]="ai"
+                [class.border-slate-200]="!ai">
+              <!-- العنوان -->
+              <button (click)="toggle(e)"
+                      class="w-full flex items-center gap-3 p-3 text-right hover:bg-slate-50">
+                <button (click)="remove(e, $event)"
+                        class="w-6 h-6 rounded-full bg-slate-100 text-slate-400 hover:text-red-500 text-xs shrink-0">✕</button>
+                <button (click)="speak((e.article ? e.article + ' ' : '') + e.word, $event)"
+                        class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-sm shrink-0">🔊</button>
+                <div class="flex-1 min-w-0 text-right">
+                  <div class="flex items-baseline gap-2 flex-row-reverse" dir="ltr">
+                    @if (e.article) {
+                      <span class="text-lg font-bold"
+                            [class.text-blue-600]="e.gender === 'M'"
+                            [class.text-rose-600]="e.gender === 'F'"
+                            [class.text-emerald-600]="e.gender === 'N'">{{ e.article }}</span>
+                    }
+                    <span class="text-lg font-bold text-slate-800">{{ e.word }}</span>
+                    <span class="text-xs text-slate-400 mr-auto">{{ e.kind === 'noun' ? 'اسم' : 'فعل' }}</span>
+                  </div>
+                  @if (translation) {
+                    <div class="text-sm text-slate-600 mt-0.5">{{ translation }}</div>
+                  }
+                </div>
+                @if (ai) {
+                  <span class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-0.5 font-bold shrink-0">🤖 AI</span>
+                }
+                <span class="text-slate-400 text-sm shrink-0">{{ expanded ? '▲' : '▼' }}</span>
+              </button>
+
+              <!-- محتوى موسّع (Claude AI) -->
+              @if (expanded && ai) {
+                <div class="border-t border-slate-200 p-3 bg-slate-50">
+                  @if (ai.arabicTranslation) {
+                    <div class="text-sm text-purple-700 font-semibold mb-2">{{ ai.arabicTranslation }}</div>
+                  }
+                  @if (ai.meanings.length) {
+                    <h4 class="text-xs font-bold text-slate-700 mb-1">📚 المعاني</h4>
+                    <ul class="space-y-1 mb-3">
+                      @for (m of ai.meanings; track $index) {
+                        <li class="bg-white border border-slate-200 rounded-lg p-2 text-xs">
+                          <div class="text-slate-800" dir="ltr">{{ m.de }}</div>
+                          <div class="text-slate-600 mt-0.5">{{ m.ar }}</div>
+                        </li>
+                      }
+                    </ul>
+                  }
+                  @if (ai.examples.length) {
+                    <h4 class="text-xs font-bold text-slate-700 mb-1">💬 أمثلة</h4>
+                    <ul class="space-y-1 mb-2">
+                      @for (ex of ai.examples; track $index) {
+                        <li class="bg-emerald-50 border border-emerald-200 rounded-lg p-2 text-xs flex gap-2">
+                          <button (click)="speak(ex.de, $event)" class="text-xs shrink-0">🔊</button>
+                          <div>
+                            <div class="text-slate-800" dir="ltr">{{ ex.de }}</div>
+                            <div class="text-slate-600 mt-0.5">{{ ex.ar }}</div>
+                          </div>
+                        </li>
+                      }
+                    </ul>
+                  }
+                  @if (ai.grammar) {
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-2 text-xs text-amber-800 mb-1">
+                      📐 {{ ai.grammar }}
+                    </div>
+                  }
+                  @if (ai.usage) {
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-2 text-xs text-blue-800">
+                      💡 {{ ai.usage }}
+                    </div>
+                  }
+                </div>
+              } @else if (expanded && !ai) {
+                <div class="border-t border-slate-200 p-3 bg-slate-50 text-xs text-slate-500 text-center">
+                  💡 لا يوجد شرح AI محفوظ لهذه الكلمة. افتحها في القاموس بوضع «🤖 Claude AI» لجلب شرح غنيّ.
+                </div>
+              }
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  }
+
+</section>

@@ -1,5 +1,7 @@
 import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { DictionaryService } from '../../../core/services/dictionary';
+import { ClaudeLookupService } from '../../../core/services/claude-lookup';
 import { SpeechService } from '../../../core/services/speech';
 
 /**
@@ -15,16 +17,24 @@ import { SpeechService } from '../../../core/services/speech';
  */
 @Component({
   selector: 'app-dictionary-page',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './dictionary-page.html',
 })
 export class DictionaryPage {
   private dict = inject(DictionaryService);
+  readonly claude = inject(ClaudeLookupService);
   readonly speech = inject(SpeechService);
 
   readonly loading = this.dict.loading;
   readonly error = this.dict.error;
   readonly ready = this.dict.ready;
+
+  /** وضع البحث: محلي (offline) أو Claude AI */
+  readonly searchMode = signal<'local' | 'ai'>('local');
+  setMode(m: 'local' | 'ai') {
+    this.searchMode.set(m);
+    this.claude.clearResult();
+  }
 
   readonly query = signal('');
   readonly submitted = signal('');
@@ -72,6 +82,20 @@ export class DictionaryPage {
         if (!r.noun && !r.verb) this.dict.translate(r.query);
       });
     });
+
+    // 🤖 عند نجاح Claude AI: سجّل الكلمة في سجلّ المراجعة
+    effect(() => {
+      const ai = this.claude.result();
+      if (!ai) return;
+      untracked(() => {
+        const kind: 'noun' | 'verb' = ai.type === 'verb' ? 'verb' : 'noun';
+        this.dict.record({
+          word: ai.word,
+          kind,
+          article: ai.article ?? undefined,
+        });
+      });
+    });
   }
 
   // ───────── روابط غوغل (صور + أمثلة) ─────────
@@ -105,13 +129,18 @@ export class DictionaryPage {
   }
 
   search(): void {
-    this.submitted.set(this.query().trim());
+    const q = this.query().trim();
+    this.submitted.set(q);
+    if (q && this.searchMode() === 'ai') {
+      this.claude.lookup(q);
+    }
   }
 
   /** بحث مباشر عن كلمة (من رقاقة اقتراح) */
   searchWord(word: string): void {
     this.query.set(word);
     this.submitted.set(word);
+    if (this.searchMode() === 'ai') this.claude.lookup(word);
   }
 
   onInput(value: string): void {

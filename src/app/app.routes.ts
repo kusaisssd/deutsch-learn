@@ -165,6 +165,14 @@ export const routes: Routes = [
         .then(m => m.DictionaryPage),
     title: 'Dictionary - Deutsch Learn',
   },
+  // 🆕 مراجعة القاموس: كل الكلمات المبحوثة مقسّمة حسب اليوم + شرح Claude AI
+  {
+    path: 'dictionary/review',
+    loadComponent: () =>
+      import('./features/dictionary/dictionary-review-page/dictionary-review-page')
+        .then(m => m.DictionaryReviewPage),
+    title: 'مراجعة القاموس - Deutsch Learn',
+  },
 
   // 🆕 Arabisch lernen — vereinheitlichte Übersicht (Fusha + Syrisch immer beides)
   {
