@@ -202,6 +202,41 @@ export class DictionaryReviewPage {
     }
   }
 
+  /** موقع اليوم الحالي ضمن قائمة الأيام (-1 = «الكل») */
+  readonly dayNavigator = computed(() => {
+    const days = this.availableDays();
+    const cur = this.selectedDay();
+    const idx = cur === 'all' ? -1 : days.findIndex(d => d.key === cur);
+    return {
+      idx,
+      total: days.length,
+      hasPrev: cur === 'all' ? days.length > 0 : idx > 0,
+      hasNext: cur === 'all' ? false : idx < days.length - 1 && idx >= 0,
+      currentLabel: cur === 'all'
+        ? `الكل (${this.history().length})`
+        : (idx >= 0 ? `${days[idx].label} (${days[idx].count})` : 'الكل'),
+    };
+  });
+
+  /** الانتقال ليوم أحدث (يسار في UI العربي، لكن دلالياً «السابق زمنياً») */
+  prevDay() {
+    const days = this.availableDays();
+    if (!days.length) return;
+    const cur = this.selectedDay();
+    if (cur === 'all') { this.pickDay(days[0].key); return; }
+    const idx = days.findIndex(d => d.key === cur);
+    if (idx > 0) this.pickDay(days[idx - 1].key);
+  }
+  /** الانتقال ليوم أقدم */
+  nextDay() {
+    const days = this.availableDays();
+    if (!days.length) return;
+    const cur = this.selectedDay();
+    if (cur === 'all') return;
+    const idx = days.findIndex(d => d.key === cur);
+    if (idx >= 0 && idx < days.length - 1) this.pickDay(days[idx + 1].key);
+  }
+
   /** أسئلة سابقة ضمن مدخل مراجعة */
   asksOf(e: DictHistoryEntry): DictAsk[] {
     return (e.asks as DictAsk[] | undefined) ?? [];

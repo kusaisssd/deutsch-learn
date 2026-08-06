@@ -206,6 +206,13 @@ export class DictionaryPage {
     const target = this.currentTargetWord();
     if (!target) return;
     if (this.asking()) return;
+
+    // شغّل مسار البحث المحلّي (يُنشئ المدخل و يبدأ ترجمة MyMemory) قبل السؤال.
+    // بلا هذا: أي مدخل نُنشئه من appendAsk يبقى بلا ترجمة أو حقول قاموسيّة.
+    if (this.submitted() !== target.word) {
+      this.submitted.set(target.word);
+    }
+
     this.asking.set(preset ?? 'custom');
     this.askError.set(null);
     try {

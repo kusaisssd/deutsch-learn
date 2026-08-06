@@ -135,19 +135,29 @@ export class DictionaryService {
   }
 
   /** يسجّل كلمة مبحوثة (يزيل التكرار و يضعها في المقدّمة).
-   * لو المدخل موجود سابقاً، نحتفظ بكل حقوله (AI/translation/asks) إن لم
-   * يمرّرها الاستدعاء الجديد — إعادة البحث لا تمسح شيئاً.
+   * قواعد الدمج:
+   *   - مطابقة نفس (word case-insensitive, kind) → دمج الحقول (الحفاظ على AI/asks/translation).
+   *   - عند تسجيل noun/verb: أزل أي مدخل phrase بنفس الكلمة (يمتصّ حقوله)
+   *     — لتفادي تكرار مثل «Haus, phrase» + «Haus, noun» عند تصحيح AI للإملاء.
    */
   record(entry: Omit<DictHistoryEntry, 'ts'>): void {
     this._history.update(list => {
-      const existing = list.find(x => x.word === entry.word && x.kind === entry.kind);
-      const rest = list.filter(x => !(x.word === entry.word && x.kind === entry.kind));
+      const wLower = entry.word.toLowerCase();
+      const sameKey = (x: DictHistoryEntry) => x.word.toLowerCase() === wLower && x.kind === entry.kind;
+      const orphanPhrase = (x: DictHistoryEntry) =>
+        (entry.kind === 'noun' || entry.kind === 'verb') &&
+        x.word.toLowerCase() === wLower && x.kind === 'phrase';
+
+      const existing = list.find(sameKey);
+      const phraseToAbsorb = list.find(orphanPhrase);
+      const rest = list.filter(x => !sameKey(x) && !orphanPhrase(x));
+
       const merged: DictHistoryEntry = {
         ...entry,
-        translation: entry.translation ?? existing?.translation,
-        ai: entry.ai ?? existing?.ai,
-        aiDeep: entry.aiDeep ?? existing?.aiDeep,
-        asks: entry.asks ?? existing?.asks,
+        translation: entry.translation ?? existing?.translation ?? phraseToAbsorb?.translation,
+        ai: entry.ai ?? existing?.ai ?? phraseToAbsorb?.ai,
+        aiDeep: entry.aiDeep ?? existing?.aiDeep ?? phraseToAbsorb?.aiDeep,
+        asks: entry.asks ?? existing?.asks ?? phraseToAbsorb?.asks,
         ts: Date.now(),
       };
       return [merged, ...rest].slice(0, 1000);

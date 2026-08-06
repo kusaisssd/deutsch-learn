@@ -96,33 +96,41 @@
     <!-- ═══ نمط الكاردات ═══ -->
     @if (mode() === 'cards') {
 
-      <!-- منتقي اليوم -->
-      <div class="mb-3">
-        <div class="flex flex-wrap gap-1.5 items-center">
-          <span class="text-xs text-slate-500 ml-1">اليوم:</span>
-          <button (click)="pickDay('all')"
-                  class="rounded-full px-3 py-1 text-xs font-semibold border transition-colors"
-                  [class.bg-slate-800]="selectedDay() === 'all'"
-                  [class.text-white]="selectedDay() === 'all'"
-                  [class.border-slate-800]="selectedDay() === 'all'"
-                  [class.bg-white]="selectedDay() !== 'all'"
-                  [class.text-slate-700]="selectedDay() !== 'all'"
-                  [class.border-slate-300]="selectedDay() !== 'all'">
-            الكل ({{ history().length }})
-          </button>
+      <!-- منتقي اليوم: قائمة منسدلة + سهمَي تنقّل + زرّ «الكل» -->
+      <div class="flex items-center gap-2 mb-3">
+        <button (click)="pickDay('all')"
+                class="shrink-0 rounded-lg px-3 py-2 text-xs font-semibold border transition-colors"
+                [class.bg-slate-800]="selectedDay() === 'all'"
+                [class.text-white]="selectedDay() === 'all'"
+                [class.border-slate-800]="selectedDay() === 'all'"
+                [class.bg-white]="selectedDay() !== 'all'"
+                [class.text-slate-700]="selectedDay() !== 'all'"
+                [class.border-slate-300]="selectedDay() !== 'all'">
+          الكل ({{ history().length }})
+        </button>
+
+        <button (click)="prevDay()"
+                [disabled]="!dayNavigator().hasPrev"
+                aria-label="يوم أحدث"
+                class="shrink-0 w-9 h-9 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-30">
+          ▶
+        </button>
+
+        <select [value]="selectedDay()"
+                (change)="pickDay($any($event.target).value)"
+                class="flex-1 min-w-0 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none">
+          <option value="all">الكل ({{ history().length }})</option>
           @for (d of availableDays(); track d.key) {
-            <button (click)="pickDay(d.key)"
-                    class="rounded-full px-3 py-1 text-xs font-semibold border transition-colors"
-                    [class.bg-emerald-600]="selectedDay() === d.key"
-                    [class.text-white]="selectedDay() === d.key"
-                    [class.border-emerald-600]="selectedDay() === d.key"
-                    [class.bg-white]="selectedDay() !== d.key"
-                    [class.text-slate-700]="selectedDay() !== d.key"
-                    [class.border-slate-300]="selectedDay() !== d.key">
-              {{ d.label }} ({{ d.count }})
-            </button>
+            <option [value]="d.key">{{ d.label }} — {{ d.count }} كلمة</option>
           }
-        </div>
+        </select>
+
+        <button (click)="nextDay()"
+                [disabled]="!dayNavigator().hasNext"
+                aria-label="يوم أقدم"
+                class="shrink-0 w-9 h-9 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-30">
+          ◀
+        </button>
       </div>
 
       @if (currentCard(); as e) {
