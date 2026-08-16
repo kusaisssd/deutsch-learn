@@ -87,8 +87,9 @@ export class DictionaryPage {
   });
 
   constructor() {
-    // ─── 1) عند ظهور نتيجة: اطلب الترجمة و سجّل الكلمة في السجلّ.
-    // record() يُنشئ المدخل مباشرةً (بلا انتظار الترجمة).
+    // ─── 1) نتيجة قاموس محلّي: سجّل فقط ما وُجد فعلاً (noun/verb).
+    // الكلمات غير المعروفة (أخطاء إملائيّة، جُمل حرّة) لا تُسجّل تلقائياً هنا —
+    // سيقرّر مسار AI اسمَها الصحيح بعد التحقّق.
     effect(() => {
       const r = this.result();
       if (!r) return;
@@ -101,15 +102,11 @@ export class DictionaryPage {
           this.dict.translate(r.verb.infinitive);
           this.dict.record({ word: r.verb.infinitive, kind: 'verb' });
         }
-        // غير موجودة في القاموس الصرفي؟ سجّلها كـ phrase و اطلب الترجمة
-        if (!r.noun && !r.verb && r.query) {
-          this.dict.translate(r.query);
-          this.dict.record({ word: r.query, kind: 'phrase' });
-        }
       });
     });
 
-    // ─── 2) عند نجاح Claude AI: سجّل الكلمة + استجابة AI (مع الترجمة).
+    // ─── 2) نتيجة Claude AI: سجّل الكلمة كما أعادها AI (مصحّحة الإملاء)
+    // مع الترجمة. هذا هو المصدر الموثوق للكلمات غير الموجودة محلّياً.
     effect(() => {
       const ai = this.claude.result();
       if (!ai) return;
@@ -127,18 +124,14 @@ export class DictionaryPage {
     });
 
     // ─── 3) عند وصول ترجمة MyMemory (متأخّرة): أضِفها للمدخل.
-    // ملاحظة مهمّة: نقرأ translationOf() خارج untracked() حتى يُعاد
-    // تنفيذ الـ effect عند وصول الترجمة، لا فقط عند تغيّر النتيجة.
+    // قراءة translationOf خارج untracked حتى يُعاد التشغيل عند وصول الترجمة.
     effect(() => {
       const r = this.result();
       if (!r) return;
-      const words: [string, 'noun' | 'verb' | 'phrase'][] = [];
+      const words: [string, 'noun' | 'verb'][] = [];
       if (r.noun) words.push([r.noun.word, 'noun']);
       if (r.verb) words.push([r.verb.infinitive, 'verb']);
-      if (!r.noun && !r.verb && r.query) words.push([r.query, 'phrase']);
-      // قراءة تتبعيّة — تُعيد تشغيل الـ effect عند تحديث الترجمة
-      const pairs: { word: string; kind: 'noun' | 'verb' | 'phrase'; t: string | undefined }[] =
-        words.map(([w, k]) => ({ word: w, kind: k, t: this.dict.translationOf(w) }));
+      const pairs = words.map(([w, k]) => ({ word: w, kind: k, t: this.dict.translationOf(w) }));
       untracked(() => {
         for (const p of pairs) {
           if (p.t) this.dict.enrich(p.word, p.kind, { translation: p.t });
@@ -203,26 +196,41 @@ export class DictionaryPage {
   }
 
   private async runAsk(prompt: string, preset: string | undefined): Promise<void> {
-    const target = this.currentTargetWord();
-    if (!target) return;
+    const initial = this.currentTargetWord();
+    if (!initial) return;
     if (this.asking()) return;
 
-    // شغّل مسار البحث المحلّي (يُنشئ المدخل و يبدأ ترجمة MyMemory) قبل السؤال.
-    // بلا هذا: أي مدخل نُنشئه من appendAsk يبقى بلا ترجمة أو حقول قاموسيّة.
-    if (this.submitted() !== target.word) {
-      this.submitted.set(target.word);
+    // شغّل المسار المحلّي — يسجّل الاسم/الفعل إن كان في القاموس الصرفي.
+    if (this.submitted() !== initial.word) {
+      this.submitted.set(initial.word);
     }
 
     this.asking.set(preset ?? 'custom');
     this.askError.set(null);
     try {
-      const answer = await this.claude.ask(target.word, prompt);
+      // تحقّق من الكلمة عبر lookup أوّلاً — هذا يصحّح الإملاء و يحفظ
+      // الكلمة الصحيحة في السجلّ (بدل ما نحفظ ما كتبه المستخدم حرفيّاً
+      // و لو كان خطأً). إن كانت النتيجة مُخبَّأة، فوري بلا تكلفة.
+      let ai = this.claude.result();
+      if (!ai || ai.word.toLowerCase() !== initial.word.toLowerCase()) {
+        await this.claude.lookup(initial.word);
+        ai = this.claude.result();
+        if (!ai) {
+          this.askError.set('لم أستطع التحقّق من الكلمة.');
+          return;
+        }
+      }
+
+      // استخدم الكلمة كما أعادها AI (الصحيحة، بعد التصحيح إن لزم)
+      const correctedKind: 'noun' | 'verb' | 'phrase' =
+        ai.type === 'verb' ? 'verb' : ai.type === 'noun' ? 'noun' : 'phrase';
+
+      const answer = await this.claude.ask(ai.word, prompt);
       if (!answer) {
         this.askError.set('تعذّر الحصول على جواب.');
         return;
       }
-      // احفظ في السجلّ (لتظهر في المراجعة لاحقاً)
-      this.dict.appendAsk(target.word, target.kind, { q: prompt, a: answer, preset });
+      this.dict.appendAsk(ai.word, correctedKind, { q: prompt, a: answer, preset });
     } finally {
       this.asking.set(null);
     }
