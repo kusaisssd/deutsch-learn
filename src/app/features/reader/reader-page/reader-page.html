@@ -270,11 +270,16 @@
                   class="flex-1 px-2 py-1.5 bg-slate-100 border border-slate-200 rounded text-xs hover:bg-slate-200">▶</button>
         </div>
 
-        <!-- ترجمات MyMemory -->
+        <!-- ترجمة عربيّة (تلقائيّة) -->
         <div class="bg-slate-50 rounded p-2 mb-2 text-xs border border-slate-200">
           <div class="mb-1">
             <span class="text-slate-500">🇸🇦</span>
-            @if (arabicTranslation().loading) { <span class="text-slate-400">...</span> }
+            @if (arabicTranslation().loading) {
+              <span class="text-slate-400">
+                <span class="inline-block h-3 w-3 rounded-full border-2 border-slate-400 border-t-transparent animate-spin align-middle"></span>
+                جارٍ الترجمة…
+              </span>
+            }
             @else if (arabicTranslation().meanings.length) {
               <span class="text-slate-800 font-semibold" dir="rtl">{{ arabicTranslation().meanings[0] }}</span>
               @if (arabicTranslation().meanings.length > 1) {
@@ -284,18 +289,31 @@
               }
             } @else { <span class="text-slate-400">—</span> }
           </div>
-          <div>
-            <span class="text-slate-500">🇬🇧</span>
-            @if (englishTranslation().loading) { <span class="text-slate-400">...</span> }
-            @else if (englishTranslation().meanings.length) {
-              <span class="text-slate-800 font-semibold" dir="ltr">{{ englishTranslation().meanings[0] }}</span>
-              @if (englishTranslation().meanings.length > 1) {
-                <span class="text-slate-500" dir="ltr">
-                  · {{ englishTranslation().meanings.slice(1, 3).join(', ') }}
+
+          <!-- الإنكليزيّة: زرّ عند الطلب فقط (تقلّل الانتظار الافتراضي) -->
+          @if (englishTranslation().meanings.length === 0 && !englishTranslation().loading) {
+            <button (click)="fetchEnglish()"
+                    class="text-[11px] text-slate-500 hover:text-emerald-700 underline">
+              🇬🇧 جلب الترجمة الإنكليزيّة
+            </button>
+          } @else {
+            <div>
+              <span class="text-slate-500">🇬🇧</span>
+              @if (englishTranslation().loading) {
+                <span class="text-slate-400">
+                  <span class="inline-block h-3 w-3 rounded-full border-2 border-slate-400 border-t-transparent animate-spin align-middle"></span>
+                  …
                 </span>
+              } @else {
+                <span class="text-slate-800 font-semibold" dir="ltr">{{ englishTranslation().meanings[0] }}</span>
+                @if (englishTranslation().meanings.length > 1) {
+                  <span class="text-slate-500" dir="ltr">
+                    · {{ englishTranslation().meanings.slice(1, 3).join(', ') }}
+                  </span>
+                }
               }
-            } @else { <span class="text-slate-400">—</span> }
-          </div>
+            </div>
+          }
         </div>
 
         <!-- أزرار الإجراءات -->

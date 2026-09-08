@@ -305,20 +305,42 @@ export class ReaderPage {
     if (combined) this.clickedWordRect.set(combined);
   }
 
+  private refetchTimer: ReturnType<typeof setTimeout> | null = null;
+
   private refetchTranslations(): void {
     const text = this.selectedText();
     if (!text) return;
+    // إعادة ضبط الحالة فوراً (يظهر «جارٍ…» بينما ننتظر الـ debounce)
     this.arabicTranslation.set({ loading: true, meanings: [] });
-    this.englishTranslation.set({ loading: true, meanings: [] });
+    this.englishTranslation.set({ loading: false, meanings: [] });
     this.addedToDict.set(false);
     this.aiExplanation.set('');
     this.aiError.set(null);
 
-    this.translation.translateMany(text, 'ar').subscribe(meanings => {
-      this.arabicTranslation.set({ loading: false, meanings });
-    });
+    // debounce حتى لا نُطلق طلباً جديداً مع كل ضغطة ▶ أثناء توسيع الاختيار
+    if (this.refetchTimer) clearTimeout(this.refetchTimer);
+    this.refetchTimer = setTimeout(() => {
+      const cur = this.selectedText();
+      if (!cur) return;
+      // فقط عربي تلقائياً — الإنكليزي بضغطة زرّ لتقليل انتظار MyMemory
+      this.translation.translateMany(cur, 'ar').subscribe(meanings => {
+        // تأكّد أن الاختيار لم يتغيّر أثناء انتظار الطلب
+        if (this.selectedText() === cur) {
+          this.arabicTranslation.set({ loading: false, meanings });
+        }
+      });
+    }, 200);
+  }
+
+  /** جلب الترجمة الإنكليزيّة عند الطلب فقط */
+  fetchEnglish(): void {
+    const text = this.selectedText();
+    if (!text || this.englishTranslation().loading) return;
+    this.englishTranslation.set({ loading: true, meanings: [] });
     this.translation.translateMany(text, 'en').subscribe(meanings => {
-      this.englishTranslation.set({ loading: false, meanings });
+      if (this.selectedText() === text) {
+        this.englishTranslation.set({ loading: false, meanings });
+      }
     });
   }
 
