@@ -358,7 +358,7 @@ export class ReaderPage {
     this.addedToDict.set(true);
   }
 
-  /** يسأل Claude عن الكلمة/العبارة المختارة و يعرض الجواب داخل الـ popup */
+  /** يسأل Claude عن الكلمة/العبارة المختارة، يعرض الجواب، و يحفظها في القاموس */
   async askAI(): Promise<void> {
     const text = this.selectedText();
     if (!text) return;
@@ -373,15 +373,18 @@ export class ReaderPage {
         ? `اشرح لي هذه العبارة الألمانية في سياق الجملة، و أعطني ترجمة عربية دقيقة مع بديل واحد إن كان لها معنى اصطلاحي.`
         : `اشرح لي هذه الكلمة الألمانية باختصار، مع ترجمتها العربية و مثال واحد لاستخدامها.`;
       const answer = await this.claude.ask(text, prompt);
-      if (answer) {
-        this.aiExplanation.set(answer);
-        // احفظ الجواب في القاموس أيضاً (يُنشئ مدخلاً إن لم يكن موجوداً)
-        this.dict.appendAsk(text, text.includes(' ') ? 'phrase' : 'phrase', {
-          q: prompt, a: answer, preset: 'reader',
-        });
-      } else {
+      if (!answer) {
         this.aiError.set('تعذّر الحصول على جواب.');
+        return;
       }
+      this.aiExplanation.set(answer);
+
+      // احفظ الكلمة/العبارة في القاموس تلقائيّاً (لتظهر في المراجعة و تتزامن)
+      const kind: 'phrase' | 'noun' | 'verb' = 'phrase';
+      const ar = this.arabicTranslation().meanings[0];
+      this.dict.record({ word: text, kind, translation: ar });
+      this.dict.appendAsk(text, kind, { q: prompt, a: answer, preset: 'reader' });
+      this.addedToDict.set(true);
     } finally {
       this.aiLoading.set(false);
     }
