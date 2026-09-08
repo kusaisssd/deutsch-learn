@@ -136,9 +136,10 @@
                 mobile floating popup.
               -->
               <span
+                [attr.data-reader-token]="token.index"
                 (click)="selectWord(token, $event)"
-                class="cursor-pointer rounded px-0.5 transition-colors hover:bg-emerald-100"
-                [class.bg-yellow-200]="selectedToken()?.index === token.index"
+                class="cursor-pointer rounded px-0.5 transition-colors hover:bg-emerald-100 select-none"
+                [class.bg-yellow-200]="isInSelection(token.index)"
               >{{ token.text }}</span>
             } @else {
               <span [innerText]="token.text"></span>
@@ -227,214 +228,110 @@
   </div>
 
   <!--
-    ───────── Desktop word popup (shown when a word is selected) ─────────
-    On mobile (< lg) we use a separate floating popup near the word — see below.
-    `hidden lg:block` = only visible on lg+ screens.
-  -->
-  @if (selectedToken(); as token) {
-    <div class="hidden lg:block bg-emerald-50 border-2 border-emerald-400 rounded-lg p-4 shadow-md">
-
-      <div class="flex items-center justify-between mb-3">
-        <div>
-          <span class="text-xs text-emerald-700 uppercase tracking-wide">Selected word</span>
-          <h3 class="text-2xl font-bold text-slate-800">{{ token.text }}</h3>
-        </div>
-        <button
-          type="button"
-          (click)="closePopup()"
-          class="text-slate-500 hover:text-slate-800 text-2xl px-2"
-          title="Close"
-        >×</button>
-      </div>
-
-      <!-- Pronounce single word button -->
-      <button
-        type="button"
-        (click)="speakSelected()"
-        class="mb-3 px-4 py-2 bg-white border border-emerald-300 rounded-md text-emerald-700 font-medium hover:bg-emerald-100 transition-colors"
-      >
-        🔊 Pronounce word
-      </button>
-
-      <!--
-        🆕 Translations — now showing multiple meanings.
-        Each meaning is a badge; first one (primary) is highlighted.
-      -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
-        <!-- English -->
-        <div class="bg-white rounded-md p-3 border border-slate-200">
-          <div class="text-xs text-slate-500 mb-2">
-            🇬🇧 English
-            @if (englishTranslation().meanings.length > 1) {
-              <span class="text-slate-400">
-                ({{ englishTranslation().meanings.length }} meanings)
-              </span>
-            }
-          </div>
-          @if (englishTranslation().loading) {
-            <div class="text-slate-400 text-sm">Translating...</div>
-          } @else if (englishTranslation().meanings.length === 0) {
-            <div class="text-slate-400 text-sm">—</div>
-          } @else {
-            <!-- Primary meaning (highlighted) -->
-            <div class="text-slate-800 font-semibold mb-2" dir="ltr">
-              {{ englishTranslation().meanings[0] }}
-            </div>
-            <!-- Alternative meanings as small badges -->
-            @if (englishTranslation().meanings.length > 1) {
-              <div class="flex flex-wrap gap-1.5">
-                @for (m of englishTranslation().meanings.slice(1); track m) {
-                  <span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200" dir="ltr">
-                    {{ m }}
-                  </span>
-                }
-              </div>
-            }
-          }
-        </div>
-
-        <!-- Arabic -->
-        <div class="bg-white rounded-md p-3 border border-slate-200">
-          <div class="text-xs text-slate-500 mb-2">
-            🇸🇦 Arabic
-            @if (arabicTranslation().meanings.length > 1) {
-              <span class="text-slate-400">
-                ({{ arabicTranslation().meanings.length }} معاني)
-              </span>
-            }
-          </div>
-          @if (arabicTranslation().loading) {
-            <div class="text-slate-400 text-sm">Translating...</div>
-          } @else if (arabicTranslation().meanings.length === 0) {
-            <div class="text-slate-400 text-sm">—</div>
-          } @else {
-            <div class="text-slate-800 font-semibold mb-2" dir="rtl">
-              {{ arabicTranslation().meanings[0] }}
-            </div>
-            @if (arabicTranslation().meanings.length > 1) {
-              <div class="flex flex-wrap gap-1.5">
-                @for (m of arabicTranslation().meanings.slice(1); track m) {
-                  <span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200" dir="rtl">
-                    {{ m }}
-                  </span>
-                }
-              </div>
-            }
-          }
-        </div>
-
-      </div>
-
-      <p class="text-xs text-slate-500 mt-3 text-center">
-        Translation via MyMemory API
-      </p>
-    </div>
-  }
-
-  <!--
     ═══════════════════════════════════════════════════════════════
-    📱 MOBILE FLOATING POPUP (lg:hidden)
+    📌 Unified floating popup (desktop + mobile)
     ═══════════════════════════════════════════════════════════════
-    Shows when a word is selected on mobile. Positioned near the
-    clicked word using the popupPosition() computed signal.
-
-    Layered as backdrop + floating popup:
-      - backdrop: full-screen transparent, click closes popup
-      - popup: positioned with [style.top.px] / [style.left.px]
+    يظهر جانب الكلمة/العبارة المُختارة. الأزرار:
+      🔊 استماع  ◀▶ توسيع الاختيار  📖 إضافة للقاموس  🤖 اسأل AI
   -->
   @if (selectedToken(); as token) {
     @if (popupPosition(); as pos) {
-      <!-- Backdrop: full-screen, tap to close -->
-      <div
-        class="lg:hidden fixed inset-0 z-40"
-        (click)="closePopup()"
-      ></div>
+      <!-- Backdrop -->
+      <div class="fixed inset-0 z-40" (click)="closePopup()"></div>
 
-      <!-- Floating popup -->
+      <!-- Popup -->
       <div
-        class="lg:hidden fixed z-50 w-[300px] max-w-[calc(100vw-16px)] bg-emerald-50 border-2 border-emerald-400 rounded-lg shadow-xl p-3"
+        class="fixed z-50 w-[320px] max-w-[calc(100vw-16px)] bg-white border-2 border-emerald-400 rounded-lg shadow-2xl p-3"
         [style.top.px]="pos.top"
         [style.left.px]="pos.left"
       >
-        <!-- Header: word + close button -->
+        <!-- Header: النصّ المُختار + إغلاق -->
         <div class="flex items-start justify-between mb-2 gap-2">
           <div class="flex-1 min-w-0">
-            <div class="text-[10px] text-emerald-700 uppercase tracking-wide">Selected</div>
-            <h3 class="text-lg font-bold text-slate-800 truncate" dir="ltr">{{ token.text }}</h3>
+            <div class="text-[10px] text-emerald-700 uppercase tracking-wide">اختيار</div>
+            <h3 class="text-base font-bold text-slate-800 break-words" dir="ltr">{{ selectedText() }}</h3>
           </div>
-          <!--
-            Tap target: 44x44px minimum (Apple HIG for mobile UX).
-            We use p-2 + larger text + min-w/h-11 to ensure it.
-          -->
-          <button
-            type="button"
-            (click)="closePopup()"
-            class="text-slate-500 hover:text-slate-800 text-2xl leading-none min-w-11 min-h-11 flex items-center justify-center"
-            aria-label="Close"
-          >×</button>
+          <button (click)="closePopup()"
+                  class="text-slate-500 hover:text-slate-800 text-2xl leading-none min-w-9 min-h-9 flex items-center justify-center"
+                  aria-label="إغلاق">×</button>
         </div>
 
-        <!-- Pronounce button (compact but tappable) -->
-        <button
-          type="button"
-          (click)="speakSelected()"
-          class="w-full mb-2 px-3 py-2 bg-white border border-emerald-300 rounded-md text-emerald-700 text-sm font-medium hover:bg-emerald-100 transition-colors"
-        >
-          🔊 Pronounce
-        </button>
-
-        <!-- English translation (primary + count) -->
-        <div class="bg-white rounded-md p-2 border border-slate-200 mb-2">
-          <div class="text-[10px] text-slate-500 uppercase mb-0.5">
-            🇬🇧 English
-            @if (englishTranslation().meanings.length > 1) {
-              <span class="text-slate-400 normal-case">
-                (+{{ englishTranslation().meanings.length - 1 }} more)
-              </span>
-            }
-          </div>
-          @if (englishTranslation().loading) {
-            <div class="text-slate-400 text-xs">Translating...</div>
-          } @else if (englishTranslation().meanings.length === 0) {
-            <div class="text-slate-400 text-xs">—</div>
-          } @else {
-            <div class="text-slate-800 text-sm font-semibold" dir="ltr">
-              {{ englishTranslation().meanings[0] }}
-            </div>
-            @if (englishTranslation().meanings.length > 1) {
-              <div class="text-xs text-slate-500 mt-0.5" dir="ltr">
-                also: {{ englishTranslation().meanings.slice(1).join(', ') }}
-              </div>
-            }
-          }
+        <!-- شريط أدوات: نطق + توسيع -->
+        <div class="flex gap-1 mb-2">
+          <button (click)="extendLeft()"
+                  title="أضف الكلمة السابقة"
+                  class="flex-1 px-2 py-1.5 bg-slate-100 border border-slate-200 rounded text-xs hover:bg-slate-200">◀</button>
+          <button (click)="speakSelected()"
+                  class="flex-[2] px-2 py-1.5 bg-emerald-50 border border-emerald-300 rounded text-xs font-semibold text-emerald-700 hover:bg-emerald-100">
+            🔊 استماع
+          </button>
+          <button (click)="extendRight()"
+                  title="أضف الكلمة التالية"
+                  class="flex-1 px-2 py-1.5 bg-slate-100 border border-slate-200 rounded text-xs hover:bg-slate-200">▶</button>
         </div>
 
-        <!-- Arabic translation -->
-        <div class="bg-white rounded-md p-2 border border-slate-200">
-          <div class="text-[10px] text-slate-500 uppercase mb-0.5">
-            🇸🇦 Arabic
-            @if (arabicTranslation().meanings.length > 1) {
-              <span class="text-slate-400 normal-case">
-                (+{{ arabicTranslation().meanings.length - 1 }})
-              </span>
-            }
+        <!-- ترجمات MyMemory -->
+        <div class="bg-slate-50 rounded p-2 mb-2 text-xs border border-slate-200">
+          <div class="mb-1">
+            <span class="text-slate-500">🇸🇦</span>
+            @if (arabicTranslation().loading) { <span class="text-slate-400">...</span> }
+            @else if (arabicTranslation().meanings.length) {
+              <span class="text-slate-800 font-semibold" dir="rtl">{{ arabicTranslation().meanings[0] }}</span>
+              @if (arabicTranslation().meanings.length > 1) {
+                <span class="text-slate-500" dir="rtl">
+                  · {{ arabicTranslation().meanings.slice(1, 3).join('، ') }}
+                </span>
+              }
+            } @else { <span class="text-slate-400">—</span> }
           </div>
-          @if (arabicTranslation().loading) {
-            <div class="text-slate-400 text-xs">Translating...</div>
-          } @else if (arabicTranslation().meanings.length === 0) {
-            <div class="text-slate-400 text-xs">—</div>
-          } @else {
-            <div class="text-slate-800 text-sm font-semibold" dir="rtl">
-              {{ arabicTranslation().meanings[0] }}
-            </div>
-            @if (arabicTranslation().meanings.length > 1) {
-              <div class="text-xs text-slate-500 mt-0.5" dir="rtl">
-                {{ arabicTranslation().meanings.slice(1).join('، ') }}
-              </div>
-            }
-          }
+          <div>
+            <span class="text-slate-500">🇬🇧</span>
+            @if (englishTranslation().loading) { <span class="text-slate-400">...</span> }
+            @else if (englishTranslation().meanings.length) {
+              <span class="text-slate-800 font-semibold" dir="ltr">{{ englishTranslation().meanings[0] }}</span>
+              @if (englishTranslation().meanings.length > 1) {
+                <span class="text-slate-500" dir="ltr">
+                  · {{ englishTranslation().meanings.slice(1, 3).join(', ') }}
+                </span>
+              }
+            } @else { <span class="text-slate-400">—</span> }
+          </div>
         </div>
+
+        <!-- أزرار الإجراءات -->
+        <div class="grid grid-cols-2 gap-1 mb-2">
+          <button (click)="addToDictionary()"
+                  [disabled]="addedToDict()"
+                  class="px-2 py-1.5 rounded text-xs font-semibold transition-colors"
+                  [class.bg-slate-800]="!addedToDict()"
+                  [class.text-white]="!addedToDict()"
+                  [class.hover:bg-slate-700]="!addedToDict()"
+                  [class.bg-green-100]="addedToDict()"
+                  [class.text-green-800]="addedToDict()">
+            {{ addedToDict() ? '✓ مضاف' : '📖 أضف للقاموس' }}
+          </button>
+          <button (click)="askAI()"
+                  [disabled]="aiLoading() || !claude.available()"
+                  class="px-2 py-1.5 bg-purple-600 text-white rounded text-xs font-semibold hover:bg-purple-700 disabled:opacity-50">
+            @if (aiLoading()) { ⏳ جارٍ… } @else { 🤖 اسأل AI }
+          </button>
+        </div>
+
+        @if (!claude.available()) {
+          <p class="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 rounded p-1 text-center mb-1">
+            🔒 اضبط passphrase لتفعيل AI
+          </p>
+        }
+
+        @if (aiError()) {
+          <p class="text-[11px] text-red-700 bg-red-50 border border-red-200 rounded p-1.5">⚠️ {{ aiError() }}</p>
+        }
+
+        @if (aiExplanation()) {
+          <div class="bg-purple-50 border border-purple-200 rounded p-2 text-xs text-slate-800 whitespace-pre-line max-h-48 overflow-y-auto" dir="rtl">
+            {{ aiExplanation() }}
+          </div>
+        }
       </div>
     }
   }

@@ -87,17 +87,14 @@ export class DictionaryPage {
   });
 
   constructor() {
-    // ─── 1) نتيجة قاموس محلّي: سجّل فقط ما وُجد فعلاً (noun/verb).
-    // الكلمات غير المعروفة (أخطاء إملائيّة، جُمل حرّة) لا تُسجّل تلقائياً هنا —
-    // سيقرّر مسار AI اسمَها الصحيح بعد التحقّق.
+    // ─── 1) نتيجة قاموس محلّي: نسجّل الفعل فقط.
+    // الاسم لا يُسجَّل تلقائياً — كان يخلق مدخلين مكرّرين عند البحث عن فعل
+    // (Arbeiten كاسم + arbeiten كفعل). المعلومات الاسميّة (der/die/das،
+    // الحالات) تأتي من AI عند الطلب فقط.
     effect(() => {
       const r = this.result();
       if (!r) return;
       untracked(() => {
-        if (r.noun) {
-          this.dict.translate(r.noun.word);
-          this.dict.record({ word: r.noun.word, kind: 'noun', article: r.noun.article, gender: r.noun.gender });
-        }
         if (r.verb) {
           this.dict.translate(r.verb.infinitive);
           this.dict.record({ word: r.verb.infinitive, kind: 'verb' });
@@ -123,20 +120,14 @@ export class DictionaryPage {
       });
     });
 
-    // ─── 3) عند وصول ترجمة MyMemory (متأخّرة): أضِفها للمدخل.
-    // قراءة translationOf خارج untracked حتى يُعاد التشغيل عند وصول الترجمة.
+    // ─── 3) عند وصول ترجمة MyMemory (متأخّرة): أضِفها لمدخل الفعل.
     effect(() => {
       const r = this.result();
-      if (!r) return;
-      const words: [string, 'noun' | 'verb'][] = [];
-      if (r.noun) words.push([r.noun.word, 'noun']);
-      if (r.verb) words.push([r.verb.infinitive, 'verb']);
-      const pairs = words.map(([w, k]) => ({ word: w, kind: k, t: this.dict.translationOf(w) }));
-      untracked(() => {
-        for (const p of pairs) {
-          if (p.t) this.dict.enrich(p.word, p.kind, { translation: p.t });
-        }
-      });
+      if (!r?.verb) return;
+      const w = r.verb.infinitive;
+      const t = this.dict.translationOf(w); // قراءة تتبعيّة خارج untracked
+      if (!t) return;
+      untracked(() => this.dict.enrich(w, 'verb', { translation: t }));
     });
   }
 
