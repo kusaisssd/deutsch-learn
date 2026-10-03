@@ -1,0 +1,338 @@
+<section class="max-w-4xl mx-auto" dir="rtl">
+  <div class="flex items-center justify-between mb-3">
+    <a [routerLink]="'/b2-pruefung'" class="text-slate-500 hover:underline text-sm">← كلّ الجلسات</a>
+  </div>
+
+  @if (sitzung(); as s) {
+    <!-- ═══ Einstieg ═══ -->
+    <header class="rounded-2xl p-5 mb-5 border-2"
+            [class.bg-indigo-50]="s.einstieg.farbe === 'indigo'" [class.border-indigo-300]="s.einstieg.farbe === 'indigo'"
+            [class.bg-emerald-50]="s.einstieg.farbe === 'emerald'" [class.border-emerald-300]="s.einstieg.farbe === 'emerald'"
+            [class.bg-amber-50]="s.einstieg.farbe === 'amber'" [class.border-amber-300]="s.einstieg.farbe === 'amber'"
+            [class.bg-rose-50]="s.einstieg.farbe === 'rose'" [class.border-rose-300]="s.einstieg.farbe === 'rose'"
+            [class.bg-violet-50]="s.einstieg.farbe === 'violet'" [class.border-violet-300]="s.einstieg.farbe === 'violet'"
+            [class.bg-red-50]="s.einstieg.farbe === 'red'" [class.border-red-300]="s.einstieg.farbe === 'red'"
+            [class.bg-blue-50]="s.einstieg.farbe === 'blue'" [class.border-blue-300]="s.einstieg.farbe === 'blue'"
+            [class.bg-slate-50]="s.einstieg.farbe === 'slate'" [class.border-slate-300]="s.einstieg.farbe === 'slate'"
+            [class.bg-cyan-50]="s.einstieg.farbe === 'cyan'" [class.border-cyan-300]="s.einstieg.farbe === 'cyan'"
+            [class.bg-orange-50]="s.einstieg.farbe === 'orange'" [class.border-orange-300]="s.einstieg.farbe === 'orange'"
+            [class.bg-teal-50]="s.einstieg.farbe === 'teal'" [class.border-teal-300]="s.einstieg.farbe === 'teal'"
+            [class.bg-purple-50]="s.einstieg.farbe === 'purple'" [class.border-purple-300]="s.einstieg.farbe === 'purple'"
+            [class.bg-green-50]="s.einstieg.farbe === 'green'" [class.border-green-300]="s.einstieg.farbe === 'green'"
+            [class.bg-lime-50]="s.einstieg.farbe === 'lime'" [class.border-lime-300]="s.einstieg.farbe === 'lime'"
+            [class.bg-yellow-50]="s.einstieg.farbe === 'yellow'" [class.border-yellow-300]="s.einstieg.farbe === 'yellow'">
+      <div class="flex items-start gap-4 mb-3">
+        <div class="text-6xl shrink-0">{{ s.einstieg.bildEmoji }}</div>
+        <div class="flex-1 min-w-0">
+          <div class="text-xs text-slate-500 font-mono mb-1">Sitzung {{ s.nummer }} · {{ s.dauer }}</div>
+          <h1 class="text-xl sm:text-2xl font-bold text-slate-800" dir="ltr">{{ s.titelDe }}</h1>
+          <p class="text-slate-600 mt-1">{{ s.titelAr }}</p>
+          <p class="text-xs text-indigo-700 mt-2">🎯 Prüfungsbezug: {{ s.pruefungsbezug }}</p>
+        </div>
+      </div>
+
+      <!-- Einstiegsfragen -->
+      <div class="bg-white/70 rounded-xl p-3 mb-3 border border-white">
+        <h3 class="font-bold text-slate-700 text-sm mb-2">💭 Einstiegsfragen</h3>
+        <ul class="list-decimal list-inside text-sm text-slate-800 space-y-1" dir="ltr">
+          @for (f of s.einstieg.fragen; track f) { <li>{{ f }}</li> }
+        </ul>
+      </div>
+
+      <!-- Assoziationen -->
+      <div>
+        <h3 class="font-bold text-slate-700 text-sm mb-2">🔗 Assoziationswolke</h3>
+        <div class="flex flex-wrap gap-1.5" dir="ltr">
+          @for (w of s.einstieg.assoziationen; track w) {
+            <span class="bg-white border border-slate-300 rounded-full px-3 py-1 text-xs text-slate-700">{{ w }}</span>
+          }
+        </div>
+      </div>
+    </header>
+
+    <!-- Lernziele -->
+    <div class="bg-white border border-slate-200 rounded-xl p-4 mb-5">
+      <h3 class="font-bold text-slate-800 text-sm mb-2">🎯 Lernziele</h3>
+      <ul class="list-disc list-inside text-sm text-slate-700 space-y-1" dir="ltr">
+        @for (z of s.lernziele; track z) { <li>{{ z }}</li> }
+      </ul>
+    </div>
+
+    <!-- ═══ TEILE ═══ -->
+    @for (teil of s.teile; track $index; let i = $index) {
+      @let keyMap = ['A', 'B', 'C', 'D', 'E'];
+      @let k = keyMap[i];
+      <div class="bg-white border-2 border-slate-200 rounded-xl mb-3 overflow-hidden">
+        <button (click)="toggleTeil(k)" class="w-full flex items-center gap-3 p-4 text-right hover:bg-slate-50">
+          <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-800 font-bold flex items-center justify-center shrink-0">{{ k }}</div>
+          <div class="flex-1 min-w-0 text-right">
+            <h3 class="font-bold text-slate-800 text-sm sm:text-base" dir="ltr">{{ teil.titel }}</h3>
+          </div>
+          <span class="text-slate-400">{{ isExpanded(k) ? '▲' : '▼' }}</span>
+        </button>
+
+        @if (isExpanded(k)) {
+          <div class="border-t border-slate-200 p-4 sm:p-5 space-y-4">
+
+            <!-- ─── Teil A: Lesen & Wortschatz ─── -->
+            @if (asA(teil); as a) {
+              <!-- Lesetext -->
+              <div class="bg-slate-50 rounded-xl p-4 border border-slate-200">
+                <div class="flex items-start justify-between gap-3 mb-2">
+                  <div class="flex-1 min-w-0">
+                    <h4 class="font-bold text-slate-800" dir="ltr">{{ a.lesetext.titel }}</h4>
+                    <p class="text-xs text-slate-500" dir="ltr">{{ a.lesetext.quelle }}
+                      @if (a.lesetext.wortzahl) { · {{ a.lesetext.wortzahl }} Wörter }
+                    </p>
+                  </div>
+                  <button (click)="speak(a.lesetext.text, $event)" class="text-sm bg-emerald-100 text-emerald-700 rounded-full px-3 py-1 hover:bg-emerald-200 shrink-0">🔊</button>
+                </div>
+                <p class="text-slate-800 leading-relaxed whitespace-pre-line text-sm" dir="ltr">{{ a.lesetext.text }}</p>
+              </div>
+
+              <!-- Verstehensfragen -->
+              <div>
+                <h4 class="font-bold text-slate-800 text-sm mb-2">❓ Verständnisfragen</h4>
+                <ol class="space-y-2 text-sm">
+                  @for (f of a.lesetext.fragen; track $index) {
+                    <li class="bg-white border border-slate-200 rounded-lg p-3">
+                      <div class="font-semibold text-slate-700" dir="rtl">{{ $index + 1 }}. {{ f.frage }}</div>
+                      <details class="mt-1">
+                        <summary class="text-xs text-indigo-700 cursor-pointer hover:underline">↳ Lösung anzeigen</summary>
+                        <p class="text-slate-700 mt-1 text-xs" dir="rtl">{{ f.antwort }}</p>
+                      </details>
+                    </li>
+                  }
+                </ol>
+              </div>
+
+              <!-- Wortschatzliste -->
+              <div>
+                <h4 class="font-bold text-slate-800 text-sm mb-2">📚 Wortschatz</h4>
+                <ul class="space-y-1.5">
+                  @for (v of a.wortschatzliste; track v.de) {
+                    <li class="bg-white border border-slate-200 rounded-lg p-2 text-sm">
+                      <div class="flex items-center justify-between gap-2">
+                        <span dir="ltr" class="text-slate-800 font-semibold">{{ v.de }}</span>
+                        <button (click)="speak(v.de, $event)" class="text-xs">🔊</button>
+                      </div>
+                      <div class="text-slate-600 text-sm" dir="rtl">{{ v.ar }}</div>
+                      @if (v.beispiel) { <div class="text-xs text-emerald-700 mt-0.5" dir="ltr">💬 {{ v.beispiel }}</div> }
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+
+            <!-- ─── Teil B: Grammatik ─── -->
+            @if (asB(teil); as b) {
+              <div>
+                <h4 class="font-bold text-slate-800 text-base mb-2" dir="ltr">📐 {{ b.grammatik.thema }}</h4>
+                <p class="text-sm text-slate-700 leading-relaxed whitespace-pre-line" dir="ltr">{{ b.grammatik.erklaerung }}</p>
+              </div>
+
+              @if (b.grammatik.formtabelle; as t) {
+                <div class="overflow-x-auto">
+                  <table class="w-full text-sm border border-slate-200">
+                    <thead>
+                      <tr class="bg-slate-100">
+                        @for (h of t.kopf; track h) { <th class="px-3 py-2 text-right font-semibold text-slate-700 border border-slate-200">{{ h }}</th> }
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (row of t.zeilen; track $index) {
+                        <tr>
+                          @for (cell of row; track $index) { <td class="px-3 py-2 border border-slate-200 text-slate-800" dir="ltr">{{ cell }}</td> }
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+
+              <div>
+                <h5 class="font-bold text-slate-700 text-sm mb-2">💬 Beispielsätze</h5>
+                <ul class="space-y-1">
+                  @for (s of b.grammatik.beispielsaetze; track s) {
+                    <li class="bg-amber-50 border border-amber-200 rounded p-2 text-sm flex items-start gap-2">
+                      <button (click)="speak(s, $event)" class="shrink-0">🔊</button>
+                      <span dir="ltr">{{ s }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+
+              @if (b.grammatik.pruefungstipp) {
+                <div class="bg-indigo-50 border-r-4 border-indigo-500 rounded p-3 text-sm text-slate-700" dir="rtl">
+                  💡 <strong>Prüfungstipp:</strong> {{ b.grammatik.pruefungstipp }}
+                </div>
+              }
+
+              @for (u of b.grammatik.uebungen; track $index) {
+                <div class="bg-white border border-slate-200 rounded-xl p-3">
+                  <h5 class="font-bold text-slate-800 text-sm mb-1" dir="ltr">{{ u.nummer }} — {{ u.titel }}</h5>
+                  <p class="text-xs text-slate-600 mb-2" dir="rtl">{{ u.anweisung }}</p>
+                  <ol class="space-y-2 text-sm">
+                    @for (sz of u.saetze; track $index) {
+                      <li class="border border-slate-100 rounded p-2">
+                        <div dir="ltr" class="text-slate-800">{{ sz.aufgabe }}</div>
+                        <details class="mt-1">
+                          <summary class="text-xs text-emerald-700 cursor-pointer hover:underline">✓ Lösung</summary>
+                          <div class="text-sm font-semibold text-emerald-800 mt-1" dir="ltr">→ {{ sz.loesung }}</div>
+                          @if (sz.hinweis) { <div class="text-xs text-slate-500 mt-1" dir="rtl">💡 {{ sz.hinweis }}</div> }
+                        </details>
+                      </li>
+                    }
+                  </ol>
+                </div>
+              }
+            }
+
+            <!-- ─── Teil C: Hören ─── -->
+            @if (asC(teil); as c) {
+              <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                <div class="flex items-start justify-between gap-3 mb-2">
+                  <div class="flex-1 min-w-0">
+                    <h4 class="font-bold text-slate-800" dir="ltr">🎧 {{ c.hoertext.titel }}</h4>
+                    <p class="text-xs text-slate-500" dir="ltr">{{ c.hoertext.format }}</p>
+                  </div>
+                  <button (click)="speak(c.hoertext.transkript, $event)" class="text-sm bg-blue-100 text-blue-700 rounded-full px-3 py-1 hover:bg-blue-200 shrink-0">🔊 vorlesen</button>
+                </div>
+                <details class="mt-2">
+                  <summary class="text-xs text-blue-700 cursor-pointer hover:underline font-semibold">📝 Transkript anzeigen</summary>
+                  <p class="text-slate-800 leading-relaxed whitespace-pre-line text-sm mt-2 bg-white/80 p-3 rounded" dir="ltr">{{ c.hoertext.transkript }}</p>
+                </details>
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-800 text-sm mb-2">❓ Verständnis</h4>
+                <ol class="space-y-2 text-sm">
+                  @for (f of c.hoertext.fragen; track $index) {
+                    <li class="bg-white border border-slate-200 rounded-lg p-3">
+                      <div class="font-semibold text-slate-700" dir="rtl">{{ $index + 1 }}. {{ f.frage }}</div>
+                      <details class="mt-1">
+                        <summary class="text-xs text-indigo-700 cursor-pointer hover:underline">↳ Antwort</summary>
+                        <p class="text-slate-700 mt-1 text-xs" dir="rtl">{{ f.antwort }}</p>
+                      </details>
+                    </li>
+                  }
+                </ol>
+              </div>
+            }
+
+            <!-- ─── Teil D: Sprechen ─── -->
+            @if (asD(teil); as d) {
+              <div class="bg-orange-50 border border-orange-200 rounded-xl p-4">
+                <div class="text-xs text-orange-700 font-mono mb-1">{{ d.sprechen.anlass }}</div>
+                <h4 class="font-bold text-slate-800" dir="ltr">🎤 {{ d.sprechen.thema }}</h4>
+                <p class="text-sm text-slate-700 mt-2" dir="rtl">{{ d.sprechen.anweisung }}</p>
+              </div>
+
+              @for (rm of d.sprechen.redemittel; track rm.titel) {
+                <div class="bg-white border border-slate-200 rounded-xl p-3">
+                  <h5 class="font-bold text-slate-800 text-sm mb-2">💬 Redemittel: {{ rm.titel }}</h5>
+                  <ul class="space-y-1">
+                    @for (p of rm.phrasen; track p) {
+                      <li class="bg-slate-50 border border-slate-200 rounded p-2 text-sm flex items-start gap-2">
+                        <button (click)="speak(p, $event)" class="shrink-0">🔊</button>
+                        <span dir="ltr">{{ p }}</span>
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+
+              <div class="bg-amber-50 border-r-4 border-amber-500 rounded p-3 text-sm text-slate-700" dir="rtl">
+                🎯 <strong>Aufgabe:</strong> {{ d.sprechen.aufgabe }}
+              </div>
+            }
+
+            <!-- ─── Teil E: Schreiben ─── -->
+            @if (asE(teil); as e) {
+              <div class="bg-rose-50 border border-rose-200 rounded-xl p-4">
+                <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+                  <div>
+                    <div class="text-xs text-rose-700 font-mono">{{ e.schreiben.anlass }}</div>
+                    <h4 class="font-bold text-slate-800" dir="ltr">✍️ {{ e.schreiben.textsorte }}</h4>
+                  </div>
+                  <span class="text-xs bg-rose-100 text-rose-700 rounded-full px-2 py-0.5">~{{ e.schreiben.wortzahl }} Wörter</span>
+                </div>
+                <p class="text-sm text-slate-800" dir="rtl"><strong>Aufgabe:</strong> {{ e.schreiben.aufgabenstellung }}</p>
+              </div>
+
+              <div>
+                <h5 class="font-bold text-slate-800 text-sm mb-2">🧱 Aufbau</h5>
+                <ol class="list-decimal list-inside text-sm text-slate-700 space-y-1" dir="ltr">
+                  @for (a of e.schreiben.aufbau; track a) { <li>{{ a }}</li> }
+                </ol>
+              </div>
+
+              <div>
+                <h5 class="font-bold text-slate-800 text-sm mb-2">📄 Mustertext</h5>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm leading-relaxed whitespace-pre-line text-slate-800" dir="ltr">{{ e.schreiben.mustertext }}</div>
+              </div>
+
+              @if (e.schreiben.bewertungskriterien) {
+                <div>
+                  <h5 class="font-bold text-slate-800 text-sm mb-2">✅ Bewertungskriterien</h5>
+                  <ul class="list-disc list-inside text-sm text-slate-700 space-y-1" dir="ltr">
+                    @for (c of e.schreiben.bewertungskriterien; track c) { <li>{{ c }}</li> }
+                  </ul>
+                </div>
+              }
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- ═══ Abschluss ═══ -->
+    <div class="bg-gradient-to-br from-emerald-50 to-indigo-50 border-2 border-emerald-200 rounded-xl p-5 mb-5">
+      <h2 class="font-bold text-slate-800 mb-3">🎉 Abschluss</h2>
+
+      <div class="mb-3">
+        <h4 class="font-bold text-slate-700 text-sm mb-2">📚 Lernwortschatz</h4>
+        <div class="flex flex-wrap gap-1.5" dir="ltr">
+          @for (w of s.abschluss.lernwortschatz; track w) {
+            <span class="bg-white border border-slate-300 rounded-full px-2 py-0.5 text-xs text-slate-700">{{ w }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <h4 class="font-bold text-slate-700 text-sm mb-1">📐 Grammatik-Zusammenfassung</h4>
+        <p class="text-sm text-slate-700" dir="ltr">{{ s.abschluss.grammatikZusammenfassung }}</p>
+      </div>
+
+      <div class="bg-indigo-50 border-r-4 border-indigo-500 rounded p-3 text-sm text-slate-700 mb-3" dir="rtl">
+        💡 <strong>Prüfungstipp:</strong> {{ s.abschluss.pruefungstipp }}
+      </div>
+
+      <div class="bg-amber-50 border-r-4 border-amber-500 rounded p-3 text-sm text-slate-700" dir="rtl">
+        🚀 <strong>Projekt für die Woche:</strong> {{ s.abschluss.projekt }}
+      </div>
+    </div>
+
+    <!-- Prev/Next Navigation -->
+    <div class="flex items-center justify-between gap-2 mt-5">
+      @if (prevSitzung(); as p) {
+        <a [routerLink]="['/b2-pruefung', p.id]" class="flex-1 bg-white border border-slate-300 rounded-lg p-3 text-sm hover:bg-slate-50">
+          <div class="text-xs text-slate-500">← vorherige Sitzung</div>
+          <div class="font-semibold text-slate-800 text-sm truncate" dir="ltr">{{ p.nummer }}. {{ p.titelDe }}</div>
+        </a>
+      } @else { <div class="flex-1"></div> }
+
+      @if (nextSitzung(); as n) {
+        <a [routerLink]="['/b2-pruefung', n.id]" class="flex-1 bg-indigo-600 text-white rounded-lg p-3 text-sm hover:bg-indigo-700">
+          <div class="text-xs opacity-80">nächste Sitzung →</div>
+          <div class="font-semibold text-sm truncate" dir="ltr">{{ n.nummer }}. {{ n.titelDe }}</div>
+        </a>
+      } @else { <div class="flex-1"></div> }
+    </div>
+  } @else if (svc.loaded()) {
+    <div class="bg-red-50 border border-red-200 rounded-lg p-5 text-center text-red-800">
+      Sitzung nicht gefunden.
+    </div>
+  } @else {
+    <div class="text-center py-12 text-slate-500">⏳ جارٍ التحميل…</div>
+  }
+</section>

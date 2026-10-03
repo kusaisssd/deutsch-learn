@@ -182,6 +182,22 @@ export const routes: Routes = [
     title: 'إعدادات القاموس - Deutsch Learn',
   },
 
+  // 🏅 B2 Prüfungscurriculum — منهاج تحضير امتحان B2 دولي بـ 20 جلسة
+  {
+    path: 'b2-pruefung',
+    loadComponent: () =>
+      import('./features/b2-pruefung/b2-pruefung-list-page/b2-pruefung-list-page')
+        .then(m => m.B2PruefungListPage),
+    title: 'B2 Prüfungscurriculum - Deutsch Learn',
+  },
+  {
+    path: 'b2-pruefung/:sitzungId',
+    loadComponent: () =>
+      import('./features/b2-pruefung/b2-sitzung-page/b2-sitzung-page')
+        .then(m => m.B2SitzungPage),
+    title: 'B2 Sitzung - Deutsch Learn',
+  },
+
   // 🆕 Arabisch lernen — vereinheitlichte Übersicht (Fusha + Syrisch immer beides)
   {
     path: 'learn-arabic',

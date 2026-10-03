@@ -104,6 +104,33 @@
 
     <div class="space-y-4">
 
+      <!-- ─────── 🏅 B2 Prüfungscurriculum (highlight) ─────── -->
+      <a [routerLink]="'/b2-pruefung'"
+         class="block bg-gradient-to-br from-amber-50 to-white rounded-xl border-2 border-amber-400 hover:border-amber-600 hover:shadow-lg hover:-translate-y-1 transition-all p-4 sm:p-6 group">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-amber-500 text-white rounded-full flex items-center justify-center text-xl transition-transform group-hover:scale-110">
+            🏅
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-1 flex-wrap">
+              <h3 class="text-xl font-bold text-slate-800">B2 Prüfungscurriculum</h3>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500 text-white uppercase">Goethe / telc</span>
+            </div>
+            <p class="text-slate-600 mb-3">
+              منهاج دولي حقيقي بـ 20 Sitzungen يحضّرك مباشرة لامتحان B2.
+            </p>
+            <ul class="text-sm text-slate-700 space-y-1 mb-4">
+              <li>✓ بنية Lehrwerk ألماني: Lesen · Grammatik · Hören · Sprechen · Schreiben</li>
+              <li>✓ نصوص أصليّة + Mustertexte + Redemittel + Prüfungstipps</li>
+              <li>✓ 5 جلسات Prüfungstraining لكل مهارة + Simulation + Lernplan</li>
+            </ul>
+            <span class="inline-block text-amber-700 font-semibold group-hover:underline">
+              ابدأ Sitzung 1 →
+            </span>
+          </div>
+        </div>
+      </a>
+
       <!-- ─────── Recommended start: Courses (indigo) ─────── -->
       <a [routerLink]="'/courses'"
          class="block bg-gradient-to-br from-indigo-50 to-white rounded-xl border-2 border-indigo-300 hover:border-indigo-500 hover:shadow-lg hover:-translate-y-1 transition-all p-4 sm:p-6 group">

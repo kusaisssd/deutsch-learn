@@ -1,0 +1,84 @@
+<section class="max-w-4xl mx-auto" dir="rtl">
+  <a [routerLink]="'/'" class="text-slate-500 hover:underline text-sm mb-3 inline-block">← الصفحة الرئيسيّة</a>
+
+  <header class="mb-5">
+    <div class="flex items-center gap-3 mb-2">
+      <span class="text-4xl">🏅</span>
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-800">B2 — Prüfungscurriculum</h1>
+    </div>
+    <p class="text-slate-600 text-sm sm:text-base">
+      منهاج تحضير امتحان B2 (نموذج Goethe / telc) على 20 جلسة (Sitzungen) مرتّبة بتسلسل عالمي.
+      كل جلسة تتبع بنية كتاب تعليمي ألماني حقيقي:
+      <strong>Einstieg → Lesen & Wortschatz → Grammatik → Hören → Sprechen → Schreiben → Abschluss</strong>.
+    </p>
+  </header>
+
+  @if (svc.loading()) {
+    <div class="text-center py-12 text-slate-500">⏳ جارٍ التحميل…</div>
+  } @else if (svc.error()) {
+    <div class="bg-red-50 border border-red-200 rounded-lg p-5 text-center">
+      <p class="text-red-800 mb-3">تعذّر تحميل المنهاج.</p>
+      <button (click)="svc.retry()" class="bg-red-600 text-white rounded-lg px-4 py-2 text-sm">إعادة المحاولة</button>
+    </div>
+  } @else {
+    <!-- شريط تلخيصي -->
+    <div class="grid grid-cols-3 gap-2 mb-5">
+      <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-3 text-center">
+        <div class="text-2xl font-bold text-indigo-800">20</div>
+        <div class="text-[11px] text-indigo-700">Sitzungen</div>
+      </div>
+      <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-center">
+        <div class="text-2xl font-bold text-emerald-800">5</div>
+        <div class="text-[11px] text-emerald-700">Teile pro Sitzung</div>
+      </div>
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-center">
+        <div class="text-2xl font-bold text-amber-800">75-90</div>
+        <div class="text-[11px] text-amber-700">Min pro Sitzung</div>
+      </div>
+    </div>
+
+    <!-- قائمة الجلسات -->
+    <div class="space-y-2">
+      @for (s of svc.sitzungen(); track s.id) {
+        <a [routerLink]="['/b2-pruefung', s.id]"
+           class="block bg-white border-2 border-slate-200 rounded-xl p-4 hover:border-indigo-400 hover:shadow-md transition-all">
+          <div class="flex items-start gap-4">
+            <div class="shrink-0 w-14 h-14 rounded-xl text-white font-bold text-xl flex items-center justify-center"
+                 [class.bg-indigo-500]="s.einstieg.farbe === 'indigo'"
+                 [class.bg-emerald-500]="s.einstieg.farbe === 'emerald'"
+                 [class.bg-amber-500]="s.einstieg.farbe === 'amber'"
+                 [class.bg-rose-500]="s.einstieg.farbe === 'rose'"
+                 [class.bg-violet-500]="s.einstieg.farbe === 'violet'"
+                 [class.bg-red-500]="s.einstieg.farbe === 'red'"
+                 [class.bg-blue-500]="s.einstieg.farbe === 'blue'"
+                 [class.bg-slate-500]="s.einstieg.farbe === 'slate'"
+                 [class.bg-cyan-500]="s.einstieg.farbe === 'cyan'"
+                 [class.bg-orange-500]="s.einstieg.farbe === 'orange'"
+                 [class.bg-teal-500]="s.einstieg.farbe === 'teal'"
+                 [class.bg-purple-500]="s.einstieg.farbe === 'purple'"
+                 [class.bg-green-500]="s.einstieg.farbe === 'green'"
+                 [class.bg-lime-500]="s.einstieg.farbe === 'lime'"
+                 [class.bg-yellow-500]="s.einstieg.farbe === 'yellow'">
+              {{ s.einstieg.bildEmoji }}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xs text-slate-500 font-mono">Sitzung {{ s.nummer }}</span>
+                <span class="text-xs bg-slate-100 text-slate-700 rounded-full px-2 py-0.5">{{ s.dauer }}</span>
+              </div>
+              <h3 class="text-base sm:text-lg font-bold text-slate-800 mt-1" dir="ltr">{{ s.titelDe }}</h3>
+              <p class="text-sm text-slate-600 mt-0.5">{{ s.titelAr }}</p>
+              <p class="text-xs text-indigo-700 mt-1">🎯 {{ s.pruefungsbezug }}</p>
+            </div>
+            <span class="text-slate-300 self-center">◀</span>
+          </div>
+        </a>
+      }
+    </div>
+
+    <p class="text-xs text-slate-400 text-center mt-6">
+      📘 المنهاج مُستلهَم من بنية Lehrwerke ألمانيّة (Aspekte Neu, Sicher!, Mittelpunkt, Begegnungen B2).
+      النصوص أصليّة مُعَدَّة على مستوى B2.
+    </p>
+  }
+</section>
