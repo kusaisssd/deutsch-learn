@@ -11,6 +11,24 @@
     </p>
   </header>
 
+  <!-- 🏅 B2 Prüfungscurriculum — منهاج تحضير امتحان دولي (منفصل عن كورس B2) -->
+  <a
+    [routerLink]="'/b2-pruefung'"
+    class="flex items-center gap-3 rounded-xl border-2 border-amber-400 bg-gradient-to-br from-amber-50 to-white hover:border-amber-600 hover:shadow-md transition-all p-4 mb-4"
+  >
+    <div class="text-3xl shrink-0">🏅</div>
+    <div class="flex-1 min-w-0 text-right">
+      <div class="flex items-center gap-2 flex-wrap">
+        <h3 class="font-bold text-amber-900">B2 — Prüfungscurriculum</h3>
+        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500 text-white uppercase">Goethe / telc</span>
+      </div>
+      <p class="text-sm text-amber-800">
+        منهاج دولي حقيقي بـ 20 Sitzungen بنمط Lehrwerk ألماني — Lesen · Grammatik · Hören · Sprechen · Schreiben + Prüfungstraining.
+      </p>
+    </div>
+    <span class="text-amber-500 text-lg shrink-0">←</span>
+  </a>
+
   <!-- زر قسم الكتابة (مهارة مكمّلة للمنهج) -->
   <a
     [routerLink]="'/writing'"
@@ -72,7 +90,7 @@
     </div>
 
     <p class="text-center text-xs text-slate-400 mt-8">
-      مستويات أخرى (A1، B2) قريباً.
+      للاستعداد المباشر للامتحان، جرّب <a [routerLink]="'/b2-pruefung'" class="text-amber-700 underline hover:text-amber-800">B2 Prüfungscurriculum</a> أعلاه.
     </p>
   }
 
