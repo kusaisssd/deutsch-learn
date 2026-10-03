@@ -168,4 +168,59 @@ export class B2SitzungPage {
     if (!s) return '';
     return `جلسة ${s.nummer}: ${s.titelDe} (${s.titelAr})\nPrüfungsbezug: ${s.pruefungsbezug}\nLernziele:\n${s.lernziele.join('\n')}\n\nالدرس يحتوي ${s.teile.length} أقسام (Teil A..E).`;
   }
+
+  /** مقدّمة عربيّة ثابتة لكل نوع Teil — تفسير «ماذا نفعل هنا» */
+  teilEinleitungAr(key: string): { titel: string; intro: string; tipp: string } {
+    switch (key) {
+      case 'A': return {
+        titel: '📖 القسم أ — القراءة و المفردات',
+        intro: 'ستقرأ نصّاً ألمانياً أصليّاً بمستوى B2 (نحو 150-200 كلمة). اقرأه مرّتَين: الأولى بسرعة لفهم الفكرة العامّة، الثانية ببطء لرصد التفاصيل. ثم أجب عن أسئلة الفهم.',
+        tipp: '💡 إن احتجت الترجمة، اضغط «🌐 ترجم للعربيّة» تحت النصّ. استعمل زرّ «🔊» للاستماع للنطق الصحيح.'
+      };
+      case 'B': return {
+        titel: '📐 القسم ب — القاعدة النحويّة',
+        intro: 'هذا أهمّ قسم للامتحان. ستتعلّم قاعدة نحويّة من قواعد B2. اقرأ الشرح بالألماني (أو ترجمه)، ادرس جدول الصيغ، ثم طبّق على التمارين. **الهدف: فهم القاعدة لا حفظها.**',
+        tipp: '💡 بعد كل تمرين، افتح «✓ Lösung» للتحقّق. إن لم تفهم، اضغط زرّ «🤖 اسأل Claude» و اطلب شرحاً مبسّطاً.'
+      };
+      case 'C': return {
+        titel: '🎧 القسم ج — الاستماع',
+        intro: 'نصّ استماع بتنسيق مشابه للامتحان. **الخطوة الأولى: اقرأ الأسئلة قبل الاستماع**، ثم اضغط «🔊 استمع» و حاول الفهم بلا نظر للنصّ. أخيراً افتح الـ Transkript إن احتجت.',
+        tipp: '💡 لا تحاول فهم كل كلمة. الهدف: الفكرة العامّة + 2-3 تفاصيل محدّدة. استعمل زرّ الترجمة لمراجعة ما لم تفهمه.'
+      };
+      case 'D': return {
+        titel: '🎤 القسم د — المحادثة',
+        intro: 'ستتدرّب على التحدّث الفعلي. **لا تتخطَّ هذا القسم** — المحادثة أهمّ ما يفرّق بين B1 و B2. استعمل الـ Redemittel (العبارات الجاهزة) كـ«قوالب» تملؤها بأفكارك.',
+        tipp: '💡 سجّل نفسك بالموبايل أثناء التكلّم. ثم استمع و لاحظ: هل كلامك طلق؟ هل استعملت الـ Redemittel؟ أي كلمة تلعثمت فيها؟'
+      };
+      case 'E': return {
+        titel: '✍️ القسم هـ — الكتابة',
+        intro: 'سترى **نموذجاً كاملاً** (Mustertext) من إنتاج مستوى B2 ناجح، مع تحليل البنية. اقرأ النموذج، لاحظ كيف يستعمل الروابط و الأسلوب، ثم اكتب أنت نصّاً مشابهاً.',
+        tipp: '💡 اكتب بخطّك بالورقة أوّلاً — ثم انسخه على الكمبيوتر. هذا يُحضّرك ليوم الامتحان (ورقة و قلم). استعمل زرّ الترجمة لفهم النموذج.'
+      };
+      default: return { titel: '', intro: '', tipp: '' };
+    }
+  }
+
+  // ─── ترجمة Lernziele للعربيّة (باستدعاء واحد) ───
+  readonly zieleArabic = signal<string | null>(null);
+  readonly zieleLoading = signal(false);
+
+  async translateZiele() {
+    const s = this.sitzung();
+    if (!s || this.zieleLoading()) return;
+    if (this.zieleArabic()) { this.zieleArabic.set(null); return; }
+    if (!this.claude.available()) {
+      this.openAsk('أهداف الدرس', s.lernziele.join('\n'));
+      return;
+    }
+    this.zieleLoading.set(true);
+    try {
+      const text = s.lernziele.map((z, i) => `${i + 1}. ${z}`).join('\n');
+      const prompt = 'ترجم أهداف الدرس التالية إلى العربيّة ترجمة واضحة و مباشرة (قائمة مرقّمة). أعطني الترجمة فقط بلا مقدّمات.';
+      const answer = await this.claude.ask(text, prompt);
+      if (answer) this.zieleArabic.set(answer);
+    } finally {
+      this.zieleLoading.set(false);
+    }
+  }
 }
