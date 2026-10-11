@@ -175,12 +175,12 @@ Gib 3-4 vertiefte Beispiele und 3-4 verwandte Redewendungen.`;
 export default async function handler(req: Request): Promise<Response> {
   const cors = {
     'access-control-allow-origin': '*',
-    'access-control-allow-methods': 'GET, OPTIONS',
+    'access-control-allow-methods': 'GET, POST, OPTIONS',
     'access-control-allow-headers': 'content-type, x-sync-key',
   };
 
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
-  if (req.method !== 'GET') {
+  if (req.method !== 'GET' && req.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), {
       status: 405,
       headers: { 'content-type': 'application/json', ...cors },
@@ -206,15 +206,35 @@ export default async function handler(req: Request): Promise<Response> {
     });
   }
 
-  const url = new URL(req.url);
-  const word = url.searchParams.get('word')?.trim();
-  const modeParam = url.searchParams.get('mode');
+  // ─── قراءة البارامترات من query (GET) أو JSON body (POST) ───
+  let word: string | undefined;
+  let modeParam: string | null = null;
+  let question = '';
+
+  if (req.method === 'POST') {
+    try {
+      const body = await req.json() as { word?: string; mode?: string; q?: string };
+      word = body.word?.trim();
+      modeParam = body.mode ?? null;
+      question = body.q?.trim() ?? '';
+    } catch {
+      return new Response(JSON.stringify({ error: 'Invalid JSON body.' }), {
+        status: 400,
+        headers: { 'content-type': 'application/json', ...cors },
+      });
+    }
+  } else {
+    const url = new URL(req.url);
+    word = url.searchParams.get('word')?.trim();
+    modeParam = url.searchParams.get('mode');
+    question = url.searchParams.get('q')?.trim() ?? '';
+  }
+
   const mode: 'basic' | 'deep' | 'ask' | 'analyze' =
     modeParam === 'deep' ? 'deep'
     : modeParam === 'ask' ? 'ask'
     : modeParam === 'analyze' ? 'analyze'
     : 'basic';
-  const question = url.searchParams.get('q')?.trim() ?? '';
 
   // في وضع analyze يُستعمل الحقل word كـ «نصّ كامل» و بحدود أطول (5000 حرف)
   if (mode === 'analyze') {

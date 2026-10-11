@@ -47,21 +47,39 @@ export class TextAnalyzerService {
     this._loading.set(true);
     this._error.set(null);
     try {
-      const headers = new HttpHeaders({ 'x-sync-key': this.sync.passphrase() });
+      const headers = new HttpHeaders({ 'x-sync-key': this.sync.passphrase(), 'content-type': 'application/json' });
+      // POST بدل GET: النصّ قد يصل 5000 حرف، أكبر من حدود URL
       const res = await firstValueFrom(
-        this.http.get<TextAnalysis>('/api/claude-lookup', {
-          params: { word: t, mode: 'analyze' },
-          headers,
-        }),
+        this.http.post<TextAnalysis>('/api/claude-lookup', { word: t, mode: 'analyze' }, { headers }),
       );
+      // تحقّق أن الـ response يحمل البنية المتوقّعة
+      if (!res || typeof res !== 'object' || !Array.isArray((res as TextAnalysis).schluesselwoerter)) {
+        this._error.set('استجابة AI غير متوقّعة. حاول مرّة أخرى بنصّ أقصر.');
+        return null;
+      }
       return res;
     } catch (err) {
-      const e = err as HttpErrorResponse;
-      this._error.set(e.error?.error ?? e.message ?? 'فشل التحليل.');
+      this._error.set(this.extractError(err));
       return null;
     } finally {
       this._loading.set(false);
     }
+  }
+
+  /** يحوّل أي شكل خطأ إلى نصّ قابل للعرض */
+  private extractError(err: unknown): string {
+    const e = err as HttpErrorResponse;
+    // Case 1: backend returned { error: 'string' }
+    const body = e?.error;
+    if (body && typeof body === 'object' && typeof (body as { error?: unknown }).error === 'string') {
+      return (body as { error: string }).error;
+    }
+    // Case 2: body itself a string
+    if (typeof body === 'string' && body.length < 300) return body;
+    // Case 3: http status message
+    if (typeof e?.message === 'string' && e.message) return e.message;
+    // Case 4: last fallback
+    return 'فشل التحليل. تحقّق من الاتصال و حاول مرّة أخرى.';
   }
 
   /** يحفظ درساً جديداً و يُرجع الـ id */
