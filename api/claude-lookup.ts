@@ -88,6 +88,72 @@ Antworte NUR mit einem JSON-Objekt (ohne Markdown, ohne Codeblock-Fences):
   "answer": "eine klare, hilfreiche Antwort auf ARABISCH; deutsche Beispielsätze bleiben deutsch und stehen in Anführungszeichen »…«; nutze Absätze mit \\n\\n wenn nötig; sei präzise und lehrreich; wenn die Frage nach Beispielen fragt, gib 3-5 vielfältige Sätze mit ihrer arabischen Übersetzung; wenn die Frage nach Konjugation fragt, gib eine kurze übersichtliche Tabelle."
 }`;
 
+/**
+ * PROMPT_ANALYZE — تحليل نصّ ألماني كامل كـ«درس» منظّم.
+ * يُرجَع JSON خالص بالبنية الموصوفة أدناه.
+ */
+const PROMPT_ANALYZE = (text: string) => `Du bist ein erfahrener Deutschlehrer für arabischsprachige Lernende auf B1-Niveau.
+Analysiere den folgenden deutschen Text und erzeuge daraus eine strukturierte Lerneinheit.
+
+TEXT:
+"""
+${text}
+"""
+
+Antworte NUR mit einem gültigen JSON-Objekt (ohne Markdown, ohne Codeblock-Fences, ohne Vor- oder Nachwort) nach genau diesem Schema:
+
+{
+  "zusammenfassung": "ملخّص عربي قصير (2-3 جمل) لمضمون النصّ",
+  "textsorte": "Nachrichtentext | Blogbeitrag | Dialog | Erfahrungsbericht | Werbetext | Essay | Rezension | Mail | Anderes",
+  "niveau": "A2 | B1 | B2 | C1",
+  "wortzahl": number,
+  "redewendungen": [
+    { "phrase": "deutsche feste Redewendung oder vollständige Phrase (NICHT nur ein Wort)",
+      "ar": "الترجمة العربيّة الدقيقة",
+      "erklaerungAr": "شرح متى تُستعمل بالعربيّة",
+      "satz": "die vollständige Satzzeile aus dem Text, in der sie vorkam" }
+  ],
+  "schluesselwoerter": [
+    { "wort": "wichtiges Nomen oder Adjektiv aus dem Text",
+      "artikel": "der | die | das",
+      "ar": "الترجمة",
+      "satz": "die Satzzeile aus dem Text" }
+  ],
+  "verben": [
+    { "infinitiv": "Verb-Infinitiv (z. B. erreichen)",
+      "partizip": "Partizip II (erreicht)",
+      "praeposition": "feste Präposition falls vorhanden, z. B. sprechen über (A), sonst leerer String",
+      "ar": "الترجمة",
+      "satz": "die Satzzeile aus dem Text" }
+  ],
+  "grammatikfokus": {
+    "thema": "die dominante Grammatik im Text (z. B. Perfekt, Passiv, Konjunktiv II, Relativsätze, Modalverben)",
+    "erklaerungAr": "شرح موجز بالعربيّة (3-5 جمل) للقاعدة مع مثال من النصّ"
+  },
+  "hinweise": [
+    { "typ": "False Friend | Besonderheit | Umgangssprache | Grammatikfalle",
+      "beschreibung": "تنبيه بالعربيّة لنقطة قد يخطئ فيها المتعلّم" }
+  ],
+  "verstaendnisfragen": [
+    { "frage": "سؤال فهم بالعربيّة", "antwort": "الإجابة بالعربيّة" }
+  ],
+  "lernziele": [
+    "هدف تعلّم 1 عربي (مثلاً: استعمال Perfekt مع sein)",
+    "هدف تعلّم 2 عربي",
+    "هدف تعلّم 3 عربي"
+  ]
+}
+
+Qualitätsanforderungen (sehr wichtig):
+- 3-6 Redewendungen (vollständige Phrasen, NICHT einzelne Wörter)
+- 8-15 Schlüsselwörter (die TATSÄCHLICH im Text sind)
+- 5-10 Verben (die TATSÄCHLICH im Text sind)
+- 2-4 Hinweise
+- 3 Verständnisfragen
+- Alle "satz"-Felder enthalten einen echten Satzausschnitt AUS dem Text
+- Niveau-Angabe realistisch (nicht alles automatisch B2)
+- Für arabischsprachige B1-Lernende: einfache arabische Erklärungen, nicht zu literarisch`;
+
 const PROMPT_DEEP = (word: string) => `Du bist ein Deutschlehrer für arabischsprachige Lernende und lieferst
 eine VERTIEFTE Erklärung des Wortes/Ausdrucks "${word}".
 
@@ -143,11 +209,22 @@ export default async function handler(req: Request): Promise<Response> {
   const url = new URL(req.url);
   const word = url.searchParams.get('word')?.trim();
   const modeParam = url.searchParams.get('mode');
-  const mode: 'basic' | 'deep' | 'ask' =
-    modeParam === 'deep' ? 'deep' : modeParam === 'ask' ? 'ask' : 'basic';
+  const mode: 'basic' | 'deep' | 'ask' | 'analyze' =
+    modeParam === 'deep' ? 'deep'
+    : modeParam === 'ask' ? 'ask'
+    : modeParam === 'analyze' ? 'analyze'
+    : 'basic';
   const question = url.searchParams.get('q')?.trim() ?? '';
 
-  if (!word || word.length < 2 || word.length > 200) {
+  // في وضع analyze يُستعمل الحقل word كـ «نصّ كامل» و بحدود أطول (5000 حرف)
+  if (mode === 'analyze') {
+    if (!word || word.length < 50 || word.length > 5000) {
+      return new Response(JSON.stringify({ error: 'النصّ قصير جداً أو طويل جداً (50 - 5000 حرف).' }), {
+        status: 400,
+        headers: { 'content-type': 'application/json', ...cors },
+      });
+    }
+  } else if (!word || word.length < 2 || word.length > 200) {
     return new Response(JSON.stringify({ error: 'Ungültiger Parameter "word" (2–200 Zeichen erforderlich).' }), {
       status: 400,
       headers: { 'content-type': 'application/json', ...cors },
@@ -189,12 +266,16 @@ export default async function handler(req: Request): Promise<Response> {
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: mode === 'deep' ? 1400 : mode === 'ask' ? 1200 : 350,
+        max_tokens: mode === 'analyze' ? 3500
+                 : mode === 'deep'    ? 1400
+                 : mode === 'ask'     ? 1200
+                 : 350,
         messages: [{
           role: 'user',
-          content: mode === 'deep' ? PROMPT_DEEP(word)
-                 : mode === 'ask'  ? PROMPT_ASK(word, question)
-                 : PROMPT_BASIC(word),
+          content: mode === 'analyze' ? PROMPT_ANALYZE(word!)
+                 : mode === 'deep'   ? PROMPT_DEEP(word!)
+                 : mode === 'ask'    ? PROMPT_ASK(word!, question)
+                 : PROMPT_BASIC(word!),
         }],
       }),
     });
@@ -228,8 +309,8 @@ export default async function handler(req: Request): Promise<Response> {
       });
     }
 
-    // نطبّق cache على basic/deep فقط — أسئلة الـ ask مخصّصة و لا يجب مشاركتها
-    const cacheHeader = mode === 'ask'
+    // نطبّق cache على basic/deep فقط — ask و analyze مخصّصان لكل نصّ
+    const cacheHeader = (mode === 'ask' || mode === 'analyze')
       ? 'no-store'
       : 'public, s-maxage=86400, stale-while-revalidate=604800';
 

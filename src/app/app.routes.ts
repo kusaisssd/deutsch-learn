@@ -182,6 +182,15 @@ export const routes: Routes = [
     title: 'إعدادات القاموس - Deutsch Learn',
   },
 
+  // 🔍 Text Analyzer: تحليل نصّ عبر Claude إلى درس كامل
+  {
+    path: 'analyze',
+    loadComponent: () =>
+      import('./features/text-analyzer/text-analyzer-page/text-analyzer-page')
+        .then(m => m.TextAnalyzerPage),
+    title: 'تحليل النصّ بالـ AI - Deutsch Learn',
+  },
+
   // 🏅 B2 Prüfungscurriculum — منهاج تحضير امتحان B2 دولي بـ 20 جلسة
   {
     path: 'b2-pruefung',

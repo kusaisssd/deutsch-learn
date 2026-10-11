@@ -1,0 +1,344 @@
+<section class="max-w-4xl mx-auto pb-24" dir="rtl">
+  <a [routerLink]="'/'" class="text-slate-500 hover:underline text-sm mb-3 inline-block">← الصفحة الرئيسيّة</a>
+
+  <header class="mb-5">
+    <div class="flex items-center gap-3">
+      <span class="text-4xl">🔍</span>
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-800">تحليل النصّ بالـ AI</h1>
+    </div>
+    <p class="text-slate-600 text-sm mt-2">
+      الصق أي نصّ ألماني (مستوى B1) و Claude يُحوّله إلى درس كامل: ملخّص، عبارات مهمّة، مفردات، أفعال، قاعدة، و ملاحظات — مع زرّ لحفظ أي عنصر في قاموسك.
+    </p>
+  </header>
+
+  <!-- 🔒 حالة بلا passphrase -->
+  @if (!svc.available()) {
+    <div class="bg-amber-50 border-2 border-amber-300 rounded-xl p-5 text-center">
+      <div class="text-3xl mb-2">🔒</div>
+      <p class="font-bold text-amber-900 mb-1">خدمة AI مقفلة</p>
+      <p class="text-sm text-amber-800 mb-3">يحتاج هذا التحليل الاتّصال بـ Claude. اضبط passphrase من إعدادات القاموس.</p>
+      <a [routerLink]="'/dictionary/settings'" class="inline-block bg-amber-600 text-white rounded-lg px-4 py-2 text-sm font-semibold">⚙️ ضبط passphrase</a>
+    </div>
+  } @else {
+
+    <!-- أمثلة سريعة -->
+    <div class="mb-3">
+      <div class="text-xs text-slate-500 mb-1">جرّب نصّاً جاهزاً:</div>
+      <div class="flex flex-wrap gap-1.5">
+        @for (b of beispiele; track b.label) {
+          <button (click)="loadBeispiel(b)"
+                  class="text-xs bg-slate-100 border border-slate-300 rounded-full px-3 py-1 hover:bg-slate-200">
+            {{ b.label }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- حقل النصّ -->
+    <div class="bg-white border-2 border-slate-200 rounded-xl p-3 mb-3">
+      <textarea
+        [(ngModel)]="input"
+        rows="7"
+        placeholder="الصق نصّاً ألمانياً هنا (50 - 5000 حرف)…"
+        dir="ltr"
+        class="w-full p-3 border border-slate-300 rounded-md focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none resize-y text-slate-800 font-mono text-sm"></textarea>
+      <div class="flex items-center justify-between gap-2 mt-2 text-xs">
+        <span [class.text-red-600]="charCount() < 50 || charCount() > 5000"
+              [class.text-slate-500]="charCount() >= 50 && charCount() <= 5000">
+          {{ charCount() }} / 5000 حرف · ~{{ estimatedTokens() }} توكن
+        </span>
+        <button (click)="run()" [disabled]="!canAnalyze()"
+                class="bg-emerald-600 text-white rounded-lg px-5 py-2 font-semibold hover:bg-emerald-700 disabled:opacity-40">
+          @if (svc.loading()) { ⏳ جارٍ التحليل… } @else { 🔍 حلّل بالـ AI }
+        </button>
+      </div>
+    </div>
+
+    @if (svc.error()) {
+      <div class="bg-red-50 border border-red-300 rounded p-3 text-sm text-red-800 mb-3">⚠️ {{ svc.error() }}</div>
+    }
+
+    <!-- ═══ النتيجة ═══ -->
+    @if (analysis(); as a) {
+      <div class="space-y-4">
+
+        <!-- Header: نوع النصّ + المستوى + الملخّص -->
+        <div class="bg-gradient-to-br from-emerald-50 to-indigo-50 border-2 border-emerald-300 rounded-xl p-4">
+          <div class="flex items-center justify-between gap-2 mb-2 flex-wrap">
+            <div class="flex gap-2 flex-wrap">
+              <span class="text-xs bg-emerald-100 text-emerald-800 rounded-full px-3 py-1 font-semibold">📄 {{ a.textsorte }}</span>
+              <span class="text-xs bg-indigo-100 text-indigo-800 rounded-full px-3 py-1 font-semibold">🎓 {{ a.niveau }}</span>
+              @if (a.wortzahl) {
+                <span class="text-xs bg-slate-100 text-slate-700 rounded-full px-3 py-1">{{ a.wortzahl }} كلمة</span>
+              }
+            </div>
+            <button (click)="speak(input(), $event)" class="text-sm bg-white border border-slate-300 rounded-full px-3 py-1 hover:bg-slate-50">🔊 اقرأ النصّ</button>
+          </div>
+          <h3 class="font-bold text-slate-800 text-sm mb-1">📝 الملخّص</h3>
+          <p class="text-sm text-slate-800 leading-relaxed">{{ a.zusammenfassung }}</p>
+
+          @if (a.lernziele.length) {
+            <div class="mt-3 bg-white/60 border border-white rounded p-2">
+              <h4 class="text-xs font-bold text-emerald-800 mb-1">🎯 ماذا تتعلّم من هذا النصّ؟</h4>
+              <ul class="list-disc list-inside text-xs text-slate-700 space-y-0.5">
+                @for (z of a.lernziele; track z) { <li>{{ z }}</li> }
+              </ul>
+            </div>
+          }
+        </div>
+
+        <!-- زرّ إضافة الكل -->
+        <button (click)="addAll()"
+                class="w-full bg-slate-800 text-white rounded-xl py-2.5 text-sm font-semibold hover:bg-slate-900">
+          📖 أضف كل العناصر (عبارات + مفردات + أفعال) إلى القاموس
+        </button>
+
+        <!-- 💬 عبارات اصطلاحيّة -->
+        @if (a.redewendungen.length) {
+          <section class="bg-white border-2 border-purple-200 rounded-xl p-4">
+            <h3 class="font-bold text-slate-800 text-base mb-3">💬 العبارات المهمّة ({{ a.redewendungen.length }})</h3>
+            <ul class="space-y-2">
+              @for (p of a.redewendungen; track p.phrase) {
+                <li class="bg-purple-50/50 border border-purple-100 rounded-lg p-3">
+                  <div class="flex items-start justify-between gap-2 mb-1 flex-wrap">
+                    <div class="flex-1 min-w-0">
+                      <div class="font-bold text-slate-800" dir="ltr">{{ p.phrase }}</div>
+                      <div class="text-sm text-slate-700" dir="rtl">{{ p.ar }}</div>
+                    </div>
+                    <div class="flex gap-1 shrink-0">
+                      <button (click)="speak(p.phrase, $event)" class="text-xs bg-white border border-slate-200 rounded-full px-2 py-1 hover:bg-slate-50">🔊</button>
+                      <button (click)="openAsk(p.phrase, p.satz || '')" class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 hover:bg-purple-200">🤖</button>
+                      <button (click)="addPhrase(p)"
+                              [disabled]="isAdded('phrase:' + p.phrase)"
+                              class="text-xs rounded-full px-2 py-1"
+                              [class.bg-slate-800]="!isAdded('phrase:' + p.phrase)"
+                              [class.text-white]="!isAdded('phrase:' + p.phrase)"
+                              [class.hover:bg-slate-900]="!isAdded('phrase:' + p.phrase)"
+                              [class.bg-green-100]="isAdded('phrase:' + p.phrase)"
+                              [class.text-green-800]="isAdded('phrase:' + p.phrase)">
+                        {{ isAdded('phrase:' + p.phrase) ? '✓' : '📖 أضف' }}
+                      </button>
+                    </div>
+                  </div>
+                  @if (p.satz) {
+                    <div class="text-xs text-slate-600 bg-white rounded p-2 mt-1 border border-slate-200" dir="ltr">
+                      💬 <em>{{ p.satz }}</em>
+                    </div>
+                  }
+                  @if (p.erklaerungAr) {
+                    <div class="text-xs text-slate-700 mt-1" dir="rtl">💡 {{ p.erklaerungAr }}</div>
+                  }
+                </li>
+              }
+            </ul>
+          </section>
+        }
+
+        <!-- 📚 مفردات -->
+        @if (a.schluesselwoerter.length) {
+          <section class="bg-white border-2 border-blue-200 rounded-xl p-4">
+            <h3 class="font-bold text-slate-800 text-base mb-3">📚 المفردات المفتاحيّة ({{ a.schluesselwoerter.length }})</h3>
+            <ul class="space-y-2">
+              @for (w of a.schluesselwoerter; track w.wort) {
+                <li class="bg-blue-50/40 border border-blue-100 rounded-lg p-3">
+                  <div class="flex items-start justify-between gap-2 flex-wrap">
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-baseline gap-2" dir="ltr">
+                        @if (w.artikel) {
+                          <span class="text-sm font-bold"
+                                [class.text-blue-600]="w.artikel === 'der'"
+                                [class.text-rose-600]="w.artikel === 'die'"
+                                [class.text-emerald-600]="w.artikel === 'das'">{{ w.artikel }}</span>
+                        }
+                        <span class="font-bold text-slate-800">{{ w.wort }}</span>
+                      </div>
+                      <div class="text-sm text-slate-700" dir="rtl">{{ w.ar }}</div>
+                    </div>
+                    <div class="flex gap-1 shrink-0">
+                      <button (click)="speak((w.artikel ? w.artikel + ' ' : '') + w.wort, $event)" class="text-xs bg-white border border-slate-200 rounded-full px-2 py-1 hover:bg-slate-50">🔊</button>
+                      <button (click)="openAsk(w.wort, w.satz || '')" class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 hover:bg-purple-200">🤖</button>
+                      <button (click)="addWord(w)"
+                              [disabled]="isAdded('word:' + w.wort)"
+                              class="text-xs rounded-full px-2 py-1"
+                              [class.bg-slate-800]="!isAdded('word:' + w.wort)"
+                              [class.text-white]="!isAdded('word:' + w.wort)"
+                              [class.bg-green-100]="isAdded('word:' + w.wort)"
+                              [class.text-green-800]="isAdded('word:' + w.wort)">
+                        {{ isAdded('word:' + w.wort) ? '✓' : '📖' }}
+                      </button>
+                    </div>
+                  </div>
+                  @if (w.satz) {
+                    <div class="text-xs text-slate-600 bg-white rounded p-2 mt-2 border border-slate-200" dir="ltr">
+                      💬 <em>{{ w.satz }}</em>
+                    </div>
+                  }
+                </li>
+              }
+            </ul>
+          </section>
+        }
+
+        <!-- 🏃 أفعال -->
+        @if (a.verben.length) {
+          <section class="bg-white border-2 border-emerald-200 rounded-xl p-4">
+            <h3 class="font-bold text-slate-800 text-base mb-3">🏃 الأفعال المهمّة ({{ a.verben.length }})</h3>
+            <ul class="space-y-2">
+              @for (v of a.verben; track v.infinitiv) {
+                <li class="bg-emerald-50/40 border border-emerald-100 rounded-lg p-3">
+                  <div class="flex items-start justify-between gap-2 flex-wrap">
+                    <div class="flex-1 min-w-0">
+                      <div class="font-bold text-slate-800" dir="ltr">
+                        {{ v.infinitiv }}
+                        @if (v.partizip) { <span class="text-xs text-slate-500 font-normal">— PII: {{ v.partizip }}</span> }
+                      </div>
+                      <div class="text-sm text-slate-700" dir="rtl">{{ v.ar }}</div>
+                      @if (v.praeposition) {
+                        <div class="text-xs text-indigo-700 mt-0.5" dir="ltr">⚡ Präposition: {{ v.praeposition }}</div>
+                      }
+                    </div>
+                    <div class="flex gap-1 shrink-0">
+                      <button (click)="speak(v.infinitiv, $event)" class="text-xs bg-white border border-slate-200 rounded-full px-2 py-1 hover:bg-slate-50">🔊</button>
+                      <button (click)="openAsk(v.infinitiv, v.satz || '')" class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 hover:bg-purple-200">🤖</button>
+                      <button (click)="addVerb(v)"
+                              [disabled]="isAdded('verb:' + v.infinitiv)"
+                              class="text-xs rounded-full px-2 py-1"
+                              [class.bg-slate-800]="!isAdded('verb:' + v.infinitiv)"
+                              [class.text-white]="!isAdded('verb:' + v.infinitiv)"
+                              [class.bg-green-100]="isAdded('verb:' + v.infinitiv)"
+                              [class.text-green-800]="isAdded('verb:' + v.infinitiv)">
+                        {{ isAdded('verb:' + v.infinitiv) ? '✓' : '📖' }}
+                      </button>
+                    </div>
+                  </div>
+                  @if (v.satz) {
+                    <div class="text-xs text-slate-600 bg-white rounded p-2 mt-2 border border-slate-200" dir="ltr">
+                      💬 <em>{{ v.satz }}</em>
+                    </div>
+                  }
+                </li>
+              }
+            </ul>
+          </section>
+        }
+
+        <!-- 📐 قاعدة بارزة -->
+        @if (a.grammatikfokus; as g) {
+          <section class="bg-amber-50 border-2 border-amber-300 rounded-xl p-4">
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <h3 class="font-bold text-slate-800 text-base">📐 القاعدة الظاهرة: <span dir="ltr">{{ g.thema }}</span></h3>
+              <button (click)="openAsk('القاعدة: ' + g.thema, g.erklaerungAr)" class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 hover:bg-purple-200 shrink-0">🤖 اشرح أكثر</button>
+            </div>
+            <p class="text-sm text-slate-800 leading-relaxed" dir="rtl">{{ g.erklaerungAr }}</p>
+          </section>
+        }
+
+        <!-- ⚠️ ملاحظات -->
+        @if (a.hinweise.length) {
+          <section class="bg-red-50 border-2 border-red-200 rounded-xl p-4">
+            <h3 class="font-bold text-slate-800 text-base mb-2">⚠️ ملاحظات مهمّة ({{ a.hinweise.length }})</h3>
+            <ul class="space-y-2">
+              @for (h of a.hinweise; track $index) {
+                <li class="bg-white border border-red-100 rounded p-3">
+                  <div class="text-xs font-bold text-red-700 mb-0.5">{{ h.typ }}</div>
+                  <div class="text-sm text-slate-800" dir="rtl">{{ h.beschreibung }}</div>
+                </li>
+              }
+            </ul>
+          </section>
+        }
+
+        <!-- ❓ أسئلة فهم -->
+        @if (a.verstaendnisfragen.length) {
+          <section class="bg-white border-2 border-slate-200 rounded-xl p-4">
+            <h3 class="font-bold text-slate-800 text-base mb-2">❓ اختبر فهمك ({{ a.verstaendnisfragen.length }})</h3>
+            <ol class="space-y-2 text-sm">
+              @for (f of a.verstaendnisfragen; track $index) {
+                <li class="bg-slate-50 border border-slate-200 rounded p-3">
+                  <div class="font-semibold text-slate-800" dir="rtl">{{ $index + 1 }}. {{ f.frage }}</div>
+                  <details class="mt-1">
+                    <summary class="text-xs text-indigo-700 cursor-pointer hover:underline">↳ الإجابة</summary>
+                    <p class="text-slate-700 mt-1 text-sm" dir="rtl">{{ f.antwort }}</p>
+                  </details>
+                </li>
+              }
+            </ol>
+          </section>
+        }
+
+        <!-- رابط للمراجعة -->
+        <div class="text-center text-sm text-slate-500 py-2">
+          ✅ العناصر المُضافة تظهر في
+          <a [routerLink]="'/dictionary/review'" class="text-indigo-600 hover:underline">مراجعة القاموس</a>.
+        </div>
+      </div>
+    }
+
+    <!-- ═══ الدروس المحفوظة ═══ -->
+    @if (svc.saved().length) {
+      <section class="mt-8 border-t border-slate-200 pt-5">
+        <h2 class="font-bold text-slate-800 text-sm mb-3">📂 دروسك السابقة ({{ svc.saved().length }})</h2>
+        <div class="space-y-2">
+          @for (l of svc.saved(); track l.id) {
+            <button (click)="loadSaved(l)"
+                    class="w-full bg-white border border-slate-200 rounded-lg p-3 text-right hover:border-indigo-400 flex items-start gap-2">
+              <div class="flex-1 min-w-0">
+                <div class="font-semibold text-slate-800 text-sm truncate" dir="ltr">{{ l.titel }}</div>
+                <div class="text-xs text-slate-500 flex gap-2 mt-0.5">
+                  <span>{{ formatDate(l.erstelltAm) }}</span>
+                  <span>·</span>
+                  <span>{{ l.analyse.niveau }}</span>
+                  <span>·</span>
+                  <span>{{ wordCount(l.originaltext) }} كلمة</span>
+                </div>
+              </div>
+              <button (click)="deleteSaved(l.id, $event)" class="text-slate-400 hover:text-red-600 text-xs shrink-0">✕</button>
+            </button>
+          }
+        </div>
+      </section>
+    }
+  }
+
+  <!-- ═══ Modal Claude Ask ═══ -->
+  @if (askOpen()) {
+    <div class="fixed inset-0 z-40 bg-black/50 flex items-center justify-center p-3" (click)="closeAsk()">
+      <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-5 shadow-2xl" (click)="$event.stopPropagation()" dir="rtl">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex-1 min-w-0">
+            <div class="text-xs text-purple-700 font-mono">السياق</div>
+            <h3 class="font-bold text-slate-800" dir="ltr">🤖 {{ askLabel() }}</h3>
+          </div>
+          <button (click)="closeAsk()" class="text-slate-400 hover:text-slate-700 text-2xl leading-none">×</button>
+        </div>
+
+        <form (submit)="submitAsk(); $event.preventDefault()" class="flex gap-2 mb-2">
+          <input type="text" [(ngModel)]="askQuestion" name="q"
+                 placeholder="اكتب سؤالك… مثلاً: اشرح لي أكثر"
+                 [disabled]="askLoading()"
+                 dir="rtl"
+                 class="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-purple-500 outline-none disabled:bg-slate-50" />
+          <button type="submit" [disabled]="askQuestion().trim().length < 2 || askLoading()"
+                  class="bg-purple-600 text-white rounded-lg px-4 py-2 text-sm font-semibold hover:bg-purple-700 disabled:opacity-40">
+            @if (askLoading()) { ⏳ } @else { إرسال }
+          </button>
+        </form>
+
+        @if (askError()) { <p class="text-xs text-red-700 bg-red-50 border border-red-200 rounded p-2 mb-2">⚠️ {{ askError() }}</p> }
+
+        @if (askAnswer()) {
+          <div class="bg-purple-50 border border-purple-200 rounded-xl p-4 mt-3">
+            <p class="text-sm text-slate-800 whitespace-pre-line leading-relaxed" dir="rtl">{{ askAnswer() }}</p>
+          </div>
+        }
+
+        @if (askContext()) {
+          <details class="mt-3">
+            <summary class="text-xs text-slate-500 cursor-pointer hover:underline">📎 السياق المرجعي</summary>
+            <div class="text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded p-2 mt-1 whitespace-pre-line" dir="ltr">{{ askContext() }}</div>
+          </details>
+        }
+      </div>
+    </div>
+  }
+</section>
