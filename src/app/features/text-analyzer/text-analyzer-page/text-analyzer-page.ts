@@ -45,7 +45,9 @@ export class TextAnalyzerPage {
 
   readonly charCount = computed(() => this.input().trim().length);
   readonly estimatedTokens = computed(() => Math.ceil(this.charCount() / 3) + 1200);
-  readonly canAnalyze = computed(() => this.charCount() >= 50 && this.charCount() <= 5000 && !this.svc.loading());
+  // الحدّ الأقصى الآن 2500 (تفادي timeout Vercel Edge). الـ3000-5000 أمنها غير مضمون.
+  readonly canAnalyze = computed(() => this.charCount() >= 50 && this.charCount() <= 2500 && !this.svc.loading());
+  readonly isLongText = computed(() => this.charCount() > 1500);
 
   /** أسئلة Claude داخل الصفحة (نافذة منبثقة) */
   readonly askOpen = signal(false);

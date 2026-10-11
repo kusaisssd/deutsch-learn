@@ -43,13 +43,15 @@
         dir="ltr"
         class="w-full p-3 border border-slate-300 rounded-md focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none resize-y text-slate-800 font-mono text-sm"></textarea>
       <div class="flex items-center justify-between gap-2 mt-2 text-xs">
-        <span [class.text-red-600]="charCount() < 50 || charCount() > 5000"
-              [class.text-slate-500]="charCount() >= 50 && charCount() <= 5000">
-          {{ charCount() }} / 5000 حرف · ~{{ estimatedTokens() }} توكن
+        <span [class.text-red-600]="charCount() < 50 || charCount() > 2500"
+              [class.text-amber-600]="isLongText() && charCount() <= 2500"
+              [class.text-slate-500]="charCount() >= 50 && !isLongText()">
+          {{ charCount() }} / 2500 حرف
+          @if (isLongText()) { · ⚠️ نص طويل، قد يتأخّر }
         </span>
         <button (click)="run()" [disabled]="!canAnalyze()"
                 class="bg-emerald-600 text-white rounded-lg px-5 py-2 font-semibold hover:bg-emerald-700 disabled:opacity-40">
-          @if (svc.loading()) { ⏳ جارٍ التحليل… } @else { 🔍 حلّل بالـ AI }
+          @if (svc.loading()) { ⏳ جارٍ التحليل (قد يأخذ 20 ثانية)… } @else { 🔍 حلّل بالـ AI }
         </button>
       </div>
     </div>

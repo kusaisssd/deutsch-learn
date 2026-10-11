@@ -35,8 +35,8 @@ export class TextAnalyzerService {
   /** استدعاء AI لتحليل نصّ. يُرجع التحليل أو null عند الفشل. */
   async analyze(text: string): Promise<TextAnalysis | null> {
     const t = text.trim();
-    if (t.length < 50 || t.length > 5000) {
-      this._error.set('النصّ يجب أن يكون بين 50 و 5000 حرف.');
+    if (t.length < 50 || t.length > 2500) {
+      this._error.set('النصّ يجب أن يكون بين 50 و 2500 حرف (تفادياً لمهلة الخادم).');
       return null;
     }
     if (!this.available()) {

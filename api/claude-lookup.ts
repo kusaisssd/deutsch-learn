@@ -11,7 +11,7 @@
  * يُرجع JSON منظّم قابل للعرض مباشرةً.
  */
 
-export const config = { runtime: 'edge' };
+export const config = { runtime: 'edge', maxDuration: 60 };
 
 // ─── حماية بسيطة: تحديد بسيط للاستخدام لكل IP (per warm instance) ───
 const HITS = new Map<string, number[]>();
@@ -89,70 +89,53 @@ Antworte NUR mit einem JSON-Objekt (ohne Markdown, ohne Codeblock-Fences):
 }`;
 
 /**
- * PROMPT_ANALYZE — تحليل نصّ ألماني كامل كـ«درس» منظّم.
- * يُرجَع JSON خالص بالبنية الموصوفة أدناه.
+ * PROMPT_ANALYZE — تحليل مختصر و سريع لتفادي الـ timeout.
  */
-const PROMPT_ANALYZE = (text: string) => `Du bist ein erfahrener Deutschlehrer für arabischsprachige Lernende auf B1-Niveau.
-Analysiere den folgenden deutschen Text und erzeuge daraus eine strukturierte Lerneinheit.
+const PROMPT_ANALYZE = (text: string) => `Du bist ein Deutschlehrer für arabischsprachige B1-Lerner.
+Analysiere den Text und erzeuge eine KOMPAKTE Lerneinheit. Sei prägnant.
 
 TEXT:
 """
 ${text}
 """
 
-Antworte NUR mit einem gültigen JSON-Objekt (ohne Markdown, ohne Codeblock-Fences, ohne Vor- oder Nachwort) nach genau diesem Schema:
+Antworte NUR mit einem gültigen JSON-Objekt (ohne Markdown, ohne Codeblock-Fences, ohne Vor- oder Nachwort):
 
 {
-  "zusammenfassung": "ملخّص عربي قصير (2-3 جمل) لمضمون النصّ",
-  "textsorte": "Nachrichtentext | Blogbeitrag | Dialog | Erfahrungsbericht | Werbetext | Essay | Rezension | Mail | Anderes",
+  "zusammenfassung": "ملخّص عربي في جملتين قصيرتين",
+  "textsorte": "Nachrichtentext | Blog | Dialog | Essay | Mail | Anderes",
   "niveau": "A2 | B1 | B2 | C1",
   "wortzahl": number,
   "redewendungen": [
-    { "phrase": "deutsche feste Redewendung oder vollständige Phrase (NICHT nur ein Wort)",
-      "ar": "الترجمة العربيّة الدقيقة",
-      "erklaerungAr": "شرح متى تُستعمل بالعربيّة",
-      "satz": "die vollständige Satzzeile aus dem Text, in der sie vorkam" }
+    { "phrase": "vollständige Phrase (keine Einzelwörter)", "ar": "ترجمة قصيرة", "satz": "kurze Satzzeile aus Text" }
   ],
   "schluesselwoerter": [
-    { "wort": "wichtiges Nomen oder Adjektiv aus dem Text",
-      "artikel": "der | die | das",
-      "ar": "الترجمة",
-      "satz": "die Satzzeile aus dem Text" }
+    { "wort": "Nomen oder Adjektiv", "artikel": "der|die|das", "ar": "ترجمة", "satz": "kurze Satzzeile" }
   ],
   "verben": [
-    { "infinitiv": "Verb-Infinitiv (z. B. erreichen)",
-      "partizip": "Partizip II (erreicht)",
-      "praeposition": "feste Präposition falls vorhanden, z. B. sprechen über (A), sonst leerer String",
-      "ar": "الترجمة",
-      "satz": "die Satzzeile aus dem Text" }
+    { "infinitiv": "verb", "partizip": "PII", "praeposition": "", "ar": "ترجمة", "satz": "kurze Satzzeile" }
   ],
   "grammatikfokus": {
-    "thema": "die dominante Grammatik im Text (z. B. Perfekt, Passiv, Konjunktiv II, Relativsätze, Modalverben)",
-    "erklaerungAr": "شرح موجز بالعربيّة (3-5 جمل) للقاعدة مع مثال من النصّ"
+    "thema": "dominante Grammatik",
+    "erklaerungAr": "شرح عربي موجز في 2-3 جمل"
   },
   "hinweise": [
-    { "typ": "False Friend | Besonderheit | Umgangssprache | Grammatikfalle",
-      "beschreibung": "تنبيه بالعربيّة لنقطة قد يخطئ فيها المتعلّم" }
+    { "typ": "Besonderheit", "beschreibung": "ملاحظة عربيّة قصيرة" }
   ],
   "verstaendnisfragen": [
-    { "frage": "سؤال فهم بالعربيّة", "antwort": "الإجابة بالعربيّة" }
+    { "frage": "سؤال", "antwort": "جواب قصير" }
   ],
-  "lernziele": [
-    "هدف تعلّم 1 عربي (مثلاً: استعمال Perfekt مع sein)",
-    "هدف تعلّم 2 عربي",
-    "هدف تعلّم 3 عربي"
-  ]
+  "lernziele": ["هدف 1", "هدف 2"]
 }
 
-Qualitätsanforderungen (sehr wichtig):
-- 3-6 Redewendungen (vollständige Phrasen, NICHT einzelne Wörter)
-- 8-15 Schlüsselwörter (die TATSÄCHLICH im Text sind)
-- 5-10 Verben (die TATSÄCHLICH im Text sind)
-- 2-4 Hinweise
-- 3 Verständnisfragen
-- Alle "satz"-Felder enthalten einen echten Satzausschnitt AUS dem Text
-- Niveau-Angabe realistisch (nicht alles automatisch B2)
-- Für arabischsprachige B1-Lernende: einfache arabische Erklärungen, nicht zu literarisch`;
+Mengen (unbedingt einhalten für kurze Antwort):
+- redewendungen: GENAU 3 (vollständige Phrasen, nicht Einzelwörter)
+- schluesselwoerter: GENAU 6
+- verben: GENAU 4
+- hinweise: GENAU 2
+- verstaendnisfragen: GENAU 3
+- lernziele: GENAU 2
+- Alle Felder KURZ. Keine langen Erklärungen.`;
 
 const PROMPT_DEEP = (word: string) => `Du bist ein Deutschlehrer für arabischsprachige Lernende und lieferst
 eine VERTIEFTE Erklärung des Wortes/Ausdrucks "${word}".
@@ -277,6 +260,16 @@ export default async function handler(req: Request): Promise<Response> {
   }
 
   try {
+    // timeout: 50 ثانية (ضمن حدود Vercel Pro 60s + هامش أمان)
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 50_000);
+
+    // max_tokens مُقنَّن حسب الوضع — analyze مختصر لتفادي الـ504
+    const maxTokens = mode === 'analyze' ? 2000
+                    : mode === 'deep'    ? 1400
+                    : mode === 'ask'     ? 1200
+                    : 350;
+
     const upstream = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -286,10 +279,7 @@ export default async function handler(req: Request): Promise<Response> {
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: mode === 'analyze' ? 3500
-                 : mode === 'deep'    ? 1400
-                 : mode === 'ask'     ? 1200
-                 : 350,
+        max_tokens: maxTokens,
         messages: [{
           role: 'user',
           content: mode === 'analyze' ? PROMPT_ANALYZE(word!)
@@ -298,7 +288,9 @@ export default async function handler(req: Request): Promise<Response> {
                  : PROMPT_BASIC(word!),
         }],
       }),
+      signal: controller.signal,
     });
+    clearTimeout(timer);
 
     if (!upstream.ok) {
       const text = await upstream.text();
@@ -344,8 +336,14 @@ export default async function handler(req: Request): Promise<Response> {
     });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    return new Response(JSON.stringify({ error: 'Serverfehler', detail: msg }), {
-      status: 500,
+    const isAbort = err instanceof Error && err.name === 'AbortError';
+    return new Response(JSON.stringify({
+      error: isAbort
+        ? 'انتهت المهلة. حاول بنصّ أقصر (أقل من 1500 حرف).'
+        : 'Serverfehler',
+      detail: msg,
+    }), {
+      status: isAbort ? 504 : 500,
       headers: { 'content-type': 'application/json', ...cors },
     });
   }
