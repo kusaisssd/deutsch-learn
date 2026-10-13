@@ -37,6 +37,13 @@ export interface TAFrage {
   antwort: string;     // عربي
 }
 
+/** توصية تطوير — بند يرفع مستوى القارئ ليتمكّن من فهم نصوص مثل هذه بنفسه */
+export interface TANiveauTipp {
+  aspekt: string;         // «Konnektoren», «Perfekt-Formen», «الأسماء المركّبة»…
+  empfehlungAr: string;   // النصيحة بالعربيّة
+  uebungsidee?: string;   // اقتراح تمرين قصير (عربي)
+}
+
 /** الناتج الكامل من /api/claude-lookup?mode=analyze */
 export interface TextAnalysis {
   zusammenfassung: string;  // ملخّص عربي قصير
@@ -50,6 +57,7 @@ export interface TextAnalysis {
   hinweise: TAHinweis[];
   verstaendnisfragen: TAFrage[];
   lernziele: string[];      // 2-3 أهداف عربي
+  niveauentwicklung?: TANiveauTipp[];  // توصيات لرفع المستوى
 }
 
 /** درس محفوظ محلياً */

@@ -125,7 +125,12 @@ Antworte NUR mit einem gültigen JSON-Objekt (ohne Markdown, ohne Codeblock-Fenc
   "verstaendnisfragen": [
     { "frage": "سؤال", "antwort": "جواب قصير" }
   ],
-  "lernziele": ["هدف 1", "هدف 2"]
+  "lernziele": ["هدف 1", "هدف 2"],
+  "niveauentwicklung": [
+    { "aspekt": "konkreter Skill oder Grammatik-Punkt",
+      "empfehlungAr": "توصية عملية بالعربيّة لتطوير هذا الجانب (2-3 جمل قصيرة)",
+      "uebungsidee": "اقتراح تمرين سريع لتدريب هذا الجانب" }
+  ]
 }
 
 Mengen (unbedingt einhalten für kurze Antwort):
@@ -135,7 +140,15 @@ Mengen (unbedingt einhalten für kurze Antwort):
 - hinweise: GENAU 2
 - verstaendnisfragen: GENAU 3
 - lernziele: GENAU 2
+- niveauentwicklung: GENAU 3 (توصيات عمليّة محدّدة لرفع المستوى حتى يصبح قادراً على فهم نصوص كهذه بنفسه)
 - Alle Felder KURZ. Keine langen Erklärungen.
+
+Besonders wichtig für niveauentwicklung:
+Identifiziere die 3 KONKRETEN Schwierigkeiten in diesem Text (z. B. Konnektoren,
+Perfekt-Formen, zusammengesetzte Nomen, idiomatische Phrasen, Konjunktiv II) und
+gib für JEDE eine praktische Empfehlung, WAS der Lerner üben soll, damit er beim
+nächsten Text dieser Art nicht mehr stolpert. Jede Empfehlung soll konkret und
+umsetzbar sein, nicht generisch wie "mehr lesen".
 
 AUSWAHL-KRITERIEN — SEHR WICHTIG:
 Wähle für schluesselwoerter und verben die SCHWIEREN / FORTGESCHRITTENEN Wörter,
