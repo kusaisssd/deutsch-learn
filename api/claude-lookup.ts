@@ -140,15 +140,16 @@ Schema (genau diese Felder, keine zusätzlichen):
   ]
 }
 
-Mengen (unbedingt einhalten für kurze Antwort):
-- redewendungen: GENAU 4 (vollständige Phrasen, nicht Einzelwörter)
-- schluesselwoerter: GENAU 8
-- verben: GENAU 6
+Mengen (unbedingt einhalten — kurze Antwort, kein Overflow):
+- redewendungen: GENAU 3 (vollständige Phrasen, nicht Einzelwörter)
+- schluesselwoerter: GENAU 6
+- verben: GENAU 5
 - hinweise: GENAU 2
 - verstaendnisfragen: GENAU 3
 - lernziele: GENAU 2
 - niveauentwicklung: GENAU 3 (توصيات عمليّة محدّدة لرفع المستوى حتى يصبح قادراً على فهم نصوص كهذه بنفسه)
-- Alle Felder KURZ. Keine langen Erklärungen.
+- Alle Felder EXTREM KURZ. Keine Erklärungen länger als 15 Wörter.
+- "satz"-Felder NUR 1 Satz (max. 12 Wörter), nicht ganze Paragraphen.
 
 Besonders wichtig für niveauentwicklung:
 Identifiziere die 3 KONKRETEN Schwierigkeiten in diesem Text (z. B. Konnektoren,
@@ -303,7 +304,7 @@ export default async function handler(req: Request): Promise<Response> {
     const timer = setTimeout(() => controller.abort(), 50_000);
 
     // max_tokens مُقنَّن حسب الوضع — analyze مختصر لتفادي الـ504
-    const maxTokens = mode === 'analyze' ? 3000
+    const maxTokens = mode === 'analyze' ? 2200
                     : mode === 'deep'    ? 1400
                     : mode === 'ask'     ? 1200
                     : 350;
