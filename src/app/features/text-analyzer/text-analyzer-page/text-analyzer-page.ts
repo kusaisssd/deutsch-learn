@@ -51,13 +51,39 @@ export class TextAnalyzerPage {
 
   /** أسئلة Claude داخل الصفحة (نافذة منبثقة) */
   readonly askOpen = signal(false);
-  readonly askType = signal<'word' | 'verb' | 'phrase' | 'grammar' | 'hinweis' | 'generic'>('generic');
+  readonly askType = signal<'word' | 'verb' | 'phrase' | 'grammar' | 'hinweis' | 'niveau' | 'generic'>('generic');
   readonly askLabel = signal('');
   readonly askContext = signal('');
   readonly askQuestion = signal('');
   readonly askAnswer = signal('');
   readonly askLoading = signal(false);
   readonly askError = signal<string | null>(null);
+
+  /** حلول توصيات التطوير — key = index، value = نصّ الحلّ */
+  readonly tippSolutions = signal<Record<number, string>>({});
+  readonly tippLoading = signal<number | null>(null);
+
+  async solveTipp(index: number, aspekt: string, uebung: string) {
+    if (this.tippSolutions()[index] || this.tippLoading() !== null) return;
+    if (!this.claude.available()) {
+      this.openAsk(aspekt, uebung, 'niveau');
+      return;
+    }
+    this.tippLoading.set(index);
+    try {
+      const prompt = `نفّذ هذا التمرين التدريبي بشكل مثاليّ و قدّم الحلّ الكامل مع شرح موجز (3-5 جمل كحدّ أقصى) باللغة العربيّة. التركيز على «${aspekt}».`;
+      const answer = await this.claude.ask(uebung, prompt);
+      if (answer) {
+        this.tippSolutions.update(s => ({ ...s, [index]: answer }));
+      }
+    } finally {
+      this.tippLoading.set(null);
+    }
+  }
+
+  hideTippSolution(index: number) {
+    this.tippSolutions.update(s => { const n = { ...s }; delete n[index]; return n; });
+  }
 
   /** قوائم الأسئلة الجاهزة حسب نوع العنصر */
   private readonly PRESETS = {
@@ -92,6 +118,12 @@ export class TextAnalyzerPage {
       { label: '💡 أمثلة من خارج النصّ', prompt: 'أعطني 4 أمثلة ألمانيّة إضافيّة توضّح هذه الملاحظة، **مختلفة عن النصّ الأصلي**، مع ترجمة.' },
       { label: '🔍 اشرح بالتفصيل', prompt: 'اشرح هذه الملاحظة بتفصيل أكبر مع 3 أمثلة واقعيّة.' },
       { label: '⚠️ أمثلة الخطأ و الصحّ', prompt: 'أعطني مقارنة واضحة بين الاستعمال الخطأ و الصحيح لهذه النقطة.' },
+    ],
+    niveau: [
+      { label: '📝 أعطني الحلّ', prompt: 'نفّذ هذا التمرين التدريبي بشكل مثاليّ، قدّم الحلّ الكامل مع شرح موجز (3-5 جمل كحدّ أقصى).' },
+      { label: '🧪 تمرين مماثل آخر', prompt: 'اصنع لي تمريناً مماثلاً جديداً من نوع مختلف قليلاً، ثم ضع الحلّ.' },
+      { label: '🔍 اشرح الجانب', prompt: 'اشرح لي هذا الجانب النحوي أو المهاري بتفصيل مع 3 أمثلة لتجنّب الخطأ.' },
+      { label: '📚 موارد تعلّم', prompt: 'ما أفضل الطرق أو المصادر لتدريب هذا الجانب؟ أعطني خطّة تدريب لأسبوع.' },
     ],
     generic: [
       { label: '💡 أمثلة من خارج النصّ', prompt: 'أعطني 5 أمثلة ألمانيّة إضافيّة متعلّقة بهذا السياق، **مختلفة** عن النصّ الأصلي، مع ترجمة.' },
@@ -178,7 +210,7 @@ export class TextAnalyzerPage {
   isAdded(key: string): boolean { return this.savedItems().has(key); }
 
   // ─── اسأل Claude عن عنصر ───
-  openAsk(label: string, context: string, type: 'word' | 'verb' | 'phrase' | 'grammar' | 'hinweis' | 'generic' = 'generic') {
+  openAsk(label: string, context: string, type: 'word' | 'verb' | 'phrase' | 'grammar' | 'hinweis' | 'niveau' | 'generic' = 'generic') {
     this.askType.set(type);
     this.askLabel.set(label);
     this.askContext.set(context);
