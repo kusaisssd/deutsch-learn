@@ -148,8 +148,12 @@ Mengen (unbedingt einhalten — kurze Antwort, kein Overflow):
 - verstaendnisfragen: GENAU 3
 - lernziele: GENAU 2
 - niveauentwicklung: GENAU 3 (توصيات عمليّة محدّدة لرفع المستوى حتى يصبح قادراً على فهم نصوص كهذه بنفسه)
-- Alle Felder EXTREM KURZ. Keine Erklärungen länger als 15 Wörter.
+- Alle Felder EXTREM KURZ. KEINE Erklärungen länger als 15 Wörter.
 - "satz"-Felder NUR 1 Satz (max. 12 Wörter), nicht ganze Paragraphen.
+- "ar"-Felder: eine kurze arabische Übersetzung (max. 8 Wörter), KEINE Erklärungen.
+- "empfehlungAr" & "uebungsidee": je 1-2 Sätze maximal, KEINE Aufzählungen.
+- "zusammenfassung": GENAU 2 Sätze, keine Einleitung wie "في هذا النصّ".
+- Gesamtlänge der Antwort: unbedingt UNTER 2000 Zeichen bleiben.
 
 Besonders wichtig für niveauentwicklung:
 Identifiziere die 3 KONKRETEN Schwierigkeiten in diesem Text (z. B. Konnektoren,
@@ -304,7 +308,7 @@ export default async function handler(req: Request): Promise<Response> {
     const timer = setTimeout(() => controller.abort(), 50_000);
 
     // max_tokens مُقنَّن حسب الوضع — analyze مختصر لتفادي الـ504
-    const maxTokens = mode === 'analyze' ? 2200
+    const maxTokens = mode === 'analyze' ? 2600
                     : mode === 'deep'    ? 1400
                     : mode === 'ask'     ? 1200
                     : 350;
@@ -369,20 +373,55 @@ export default async function handler(req: Request): Promise<Response> {
     if (extracted) cleaned = extracted;
     cleaned = cleaned.replace(/,\s*([}\]])/g, '$1'); // trailing commas
 
+    // إصلاح JSON المقطوع (إن نفد max_tokens): إغلاق string مفتوح و الأقواس المعلّقة
+    const repairTruncated = (txt: string): string => {
+      let s = txt;
+      // عدّ علامات الاقتباس (خارج escape) لمعرفة إن كان هناك string مفتوح
+      let inString = false, escape = false;
+      let openBraces = 0, openBrackets = 0;
+      for (let i = 0; i < s.length; i++) {
+        const c = s[i];
+        if (escape) { escape = false; continue; }
+        if (c === '\\') { escape = true; continue; }
+        if (c === '"') inString = !inString;
+        else if (!inString) {
+          if (c === '{') openBraces++;
+          else if (c === '}') openBraces--;
+          else if (c === '[') openBrackets++;
+          else if (c === ']') openBrackets--;
+        }
+      }
+      if (inString) s += '"';
+      // قد يكون آخر field غير مكتمل («"foo":» بلا قيمة) → احذف
+      s = s.replace(/,\s*"[^"]*"\s*:\s*$/, '');
+      s = s.replace(/,\s*$/, '');
+      while (openBrackets-- > 0) s += ']';
+      while (openBraces-- > 0) s += '}';
+      return s;
+    };
+
     let parsed: unknown;
     try {
       parsed = JSON.parse(cleaned);
-    } catch (parseErr) {
-      const msg = parseErr instanceof Error ? parseErr.message : 'parse error';
-      return new Response(JSON.stringify({
-        error: 'Claude hat kein gültiges JSON zurückgegeben.',
-        detail: msg,
-        raw: raw.slice(0, 500),
-        cleaned: cleaned.slice(0, 500),
-      }), {
-        status: 502,
-        headers: { 'content-type': 'application/json', ...cors },
-      });
+    } catch (firstErr) {
+      // محاولة ثانية: أصلح JSON المقطوع
+      try {
+        const repaired = repairTruncated(cleaned);
+        parsed = JSON.parse(repaired);
+      } catch {
+        // كلا المحاولتين فشلتا — أعد الخطأ الأصلي
+        const parseErr = firstErr;
+        const msg = parseErr instanceof Error ? parseErr.message : 'parse error';
+        return new Response(JSON.stringify({
+          error: 'Claude hat kein gültiges JSON zurückgegeben.',
+          detail: msg,
+          raw: raw.slice(0, 500),
+          cleaned: cleaned.slice(0, 500),
+        }), {
+          status: 502,
+          headers: { 'content-type': 'application/json', ...cors },
+        });
+      }
     }
 
     // نطبّق cache على basic/deep فقط — ask و analyze مخصّصان لكل نصّ
