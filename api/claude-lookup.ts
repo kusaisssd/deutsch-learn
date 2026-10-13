@@ -92,14 +92,21 @@ Antworte NUR mit einem JSON-Objekt (ohne Markdown, ohne Codeblock-Fences):
  * PROMPT_ANALYZE — تحليل مختصر و سريع لتفادي الـ timeout.
  */
 const PROMPT_ANALYZE = (text: string) => `Du bist ein Deutschlehrer für arabischsprachige B1-Lerner.
-Analysiere den Text und erzeuge eine KOMPAKTE Lerneinheit. Sei prägnant.
+Analysiere den Text und erzeuge eine KOMPAKTE Lerneinheit.
+
+⚠️ KRITISCH — AUSGABEFORMAT:
+Antworte ausschließlich mit EINEM einzigen JSON-Objekt. KEIN Vortext,
+KEIN Nachtext, KEINE Erklärung, KEINE Markdown-Fences. Die Antwort muss
+mit "{" beginnen und mit "}" enden. ALLE Klammern vollständig schließen.
+Verwende KEINE trailing commas. Alle Strings in doppelten Anführungszeichen.
+Prüfe am Ende dein JSON auf Gültigkeit.
 
 TEXT:
 """
 ${text}
 """
 
-Antworte NUR mit einem gültigen JSON-Objekt (ohne Markdown, ohne Codeblock-Fences, ohne Vor- oder Nachwort):
+Schema (genau diese Felder, keine zusätzlichen):
 
 {
   "zusammenfassung": "ملخّص عربي في جملتين قصيرتين",
@@ -296,7 +303,7 @@ export default async function handler(req: Request): Promise<Response> {
     const timer = setTimeout(() => controller.abort(), 50_000);
 
     // max_tokens مُقنَّن حسب الوضع — analyze مختصر لتفادي الـ504
-    const maxTokens = mode === 'analyze' ? 2500
+    const maxTokens = mode === 'analyze' ? 3000
                     : mode === 'deep'    ? 1400
                     : mode === 'ask'     ? 1200
                     : 350;
@@ -336,16 +343,28 @@ export default async function handler(req: Request): Promise<Response> {
 
     const data = (await upstream.json()) as ClaudeResponse;
     const raw = data.content?.[0]?.text ?? '';
-    // strip markdown fences if any
-    const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+
+    // استخراج JSON بشكل متسامح:
+    //   1) جرّد الـ ```json fences
+    //   2) ابحث عن أوّل { و آخر } في النصّ (يتجاهل أي preamble/postamble)
+    //   3) أزل الفواصل الزائدة (trailing commas) قبل } أو ]
+    let cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+    const firstBrace = cleaned.indexOf('{');
+    const lastBrace = cleaned.lastIndexOf('}');
+    if (firstBrace >= 0 && lastBrace > firstBrace) {
+      cleaned = cleaned.slice(firstBrace, lastBrace + 1);
+    }
+    cleaned = cleaned.replace(/,\s*([}\]])/g, '$1');
 
     let parsed: unknown;
     try {
       parsed = JSON.parse(cleaned);
-    } catch {
+    } catch (parseErr) {
+      const msg = parseErr instanceof Error ? parseErr.message : 'parse error';
       return new Response(JSON.stringify({
-        error: 'Claude hat kein gültiges JSON zurückgegeben.',
-        raw: cleaned.slice(0, 500),
+        error: 'Claude hat kein gültiges JSON zurückgegeben. حاول مرّة أخرى — أحياناً تحتاج محاولتين.',
+        detail: msg,
+        raw: cleaned.slice(0, 300),
       }), {
         status: 502,
         headers: { 'content-type': 'application/json', ...cors },
