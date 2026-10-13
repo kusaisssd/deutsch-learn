@@ -109,7 +109,7 @@
                     </div>
                     <div class="flex gap-1 shrink-0">
                       <button (click)="speak(p.phrase, $event)" class="text-xs bg-white border border-slate-200 rounded-full px-2 py-1 hover:bg-slate-50">🔊</button>
-                      <button (click)="openAsk(p.phrase, p.satz || '')" class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 hover:bg-purple-200">🤖</button>
+                      <button (click)="openAsk(p.phrase, p.satz || '', 'phrase')" class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 hover:bg-purple-200">🤖</button>
                       <button (click)="addPhrase(p)"
                               [disabled]="isAdded('phrase:' + p.phrase)"
                               class="text-xs rounded-full px-2 py-1"
@@ -158,7 +158,7 @@
                     </div>
                     <div class="flex gap-1 shrink-0">
                       <button (click)="speak((w.artikel ? w.artikel + ' ' : '') + w.wort, $event)" class="text-xs bg-white border border-slate-200 rounded-full px-2 py-1 hover:bg-slate-50">🔊</button>
-                      <button (click)="openAsk(w.wort, w.satz || '')" class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 hover:bg-purple-200">🤖</button>
+                      <button (click)="openAsk(w.wort, w.satz || '', 'word')" class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 hover:bg-purple-200">🤖</button>
                       <button (click)="addWord(w)"
                               [disabled]="isAdded('word:' + w.wort)"
                               class="text-xs rounded-full px-2 py-1"
@@ -201,7 +201,7 @@
                     </div>
                     <div class="flex gap-1 shrink-0">
                       <button (click)="speak(v.infinitiv, $event)" class="text-xs bg-white border border-slate-200 rounded-full px-2 py-1 hover:bg-slate-50">🔊</button>
-                      <button (click)="openAsk(v.infinitiv, v.satz || '')" class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 hover:bg-purple-200">🤖</button>
+                      <button (click)="openAsk(v.infinitiv, v.satz || '', 'verb')" class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 hover:bg-purple-200">🤖</button>
                       <button (click)="addVerb(v)"
                               [disabled]="isAdded('verb:' + v.infinitiv)"
                               class="text-xs rounded-full px-2 py-1"
@@ -229,7 +229,7 @@
           <section class="bg-amber-50 border-2 border-amber-300 rounded-xl p-4">
             <div class="flex items-start justify-between gap-2 mb-2">
               <h3 class="font-bold text-slate-800 text-base">📐 القاعدة الظاهرة: <span dir="ltr">{{ g.thema }}</span></h3>
-              <button (click)="openAsk('القاعدة: ' + g.thema, g.erklaerungAr)" class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 hover:bg-purple-200 shrink-0">🤖 اشرح أكثر</button>
+              <button (click)="openAsk('القاعدة: ' + g.thema, g.erklaerungAr, 'grammar')" class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 hover:bg-purple-200 shrink-0">🤖 اشرح أكثر</button>
             </div>
             <p class="text-sm text-slate-800 leading-relaxed" dir="rtl">{{ g.erklaerungAr }}</p>
           </section>
@@ -242,8 +242,14 @@
             <ul class="space-y-2">
               @for (h of a.hinweise; track $index) {
                 <li class="bg-white border border-red-100 rounded p-3">
-                  <div class="text-xs font-bold text-red-700 mb-0.5">{{ h.typ }}</div>
-                  <div class="text-sm text-slate-800" dir="rtl">{{ h.beschreibung }}</div>
+                  <div class="flex items-start justify-between gap-2">
+                    <div class="flex-1 min-w-0">
+                      <div class="text-xs font-bold text-red-700 mb-0.5">{{ h.typ }}</div>
+                      <div class="text-sm text-slate-800" dir="rtl">{{ h.beschreibung }}</div>
+                    </div>
+                    <button (click)="openAsk(h.typ, h.beschreibung, 'hinweis')"
+                            class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 hover:bg-purple-200 shrink-0">🤖</button>
+                  </div>
                 </li>
               }
             </ul>
@@ -314,9 +320,20 @@
           <button (click)="closeAsk()" class="text-slate-400 hover:text-slate-700 text-2xl leading-none">×</button>
         </div>
 
+        <!-- أزرار جاهزة حسب نوع العنصر -->
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          @for (p of askPresets(); track p.label) {
+            <button (click)="usePreset(p.prompt)"
+                    [disabled]="askLoading()"
+                    class="bg-purple-50 border border-purple-300 text-purple-800 rounded-full px-3 py-1 text-xs font-semibold hover:bg-purple-100 disabled:opacity-40">
+              {{ p.label }}
+            </button>
+          }
+        </div>
+
         <form (submit)="submitAsk(); $event.preventDefault()" class="flex gap-2 mb-2">
           <input type="text" [(ngModel)]="askQuestion" name="q"
-                 placeholder="اكتب سؤالك… مثلاً: اشرح لي أكثر"
+                 placeholder="أو اكتب سؤالك الخاصّ…"
                  [disabled]="askLoading()"
                  dir="rtl"
                  class="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-purple-500 outline-none disabled:bg-slate-50" />

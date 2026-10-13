@@ -129,13 +129,31 @@ Antworte NUR mit einem gültigen JSON-Objekt (ohne Markdown, ohne Codeblock-Fenc
 }
 
 Mengen (unbedingt einhalten für kurze Antwort):
-- redewendungen: GENAU 3 (vollständige Phrasen, nicht Einzelwörter)
-- schluesselwoerter: GENAU 6
-- verben: GENAU 4
+- redewendungen: GENAU 4 (vollständige Phrasen, nicht Einzelwörter)
+- schluesselwoerter: GENAU 8
+- verben: GENAU 6
 - hinweise: GENAU 2
 - verstaendnisfragen: GENAU 3
 - lernziele: GENAU 2
-- Alle Felder KURZ. Keine langen Erklärungen.`;
+- Alle Felder KURZ. Keine langen Erklärungen.
+
+AUSWAHL-KRITERIEN — SEHR WICHTIG:
+Wähle für schluesselwoerter und verben die SCHWIEREN / FORTGESCHRITTENEN Wörter,
+NICHT die einfachen Alltagswörter. Konkret:
+
+❌ ÜBERSPRINGE triviale A1/A2-Wörter wie: haben, sein, gehen, machen, kommen,
+   gut, viel, Haus, Mann, Frau, Tag, Jahr, Zeit, Mensch, Kind, Problem.
+
+✅ WÄHLE anspruchsvollere Wörter (B1 aufwärts), die der Lerner wahrscheinlich
+   NICHT kennt: präzise Nomen, abstrakte Begriffe, idiomatische Verben,
+   Fachwortschatz, Modalpartikel, zusammengesetzte Verben, Wörter mit festen
+   Präpositionen, Nomen mit untypischem Artikel.
+
+Beispiel: statt "gehen" wähle "sich etwas aneignen" / "bevorstehen" / "zögern".
+Statt "Haus" wähle "die Hürde" / "die Rückschau" / "die Verzahnung".
+
+Für redewendungen bevorzuge echte feste Wendungen mit kultureller Bedeutung,
+keine einfachen Satzverbindungen.`;
 
 const PROMPT_DEEP = (word: string) => `Du bist ein Deutschlehrer für arabischsprachige Lernende und lieferst
 eine VERTIEFTE Erklärung des Wortes/Ausdrucks "${word}".
@@ -265,7 +283,7 @@ export default async function handler(req: Request): Promise<Response> {
     const timer = setTimeout(() => controller.abort(), 50_000);
 
     // max_tokens مُقنَّن حسب الوضع — analyze مختصر لتفادي الـ504
-    const maxTokens = mode === 'analyze' ? 2000
+    const maxTokens = mode === 'analyze' ? 2500
                     : mode === 'deep'    ? 1400
                     : mode === 'ask'     ? 1200
                     : 350;

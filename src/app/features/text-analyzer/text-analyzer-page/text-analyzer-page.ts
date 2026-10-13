@@ -51,12 +51,54 @@ export class TextAnalyzerPage {
 
   /** أسئلة Claude داخل الصفحة (نافذة منبثقة) */
   readonly askOpen = signal(false);
+  readonly askType = signal<'word' | 'verb' | 'phrase' | 'grammar' | 'hinweis' | 'generic'>('generic');
   readonly askLabel = signal('');
   readonly askContext = signal('');
   readonly askQuestion = signal('');
   readonly askAnswer = signal('');
   readonly askLoading = signal(false);
   readonly askError = signal<string | null>(null);
+
+  /** قوائم الأسئلة الجاهزة حسب نوع العنصر */
+  private readonly PRESETS = {
+    word: [
+      { label: '📝 5 أمثلة أخرى', prompt: 'أعطني 5 جمل ألمانيّة إضافيّة متنوّعة تستخدم هذه الكلمة في سياقات مختلفة، مع ترجمة عربيّة لكل جملة.' },
+      { label: '🔗 مرادفات و أضداد', prompt: 'ما مرادفات هذه الكلمة بالألمانيّة و أضدادها؟ أعطني الأهمّ منها مع الفرق الدلالي.' },
+      { label: '📐 التصريف الكامل', prompt: 'إن كانت اسماً: أعطني الحالات الأربع (Nom/Akk/Dat/Gen) مع الجمع. إن كانت صفة: أعطني مقارنتها (-er/-sten).' },
+      { label: '🎯 متى أستعملها؟', prompt: 'متى تُستعمل هذه الكلمة بالضبط؟ ما السياقات الطبيعيّة لها؟ هل هي رسميّة أم محكيّة؟' },
+      { label: '🧪 اختبرني', prompt: 'اصنع لي 3 جمل بفراغات لأُكملها لتدرّب على هذه الكلمة، ثم ضع الحلول في النهاية.' },
+    ],
+    verb: [
+      { label: '📐 جدول التصريف', prompt: 'أعطني جدول تصريف هذا الفعل في: Präsens، Präteritum، Perfekt، و Konjunktiv II (أهمّ الصيغ لكل زمن).' },
+      { label: '🔗 أفعال مشابهة', prompt: 'أعطني 3 أفعال ألمانيّة قريبة المعنى، مع الفرق الدقيق بينها.' },
+      { label: '🎯 بأزمنة مختلفة', prompt: 'أعطني 5 جمل تستخدم هذا الفعل في أزمنة مختلفة (ماضٍ، حاضر، Perfekt، مستقبل) مع ترجمة لكل جملة.' },
+      { label: '⚡ البادئات', prompt: 'إن كان لهذا الفعل بادئات (مثل an-, auf-, ab-, ver-)، أعطني أهمّ المشتقّات مع تغيّر المعنى.' },
+      { label: '🧪 اختبرني', prompt: 'اصنع لي 3 تمارين تدريبيّة بفراغات على تصريف هذا الفعل في أزمنة مختلفة، ثم ضع الحلول.' },
+    ],
+    phrase: [
+      { label: '🌍 السياق الثقافي', prompt: 'ما السياق الثقافي لهذه العبارة؟ متى يُستعملها الألمان؟ هل هناك عبارة مشابهة في العربيّة؟' },
+      { label: '📝 5 أمثلة', prompt: 'أعطني 5 أمثلة مختلفة تستخدم فيها هذه العبارة في محادثات أو نصوص، مع ترجمة.' },
+      { label: '🔗 عبارات بديلة', prompt: 'أعطني عبارات ألمانيّة أخرى لها نفس المعنى تقريباً، مع الفرق في درجة الرسميّة.' },
+      { label: '⚠️ أخطاء شائعة', prompt: 'ما الأخطاء الشائعة التي يقع فيها المتعلّمون العرب عند استعمال هذه العبارة؟' },
+    ],
+    grammar: [
+      { label: '📝 أمثلة أكثر', prompt: 'أعطني 6 أمثلة إضافيّة متنوّعة تطبّق هذه القاعدة، مع ترجمة عربيّة.' },
+      { label: '⚠️ الاستثناءات', prompt: 'ما الاستثناءات و الحالات الخاصّة لهذه القاعدة؟' },
+      { label: '🧠 طريقة الحفظ', prompt: 'أعطني طريقة ذكيّة أو قاعدة سهلة لتذكّر هذه القاعدة النحويّة.' },
+      { label: '🧪 اختبرني', prompt: 'اصنع لي 5 جمل بفراغات لتدريبي على هذه القاعدة مع تنوّع الصعوبة، ثم ضع الحلول.' },
+    ],
+    hinweis: [
+      { label: '🔍 اشرح بالتفصيل', prompt: 'اشرح هذه الملاحظة بتفصيل أكبر مع 3 أمثلة واقعيّة.' },
+      { label: '⚠️ أمثلة الخطأ و الصحّ', prompt: 'أعطني مقارنة واضحة بين الاستعمال الخطأ و الصحيح لهذه النقطة.' },
+    ],
+    generic: [
+      { label: '📚 اشرح أكثر', prompt: 'اشرح لي هذا الجزء بتفصيل أكبر و أمثلة.' },
+      { label: '🧪 اختبرني', prompt: 'اصنع لي 3 أسئلة تدريبيّة قصيرة على هذا السياق، ثم ضع الحلول.' },
+      { label: '🎯 أهمّ النقاط', prompt: 'ما أهمّ 3 نقاط يجب أن أتذكّرها من هذا السياق؟' },
+    ],
+  };
+
+  readonly askPresets = computed(() => this.PRESETS[this.askType()] ?? this.PRESETS.generic);
 
   loadBeispiel(b: Beispielsnippet) {
     this.input.set(b.text);
@@ -133,7 +175,8 @@ export class TextAnalyzerPage {
   isAdded(key: string): boolean { return this.savedItems().has(key); }
 
   // ─── اسأل Claude عن عنصر ───
-  openAsk(label: string, context: string) {
+  openAsk(label: string, context: string, type: 'word' | 'verb' | 'phrase' | 'grammar' | 'hinweis' | 'generic' = 'generic') {
+    this.askType.set(type);
     this.askLabel.set(label);
     this.askContext.set(context);
     this.askQuestion.set('');
@@ -142,6 +185,11 @@ export class TextAnalyzerPage {
     this.askOpen.set(true);
   }
   closeAsk() { this.askOpen.set(false); }
+
+  usePreset(prompt: string) {
+    this.askQuestion.set(prompt);
+    this.submitAsk();
+  }
 
   async submitAsk() {
     const q = this.askQuestion().trim();
