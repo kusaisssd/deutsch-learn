@@ -345,17 +345,29 @@ export default async function handler(req: Request): Promise<Response> {
     const data = (await upstream.json()) as ClaudeResponse;
     const raw = data.content?.[0]?.text ?? '';
 
-    // استخراج JSON بشكل متسامح:
-    //   1) جرّد الـ ```json fences
-    //   2) ابحث عن أوّل { و آخر } في النصّ (يتجاهل أي preamble/postamble)
-    //   3) أزل الفواصل الزائدة (trailing commas) قبل } أو ]
-    let cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
-    const firstBrace = cleaned.indexOf('{');
-    const lastBrace = cleaned.lastIndexOf('}');
-    if (firstBrace >= 0 && lastBrace > firstBrace) {
-      cleaned = cleaned.slice(firstBrace, lastBrace + 1);
-    }
-    cleaned = cleaned.replace(/,\s*([}\]])/g, '$1');
+    // استخراج JSON بـ bracket-counting:
+    // يبحث عن أوّل كتلة JSON ذات أقواس متوازنة (يتجاهل أي preamble/postamble
+    // و أي أقواس ضمن strings).
+    const extractJson = (text: string): string | null => {
+      const start = text.indexOf('{');
+      if (start < 0) return null;
+      let depth = 0, inString = false, escape = false;
+      for (let i = start; i < text.length; i++) {
+        const c = text[i];
+        if (escape) { escape = false; continue; }
+        if (c === '\\') { escape = true; continue; }
+        if (c === '"') { inString = !inString; continue; }
+        if (inString) continue;
+        if (c === '{') depth++;
+        else if (c === '}') { depth--; if (depth === 0) return text.slice(start, i + 1); }
+      }
+      return null;
+    };
+
+    let cleaned = raw.replace(/```(?:json)?/gi, '').trim();
+    const extracted = extractJson(cleaned);
+    if (extracted) cleaned = extracted;
+    cleaned = cleaned.replace(/,\s*([}\]])/g, '$1'); // trailing commas
 
     let parsed: unknown;
     try {
@@ -363,9 +375,10 @@ export default async function handler(req: Request): Promise<Response> {
     } catch (parseErr) {
       const msg = parseErr instanceof Error ? parseErr.message : 'parse error';
       return new Response(JSON.stringify({
-        error: 'Claude hat kein gültiges JSON zurückgegeben. حاول مرّة أخرى — أحياناً تحتاج محاولتين.',
+        error: 'Claude hat kein gültiges JSON zurückgegeben.',
         detail: msg,
-        raw: cleaned.slice(0, 300),
+        raw: raw.slice(0, 500),
+        cleaned: cleaned.slice(0, 500),
       }), {
         status: 502,
         headers: { 'content-type': 'application/json', ...cors },

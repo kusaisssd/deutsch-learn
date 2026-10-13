@@ -69,16 +69,19 @@ export class TextAnalyzerService {
   /** يحوّل أي شكل خطأ إلى نصّ قابل للعرض */
   private extractError(err: unknown): string {
     const e = err as HttpErrorResponse;
-    // Case 1: backend returned { error: 'string' }
     const body = e?.error;
-    if (body && typeof body === 'object' && typeof (body as { error?: unknown }).error === 'string') {
-      return (body as { error: string }).error;
+    if (body && typeof body === 'object') {
+      const b = body as { error?: unknown; detail?: unknown; raw?: unknown; cleaned?: unknown };
+      const parts: string[] = [];
+      if (typeof b.error === 'string') parts.push(b.error);
+      if (typeof b.detail === 'string') parts.push('السبب التقني: ' + b.detail);
+      // أعرض مقتطف ما أعاده Claude لنتمكّن من التصحيح
+      const snippet = typeof b.cleaned === 'string' ? b.cleaned : typeof b.raw === 'string' ? b.raw : '';
+      if (snippet) parts.push('\nما أعاده Claude:\n' + snippet.slice(0, 400) + (snippet.length > 400 ? '…' : ''));
+      if (parts.length) return parts.join('\n');
     }
-    // Case 2: body itself a string
-    if (typeof body === 'string' && body.length < 300) return body;
-    // Case 3: http status message
+    if (typeof body === 'string' && body.length < 500) return body;
     if (typeof e?.message === 'string' && e.message) return e.message;
-    // Case 4: last fallback
     return 'فشل التحليل. تحقّق من الاتصال و حاول مرّة أخرى.';
   }
 
