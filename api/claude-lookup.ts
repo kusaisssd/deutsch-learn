@@ -89,6 +89,37 @@ Antworte NUR mit einem JSON-Objekt (ohne Markdown, ohne Codeblock-Fences):
 }`;
 
 /**
+ * PROMPT_GENERATE — توليد نصّ ألماني بمستوى و نوع مُحدَّدَين.
+ */
+const SORTEN_LABELS: Record<string, string> = {
+  nachricht: 'kurzer Zeitungsartikel / Nachrichtenmeldung',
+  dialog: 'Alltagsdialog zwischen 2-3 Personen',
+  meinung: 'persönlicher Meinungsartikel / Kolumne',
+  erfahrung: 'Erfahrungsbericht in Ich-Form (Blog-Stil)',
+  wissenschaft: 'Wissenschafts- oder Technikartikel (populärwissenschaftlich)',
+  rezension: 'kurze Rezension (Film, Buch, Produkt oder Ort)',
+};
+const PROMPT_GENERATE = (niveau: string, textsorte: string) => `Du bist ein kreativer Deutschlehrer.
+Erzeuge einen originalen deutschen Text auf Niveau ${niveau}, Typ: ${SORTEN_LABELS[textsorte] ?? textsorte}.
+
+Vorgaben:
+- Länge: ca. 180-230 Wörter (unbedingt UNTER 2000 Zeichen)
+- Natürliche, zeitgemäße Sprache für Erwachsene
+- Grammatik und Wortschatz genau passend zu Niveau ${niveau}:
+  ${niveau === 'A2' ? '— einfache Haupt- und Nebensätze, Perfekt, grundlegende Konnektoren (weil, dass, wenn)'
+    : niveau === 'B1' ? '— verschiedene Zeitformen, Nebensätze (weil, dass, obwohl, wenn, als), Modalverben, Relativsätze einfach'
+    : niveau === 'B2' ? '— Konjunktiv II, Passiv, erweiterte Nebensätze, feste Präpositionen, idiomatische Phrasen'
+    : '— Konjunktiv I/II, Nominalstil, komplexe Nebensätze, fortgeschrittener Wortschatz, feste Wendungen'}
+- Jeder Text ist thematisch frisch und anders als übliche Beispiele
+- WICHTIG: Variiere das Thema stark bei jeder Generierung (verwende diesen Seed: ${Date.now()})
+
+Antworte NUR mit einem JSON-Objekt (ohne Markdown, ohne Preamble):
+{
+  "titel": "kurzer Titel (max. 8 Wörter)",
+  "text": "der eigentliche deutsche Text"
+}`;
+
+/**
  * PROMPT_ANALYZE — تحليل مختصر و سريع لتفادي الـ timeout.
  */
 const PROMPT_ANALYZE = (text: string) => `Du bist ein Deutschlehrer für arabischsprachige B1-Lerner.
@@ -100,6 +131,12 @@ KEIN Nachtext, KEINE Erklärung, KEINE Markdown-Fences. Die Antwort muss
 mit "{" beginnen und mit "}" enden. ALLE Klammern vollständig schließen.
 Verwende KEINE trailing commas. Alle Strings in doppelten Anführungszeichen.
 Prüfe am Ende dein JSON auf Gültigkeit.
+
+⚠️ KRITISCH — SPRACHE:
+Alle Felder mit "Ar" im Namen (zusammenfassung, ar, erklaerungAr, empfehlungAr,
+beschreibung, uebungsidee, frage, antwort, aspekt, lernziele) müssen auf
+ARABISCH geschrieben sein, NICHT auf Deutsch. Fachbegriffe (Perfekt, Passiv…)
+und Vokabeln bleiben deutsch; die Erklärung und der Fließtext sind arabisch.
 
 TEXT:
 """
@@ -237,12 +274,18 @@ export default async function handler(req: Request): Promise<Response> {
   let modeParam: string | null = null;
   let question = '';
 
+  // بارامترات mode=generate
+  let genNiveau = 'B1';
+  let genTextsorte = 'nachricht';
+
   if (req.method === 'POST') {
     try {
-      const body = await req.json() as { word?: string; mode?: string; q?: string };
+      const body = await req.json() as { word?: string; mode?: string; q?: string; niveau?: string; textsorte?: string };
       word = body.word?.trim();
       modeParam = body.mode ?? null;
       question = body.q?.trim() ?? '';
+      if (body.niveau) genNiveau = body.niveau;
+      if (body.textsorte) genTextsorte = body.textsorte;
     } catch {
       return new Response(JSON.stringify({ error: 'Invalid JSON body.' }), {
         status: 400,
@@ -256,15 +299,20 @@ export default async function handler(req: Request): Promise<Response> {
     question = url.searchParams.get('q')?.trim() ?? '';
   }
 
-  const mode: 'basic' | 'deep' | 'ask' | 'analyze' =
+  const mode: 'basic' | 'deep' | 'ask' | 'analyze' | 'generate' =
     modeParam === 'deep' ? 'deep'
     : modeParam === 'ask' ? 'ask'
     : modeParam === 'analyze' ? 'analyze'
+    : modeParam === 'generate' ? 'generate'
     : 'basic';
 
-  // في وضع analyze يُستعمل الحقل word كـ «نصّ كامل» و بحدود أطول (5000 حرف)
-  if (mode === 'analyze') {
-    if (!word || word.length < 50 || word.length > 5000) {
+  // في وضع generate لا نحتاج word
+  if (mode === 'generate') {
+    const validNiveau = ['A2', 'B1', 'B2', 'C1'].includes(genNiveau) ? genNiveau : 'B1';
+    const validSorte = ['nachricht', 'dialog', 'meinung', 'erfahrung', 'wissenschaft', 'rezension'].includes(genTextsorte) ? genTextsorte : 'nachricht';
+    genNiveau = validNiveau; genTextsorte = validSorte;
+  } else if (mode === 'analyze') {
+    if (!word || word.length < 50 || word.length > 2500) {
       return new Response(JSON.stringify({ error: 'النصّ قصير جداً أو طويل جداً (50 - 5000 حرف).' }), {
         status: 400,
         headers: { 'content-type': 'application/json', ...cors },
@@ -309,6 +357,7 @@ export default async function handler(req: Request): Promise<Response> {
 
     // max_tokens مُقنَّن حسب الوضع — analyze مختصر لتفادي الـ504
     const maxTokens = mode === 'analyze' ? 2600
+                    : mode === 'generate' ? 900
                     : mode === 'deep'    ? 1400
                     : mode === 'ask'     ? 1200
                     : 350;
@@ -325,9 +374,10 @@ export default async function handler(req: Request): Promise<Response> {
         max_tokens: maxTokens,
         messages: [{
           role: 'user',
-          content: mode === 'analyze' ? PROMPT_ANALYZE(word!)
-                 : mode === 'deep'   ? PROMPT_DEEP(word!)
-                 : mode === 'ask'    ? PROMPT_ASK(word!, question)
+          content: mode === 'analyze'  ? PROMPT_ANALYZE(word!)
+                 : mode === 'generate' ? PROMPT_GENERATE(genNiveau, genTextsorte)
+                 : mode === 'deep'     ? PROMPT_DEEP(word!)
+                 : mode === 'ask'      ? PROMPT_ASK(word!, question)
                  : PROMPT_BASIC(word!),
         }],
       }),
@@ -424,8 +474,8 @@ export default async function handler(req: Request): Promise<Response> {
       }
     }
 
-    // نطبّق cache على basic/deep فقط — ask و analyze مخصّصان لكل نصّ
-    const cacheHeader = (mode === 'ask' || mode === 'analyze')
+    // cache: basic/deep ثابت لكل كلمة؛ ask/analyze/generate مخصّصة أو عشوائيّة
+    const cacheHeader = (mode === 'ask' || mode === 'analyze' || mode === 'generate')
       ? 'no-store'
       : 'public, s-maxage=86400, stale-while-revalidate=604800';
 

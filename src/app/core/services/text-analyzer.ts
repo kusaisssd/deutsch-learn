@@ -32,6 +32,32 @@ export class TextAnalyzerService {
     effect(() => this.save(this._saved()));
   }
 
+  /** توليد نصّ ألماني جديد (مستوى + نوع). يُرجَع { titel, text } أو null */
+  async generate(niveau: string, textsorte: string): Promise<{ titel: string; text: string } | null> {
+    if (!this.available()) {
+      this._error.set('خدمة AI مقفلة. اضبط passphrase من إعدادات القاموس.');
+      return null;
+    }
+    this._loading.set(true);
+    this._error.set(null);
+    try {
+      const headers = new HttpHeaders({ 'x-sync-key': this.sync.passphrase(), 'content-type': 'application/json' });
+      const res = await firstValueFrom(
+        this.http.post<{ titel: string; text: string }>('/api/claude-lookup', { mode: 'generate', niveau, textsorte }, { headers }),
+      );
+      if (!res || typeof res.text !== 'string') {
+        this._error.set('استجابة غير متوقّعة من AI.');
+        return null;
+      }
+      return res;
+    } catch (err) {
+      this._error.set(this.extractError(err));
+      return null;
+    } finally {
+      this._loading.set(false);
+    }
+  }
+
   /** استدعاء AI لتحليل نصّ. يُرجع التحليل أو null عند الفشل. */
   async analyze(text: string): Promise<TextAnalysis | null> {
     const t = text.trim();

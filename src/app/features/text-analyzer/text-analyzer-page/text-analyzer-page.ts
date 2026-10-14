@@ -7,22 +7,16 @@ import { ClaudeLookupService } from '../../../core/services/claude-lookup';
 import { SpeechService } from '../../../core/services/speech';
 import { TAPhrase, TAVerb, TAWord, SavedLesson } from '../../../core/models/text-analysis.model';
 
-/** أمثلة سريعة لتجربة الأداة */
-interface Beispielsnippet { label: string; text: string; }
+interface Textsorte { id: string; label: string; }
 
-const BEISPIELE: Beispielsnippet[] = [
-  {
-    label: '📰 خبر B1',
-    text: 'Berlin — Immer mehr junge Menschen in Deutschland entscheiden sich für ein Studium im Ausland. Nach aktuellen Zahlen haben im vergangenen Jahr rund 140.000 deutsche Studierende ein oder mehrere Semester an einer ausländischen Universität verbracht. Die beliebtesten Länder sind Österreich, die Niederlande und die Schweiz. Experten sehen darin eine positive Entwicklung, weisen aber darauf hin, dass die Finanzierung für viele weiterhin eine große Hürde darstellt.',
-  },
-  {
-    label: '📝 مقال رأي',
-    text: 'Soziale Medien haben unser Leben grundlegend verändert. Einerseits ermöglichen sie es uns, mit Freunden und Familie überall auf der Welt in Kontakt zu bleiben. Andererseits führen sie oft zu Stress und Vergleichsdruck. Viele Jugendliche verbringen täglich mehrere Stunden auf Plattformen wie Instagram und TikTok. Meiner Meinung nach sollten wir lernen, bewusst mit diesen Medien umzugehen. Weniger ist manchmal mehr — besonders wenn es um unsere mentale Gesundheit geht.',
-  },
-  {
-    label: '🗣 حوار يومي',
-    text: 'A: Hast du schon gehört? Max ist umgezogen.\nB: Wirklich? Wohin denn?\nA: Nach Hamburg. Er hat dort einen neuen Job gefunden.\nB: Das ist ja eine große Veränderung. Weißt du, in welcher Firma er jetzt arbeitet?\nA: Bei einer Internetfirma. Er fängt nächsten Monat an und freut sich sehr darauf.\nB: Schön für ihn! Aber Hamburg ist ganz schön weit weg. Wie habt ihr euch verabschiedet?\nA: Wir haben zusammen gegessen und uns versprochen, uns regelmäßig zu besuchen.',
-  },
+const NIVEAUS = ['A2', 'B1', 'B2', 'C1'] as const;
+const SORTEN: Textsorte[] = [
+  { id: 'nachricht',    label: '📰 خبر صحفي' },
+  { id: 'dialog',       label: '🗣 حوار' },
+  { id: 'meinung',      label: '📝 مقال رأي' },
+  { id: 'erfahrung',    label: '✍️ تجربة شخصيّة' },
+  { id: 'wissenschaft', label: '🔬 علم و تكنولوجيا' },
+  { id: 'rezension',    label: '⭐ مراجعة' },
 ];
 
 @Component({
@@ -41,7 +35,47 @@ export class TextAnalyzerPage {
   readonly savedId = signal<string | null>(null);
   readonly savedItems = signal<Set<string>>(new Set());
 
-  readonly beispiele = BEISPIELE;
+  // ─── مُولِّد النصّ ───
+  readonly niveaus = NIVEAUS;
+  readonly sorten = SORTEN;
+  readonly genNiveau = signal<string>('B1');
+  readonly genSorte = signal<string>('nachricht');
+  readonly generating = signal(false);
+
+  async generate() {
+    if (this.generating()) return;
+    this.generating.set(true);
+    try {
+      const result = await this.svc.generate(this.genNiveau(), this.genSorte());
+      if (result) {
+        this.input.set(result.text);
+        this.analysis.set(null);
+      }
+    } finally {
+      this.generating.set(false);
+    }
+  }
+
+  // ─── ترجمة النصّ كاملاً (قبل التحليل أو بعده) ───
+  readonly fullTranslation = signal<string>('');
+  readonly translatingFull = signal(false);
+
+  async translateFullText() {
+    const t = this.input().trim();
+    if (!t || this.translatingFull()) return;
+    if (this.fullTranslation()) {
+      this.fullTranslation.set(''); // toggle off
+      return;
+    }
+    this.translatingFull.set(true);
+    try {
+      const prompt = 'ترجم هذا النصّ الألماني إلى العربيّة ترجمة أدبيّة طبيعيّة (ليست حرفيّة)، مع الحفاظ على الأسلوب و النبرة. أعطني فقط الترجمة بلا مقدّمات.';
+      const answer = await this.claude.ask(t, prompt);
+      if (answer) this.fullTranslation.set(answer);
+    } finally {
+      this.translatingFull.set(false);
+    }
+  }
 
   readonly charCount = computed(() => this.input().trim().length);
   readonly estimatedTokens = computed(() => Math.ceil(this.charCount() / 3) + 1200);
@@ -135,16 +169,12 @@ export class TextAnalyzerPage {
 
   readonly askPresets = computed(() => this.PRESETS[this.askType()] ?? this.PRESETS.generic);
 
-  loadBeispiel(b: Beispielsnippet) {
-    this.input.set(b.text);
-    this.analysis.set(null);
-  }
-
   async run() {
     if (!this.canAnalyze()) return;
     this.analysis.set(null);
     this.savedId.set(null);
     this.savedItems.set(new Set());
+    this.fullTranslation.set('');
     const result = await this.svc.analyze(this.input());
     if (result) {
       this.analysis.set(result);
