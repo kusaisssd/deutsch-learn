@@ -327,7 +327,78 @@
                     <div class="flex-1 min-w-0">
                       <div class="text-xs font-bold text-indigo-700" dir="ltr">{{ t.aspekt }}</div>
                       <p class="text-sm text-slate-800 mt-1" dir="rtl">{{ t.empfehlungAr }}</p>
-                      @if (t.uebungsidee) {
+
+                      <!-- ═══ تمرين تفاعلي منظّم ═══ -->
+                      @if (t.uebung; as ue) {
+                        <div class="mt-3 bg-amber-50 border border-amber-300 rounded-lg p-3">
+                          <div class="flex items-start justify-between gap-2 mb-2">
+                            <div class="flex-1" dir="rtl">
+                              <div class="text-xs font-bold text-amber-900 mb-0.5">
+                                🧪 تمرين — {{ ue.typ === 'translate' ? 'ترجمة' : ue.typ === 'fill' ? 'املأ الفراغ' : ue.typ === 'complete' ? 'أكمل الجملة' : 'كتابة' }}
+                              </div>
+                              <div class="text-xs text-slate-700">{{ ue.anweisungAr }}</div>
+                            </div>
+                          </div>
+
+                          <!-- بنود التمرين -->
+                          <ol class="space-y-2 mb-3">
+                            @for (item of ue.items; track $index; let j = $index) {
+                              <li class="bg-white border border-amber-200 rounded p-2">
+                                <div class="text-sm text-slate-800 mb-1" [dir]="ue.typ === 'translate' ? 'rtl' : 'ltr'">
+                                  <span class="text-[11px] text-amber-700 font-bold">{{ j + 1 }}.</span>
+                                  {{ item }}
+                                </div>
+                                <input type="text"
+                                       [value]="getAnswer(i, j)"
+                                       (input)="setAnswer(i, j, $any($event.target).value)"
+                                       [placeholder]="ue.typ === 'translate' ? 'اكتب الترجمة الألمانيّة…' : ue.typ === 'fill' ? 'الكلمة المفقودة…' : 'إجابتك بالألمانيّة…'"
+                                       dir="ltr"
+                                       class="w-full text-sm border border-slate-300 rounded px-2 py-1 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none font-mono" />
+                              </li>
+                            }
+                          </ol>
+
+                          <!-- أزرار الإجراء -->
+                          <div class="flex gap-2 flex-wrap">
+                            <button (click)="correctAnswers(i, t.aspekt, ue)"
+                                    [disabled]="correctingTip() !== null"
+                                    class="flex-1 bg-emerald-600 text-white rounded-lg py-1.5 text-xs font-bold hover:bg-emerald-700 disabled:opacity-40">
+                              @if (correctingTip() === i) { ⏳ جارٍ التصحيح… } @else { ✏️ صحّح إجاباتي }
+                            </button>
+                            @if (!tippSolutions()[i]) {
+                              <button (click)="solveTipp(i, t.aspekt, ue.anweisungAr + '\n' + ue.items.join('\n'))"
+                                      [disabled]="tippLoading() !== null"
+                                      class="bg-white border border-amber-500 text-amber-700 rounded-lg px-3 text-xs font-semibold hover:bg-amber-100 disabled:opacity-40">
+                                @if (tippLoading() === i) { ⏳ } @else { 💡 الحلّ النموذجي }
+                              </button>
+                            }
+                          </div>
+
+                          <!-- التصحيح -->
+                          @if (tippCorrections()[i]; as corr) {
+                            <div class="mt-3 pt-3 border-t border-amber-300 bg-white rounded p-3">
+                              <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold text-emerald-700">✏️ تصحيح Claude</span>
+                                <button (click)="hideCorrection(i)" class="text-[11px] text-slate-500 hover:text-slate-700">إخفاء</button>
+                              </div>
+                              <p class="text-xs text-slate-800 whitespace-pre-line leading-relaxed" dir="rtl">{{ corr }}</p>
+                            </div>
+                          }
+
+                          <!-- الحلّ النموذجي -->
+                          @if (tippSolutions()[i]; as sol) {
+                            <div class="mt-3 pt-3 border-t border-amber-300 bg-white rounded p-3">
+                              <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold text-amber-800">💡 الحلّ النموذجي</span>
+                                <button (click)="hideTippSolution(i)" class="text-[11px] text-slate-500 hover:text-slate-700">إخفاء</button>
+                              </div>
+                              <p class="text-xs text-slate-800 whitespace-pre-line leading-relaxed" dir="rtl">{{ sol }}</p>
+                            </div>
+                          }
+                        </div>
+                      }
+                      @else if (t.uebungsidee) {
+                        <!-- fallback: تمرين قديم كنصّ حرّ -->
                         <div class="mt-2 bg-amber-50 border-r-4 border-amber-500 rounded p-2 text-xs text-slate-700" dir="rtl">
                           <div class="flex items-start justify-between gap-2 mb-1">
                             <div class="flex-1"><strong>🧪 تمرين مقترح:</strong> {{ t.uebungsidee }}</div>
@@ -341,17 +412,13 @@
                           </div>
                           @if (tippSolutions()[i]; as sol) {
                             <div class="mt-2 pt-2 border-t border-amber-300 bg-white rounded p-2">
-                              <div class="flex items-center justify-between mb-1">
-                                <span class="text-[11px] font-bold text-emerald-700">✅ الحلّ</span>
-                                <button (click)="hideTippSolution(i)" class="text-[11px] text-slate-500 hover:text-slate-700">إخفاء</button>
-                              </div>
                               <p class="text-xs text-slate-800 whitespace-pre-line leading-relaxed" dir="rtl">{{ sol }}</p>
                             </div>
                           }
                         </div>
                       }
                     </div>
-                    <button (click)="openAsk(t.aspekt, t.empfehlungAr + (t.uebungsidee ? '\n\n' + t.uebungsidee : ''), 'niveau')"
+                    <button (click)="openAsk(t.aspekt, t.empfehlungAr, 'niveau')"
                             class="text-xs bg-purple-100 text-purple-700 rounded-full px-2 py-1 hover:bg-purple-200 shrink-0">🤖</button>
                   </div>
                 </li>

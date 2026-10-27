@@ -93,9 +93,65 @@ export class TextAnalyzerPage {
   readonly askLoading = signal(false);
   readonly askError = signal<string | null>(null);
 
-  /** حلول توصيات التطوير — key = index، value = نصّ الحلّ */
+  /** حلول توصيات التطوير — key = tipIndex، value = نصّ الحلّ */
   readonly tippSolutions = signal<Record<number, string>>({});
   readonly tippLoading = signal<number | null>(null);
+
+  /** إجابات المستخدم في التمارين التفاعليّة — key = "tipIndex:itemIndex" */
+  readonly userAnswers = signal<Record<string, string>>({});
+  /** تصحيح Claude لكل بند — key = tipIndex، value = نصّ التصحيح */
+  readonly tippCorrections = signal<Record<number, string>>({});
+  readonly correctingTip = signal<number | null>(null);
+
+  setAnswer(tipIndex: number, itemIndex: number, value: string) {
+    const key = `${tipIndex}:${itemIndex}`;
+    this.userAnswers.update(a => ({ ...a, [key]: value }));
+  }
+  getAnswer(tipIndex: number, itemIndex: number): string {
+    return this.userAnswers()[`${tipIndex}:${itemIndex}`] ?? '';
+  }
+
+  /** يُرسل إجابات المستخدم لـ Claude ليُصحّحها بنداً بنداً */
+  async correctAnswers(tipIndex: number, aspekt: string, uebung: NonNullable<import('../../../core/models/text-analysis.model').TANiveauTipp['uebung']>) {
+    if (this.correctingTip() !== null) return;
+    if (!this.claude.available()) {
+      this.openAsk(aspekt, uebung.anweisungAr, 'niveau');
+      return;
+    }
+    const answers = uebung.items.map((_, i) => this.getAnswer(tipIndex, i).trim());
+    if (answers.every(a => !a)) return; // لا شيء للتصحيح
+    this.correctingTip.set(tipIndex);
+    try {
+      const linesCtx = uebung.items.map((it, i) => `${i + 1}) ${it}`).join('\n');
+      const linesAns = answers.map((a, i) => `${i + 1}) ${a || '(فارغ)'}`).join('\n');
+      const prompt = `أنت مُصحِّح ألماني للمتعلّمين العرب (مستوى B1).
+نوع التمرين: ${uebung.typ}
+التعليمات: ${uebung.anweisungAr}
+التركيز على: «${aspekt}»
+
+البنود:
+${linesCtx}
+
+إجابات المتعلّم:
+${linesAns}
+
+قيّم كل بند على حدة بالتنسيق التالي بالعربيّة (اذكر رقم البند):
+1) ✅ أو ❌ — تقييم موجز
+   • الحلّ النموذجي بالألماني: …
+   • ملاحظة قصيرة تفيد المتعلّم.
+في النهاية أعطني تقييماً عاماً و نصيحة واحدة للتدريب.`;
+      const answer = await this.claude.ask(aspekt, prompt);
+      if (answer) {
+        this.tippCorrections.update(c => ({ ...c, [tipIndex]: answer }));
+      }
+    } finally {
+      this.correctingTip.set(null);
+    }
+  }
+
+  hideCorrection(tipIndex: number) {
+    this.tippCorrections.update(c => { const n = { ...c }; delete n[tipIndex]; return n; });
+  }
 
   async solveTipp(index: number, aspekt: string, uebung: string) {
     if (this.tippSolutions()[index] || this.tippLoading() !== null) return;

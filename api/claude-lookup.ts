@@ -173,7 +173,16 @@ Schema (genau diese Felder, keine zusätzlichen):
   "niveauentwicklung": [
     { "aspekt": "konkreter Skill oder Grammatik-Punkt",
       "empfehlungAr": "توصية عملية بالعربيّة لتطوير هذا الجانب (2-3 جمل قصيرة)",
-      "uebungsidee": "اقتراح تمرين سريع لتدريب هذا الجانب" }
+      "uebung": {
+        "typ": "translate | fill | write | complete",
+        "anweisungAr": "تعليمات واضحة بالعربيّة لما يفعله المتعلّم",
+        "items": [
+          "البند الأوّل كما يراه المتعلّم (عربي للترجمة، أو ألماني مع فراغ ___ للملء، أو موضوع للكتابة)",
+          "البند الثاني",
+          "البند الثالث"
+        ]
+      }
+    }
   ]
 }
 
@@ -195,9 +204,20 @@ Mengen (unbedingt einhalten — kurze Antwort, kein Overflow):
 Besonders wichtig für niveauentwicklung:
 Identifiziere die 3 KONKRETEN Schwierigkeiten in diesem Text (z. B. Konnektoren,
 Perfekt-Formen, zusammengesetzte Nomen, idiomatische Phrasen, Konjunktiv II) und
-gib für JEDE eine praktische Empfehlung, WAS der Lerner üben soll, damit er beim
-nächsten Text dieser Art nicht mehr stolpert. Jede Empfehlung soll konkret und
-umsetzbar sein, nicht generisch wie "mehr lesen".
+gib für JEDE eine praktische Empfehlung + einen INTERAKTIVEN Übungsblock.
+
+Für den Übungsblock (uebung):
+- typ wählen passend zum aspekt:
+  "translate" = 3 arabische Sätze zum Übersetzen ins Deutsche
+  "fill" = 3 deutsche Sätze mit einem ___ zum Ausfüllen (nur ein Blank pro Satz)
+  "complete" = 3 deutsche Satzanfänge zum Vervollständigen (Der Grund dafür ist, …)
+  "write" = 3 kurze Schreibaufgaben (max. 1 Zeile Anweisung je Item)
+- anweisungAr: 1 klarer Satz, was der Lerner tun soll
+- items: GENAU 3 Bänder, jedes KURZ (max. 10 Wörter), konkret und direkt auf
+  den aspekt bezogen (NICHT generisch!)
+- Für translate: wähle 3 arabische Sätze, deren deutsche Übersetzung die
+  Grammatik dieses aspekts aktiv übt (z. B. aspekt "Perfekt" → 3 Sätze
+  im Vergangenheit).
 
 AUSWAHL-KRITERIEN — SEHR WICHTIG:
 Wähle für schluesselwoerter und verben die SCHWIEREN / FORTGESCHRITTENEN Wörter,

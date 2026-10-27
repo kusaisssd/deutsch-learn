@@ -37,11 +37,19 @@ export interface TAFrage {
   antwort: string;     // عربي
 }
 
+/** تمرين تفاعلي: تعليمات + 3 بنود يحلّها المستخدم */
+export interface TAUebung {
+  typ: 'translate' | 'fill' | 'write' | 'complete';
+  anweisungAr: string;    // التعليمات بالعربيّة
+  items: string[];        // ما يُعرض للمستخدم (كل بند نصّ)
+}
+
 /** توصية تطوير — بند يرفع مستوى القارئ ليتمكّن من فهم نصوص مثل هذه بنفسه */
 export interface TANiveauTipp {
   aspekt: string;         // «Konnektoren», «Perfekt-Formen», «الأسماء المركّبة»…
   empfehlungAr: string;   // النصيحة بالعربيّة
-  uebungsidee?: string;   // اقتراح تمرين قصير (عربي)
+  uebungsidee?: string;   // اقتراح تمرين قصير (عربي) — fallback
+  uebung?: TAUebung;      // تمرين تفاعلي منظّم
 }
 
 /** الناتج الكامل من /api/claude-lookup?mode=analyze */
