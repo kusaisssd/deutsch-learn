@@ -377,7 +377,7 @@ export default async function handler(req: Request): Promise<Response> {
     const timer = setTimeout(() => controller.abort(), 50_000);
 
     // max_tokens مُقنَّن حسب الوضع — analyze مختصر لتفادي الـ504
-    const maxTokens = mode === 'analyze' ? 2600
+    const maxTokens = mode === 'analyze' ? 3200
                     : mode === 'generate' ? 900
                     : mode === 'deep'    ? 1400
                     : mode === 'ask'     ? 1200
@@ -444,30 +444,32 @@ export default async function handler(req: Request): Promise<Response> {
     if (extracted) cleaned = extracted;
     cleaned = cleaned.replace(/,\s*([}\]])/g, '$1'); // trailing commas
 
-    // إصلاح JSON المقطوع (إن نفد max_tokens): إغلاق string مفتوح و الأقواس المعلّقة
+    // إصلاح JSON المقطوع (إن نفد max_tokens): إغلاق string مفتوح + stack-based
+    // closing للأقواس بالترتيب الصحيح (مهم: { داخل [ داخل { يُغلق بـ }]})
     const repairTruncated = (txt: string): string => {
       let s = txt;
-      // عدّ علامات الاقتباس (خارج escape) لمعرفة إن كان هناك string مفتوح
       let inString = false, escape = false;
-      let openBraces = 0, openBrackets = 0;
+      const stack: Array<'{' | '['> = [];
       for (let i = 0; i < s.length; i++) {
         const c = s[i];
         if (escape) { escape = false; continue; }
         if (c === '\\') { escape = true; continue; }
-        if (c === '"') inString = !inString;
-        else if (!inString) {
-          if (c === '{') openBraces++;
-          else if (c === '}') openBraces--;
-          else if (c === '[') openBrackets++;
-          else if (c === ']') openBrackets--;
-        }
+        if (c === '"') { inString = !inString; continue; }
+        if (inString) continue;
+        if (c === '{') stack.push('{');
+        else if (c === '}') stack.pop();
+        else if (c === '[') stack.push('[');
+        else if (c === ']') stack.pop();
       }
       if (inString) s += '"';
-      // قد يكون آخر field غير مكتمل («"foo":» بلا قيمة) → احذف
+      // آخر field غير مكتمل («"foo":» بلا قيمة) → احذف
       s = s.replace(/,\s*"[^"]*"\s*:\s*$/, '');
       s = s.replace(/,\s*$/, '');
-      while (openBrackets-- > 0) s += ']';
-      while (openBraces-- > 0) s += '}';
+      // أغلق كل قوس مفتوح بالترتيب العكسي (آخر ما فُتح يُغلق أوّلاً)
+      while (stack.length > 0) {
+        const top = stack.pop();
+        s += top === '{' ? '}' : ']';
+      }
       return s;
     };
 
