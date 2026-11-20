@@ -265,6 +265,69 @@ export class DictionaryPage {
     return (entry?.asks as DictAsk[] | undefined) ?? [];
   });
 
+  // ─── ترجمة جملة كاملة (قسم جديد) ───
+  readonly sentenceInput = signal('');
+  readonly sentenceLoading = signal(false);
+  readonly sentenceResult = signal<Awaited<ReturnType<ClaudeLookupService['translateSentence']>>>(null);
+  readonly sentenceAdded = signal<Set<string>>(new Set());
+
+  async translateSentence() {
+    const s = this.sentenceInput().trim();
+    if (s.length < 5 || this.sentenceLoading()) return;
+    if (!this.claude.available()) {
+      this.askError.set('اضبط passphrase من إعدادات القاموس لتفعيل الترجمة.');
+      return;
+    }
+    this.sentenceLoading.set(true);
+    this.sentenceResult.set(null);
+    this.sentenceAdded.set(new Set());
+    try {
+      const res = await this.claude.translateSentence(s);
+      if (res) this.sentenceResult.set(res);
+    } finally {
+      this.sentenceLoading.set(false);
+    }
+  }
+
+  addSentenceWord(w: { wort: string; artikel?: string | null; ar: string }) {
+    const key = 'w:' + w.wort;
+    const article = w.artikel && w.artikel !== 'null' ? w.artikel : undefined;
+    this.dict.record({ word: w.wort, kind: 'noun', translation: w.ar, article });
+    this.dict.appendAsk(w.wort, 'noun', {
+      q: 'السياق',
+      a: `من الجملة: ${this.sentenceInput().trim()}`,
+      preset: 'sentence',
+    });
+    this.sentenceAdded.update(s => new Set(s).add(key));
+  }
+
+  addSentenceVerb(v: { infinitiv: string; ar: string }) {
+    const key = 'v:' + v.infinitiv;
+    this.dict.record({ word: v.infinitiv, kind: 'verb', translation: v.ar });
+    this.dict.appendAsk(v.infinitiv, 'verb', {
+      q: 'السياق',
+      a: `من الجملة: ${this.sentenceInput().trim()}`,
+      preset: 'sentence',
+    });
+    this.sentenceAdded.update(s => new Set(s).add(key));
+  }
+
+  addSentenceAsPhrase() {
+    const s = this.sentenceInput().trim();
+    const res = this.sentenceResult();
+    if (!s || !res) return;
+    const key = 'p:' + s;
+    this.dict.record({ word: s, kind: 'phrase', translation: res.translation });
+    this.sentenceAdded.update(set => new Set(set).add(key));
+  }
+
+  isSentenceAdded(key: string): boolean { return this.sentenceAdded().has(key); }
+
+  speakSentence() {
+    const s = this.sentenceInput().trim();
+    if (s) this.speech.speak(s);
+  }
+
   /** بحث مباشر عن كلمة (من رقاقة اقتراح) */
   searchWord(word: string): void {
     this.query.set(word);

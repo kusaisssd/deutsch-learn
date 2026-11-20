@@ -89,6 +89,35 @@ Antworte NUR mit einem JSON-Objekt (ohne Markdown, ohne Codeblock-Fences):
 }`;
 
 /**
+ * PROMPT_SENTENCE — ترجمة جملة + استخراج الكلمات و الأفعال الأساسيّة.
+ * استدعاء سريع (~5-8 ثوانٍ، 500-700 توكن).
+ */
+const PROMPT_SENTENCE = (satz: string) => `Du bist ein Deutschlehrer für arabischsprachige Lerner.
+Übersetze folgenden deutschen Satz ins Arabische und extrahiere die wichtigsten Nomen (max. 4) und Verben (max. 3).
+
+SATZ:
+"""
+${satz}
+"""
+
+Antworte NUR mit einem JSON-Objekt (ohne Markdown, ohne Preamble):
+{
+  "translation": "ترجمة عربيّة أدبيّة طبيعيّة للجملة",
+  "schluesselwoerter": [
+    { "wort": "Nomen oder wichtiges Adjektiv", "artikel": "der|die|das|null wenn Adjektiv", "ar": "ترجمة قصيرة" }
+  ],
+  "verben": [
+    { "infinitiv": "Infinitiv des Verbs", "ar": "ترجمة قصيرة" }
+  ]
+}
+
+Regeln:
+- max. 4 Nomen (die wichtigsten/anspruchsvollsten, keine Trivialwörter wie sein, haben, machen)
+- max. 3 Verben (die wichtigsten des Satzes im Infinitiv)
+- "ar" extrem kurz (max. 5 Wörter)
+- Alle Felder ausgefüllt, JSON vollständig gültig`;
+
+/**
  * PROMPT_NIVEAU — توصيات تطوير + تمارين تفاعليّة، استدعاء منفصل عن التحليل.
  */
 const PROMPT_NIVEAU = (text: string) => `Du bist ein Deutschlehrer für arabischsprachige B1-Lerner.
@@ -331,12 +360,13 @@ export default async function handler(req: Request): Promise<Response> {
     question = url.searchParams.get('q')?.trim() ?? '';
   }
 
-  const mode: 'basic' | 'deep' | 'ask' | 'analyze' | 'generate' | 'niveau' =
+  const mode: 'basic' | 'deep' | 'ask' | 'analyze' | 'generate' | 'niveau' | 'sentence' =
     modeParam === 'deep' ? 'deep'
     : modeParam === 'ask' ? 'ask'
     : modeParam === 'analyze' ? 'analyze'
     : modeParam === 'generate' ? 'generate'
     : modeParam === 'niveau' ? 'niveau'
+    : modeParam === 'sentence' ? 'sentence'
     : 'basic';
 
   // في وضع generate لا نحتاج word
@@ -344,6 +374,14 @@ export default async function handler(req: Request): Promise<Response> {
     const validNiveau = ['A2', 'B1', 'B2', 'C1'].includes(genNiveau) ? genNiveau : 'B1';
     const validSorte = ['nachricht', 'dialog', 'meinung', 'erfahrung', 'wissenschaft', 'rezension', 'kultur'].includes(genTextsorte) ? genTextsorte : 'nachricht';
     genNiveau = validNiveau; genTextsorte = validSorte;
+  } else if (mode === 'sentence') {
+    // جملة قصيرة — من 5 إلى 500 حرف
+    if (!word || word.length < 5 || word.length > 500) {
+      return new Response(JSON.stringify({ error: 'الجملة يجب أن تكون بين 5 و 500 حرف.' }), {
+        status: 400,
+        headers: { 'content-type': 'application/json', ...cors },
+      });
+    }
   } else if (mode === 'niveau') {
     if (!word || word.length < 50 || word.length > 2500) {
       return new Response(JSON.stringify({ error: 'النصّ قصير جداً أو طويل جداً.' }), {
@@ -399,6 +437,7 @@ export default async function handler(req: Request): Promise<Response> {
     const maxTokens = mode === 'analyze'  ? 2300
                     : mode === 'niveau'   ? 1500
                     : mode === 'generate' ? 900
+                    : mode === 'sentence' ? 700
                     : mode === 'deep'     ? 1400
                     : mode === 'ask'      ? 1200
                     : 350;
@@ -417,6 +456,7 @@ export default async function handler(req: Request): Promise<Response> {
           role: 'user',
           content: mode === 'analyze'  ? PROMPT_ANALYZE(word!)
                  : mode === 'niveau'   ? PROMPT_NIVEAU(word!)
+                 : mode === 'sentence' ? PROMPT_SENTENCE(word!)
                  : mode === 'generate' ? PROMPT_GENERATE(genNiveau, genTextsorte)
                  : mode === 'deep'     ? PROMPT_DEEP(word!)
                  : mode === 'ask'      ? PROMPT_ASK(word!, question)

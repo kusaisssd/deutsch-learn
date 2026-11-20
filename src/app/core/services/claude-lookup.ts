@@ -111,6 +111,35 @@ export class ClaudeLookupService {
   }
 
   /**
+   * يترجم جملة ألمانيّة و يستخرج الكلمات و الأفعال الأساسيّة.
+   * يُرجع { translation, schluesselwoerter, verben } أو null.
+   */
+  async translateSentence(satz: string): Promise<{
+    translation: string;
+    schluesselwoerter: { wort: string; artikel?: string | null; ar: string }[];
+    verben: { infinitiv: string; ar: string }[];
+  } | null> {
+    const s = satz.trim();
+    if (s.length < 5 || s.length > 500) return null;
+    if (!this.available()) { this._error.set(NO_PASS_ERROR); return null; }
+    try {
+      const res = await firstValueFrom(
+        this.http.post<{
+          translation: string;
+          schluesselwoerter: { wort: string; artikel?: string | null; ar: string }[];
+          verben: { infinitiv: string; ar: string }[];
+        }>('/api/claude-lookup', { word: s, mode: 'sentence' }, { headers: this.authHeaders() }),
+      );
+      if (!res || typeof res.translation !== 'string') return null;
+      return res;
+    } catch (err) {
+      const e = err as HttpErrorResponse;
+      this._error.set(e.error?.error ?? e.message ?? 'خطأ في الترجمة');
+      return null;
+    }
+  }
+
+  /**
    * يطرح سؤالاً حرّاً على Claude حول كلمة/جملة، و يُرجع نصّ الجواب.
    * لا يُخبَّأ (كل سؤال مخصّص).
    */
