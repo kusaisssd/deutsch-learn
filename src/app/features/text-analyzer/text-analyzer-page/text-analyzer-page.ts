@@ -232,11 +232,36 @@ ${linesAns}
     this.savedId.set(null);
     this.savedItems.set(new Set());
     this.fullTranslation.set('');
+    this.tippSolutions.set({});
+    this.tippCorrections.set({});
+    this.userAnswers.set({});
     const result = await this.svc.analyze(this.input());
     if (result) {
       this.analysis.set(result);
       const id = this.svc.saveLesson(this.input(), result);
       this.savedId.set(id);
+    }
+  }
+
+  // ─── تحميل توصيات التطوير عند الطلب (استدعاء منفصل) ───
+  readonly niveauLoading = signal(false);
+  readonly niveauError = signal<string | null>(null);
+
+  async fetchNiveauTips() {
+    if (this.niveauLoading()) return;
+    const current = this.analysis();
+    if (!current) return;
+    this.niveauLoading.set(true);
+    this.niveauError.set(null);
+    try {
+      const res = await this.svc.fetchNiveau(this.input());
+      if (res?.niveauentwicklung) {
+        this.analysis.set({ ...current, niveauentwicklung: res.niveauentwicklung as any });
+      } else {
+        this.niveauError.set('تعذّر جلب التوصيات. حاول مرّة أخرى.');
+      }
+    } finally {
+      this.niveauLoading.set(false);
     }
   }
 

@@ -32,6 +32,22 @@ export class TextAnalyzerService {
     effect(() => this.save(this._saved()));
   }
 
+  /** استدعاء منفصل لـ niveauentwicklung — أسرع و خارج مسار التحليل الرئيسي */
+  async fetchNiveau(text: string): Promise<{ niveauentwicklung: unknown[] } | null> {
+    const t = text.trim();
+    if (!t || !this.available()) return null;
+    try {
+      const headers = new HttpHeaders({ 'x-sync-key': this.sync.passphrase(), 'content-type': 'application/json' });
+      const res = await firstValueFrom(
+        this.http.post<{ niveauentwicklung: unknown[] }>('/api/claude-lookup', { word: t, mode: 'niveau' }, { headers }),
+      );
+      if (!res || !Array.isArray(res.niveauentwicklung)) return null;
+      return res;
+    } catch {
+      return null;
+    }
+  }
+
   /** توليد نصّ ألماني جديد (مستوى + نوع). يُرجَع { titel, text } أو null */
   async generate(niveau: string, textsorte: string): Promise<{ titel: string; text: string } | null> {
     if (!this.available()) {

@@ -315,6 +315,22 @@
           </section>
         }
 
+        <!-- 🚀 زرّ تحميل توصيات التطوير (إذا لم تكن محمَّلة بعد) -->
+        @if (!a.niveauentwicklung || !a.niveauentwicklung.length) {
+          <div class="bg-gradient-to-br from-indigo-50 to-purple-50 border-2 border-indigo-300 rounded-xl p-4">
+            <h3 class="font-bold text-slate-800 text-base mb-1">🚀 تطوير مستواك</h3>
+            <p class="text-xs text-slate-600 mb-3">احصل على 3 توصيات مخصّصة مع تمارين تفاعليّة تساعدك على فهم نصوص مثل هذا بنفسك.</p>
+            <button (click)="fetchNiveauTips()" [disabled]="niveauLoading()"
+                    class="w-full bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-semibold hover:bg-indigo-700 disabled:opacity-40">
+              @if (niveauLoading()) { ⏳ جارٍ إعداد التوصيات (10-15 ثانية)… }
+              @else { 🚀 احصل على توصيات التطوير + تمارين }
+            </button>
+            @if (niveauError()) {
+              <p class="text-xs text-red-700 mt-2">⚠️ {{ niveauError() }}</p>
+            }
+          </div>
+        }
+
         <!-- 🚀 تطوير مستواك -->
         @if (a.niveauentwicklung && a.niveauentwicklung.length) {
           <section class="bg-gradient-to-br from-indigo-50 to-purple-50 border-2 border-indigo-300 rounded-xl p-4">

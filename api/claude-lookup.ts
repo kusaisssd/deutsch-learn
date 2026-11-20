@@ -89,6 +89,48 @@ Antworte NUR mit einem JSON-Objekt (ohne Markdown, ohne Codeblock-Fences):
 }`;
 
 /**
+ * PROMPT_NIVEAU — توصيات تطوير + تمارين تفاعليّة، استدعاء منفصل عن التحليل.
+ */
+const PROMPT_NIVEAU = (text: string) => `Du bist ein Deutschlehrer für arabischsprachige B1-Lerner.
+Analysiere den folgenden Text und identifiziere die 3 WICHTIGSTEN Lern-Baustellen
+(konkrete Grammatik- oder Wortschatz-Schwierigkeiten), die der Lerner gezielt
+üben sollte, um solche Texte bald selbstständig zu verstehen.
+
+TEXT:
+"""
+${text}
+"""
+
+⚠️ AUSGABEFORMAT:
+Antworte NUR mit einem JSON-Objekt. Beginne mit { und schließe mit }. Keine
+Markdown-Fences. Keine Vor- oder Nachtexte. Alle Felder mit "Ar" im Namen auf
+Arabisch, sonst Deutsch.
+
+{
+  "niveauentwicklung": [
+    { "aspekt": "konkreter Skill (z. B. Perfekt mit sein, Konnektor weil, Nominalisierung)",
+      "empfehlungAr": "توصية عمليّة بالعربيّة في جملة واحدة",
+      "uebung": {
+        "typ": "translate | fill | complete | write",
+        "anweisungAr": "تعليمات بالعربيّة في جملة واحدة",
+        "items": [
+          "البند الأوّل (عربي للترجمة، أو ألماني مع ___ للفراغ، أو موضوع قصير)",
+          "البند الثاني",
+          "البند الثالث"
+        ]
+      }
+    }
+  ]
+}
+
+Regeln:
+- GENAU 3 Einträge
+- Jedes aspekt direkt aus dem Text ableiten (NICHT generisch)
+- Items: GENAU 3 pro uebung, jedes max. 10 Wörter
+- typ wählen passend zum aspekt
+- Alle "Ar"-Felder auf Arabisch, sehr kurz`;
+
+/**
  * PROMPT_GENERATE — توليد نصّ ألماني بمستوى و نوع مُحدَّدَين.
  */
 const SORTEN_LABELS: Record<string, string> = {
@@ -170,21 +212,7 @@ Schema (genau diese Felder, keine zusätzlichen):
   "verstaendnisfragen": [
     { "frage": "سؤال", "antwort": "جواب قصير" }
   ],
-  "lernziele": ["هدف 1", "هدف 2"],
-  "niveauentwicklung": [
-    { "aspekt": "konkreter Skill oder Grammatik-Punkt",
-      "empfehlungAr": "توصية عملية بالعربيّة لتطوير هذا الجانب (2-3 جمل قصيرة)",
-      "uebung": {
-        "typ": "translate | fill | write | complete",
-        "anweisungAr": "تعليمات واضحة بالعربيّة لما يفعله المتعلّم",
-        "items": [
-          "البند الأوّل كما يراه المتعلّم (عربي للترجمة، أو ألماني مع فراغ ___ للملء، أو موضوع للكتابة)",
-          "البند الثاني",
-          "البند الثالث"
-        ]
-      }
-    }
-  ]
+  "lernziele": ["هدف 1", "هدف 2"]
 }
 
 Mengen (unbedingt einhalten — kurze Antwort, kein Overflow):
@@ -194,7 +222,6 @@ Mengen (unbedingt einhalten — kurze Antwort, kein Overflow):
 - hinweise: GENAU 2
 - verstaendnisfragen: GENAU 3
 - lernziele: GENAU 2
-- niveauentwicklung: GENAU 3 (توصيات عمليّة محدّدة لرفع المستوى حتى يصبح قادراً على فهم نصوص كهذه بنفسه)
 - Alle Felder EXTREM KURZ. KEINE Erklärungen länger als 15 Wörter.
 - "satz"-Felder NUR 1 Satz (max. 12 Wörter), nicht ganze Paragraphen.
 - "ar"-Felder: eine kurze arabische Übersetzung (max. 8 Wörter), KEINE Erklärungen.
@@ -202,23 +229,7 @@ Mengen (unbedingt einhalten — kurze Antwort, kein Overflow):
 - "zusammenfassung": GENAU 2 Sätze, keine Einleitung wie "في هذا النصّ".
 - Gesamtlänge der Antwort: unbedingt UNTER 2000 Zeichen bleiben.
 
-Besonders wichtig für niveauentwicklung:
-Identifiziere die 3 KONKRETEN Schwierigkeiten in diesem Text (z. B. Konnektoren,
-Perfekt-Formen, zusammengesetzte Nomen, idiomatische Phrasen, Konjunktiv II) und
-gib für JEDE eine praktische Empfehlung + einen INTERAKTIVEN Übungsblock.
-
-Für den Übungsblock (uebung):
-- typ wählen passend zum aspekt:
-  "translate" = 3 arabische Sätze zum Übersetzen ins Deutsche
-  "fill" = 3 deutsche Sätze mit einem ___ zum Ausfüllen (nur ein Blank pro Satz)
-  "complete" = 3 deutsche Satzanfänge zum Vervollständigen (Der Grund dafür ist, …)
-  "write" = 3 kurze Schreibaufgaben (max. 1 Zeile Anweisung je Item)
-- anweisungAr: 1 klarer Satz, was der Lerner tun soll
-- items: GENAU 3 Bänder, jedes KURZ (max. 10 Wörter), konkret und direkt auf
-  den aspekt bezogen (NICHT generisch!)
-- Für translate: wähle 3 arabische Sätze, deren deutsche Übersetzung die
-  Grammatik dieses aspekts aktiv übt (z. B. aspekt "Perfekt" → 3 Sätze
-  im Vergangenheit).
+Niveauentwicklung (توصيات التطوير) تأتي في استدعاء منفصل — لا تُضمّنها هنا.
 
 AUSWAHL-KRITERIEN — SEHR WICHTIG:
 Wähle für schluesselwoerter und verben die SCHWIEREN / FORTGESCHRITTENEN Wörter,
@@ -320,11 +331,12 @@ export default async function handler(req: Request): Promise<Response> {
     question = url.searchParams.get('q')?.trim() ?? '';
   }
 
-  const mode: 'basic' | 'deep' | 'ask' | 'analyze' | 'generate' =
+  const mode: 'basic' | 'deep' | 'ask' | 'analyze' | 'generate' | 'niveau' =
     modeParam === 'deep' ? 'deep'
     : modeParam === 'ask' ? 'ask'
     : modeParam === 'analyze' ? 'analyze'
     : modeParam === 'generate' ? 'generate'
+    : modeParam === 'niveau' ? 'niveau'
     : 'basic';
 
   // في وضع generate لا نحتاج word
@@ -332,6 +344,13 @@ export default async function handler(req: Request): Promise<Response> {
     const validNiveau = ['A2', 'B1', 'B2', 'C1'].includes(genNiveau) ? genNiveau : 'B1';
     const validSorte = ['nachricht', 'dialog', 'meinung', 'erfahrung', 'wissenschaft', 'rezension', 'kultur'].includes(genTextsorte) ? genTextsorte : 'nachricht';
     genNiveau = validNiveau; genTextsorte = validSorte;
+  } else if (mode === 'niveau') {
+    if (!word || word.length < 50 || word.length > 2500) {
+      return new Response(JSON.stringify({ error: 'النصّ قصير جداً أو طويل جداً.' }), {
+        status: 400,
+        headers: { 'content-type': 'application/json', ...cors },
+      });
+    }
   } else if (mode === 'analyze') {
     if (!word || word.length < 50 || word.length > 2500) {
       return new Response(JSON.stringify({ error: 'النصّ قصير جداً أو طويل جداً (50 - 5000 حرف).' }), {
@@ -377,10 +396,11 @@ export default async function handler(req: Request): Promise<Response> {
     const timer = setTimeout(() => controller.abort(), 50_000);
 
     // max_tokens مُقنَّن حسب الوضع — analyze مختصر لتفادي الـ504
-    const maxTokens = mode === 'analyze' ? 3200
+    const maxTokens = mode === 'analyze'  ? 2300
+                    : mode === 'niveau'   ? 1500
                     : mode === 'generate' ? 900
-                    : mode === 'deep'    ? 1400
-                    : mode === 'ask'     ? 1200
+                    : mode === 'deep'     ? 1400
+                    : mode === 'ask'      ? 1200
                     : 350;
 
     const upstream = await fetch('https://api.anthropic.com/v1/messages', {
@@ -396,6 +416,7 @@ export default async function handler(req: Request): Promise<Response> {
         messages: [{
           role: 'user',
           content: mode === 'analyze'  ? PROMPT_ANALYZE(word!)
+                 : mode === 'niveau'   ? PROMPT_NIVEAU(word!)
                  : mode === 'generate' ? PROMPT_GENERATE(genNiveau, genTextsorte)
                  : mode === 'deep'     ? PROMPT_DEEP(word!)
                  : mode === 'ask'      ? PROMPT_ASK(word!, question)
@@ -497,8 +518,8 @@ export default async function handler(req: Request): Promise<Response> {
       }
     }
 
-    // cache: basic/deep ثابت لكل كلمة؛ ask/analyze/generate مخصّصة أو عشوائيّة
-    const cacheHeader = (mode === 'ask' || mode === 'analyze' || mode === 'generate')
+    // cache: basic/deep ثابت لكل كلمة؛ ask/analyze/generate/niveau مخصّصة أو عشوائيّة
+    const cacheHeader = (mode === 'ask' || mode === 'analyze' || mode === 'generate' || mode === 'niveau')
       ? 'no-store'
       : 'public, s-maxage=86400, stale-while-revalidate=604800';
 
