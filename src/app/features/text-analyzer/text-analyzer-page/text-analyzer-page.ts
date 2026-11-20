@@ -17,6 +17,7 @@ const SORTEN: Textsorte[] = [
   { id: 'erfahrung',    label: '✍️ تجربة شخصيّة' },
   { id: 'wissenschaft', label: '🔬 علم و تكنولوجيا' },
   { id: 'rezension',    label: '⭐ مراجعة' },
+  { id: 'kultur',       label: '🇩🇪 ثقافة ألمانيّة' },
 ];
 
 @Component({

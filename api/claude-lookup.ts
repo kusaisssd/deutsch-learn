@@ -98,6 +98,7 @@ const SORTEN_LABELS: Record<string, string> = {
   erfahrung: 'Erfahrungsbericht in Ich-Form (Blog-Stil)',
   wissenschaft: 'Wissenschafts- oder Technikartikel (populärwissenschaftlich)',
   rezension: 'kurze Rezension (Film, Buch, Produkt oder Ort)',
+  kultur: 'kurzer Text über deutsche Kultur — WÄHLE EINS zufällig: eine typische Tradition oder Fest (Oktoberfest, Weihnachten, Karneval), ein regionales Gericht (Currywurst, Schwarzwälder Kirschtorte, Spätzle), eine Alltagsgewohnheit (pünktlich sein, Sonntagsruhe, Mülltrennung), eine berühmte Redewendung oder Zitat (z. B. von Goethe), oder ein gesellschaftliches Phänomen (Vereinskultur, Duzen/Siezen, Feierabend). Erkläre, was es ist, warum es wichtig ist, und wie Ausländer darauf reagieren',
 };
 const PROMPT_GENERATE = (niveau: string, textsorte: string) => `Du bist ein kreativer Deutschlehrer.
 Erzeuge einen originalen deutschen Text auf Niveau ${niveau}, Typ: ${SORTEN_LABELS[textsorte] ?? textsorte}.
@@ -329,7 +330,7 @@ export default async function handler(req: Request): Promise<Response> {
   // في وضع generate لا نحتاج word
   if (mode === 'generate') {
     const validNiveau = ['A2', 'B1', 'B2', 'C1'].includes(genNiveau) ? genNiveau : 'B1';
-    const validSorte = ['nachricht', 'dialog', 'meinung', 'erfahrung', 'wissenschaft', 'rezension'].includes(genTextsorte) ? genTextsorte : 'nachricht';
+    const validSorte = ['nachricht', 'dialog', 'meinung', 'erfahrung', 'wissenschaft', 'rezension', 'kultur'].includes(genTextsorte) ? genTextsorte : 'nachricht';
     genNiveau = validNiveau; genTextsorte = validSorte;
   } else if (mode === 'analyze') {
     if (!word || word.length < 50 || word.length > 2500) {
